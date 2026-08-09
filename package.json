@@ -1,0 +1,13 @@
+{
+  "name": "arknight-guess",
+  "version": "1.0.0",
+  "description": "明日方舟干员猜谜小游戏",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "build:data": "python scripts/build_data.py"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
