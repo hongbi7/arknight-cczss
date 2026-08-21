@@ -4,86 +4,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>罗德岛干员猜谜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-mode="">
+
+<div class="bg-layer" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<span class="sweep" aria-hidden="true"></span>
+
+<div class="hud" aria-hidden="true">
+  <span class="hud-corner hud-tl"></span>
+  <span class="hud-corner hud-tr"></span>
+  <span class="hud-corner hud-bl"></span>
+  <span class="hud-corner hud-br"></span>
+  <span id="hudTagL" class="hud-tag hud-tag-l">PARADISE&nbsp;FULCRUM&nbsp;//&nbsp;LATERANO&nbsp;ARCHIVE</span>
+  <span id="hudTagR" class="hud-tag hud-tag-r">P.F.S.&nbsp;—&nbsp;OPERATOR&nbsp;TRACE&nbsp;SYSTEM</span>
+</div>
+
 <header class="topbar">
-  <h1>罗德岛干员猜谜</h1>
+  <div class="brand">
+    <span class="brand-mark"><i></i></span>
+    <div class="brand-text">
+      <h1>罗德岛干员猜谜</h1>
+      <p class="brand-en">ARKNIGHTS · OPERATOR ARCHIVE GUESSING</p>
+    </div>
+  </div>
   <p class="subtitle">根据 12 项档案线索，猜出谜底干员。支持拼音搜索（如 nts = 能天使）。</p>
 </header>
 
 <main>
   <section id="modeScreen">
-    <h2 class="mode-title">选择游戏模式</h2>
-    <div class="mode-cards">
-      <button id="modeSudden" class="mode-card mode-hot">
-        <span class="mode-badge">热门</span>
-        <span class="mode-name">突然死亡模式</span>
-        <span class="mode-desc">全干员池，限 5 次猜测<br>第 5 次后进入四选一终局，猜错即结束</span>
-      </button>
-      <button id="modeEndless" class="mode-card">
-        <span class="mode-name">无尽模式</span>
-        <span class="mode-desc">全干员池，不限猜测次数<br>靠 12 维线索一路逼近答案</span>
-      </button>
+    <div class="mode-stage">
+      <div class="mode-side mode-side-sudden" aria-hidden="true">
+        <div class="side-content">
+          <span class="side-index">01</span>
+          <span class="side-kicker">PARADISE&nbsp;FULCRUM</span>
+          <strong>SUDDEN&nbsp;DEATH</strong>
+          <span class="side-rule"></span>
+          <span class="side-meta">LATERANO&nbsp;ARCHIVE&nbsp;//&nbsp;LIMITED&nbsp;ATTEMPTS</span>
+        </div>
+      </div>
+
+      <div class="mode-side mode-side-endless" aria-hidden="true">
+        <img class="side-toad" src="img/endfield-toad.png" alt="">
+        <div class="side-content side-content-endless">
+          <span class="side-index">02</span>
+          <span class="side-kicker">ENDFIELD&nbsp;SIGNAL</span>
+          <strong>ENDLESS&nbsp;TRACE</strong>
+          <span class="side-rule"></span>
+          <span class="side-meta">TALOS-II&nbsp;//&nbsp;UNLIMITED&nbsp;PROTOCOL</span>
+        </div>
+      </div>
+
+      <div class="chessmaster-scene" aria-hidden="true">
+        <img src="img/chessmaster.png" alt="">
+        <span class="scene-scan"></span>
+      </div>
+
+      <div class="section-head mode-heading">
+        <h2 class="mode-title">选择游戏模式</h2>
+        <span class="section-en">SELECT&nbsp;PROTOCOL</span>
+      </div>
+
+      <div class="mode-cards">
+        <button id="modeSudden" class="mode-card mode-sudden">
+          <span class="mode-badge">热门 HOT</span>
+          <span class="mode-en">SUDDEN&nbsp;DEATH</span>
+          <span class="mode-name">突然死亡</span>
+          <span class="mode-desc">全干员池，限 5 次猜测<br>第 5 次后进入四选一终局，猜错即结束</span>
+          <span class="mode-go">进入协议&nbsp;&raquo;</span>
+        </button>
+        <button id="modeEndless" class="mode-card mode-endless">
+          <span class="mode-en">ENDLESS</span>
+          <span class="mode-name">无尽模式</span>
+          <span class="mode-desc">全干员池，不限猜测次数<br>靠 12 维线索一路逼近答案</span>
+          <span class="mode-go">进入协议&nbsp;&raquo;</span>
+        </button>
+      </div>
     </div>
   </section>
 
   <section id="gameScreen" class="hidden">
-    <div class="game-meta">
-      <span id="modeLabel" class="pill"></span>
-      <span id="attemptLabel" class="pill"></span>
-    </div>
-    <div class="input-wrap">
-      <input id="guessInput" placeholder="输入干员代号 / 拼音 / 首字母，如：能天使、nts" autocomplete="off">
-      <button id="guessBtn">猜</button>
-      <button id="revealBtn" class="ghost">放弃</button>
-      <div id="suggest" class="suggest hidden"></div>
-    </div>
-    <p id="status" class="status"></p>
+    <div class="game-layout">
+      <aside class="game-sidebar">
+        <div class="game-art" aria-hidden="true">
+          <img class="game-art-sudden" src="img/paradise-fulcrum.jpg" alt="">
+          <img class="game-art-endless" src="img/endfield-toad.png" alt="">
+          <span class="game-art-grid"></span>
+        </div>
+        <div class="game-sidebar-copy">
+          <span class="eyebrow">OPERATOR IDENTIFICATION</span>
+          <p id="gameSidebarIndex" class="game-sidebar-index">/ 01</p>
+          <h2>缩小范围，<br>锁定目标。</h2>
+          <p>每次提交都会解锁 12 项档案比对结果。利用颜色与方向提示，逐步排除不可能。</p>
+        </div>
+        <div id="endlessBubble" class="sidebar-callout">离穷举完成还差 425</div>
+        <div class="clue-legend" aria-label="线索颜色说明">
+          <span><i class="legend-exact"></i>吻合</span>
+          <span><i class="legend-tip"></i>接近</span>
+          <span><i class="legend-wrong"></i>不符</span>
+          <span><i class="legend-unknown"></i>未知</span>
+        </div>
+      </aside>
 
-    <div class="table-wrap">
-      <table id="board">
-        <thead>
-          <tr>
-            <th>干员</th>
-            <th>职业</th>
-            <th>子职业</th>
-            <th>星级</th>
-            <th>站位</th>
-            <th>Tag</th>
-            <th>性别</th>
-            <th>战斗经验</th>
-            <th>出身地</th>
-            <th>生日</th>
-            <th>种族</th>
-            <th>身高</th>
-            <th>矿石病</th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
+      <div class="game-workspace">
+        <div class="game-meta">
+          <div>
+            <span class="meta-label">CURRENT PROTOCOL</span>
+            <span id="modeLabel" class="pill"></span>
+          </div>
+          <span class="lives">
+            <span id="attemptLabel" class="pill"></span>
+            <span id="livesPips" class="pips" aria-hidden="true"></span>
+          </span>
+        </div>
 
-    <div id="victory" class="victory hidden">
-      <h2 id="victoryText"></h2>
-      <div class="victory-actions">
-        <button id="restartBtn">再来一局</button>
-        <button id="changeModeBtn" class="ghost">切换模式</button>
+        <section class="guess-console" aria-label="提交猜测">
+          <div class="console-heading">
+            <span class="console-step">01</span>
+            <div>
+              <h2>输入干员代号</h2>
+              <p>支持中文、完整拼音或首字母搜索</p>
+            </div>
+          </div>
+          <div class="input-wrap">
+            <input id="guessInput" placeholder="例如：能天使 / nengtianshi / nts" autocomplete="off">
+            <button id="guessBtn"><span>提交猜测</span><i aria-hidden="true">↗</i></button>
+            <button id="revealBtn" class="ghost">揭晓答案</button>
+            <div id="suggest" class="suggest hidden"></div>
+          </div>
+          <p id="status" class="status"></p>
+        </section>
+
+        <section class="dossier-section">
+          <div class="dossier-head">
+            <div>
+              <span class="console-step">02</span>
+              <h2>档案比对</h2>
+            </div>
+            <p>最新猜测将显示在最上方</p>
+          </div>
+          <div id="board" class="board">
+            <div id="boardEmpty" class="board-empty">
+              <span>NO RECORDS</span>
+              <strong>等待第一次猜测</strong>
+              <p>提交一名干员后，这里会生成档案比对卡。</p>
+            </div>
+            <div id="rows" class="guess-list"></div>
+          </div>
+        </section>
+
+        <div id="victory" class="victory hidden">
+          <span class="victory-en" aria-hidden="true">MISSION&nbsp;RESULT</span>
+          <h2 id="victoryText"></h2>
+          <div class="victory-actions">
+            <button id="restartBtn">再来一局</button>
+            <button id="changeModeBtn" class="ghost">切换模式</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="foot">数据来源：游戏内档案 · 纯粉丝向游戏 · 仅前端展示用</footer>
+<footer class="foot">DATA FROM IN-GAME ARCHIVES · FAN-MADE PROJECT<br>数据来源：游戏内档案 · 纯粉丝向游戏 · 仅前端展示用</footer>
 
 <div id="choiceModal" class="modal hidden">
   <div class="modal-box">
-    <h3>最后一搏！</h3>
+    <span class="modal-en" aria-hidden="true">FINAL&nbsp;SELECTION</span>
+    <h3>最后一搏</h3>
     <p class="modal-sub">5 次机会已用尽。从下面 4 名干员中选出谜底：</p>
     <div id="choiceList"></div>
     <button id="choiceGiveup" class="ghost">查看答案</button>
   </div>
 </div>
+
+<div class="wipe" aria-hidden="true"><span></span></div>
 
 <script src="js/app.js"></script>
 </body>
