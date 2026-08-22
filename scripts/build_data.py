@@ -121,6 +121,15 @@ def clean_text(v):
     return v.split("\r")[0].split("\n")[0].strip()
 
 
+SPECIAL_ORIGIN_RACE = ("未知", "未公开", "不明", "机密")
+
+
+def is_special_value(v):
+    if not v:
+        return False
+    return any(v == x or v.startswith(x) for x in SPECIAL_ORIGIN_RACE)
+
+
 def basic_archive_fields(k):
     fields = {}
     for s in handbook[k].get("storyTextAudio") or []:
@@ -170,14 +179,19 @@ for cid, cv in character.items():
 
     exp = None
     exp_text = None
+    exp_special = False
     for ek in EXP_KEYS:
         if ek in f:
             exp_text = f[ek]
             exp = parse_exp(exp_text)
+            exp_special = ek != "战斗经验"
             break
 
     rarity = int(cv.get("rarity", "TIER_1")[-1])
     full_py, ini_py = name_pinyin(name)
+
+    origin = f.get("出身地") or f.get("产地")
+    race = f.get("种族")
 
     record = {
         "id": cid,
@@ -193,10 +207,13 @@ for cid, cv in character.items():
         "gender": f.get("性别") or f.get("设定性别"),
         "exp": exp,
         "expText": exp_text,
-        "origin": f.get("出身地") or f.get("产地"),
+        "expSpecial": exp_special,
+        "origin": origin,
+        "originSpecial": is_special_value(origin),
         "birthday": parse_birthday(f.get("生日", "")),
         "birthdayText": f.get("生日"),
-        "race": f.get("种族"),
+        "race": race,
+        "raceSpecial": is_special_value(race),
         "height": parse_height(f.get("身高") or f.get("高度") or ""),
         "heightText": f.get("身高") or f.get("高度"),
         "infected": parse_infected(f.get("矿石病感染情况", "")),
@@ -218,6 +235,9 @@ json.dump(names, open(OUT_NAMES, "w", encoding="utf-8"), ensure_ascii=False)
 
 print("operators:", len(result))
 print("hot:", sum(1 for r in result.values() if r["hot"]))
+print("exp special:", sum(1 for r in result.values() if r.get("expSpecial")))
+print("origin special:", sum(1 for r in result.values() if r.get("originSpecial")))
+print("race special:", sum(1 for r in result.values() if r.get("raceSpecial")))
 nulls = {k: 0 for k in ["gender", "exp", "origin", "birthday", "race", "height", "infected"]}
 for r in result.values():
     for k in nulls:

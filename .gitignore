@@ -4,3 +4,7 @@ __pycache__/
 .env
 .DS_Store
 .claude
+.tools/
+.art-sample/
+.skin-table.json
+.handbook-info-table.json

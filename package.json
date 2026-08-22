@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build:data": "python scripts/build_data.py"
+    "build:data": "python scripts/build_data.py",
+    "build:archives": "python scripts/build_archives.py .handbook-info-table.json"
   },
   "engines": {
     "node": ">=18"

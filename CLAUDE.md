@@ -27,8 +27,8 @@ npm run build:data      # regenerate data files (python scripts/build_data.py)
 The answer must never reach the client; all logic lives in `lib/game.js`, which both runtimes share:
 - `/api/new` picks a random operator, then `encrypt()` wraps `{name, mode, guesses}` in an **AES-256-GCM token** (IV+tag+payload, base64url). The key is `sha256(GAME_SECRET)`.
 - `/api/guess` decrypts the token, compares the guess to the secret across 12 dims, and returns a **fresh token carrying the appended guess history** (needed later for distractor generation). The response never includes the answer name unless the player wins.
-- `/api/reveal` decrypts and returns the answer (give-up path).
-- `/api/choices` (sudden mode, after 5 misses) scores every operator by how many green keys they share with the secret (`greenKeys` + `matches`), takes the top 3 as distractors (excluding the secret and already-guessed names), and shuffles them with the real answer.
+- `/api/reveal` decrypts and returns the answer plus its `dims` (all forced `exact`), so the give-up paths render the answer as a full-green row (same as a win / final pick).
+- `/api/choices` (sudden mode, after 5 misses) scores every operator by how many green keys they share with the secret (`greenKeys` + `matches`), takes the top 3 as distractors (excluding the secret and already-guessed names), and shuffles them with the real answer. It also returns `fullMatches` — how many of the 4 options hit **all** green keys — which the client shows as a difficulty note when `< 4`. Only the count is sent, never *which* option, since the answer is always a full match.
 - `/api/pick` resolves the final 4-way choice.
 
 The game is **stateless across requests** — everything lives in the encrypted token (no DB, no session store). Treat tokens as untrusted: `decrypt()` returns null on any tamper, surfaced as `invalid_session`.
@@ -58,10 +58,12 @@ The `api/*.js` handlers are identical in shape: OPTIONS preflight, parse body/qu
 
 ### Dimension comparison semantics (`lib/game.js::dimResult`)
 
-- Per-dimension state is one of `exact | wrong | high | low | before | after | unknown`.
+- Per-dimension state is one of `exact | close | wrong | high | low | before | after | unknown`.
 - Numeric fields (rarity, exp, height) use `cmp(guess, secret)`: state is **relative to the guess** — `high` means the guess is greater than the answer. Birthday compares `month*100+day`, reporting `before`/`after`.
+- `close` is a **flag**, not a state: height within 15cm of the answer, or birthday within 60 days → the cell renders yellow (`cell-tip`) while still showing the direction (`↓`/`↑`, or `→更晚`/`←更早` for birthdays). Plain `high`/`low`/`before`/`after` render red (`cell-wrong`). The tooltip on a close cell states the threshold meaning (身高相差 15cm 以内 / 生日 2 个月内) — never the exact `diff`.
 - `unknown` when either side is null/missing (robots have no birthday); frontend renders grey `?`.
-- `tags` is special: state is always `hint`, returning the shared (intersection) tags.
+- `tags` is special: state is always `hint`, returning the shared (intersection) tags. The frontend colors the cell by how the guess's vs the answer's tag sets relate: **red** when nothing overlaps, **green** only when the two sets are identical, otherwise **yellow** (partial — the guess has extra tags or misses some of the answer's); the overlapping pills render green.
+- `exp`/`origin`/`race` carry a `special` flag (`!!guess.expSpecial` etc.) for nonstandard values — variant exp keys (格斗经验/表演经验…, still computed numerically) and origin/race of 未知/未公开/不明. The frontend overlays black diagonal stripes (`.cell-special`) on those cells. Flags are baked into `server-data/operators.json` by `scripts/build_data.py` — changing the rule requires regenerating data (`npm run build:data`).
 - `SUDDEN_MAX = 5` (sudden-mode guess cap) lives in `lib/game.js`.
 
 ### Frontend (`public/js/app.js`)
