@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>罗德岛干员猜谜</title>
+<title>终端寻迹 · 干员识别协议</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -28,8 +28,8 @@
   <div class="brand">
     <span class="brand-mark"><i></i></span>
     <div class="brand-text">
-      <h1>罗德岛干员猜谜</h1>
-      <p class="brand-en">ARKNIGHTS · OPERATOR ARCHIVE GUESSING</p>
+      <h1>终端寻迹</h1>
+      <p class="brand-en">OPERATOR TRACE · IDENTIFICATION PROTOCOL</p>
     </div>
   </div>
   <p class="subtitle">根据 12 项档案线索，猜出谜底干员。支持拼音搜索（如 nts = 能天使）。</p>
@@ -42,9 +42,9 @@
         <div class="side-content">
           <span class="side-index">01</span>
           <span class="side-kicker">PARADISE&nbsp;FULCRUM</span>
-          <strong>SUDDEN&nbsp;DEATH</strong>
+          <strong>FINAL&nbsp;VERIFICATION</strong>
           <span class="side-rule"></span>
-          <span class="side-meta">LATERANO&nbsp;ARCHIVE&nbsp;//&nbsp;LIMITED&nbsp;ATTEMPTS</span>
+          <span class="side-meta">PARADISE&nbsp;FULCRUM&nbsp;//&nbsp;LIMITED&nbsp;AUDIT</span>
         </div>
       </div>
 
@@ -52,10 +52,10 @@
         <img class="side-toad" src="img/endfield-toad.png" alt="">
         <div class="side-content side-content-endless">
           <span class="side-index">02</span>
-          <span class="side-kicker">ENDFIELD&nbsp;SIGNAL</span>
-          <strong>ENDLESS&nbsp;TRACE</strong>
+          <span class="side-kicker">RHODES&nbsp;ISLAND&nbsp;ARCHIVE</span>
+          <strong>ENDLESS&nbsp;ARCHIVE&nbsp;SEARCH</strong>
           <span class="side-rule"></span>
-          <span class="side-meta">TALOS-II&nbsp;//&nbsp;UNLIMITED&nbsp;PROTOCOL</span>
+          <span class="side-meta">P.R.T.S.&nbsp;//&nbsp;OPEN&nbsp;RETRIEVAL&nbsp;PROTOCOL</span>
         </div>
       </div>
 
@@ -70,16 +70,25 @@
       </div>
 
       <div class="mode-cards">
-        <button id="modeSudden" class="mode-card mode-sudden">
-          <span class="mode-badge">热门 HOT</span>
-          <span class="mode-en">SUDDEN&nbsp;DEATH</span>
-          <span class="mode-name">突然死亡</span>
-          <span class="mode-desc">全干员池，限 5 次猜测<br>第 5 次后进入四选一终局，猜错即结束</span>
-          <span class="mode-go">进入协议&nbsp;&raquo;</span>
-        </button>
+        <article id="modeSuddenCard" class="mode-card mode-sudden">
+          <img class="mode-card-sticker mode-card-sticker-sudden" src="img/paradise-fulcrum.jpg" alt="" aria-hidden="true">
+          <span class="mode-badge">高危 HIGH-RISK</span>
+          <span class="mode-en">FINAL&nbsp;VERIFICATION</span>
+          <span class="mode-name">终局校验</span>
+          <span id="suddenModeDesc" class="mode-desc">全干员池，限 6 次猜测<br>第 6 次后进入终局抉择，猜错即结束</span>
+          <div class="mode-config">
+            <label class="attempt-control" for="suddenAttemptsMode">
+              <span>猜测次数</span>
+              <input id="suddenAttemptsMode" type="number" min="1" max="20" value="6" inputmode="numeric" aria-label="终局校验猜测次数">
+              <i>次</i>
+            </label>
+            <button id="modeSudden" class="mode-go">进入协议&nbsp;&raquo;</button>
+          </div>
+        </article>
         <button id="modeEndless" class="mode-card mode-endless">
-          <span class="mode-en">ENDLESS</span>
-          <span class="mode-name">无尽模式</span>
+          <img class="mode-card-sticker mode-card-sticker-endless" src="img/endfield-toad.png" alt="" aria-hidden="true">
+          <span class="mode-en">ENDLESS&nbsp;ARCHIVE&nbsp;SEARCH</span>
+          <span class="mode-name">全域检索</span>
           <span class="mode-desc">全干员池，不限猜测次数<br>靠 12 维线索一路逼近答案</span>
           <span class="mode-go">进入协议&nbsp;&raquo;</span>
         </button>
@@ -98,10 +107,14 @@
         <div class="game-sidebar-copy">
           <span class="eyebrow">OPERATOR IDENTIFICATION</span>
           <p id="gameSidebarIndex" class="game-sidebar-index">/ 01</p>
-          <h2>缩小范围，<br>锁定目标。</h2>
-          <p>每次提交都会解锁 12 项档案比对结果。利用颜色与方向提示，逐步排除不可能。</p>
+          <h2 id="gameSidebarTitle">缩小范围，<br>锁定目标。</h2>
+          <p id="gameSidebarDesc">每次提交都会解锁 12 项档案比对结果。利用颜色与方向提示，逐步排除不可能。</p>
         </div>
-        <div id="endlessBubble" class="sidebar-callout">离穷举完成还差 425</div>
+        <div id="endlessBubble" class="sidebar-callout">
+          <span>ENUMERATION PROGRESS</span>
+          <strong id="endlessBubbleText">离穷举完成还差 425</strong>
+          <i aria-hidden="true"><b id="endlessProgress"></b></i>
+        </div>
         <div class="clue-legend" aria-label="线索颜色说明">
           <span><i class="legend-exact"></i>吻合</span>
           <span><i class="legend-tip"></i>接近</span>
@@ -115,11 +128,31 @@
           <div>
             <span class="meta-label">CURRENT PROTOCOL</span>
             <span id="modeLabel" class="pill"></span>
+            <div id="suddenGameConfig" class="game-attempt-config hidden">
+              <label class="attempt-control" for="suddenAttemptsGame">
+                <span>本局上限</span>
+                <input id="suddenAttemptsGame" type="number" min="1" max="20" value="6" inputmode="numeric" aria-label="本局终局校验猜测次数">
+                <i>次</i>
+              </label>
+              <button id="applySuddenAttempts" type="button">应用本局</button>
+            </div>
           </div>
-          <span class="lives">
-            <span id="attemptLabel" class="pill"></span>
-            <span id="livesPips" class="pips" aria-hidden="true"></span>
-          </span>
+          <div class="game-meta-actions">
+            <span class="lives">
+              <span id="attemptLabel" class="pill"></span>
+              <span id="livesPips" class="pips" aria-hidden="true"></span>
+            </span>
+            <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
+          </div>
+        </div>
+
+        <div id="mobileEndlessBubble" class="mobile-endless-callout" aria-live="polite">
+          <img src="img/endfield-toad.png" alt="" aria-hidden="true">
+          <div>
+            <span>ENUMERATION PROGRESS</span>
+            <strong id="mobileEndlessBubbleText">离穷举完成还差 425</strong>
+            <i aria-hidden="true"><b id="mobileEndlessProgress"></b></i>
+          </div>
         </div>
 
         <section class="guess-console" aria-label="提交猜测">
@@ -153,18 +186,23 @@
               <strong>等待第一次猜测</strong>
               <p>提交一名干员后，这里会生成档案比对卡。</p>
             </div>
+            <div id="victory" class="result-overlay hidden" role="region" aria-live="polite" aria-labelledby="victoryText">
+              <div class="victory">
+                <div class="victory-copy">
+                  <span id="victoryEyebrow" class="victory-en" aria-hidden="true">MISSION&nbsp;COMPLETE</span>
+                  <h2 id="victoryText"></h2>
+                  <p class="victory-sub">本轮识别协议已结束 · 正确答案及最新形象档案已载入下方</p>
+                </div>
+                <div class="victory-actions">
+                  <button id="restartBtn" class="ghost">再来一局</button>
+                  <button id="changeModeBtn" class="ghost">切换模式</button>
+                </div>
+              </div>
+            </div>
             <div id="rows" class="guess-list"></div>
           </div>
         </section>
 
-        <div id="victory" class="victory hidden">
-          <span class="victory-en" aria-hidden="true">MISSION&nbsp;RESULT</span>
-          <h2 id="victoryText"></h2>
-          <div class="victory-actions">
-            <button id="restartBtn">再来一局</button>
-            <button id="changeModeBtn" class="ghost">切换模式</button>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -174,11 +212,47 @@
 
 <div id="choiceModal" class="modal hidden">
   <div class="modal-box">
-    <span class="modal-en" aria-hidden="true">FINAL&nbsp;SELECTION</span>
-    <h3>最后一搏</h3>
-    <p class="modal-sub">5 次机会已用尽。从下面 4 名干员中选出谜底：</p>
+    <span class="modal-en" aria-hidden="true">FINAL&nbsp;VERIFICATION</span>
+    <h3>终局校验</h3>
+    <p id="choiceModalSub" class="modal-sub">6 次机会已用尽。从候选干员中选出谜底：</p>
     <div id="choiceList"></div>
     <button id="choiceGiveup" class="ghost">查看答案</button>
+  </div>
+</div>
+
+<div id="revealModal" class="modal reveal-modal hidden" role="dialog" aria-modal="true" aria-labelledby="revealModalTitle" aria-describedby="revealModalDesc">
+  <div class="modal-box reveal-confirm-box">
+    <div class="reveal-confirm-code" aria-hidden="true"><span>WARNING</span><strong>03</strong></div>
+    <div class="reveal-confirm-copy">
+      <span class="modal-en" aria-hidden="true">ARCHIVE&nbsp;RELEASE&nbsp;PROTOCOL</span>
+      <h3 id="revealModalTitle">终止识别协议？</h3>
+      <p id="revealModalDesc" class="modal-sub">确认后将立即公开目标干员完整档案，本局识别结果将判定为失败。</p>
+      <div class="reveal-confirm-status">
+        <span>当前检索记录</span>
+        <strong id="revealAttemptText">已猜 0 次</strong>
+      </div>
+    </div>
+    <div class="reveal-confirm-actions">
+      <button id="revealCancel" class="ghost" type="button">继续检索</button>
+      <button id="revealConfirm" type="button"><span>确认揭晓</span><i aria-hidden="true">↗</i></button>
+    </div>
+  </div>
+</div>
+
+<div id="artPreview" class="art-preview hidden" role="dialog" aria-modal="true" aria-labelledby="artPreviewTitle">
+  <div class="art-preview-stage">
+    <header class="art-preview-head">
+      <span>IMAGE&nbsp;ARCHIVE&nbsp;//&nbsp;FULL&nbsp;VIEW</span>
+      <button id="artPreviewClose" type="button" aria-label="关闭立绘大图"><i aria-hidden="true"></i>关闭档案</button>
+    </header>
+    <div class="art-preview-canvas">
+      <span class="art-preview-grid" aria-hidden="true"></span>
+      <img id="artPreviewImage" src="" alt="">
+    </div>
+    <footer class="art-preview-caption">
+      <strong id="artPreviewTitle">干员立绘</strong>
+      <span id="artPreviewMeta">OPERATOR IMAGE</span>
+    </footer>
   </div>
 </div>
 

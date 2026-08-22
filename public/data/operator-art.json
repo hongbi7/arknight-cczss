@@ -1,0 +1,3827 @@
+{
+  "char_285_medic2": {
+    "e1": "/img/operators/e1/char_285_medic2.webp",
+    "final": "/img/operators/final/char_285_medic2.webp",
+    "finalKind": "skin",
+    "finalTitle": "海岸救援改装",
+    "finalGroup": "斗争血脉/IV",
+    "e1Asset": "char_285_medic2_1",
+    "finalAsset": "char_285_medic2_boc#4"
+  },
+  "char_286_cast3": {
+    "e1": "/img/operators/e1/char_286_cast3.webp",
+    "final": "/img/operators/final/char_286_cast3.webp",
+    "finalKind": "skin",
+    "finalTitle": "SUM019.ver",
+    "finalGroup": "珊瑚海岸/I",
+    "e1Asset": "char_286_cast3_1",
+    "finalAsset": "char_286_cast3_summer#1"
+  },
+  "char_376_therex": {
+    "e1": "/img/operators/e1/char_376_therex.webp",
+    "final": "/img/operators/final/char_376_therex.webp",
+    "finalKind": "skin",
+    "finalTitle": "双料四分卫",
+    "finalGroup": "玛尔特/VII",
+    "e1Asset": "char_376_therex_1",
+    "finalAsset": "char_376_therex_marthe#7"
+  },
+  "char_4000_jnight": {
+    "e1": "/img/operators/e1/char_4000_jnight.webp",
+    "final": "/img/operators/final/char_4000_jnight.webp",
+    "finalKind": "skin",
+    "finalTitle": "竞技之梦改装",
+    "finalGroup": "斗争血脉/VII",
+    "e1Asset": "char_4000_jnight_1",
+    "finalAsset": "char_4000_jnight_boc#7"
+  },
+  "char_4077_palico": {
+    "e1": "/img/operators/e1/char_4077_palico.webp",
+    "final": "/img/operators/final/char_4077_palico.webp",
+    "finalKind": "skin",
+    "finalTitle": "跃上街头",
+    "finalGroup": "怪物猎人",
+    "e1Asset": "char_4077_palico_1",
+    "finalAsset": "char_4077_palico_mh#1"
+  },
+  "char_4091_ulika": {
+    "e1": "/img/operators/e1/char_4091_ulika.webp",
+    "final": "/img/operators/final/char_4091_ulika.webp",
+    "finalKind": "skin",
+    "finalTitle": "云上直播间",
+    "finalGroup": "三丽鸥家族",
+    "e1Asset": "char_4091_ulika_1",
+    "finalAsset": "char_4091_ulika_sanrio#1"
+  },
+  "char_4093_frston": {
+    "e1": "/img/operators/e1/char_4093_frston.webp",
+    "final": "/img/operators/e1/char_4093_frston.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_4093_frston_1",
+    "finalAsset": "char_4093_frston_1"
+  },
+  "char_4136_phonor": {
+    "e1": "/img/operators/e1/char_4136_phonor.webp",
+    "final": "/img/operators/final/char_4136_phonor.webp",
+    "finalKind": "skin",
+    "finalTitle": "最初的颂歌",
+    "finalGroup": "斗争血脉/IX",
+    "e1Asset": "char_4136_phonor_1",
+    "finalAsset": "char_4136_phonor_boc#9"
+  },
+  "char_4188_confes": {
+    "e1": "/img/operators/e1/char_4188_confes.webp",
+    "final": "/img/operators/e1/char_4188_confes.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_4188_confes_1",
+    "finalAsset": "char_4188_confes_1"
+  },
+  "char_4227_gallus": {
+    "e1": "/img/operators/e1/char_4227_gallus.webp",
+    "final": "/img/operators/e1/char_4227_gallus.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_4227_gallus_1",
+    "finalAsset": "char_4227_gallus_1"
+  },
+  "char_4215_buddy": {
+    "e1": "/img/operators/e1/char_4215_buddy.webp",
+    "final": "/img/operators/final/char_4215_buddy.webp",
+    "finalKind": "skin",
+    "finalTitle": "露营时间喵！",
+    "finalGroup": "怪物猎人/II",
+    "e1Asset": "char_4215_buddy_1",
+    "finalAsset": "char_4215_buddy_mh#2"
+  },
+  "char_502_nblade": {
+    "e1": "/img/operators/e1/char_502_nblade.webp",
+    "final": "/img/operators/e1/char_502_nblade.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_502_nblade_1",
+    "finalAsset": "char_502_nblade_1"
+  },
+  "char_500_noirc": {
+    "e1": "/img/operators/e1/char_500_noirc.webp",
+    "final": "/img/operators/e1/char_500_noirc.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_500_noirc_1",
+    "finalAsset": "char_500_noirc_1"
+  },
+  "char_503_rang": {
+    "e1": "/img/operators/e1/char_503_rang.webp",
+    "final": "/img/operators/e1/char_503_rang.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_503_rang_1",
+    "finalAsset": "char_503_rang_1"
+  },
+  "char_501_durin": {
+    "e1": "/img/operators/e1/char_501_durin.webp",
+    "final": "/img/operators/e1/char_501_durin.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_501_durin_1",
+    "finalAsset": "char_501_durin_1"
+  },
+  "char_009_12fce": {
+    "e1": "/img/operators/e1/char_009_12fce.webp",
+    "final": "/img/operators/e1/char_009_12fce.webp",
+    "finalKind": "e1",
+    "finalTitle": "精英一阶段",
+    "finalGroup": "基础档案",
+    "e1Asset": "char_009_12fce_1",
+    "finalAsset": "char_009_12fce_1"
+  },
+  "char_123_fang": {
+    "e1": "/img/operators/e1/char_123_fang.webp",
+    "final": "/img/operators/final/char_123_fang.webp",
+    "finalKind": "skin",
+    "finalTitle": "十字郡",
+    "finalGroup": "寒武纪/I",
+    "e1Asset": "char_123_fang_1",
+    "finalAsset": "char_123_fang_winter#1"
+  },
+  "char_240_wyvern": {
+    "e1": "/img/operators/e1/char_240_wyvern.webp",
+    "final": "/img/operators/final/char_240_wyvern.webp",
+    "finalKind": "skin",
+    "finalTitle": "平原驯虫士",
+    "finalGroup": "成就之星/IV",
+    "e1Asset": "char_240_wyvern_1",
+    "finalAsset": "char_240_wyvern_game#4"
+  },
+  "char_192_falco": {
+    "e1": "/img/operators/e1/char_192_falco.webp",
+    "final": "/img/operators/final/char_192_falco.webp",
+    "finalKind": "skin",
+    "finalTitle": "从容时刻",
+    "finalGroup": "玛尔特/VI",
+    "e1Asset": "char_192_falco_1",
+    "finalAsset": "char_192_falco_marthe#6"
+  },
+  "char_208_melan": {
+    "e1": "/img/operators/e1/char_208_melan.webp",
+    "final": "/img/operators/final/char_208_melan.webp",
+    "finalKind": "skin",
+    "finalTitle": "威塞克斯的信件",
+    "finalGroup": "时代/I",
+    "e1Asset": "char_208_melan_1",
+    "finalAsset": "char_208_melan_epoque#1"
+  },
+  "char_281_popka": {
+    "e1": "/img/operators/e1/char_281_popka.webp",
+    "final": "/img/operators/final/char_281_popka.webp",
+    "finalKind": "skin",
+    "finalTitle": "幽然灵竹",
+    "finalGroup": "忒斯特收藏/XX",
+    "e1Asset": "char_281_popka_1",
+    "finalAsset": "char_281_popka_sale#18"
+  },
+  "char_209_ardign": {
+    "e1": "/img/operators/e1/char_209_ardign.webp",
+    "final": "/img/operators/final/char_209_ardign.webp",
+    "finalKind": "skin",
+    "finalTitle": "晴日",
+    "finalGroup": "时代/XXVI",
+    "e1Asset": "char_209_ardign_1",
+    "finalAsset": "char_209_ardign_epoque#26"
+  },
+  "char_122_beagle": {
+    "e1": "/img/operators/e1/char_122_beagle.webp",
+    "final": "/img/operators/final/char_122_beagle.webp",
+    "finalKind": "skin",
+    "finalTitle": "无畏",
+    "finalGroup": "斗争血脉/I",
+    "e1Asset": "char_122_beagle_1",
+    "finalAsset": "char_122_beagle_boc#1"
+  },
+  "char_284_spot": {
+    "e1": "/img/operators/e1/char_284_spot.webp",
+    "final": "/img/operators/final/char_284_spot.webp",
+    "finalKind": "skin",
+    "finalTitle": "专业人士",
+    "finalGroup": "斗争血脉/III",
+    "e1Asset": "char_284_spot_1",
+    "finalAsset": "char_284_spot_boc#3"
+  },
+  "char_124_kroos": {
+    "e1": "/img/operators/e1/char_124_kroos.webp",
+    "final": "/img/operators/final/char_124_kroos.webp",
+    "finalKind": "skin",
+    "finalTitle": "星月漂流记",
+    "finalGroup": "忒斯特收藏/XV",
+    "e1Asset": "char_124_kroos_1",
+    "finalAsset": "char_124_kroos_sale#14"
+  },
+  "char_211_adnach": {
+    "e1": "/img/operators/e1/char_211_adnach.webp",
+    "final": "/img/operators/final/char_211_adnach.webp",
+    "finalKind": "skin",
+    "finalTitle": "无痕行者",
+    "finalGroup": "忒斯特收藏/VI",
+    "e1Asset": "char_211_adnach_1",
+    "finalAsset": "char_211_adnach_sale#5"
+  },
+  "char_121_lava": {
+    "e1": "/img/operators/e1/char_121_lava.webp",
+    "final": "/img/operators/final/char_121_lava.webp",
+    "finalKind": "skin",
+    "finalTitle": "一束阳光",
+    "finalGroup": "忒斯特收藏/X",
+    "e1Asset": "char_121_lava_1",
+    "finalAsset": "char_121_lava_sale#9"
+  },
+  "char_120_hibisc": {
+    "e1": "/img/operators/e1/char_120_hibisc.webp",
+    "final": "/img/operators/final/char_120_hibisc.webp",
+    "finalKind": "skin",
+    "finalTitle": "守岁人",
+    "finalGroup": "0011制造/I",
+    "e1Asset": "char_120_hibisc_1",
+    "finalAsset": "char_120_hibisc_nian#1"
+  },
+  "char_212_ansel": {
+    "e1": "/img/operators/e1/char_212_ansel.webp",
+    "final": "/img/operators/final/char_212_ansel.webp",
+    "finalKind": "skin",
+    "finalTitle": "晚间咖啡店",
+    "finalGroup": "时代/XXIX",
+    "e1Asset": "char_212_ansel_1",
+    "finalAsset": "char_212_ansel_epoque#29"
+  },
+  "char_210_stward": {
+    "e1": "/img/operators/e1/char_210_stward.webp",
+    "final": "/img/operators/final/char_210_stward.webp",
+    "finalKind": "skin",
+    "finalTitle": "风雪邀请",
+    "finalGroup": "忒斯特收藏/VII",
+    "e1Asset": "char_210_stward_1",
+    "finalAsset": "char_210_stward_sale#6"
+  },
+  "char_278_orchid": {
+    "e1": "/img/operators/e1/char_278_orchid.webp",
+    "final": "/img/operators/final/char_278_orchid.webp",
+    "finalKind": "skin",
+    "finalTitle": "衣缕往昔",
+    "finalGroup": "斗争血脉/VI",
+    "e1Asset": "char_278_orchid_1",
+    "finalAsset": "char_278_orchid_boc#6"
+  },
+  "char_141_nights": {
+    "e1": "/img/operators/e1/char_141_nights.webp",
+    "final": "/img/operators/final/char_141_nights.webp",
+    "finalKind": "skin",
+    "finalTitle": "疗养地怪谈",
+    "finalGroup": "破格视界",
+    "e1Asset": "char_141_nights_1",
+    "finalAsset": "char_141_nights_breaker#1"
+  },
+  "char_109_fmout": {
+    "e1": "/img/operators/e1/char_109_fmout.webp",
+    "final": "/img/operators/final/char_109_fmout.webp",
+    "finalKind": "skin",
+    "finalTitle": "未知的旅行",
+    "finalGroup": "时代/II",
+    "e1Asset": "char_109_fmout_1",
+    "finalAsset": "char_109_fmout_epoque#2"
+  },
+  "char_253_greyy": {
+    "e1": "/img/operators/e1/char_253_greyy.webp",
+    "final": "/img/operators/final/char_253_greyy.webp",
+    "finalKind": "skin",
+    "finalTitle": "都会送报员",
+    "finalGroup": "时代/LI",
+    "e1Asset": "char_253_greyy_1",
+    "finalAsset": "char_253_greyy_epoque#515"
+  },
+  "char_4051_akkord": {
+    "e1": "/img/operators/e1/char_4051_akkord.webp",
+    "final": "/img/operators/final/char_4051_akkord.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD91",
+    "finalGroup": "珊瑚海岸/XXIII",
+    "e1Asset": "char_4051_akkord_1",
+    "finalAsset": "char_4051_akkord_summer#23"
+  },
+  "char_328_cammou": {
+    "e1": "/img/operators/e1/char_328_cammou.webp",
+    "final": "/img/operators/final/char_328_cammou.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD59",
+    "finalGroup": "珊瑚海岸/XXII",
+    "e1Asset": "char_328_cammou_1",
+    "finalAsset": "char_328_cammou_summer#22"
+  },
+  "char_469_indigo": {
+    "e1": "/img/operators/e1/char_469_indigo.webp",
+    "final": "/img/operators/final/char_469_indigo.webp",
+    "finalKind": "skin",
+    "finalTitle": "待晴日",
+    "finalGroup": "0011制造/VI",
+    "e1Asset": "char_469_indigo_1",
+    "finalAsset": "char_469_indigo_nian#7"
+  },
+  "char_4004_pudd": {
+    "e1": "/img/operators/e1/char_4004_pudd.webp",
+    "final": "/img/operators/final/char_4004_pudd.webp",
+    "finalKind": "skin",
+    "finalTitle": "火树灵",
+    "finalGroup": "冰原信使/V",
+    "e1Asset": "char_4004_pudd_1",
+    "finalAsset": "char_4004_pudd_snow#5"
+  },
+  "char_235_jesica": {
+    "e1": "/img/operators/e1/char_235_jesica.webp",
+    "final": "/img/operators/final/char_235_jesica.webp",
+    "finalKind": "skin",
+    "finalTitle": "君子兰",
+    "finalGroup": "0011制造/II",
+    "e1Asset": "char_235_jesica_1",
+    "finalAsset": "char_235_jesica_nian#2"
+  },
+  "char_126_shotst": {
+    "e1": "/img/operators/e1/char_126_shotst.webp",
+    "final": "/img/operators/final/char_126_shotst.webp",
+    "finalKind": "skin",
+    "finalTitle": "星橼林",
+    "finalGroup": "时代/XXVIII",
+    "e1Asset": "char_126_shotst_1",
+    "finalAsset": "char_126_shotst_epoque#28"
+  },
+  "char_190_clour": {
+    "e1": "/img/operators/e1/char_190_clour.webp",
+    "final": "/img/operators/final/char_190_clour.webp",
+    "finalKind": "skin",
+    "finalTitle": "玩伴",
+    "finalGroup": "时代/XLII",
+    "e1Asset": "char_190_clour_1",
+    "finalAsset": "char_190_clour_epoque#43"
+  },
+  "char_133_mm": {
+    "e1": "/img/operators/e1/char_133_mm.webp",
+    "final": "/img/operators/final/char_133_mm.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA054",
+    "finalGroup": "珊瑚海岸/XX",
+    "e1Asset": "char_133_mm_1",
+    "finalAsset": "char_133_mm_summer#20"
+  },
+  "char_118_yuki": {
+    "e1": "/img/operators/e1/char_118_yuki.webp",
+    "final": "/img/operators/final/char_118_yuki.webp",
+    "finalKind": "skin",
+    "finalTitle": "曲刃晴风",
+    "finalGroup": "斗争血脉/II",
+    "e1Asset": "char_118_yuki_1",
+    "finalAsset": "char_118_yuki_boc#2"
+  },
+  "char_440_pinecn": {
+    "e1": "/img/operators/e1/char_440_pinecn.webp",
+    "final": "/img/operators/final/char_440_pinecn.webp",
+    "finalKind": "skin",
+    "finalTitle": "远行的季节",
+    "finalGroup": "时代/XXXI",
+    "e1Asset": "char_440_pinecn_1",
+    "finalAsset": "char_440_pinecn_epoque#31"
+  },
+  "char_302_glaze": {
+    "e1": "/img/operators/e1/char_302_glaze.webp",
+    "final": "/img/operators/final/char_302_glaze.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD29",
+    "finalGroup": "珊瑚海岸/XI",
+    "e1Asset": "char_302_glaze_1",
+    "finalAsset": "char_302_glaze_summer#11"
+  },
+  "char_366_acdrop": {
+    "e1": "/img/operators/e1/char_366_acdrop.webp",
+    "final": "/img/operators/final/char_366_acdrop.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD75",
+    "finalGroup": "珊瑚海岸/XXI",
+    "e1Asset": "char_366_acdrop_1",
+    "finalAsset": "char_366_acdrop_summer#21"
+  },
+  "char_4062_totter": {
+    "e1": "/img/operators/e1/char_4062_totter.webp",
+    "final": "/img/operators/final/char_4062_totter.webp",
+    "finalKind": "skin",
+    "finalTitle": "灿阳朝露 SDm09",
+    "finalGroup": "珊瑚海岸/XVII",
+    "e1Asset": "char_4062_totter_1",
+    "finalAsset": "char_4062_totter_summer#17"
+  },
+  "char_4100_caper": {
+    "e1": "/img/operators/e1/char_4100_caper.webp",
+    "final": "/img/operators/final/char_4100_caper.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA083",
+    "finalGroup": "珊瑚海岸/XVIII",
+    "e1Asset": "char_4100_caper_1",
+    "finalAsset": "char_4100_caper_summer#18"
+  },
+  "char_198_blackd": {
+    "e1": "/img/operators/e1/char_198_blackd.webp",
+    "final": "/img/operators/final/char_198_blackd.webp",
+    "finalKind": "skin",
+    "finalTitle": "无言狂响",
+    "finalGroup": "音律联觉",
+    "e1Asset": "char_198_blackd_1",
+    "finalAsset": "char_198_blackd_as#1"
+  },
+  "char_149_scave": {
+    "e1": "/img/operators/e1/char_149_scave.webp",
+    "final": "/img/operators/final/char_149_scave.webp",
+    "finalKind": "skin",
+    "finalTitle": "生存",
+    "finalGroup": "雷神推进者/II",
+    "e1Asset": "char_149_scave_1",
+    "finalAsset": "char_149_scave_striker#2"
+  },
+  "char_290_vigna": {
+    "e1": "/img/operators/e1/char_290_vigna.webp",
+    "final": "/img/operators/final/char_290_vigna.webp",
+    "finalKind": "skin",
+    "finalTitle": "漆黑热浪",
+    "finalGroup": "音律联觉",
+    "e1Asset": "char_290_vigna_1",
+    "finalAsset": "char_290_vigna_as#1"
+  },
+  "char_151_myrtle": {
+    "e1": "/img/operators/e1/char_151_myrtle.webp",
+    "final": "/img/operators/final/char_151_myrtle.webp",
+    "finalKind": "skin",
+    "finalTitle": "繁闹祭典",
+    "finalGroup": "太鼓之达人",
+    "e1Asset": "char_151_myrtle_1",
+    "finalAsset": "char_151_myrtle_taiko#1"
+  },
+  "char_452_bstalk": {
+    "e1": "/img/operators/e1/char_452_bstalk.webp",
+    "final": "/img/operators/final/char_452_bstalk.webp",
+    "finalKind": "skin",
+    "finalTitle": "红丝带之约",
+    "finalGroup": "待予花冠/IV",
+    "e1Asset": "char_452_bstalk_1",
+    "finalAsset": "char_452_bstalk_unveiling#4"
+  },
+  "char_4208_wintim": {
+    "e1": "/img/operators/e1/char_4208_wintim.webp",
+    "final": "/img/operators/final/char_4208_wintim.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4208_wintim_1",
+    "finalAsset": "char_4208_wintim_2"
+  },
+  "char_130_doberm": {
+    "e1": "/img/operators/e1/char_130_doberm.webp",
+    "final": "/img/operators/final/char_130_doberm.webp",
+    "finalKind": "skin",
+    "finalTitle": "少尉",
+    "finalGroup": "时代/VII",
+    "e1Asset": "char_130_doberm_1",
+    "finalAsset": "char_130_doberm_epoque#7"
+  },
+  "char_289_gyuki": {
+    "e1": "/img/operators/e1/char_289_gyuki.webp",
+    "final": "/img/operators/final/char_289_gyuki.webp",
+    "finalKind": "skin",
+    "finalTitle": "繁霜满阶",
+    "finalGroup": "时代/XXXIX",
+    "e1Asset": "char_289_gyuki_1",
+    "finalAsset": "char_289_gyuki_epoque#40"
+  },
+  "char_159_peacok": {
+    "e1": "/img/operators/e1/char_159_peacok.webp",
+    "final": "/img/operators/final/char_159_peacok.webp",
+    "finalKind": "skin",
+    "finalTitle": "超级断罪朋友",
+    "finalGroup": "成就之星",
+    "e1Asset": "char_159_peacok_1",
+    "finalAsset": "char_159_peacok_game#1"
+  },
+  "char_193_frostl": {
+    "e1": "/img/operators/e1/char_193_frostl.webp",
+    "final": "/img/operators/final/char_193_frostl.webp",
+    "finalKind": "skin",
+    "finalTitle": "破冰",
+    "finalGroup": "斗争血脉/IV",
+    "e1Asset": "char_193_frostl_1",
+    "finalAsset": "char_193_frostl_boc#4"
+  },
+  "char_127_estell": {
+    "e1": "/img/operators/e1/char_127_estell.webp",
+    "final": "/img/operators/final/char_127_estell.webp",
+    "finalKind": "skin",
+    "finalTitle": "花冕圆舞曲",
+    "finalGroup": "时代/XLIX",
+    "e1Asset": "char_127_estell_1",
+    "finalAsset": "char_127_estell_epoque#50"
+  },
+  "char_185_frncat": {
+    "e1": "/img/operators/e1/char_185_frncat.webp",
+    "final": "/img/operators/final/char_185_frncat.webp",
+    "finalKind": "skin",
+    "finalTitle": "补水时间",
+    "finalGroup": "玛尔特/XII",
+    "e1Asset": "char_185_frncat_1",
+    "finalAsset": "char_185_frncat_marthe#12"
+  },
+  "char_301_cutter": {
+    "e1": "/img/operators/e1/char_301_cutter.webp",
+    "final": "/img/operators/final/char_301_cutter.webp",
+    "finalKind": "skin",
+    "finalTitle": "拭刀",
+    "finalGroup": "玛尔特/VIII",
+    "e1Asset": "char_301_cutter_1",
+    "finalAsset": "char_301_cutter_marthe#8"
+  },
+  "char_337_utage": {
+    "e1": "/img/operators/e1/char_337_utage.webp",
+    "final": "/img/operators/final/char_337_utage.webp",
+    "finalKind": "skin",
+    "finalTitle": "伪装",
+    "finalGroup": "时代/XV",
+    "e1Asset": "char_337_utage_1",
+    "finalAsset": "char_337_utage_epoque#15"
+  },
+  "char_271_spikes": {
+    "e1": "/img/operators/e1/char_271_spikes.webp",
+    "final": "/img/operators/final/char_271_spikes.webp",
+    "finalKind": "skin",
+    "finalTitle": "危险邀约",
+    "finalGroup": "待予花冠/I",
+    "e1Asset": "char_271_spikes_1",
+    "finalAsset": "char_271_spikes_unveiling#1"
+  },
+  "char_4067_lolxh": {
+    "e1": "/img/operators/e1/char_4067_lolxh.webp",
+    "final": "/img/operators/final/char_4067_lolxh.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4067_lolxh_1",
+    "finalAsset": "char_4067_lolxh_2"
+  },
+  "char_4063_quartz": {
+    "e1": "/img/operators/e1/char_4063_quartz.webp",
+    "final": "/img/operators/final/char_4063_quartz.webp",
+    "finalKind": "skin",
+    "finalTitle": "封面佣兵",
+    "finalGroup": "时代/XXXVIII",
+    "e1Asset": "char_4063_quartz_1",
+    "finalAsset": "char_4063_quartz_epoque#39"
+  },
+  "char_491_humus": {
+    "e1": "/img/operators/e1/char_491_humus.webp",
+    "final": "/img/operators/final/char_491_humus.webp",
+    "finalKind": "skin",
+    "finalTitle": "烈阳街景",
+    "finalGroup": "玛尔特/X",
+    "e1Asset": "char_491_humus_1",
+    "finalAsset": "char_491_humus_marthe#10"
+  },
+  "char_445_wscoot": {
+    "e1": "/img/operators/e1/char_445_wscoot.webp",
+    "final": "/img/operators/final/char_445_wscoot.webp",
+    "finalKind": "skin",
+    "finalTitle": "异乡的云",
+    "finalGroup": "时代/XLVIII",
+    "e1Asset": "char_445_wscoot_1",
+    "finalAsset": "char_445_wscoot_epoque#49"
+  },
+  "char_237_gravel": {
+    "e1": "/img/operators/e1/char_237_gravel.webp",
+    "final": "/img/operators/final/char_237_gravel.webp",
+    "finalKind": "skin",
+    "finalTitle": "模特之夜",
+    "finalGroup": "寒武纪/II",
+    "e1Asset": "char_237_gravel_1",
+    "finalAsset": "char_237_gravel_winter#2"
+  },
+  "char_272_strong": {
+    "e1": "/img/operators/e1/char_272_strong.webp",
+    "final": "/img/operators/final/char_272_strong.webp",
+    "finalKind": "skin",
+    "finalTitle": "沙滩护卫 GT002",
+    "finalGroup": "珊瑚海岸/VI",
+    "e1Asset": "char_272_strong_1",
+    "finalAsset": "char_272_strong_summer#6"
+  },
+  "char_236_rope": {
+    "e1": "/img/operators/e1/char_236_rope.webp",
+    "final": "/img/operators/final/char_236_rope.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA008",
+    "finalGroup": "珊瑚海岸/II",
+    "e1Asset": "char_236_rope_1",
+    "finalAsset": "char_236_rope_summer#2"
+  },
+  "char_117_myrrh": {
+    "e1": "/img/operators/e1/char_117_myrrh.webp",
+    "final": "/img/operators/final/char_117_myrrh.webp",
+    "finalKind": "skin",
+    "finalTitle": "辛味",
+    "finalGroup": "生命之地/I",
+    "e1Asset": "char_117_myrrh_1",
+    "finalAsset": "char_117_myrrh_wild#1"
+  },
+  "char_187_ccheal": {
+    "e1": "/img/operators/e1/char_187_ccheal.webp",
+    "final": "/img/operators/final/char_187_ccheal.webp",
+    "finalKind": "skin",
+    "finalTitle": "战医",
+    "finalGroup": "时代/II",
+    "e1Asset": "char_187_ccheal_1",
+    "finalAsset": "char_187_ccheal_epoque#2"
+  },
+  "char_298_susuro": {
+    "e1": "/img/operators/e1/char_298_susuro.webp",
+    "final": "/img/operators/final/char_298_susuro.webp",
+    "finalKind": "skin",
+    "finalTitle": "随意而行",
+    "finalGroup": "寒武纪/IV",
+    "e1Asset": "char_298_susuro_1",
+    "finalAsset": "char_298_susuro_winter#4"
+  },
+  "char_181_flower": {
+    "e1": "/img/operators/e1/char_181_flower.webp",
+    "final": "/img/operators/final/char_181_flower.webp",
+    "finalKind": "skin",
+    "finalTitle": "闲适午后",
+    "finalGroup": "时代/IX",
+    "e1Asset": "char_181_flower_1",
+    "finalAsset": "char_181_flower_epoque#9"
+  },
+  "char_385_finlpp": {
+    "e1": "/img/operators/e1/char_385_finlpp.webp",
+    "final": "/img/operators/final/char_385_finlpp.webp",
+    "finalKind": "skin",
+    "finalTitle": "贺新禧",
+    "finalGroup": "0011制造/X",
+    "e1Asset": "char_385_finlpp_1",
+    "finalAsset": "char_385_finlpp_nian#11"
+  },
+  "char_4041_chnut": {
+    "e1": "/img/operators/e1/char_4041_chnut.webp",
+    "final": "/img/operators/final/char_4041_chnut.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HDm57",
+    "finalGroup": "珊瑚海岸/XII",
+    "e1Asset": "char_4041_chnut_1",
+    "finalAsset": "char_4041_chnut_summer#12"
+  },
+  "char_199_yak": {
+    "e1": "/img/operators/e1/char_199_yak.webp",
+    "final": "/img/operators/final/char_199_yak.webp",
+    "finalKind": "skin",
+    "finalTitle": "沙滩护卫 GT.001",
+    "finalGroup": "珊瑚海岸/I",
+    "e1Asset": "char_199_yak_1",
+    "finalAsset": "char_199_yak_summer#1"
+  },
+  "char_150_snakek": {
+    "e1": "/img/operators/e1/char_150_snakek.webp",
+    "final": "/img/operators/final/char_150_snakek.webp",
+    "finalKind": "skin",
+    "finalTitle": "与荷",
+    "finalGroup": "0011/韵系列/VII",
+    "e1Asset": "char_150_snakek_1",
+    "finalAsset": "char_150_snakek_yun#7"
+  },
+  "char_381_bubble": {
+    "e1": "/img/operators/e1/char_381_bubble.webp",
+    "final": "/img/operators/final/char_381_bubble.webp",
+    "finalKind": "skin",
+    "finalTitle": "迎风之轮",
+    "finalGroup": "玛尔特/XI",
+    "e1Asset": "char_381_bubble_1",
+    "finalAsset": "char_381_bubble_marthe#11"
+  },
+  "char_4130_luton": {
+    "e1": "/img/operators/e1/char_4130_luton.webp",
+    "final": "/img/operators/final/char_4130_luton.webp",
+    "finalKind": "skin",
+    "finalTitle": "寄遥思",
+    "finalGroup": "0011/韵系列/VI",
+    "e1Asset": "char_4130_luton_1",
+    "finalAsset": "char_4130_luton_yun#6"
+  },
+  "char_196_sunbr": {
+    "e1": "/img/operators/e1/char_196_sunbr.webp",
+    "final": "/img/operators/final/char_196_sunbr.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA011",
+    "finalGroup": "珊瑚海岸/I",
+    "e1Asset": "char_196_sunbr_1",
+    "finalAsset": "char_196_sunbr_summer#1"
+  },
+  "char_260_durnar": {
+    "e1": "/img/operators/e1/char_260_durnar.webp",
+    "final": "/img/operators/final/char_260_durnar.webp",
+    "finalKind": "skin",
+    "finalTitle": "绒布蛋糕",
+    "finalGroup": "时代/XLI",
+    "e1Asset": "char_260_durnar_1",
+    "finalAsset": "char_260_durnar_epoque#42"
+  },
+  "char_110_deepcl": {
+    "e1": "/img/operators/e1/char_110_deepcl.webp",
+    "final": "/img/operators/final/char_110_deepcl.webp",
+    "finalKind": "skin",
+    "finalTitle": "绘声绘影",
+    "finalGroup": "寒武纪/III",
+    "e1Asset": "char_110_deepcl_1",
+    "finalAsset": "char_110_deepcl_winter#3"
+  },
+  "char_183_skgoat": {
+    "e1": "/img/operators/e1/char_183_skgoat.webp",
+    "final": "/img/operators/final/char_183_skgoat.webp",
+    "finalKind": "skin",
+    "finalTitle": "主修领域",
+    "finalGroup": "时代/XXX",
+    "e1Asset": "char_183_skgoat_1",
+    "finalAsset": "char_183_skgoat_epoque#30"
+  },
+  "char_258_podego": {
+    "e1": "/img/operators/e1/char_258_podego.webp",
+    "final": "/img/operators/final/char_258_podego.webp",
+    "finalKind": "skin",
+    "finalTitle": "小憩初醒",
+    "finalGroup": "时代/IX",
+    "e1Asset": "char_258_podego_1",
+    "finalAsset": "char_258_podego_epoque#9"
+  },
+  "char_484_robrta": {
+    "e1": "/img/operators/e1/char_484_robrta.webp",
+    "final": "/img/operators/final/char_484_robrta.webp",
+    "finalKind": "skin",
+    "finalTitle": "待绘的作品",
+    "finalGroup": "音律联觉/III",
+    "e1Asset": "char_484_robrta_1",
+    "finalAsset": "char_484_robrta_ambienceSynesthesia#3"
+  },
+  "char_355_ethan": {
+    "e1": "/img/operators/e1/char_355_ethan.webp",
+    "final": "/img/operators/final/char_355_ethan.webp",
+    "finalKind": "skin",
+    "finalTitle": "渗透",
+    "finalGroup": "时代/VII",
+    "e1Asset": "char_355_ethan_1",
+    "finalAsset": "char_355_ethan_epoque#7"
+  },
+  "char_277_sqrrel": {
+    "e1": "/img/operators/e1/char_277_sqrrel.webp",
+    "final": "/img/operators/final/char_277_sqrrel.webp",
+    "finalKind": "skin",
+    "finalTitle": "古堡清洁专家",
+    "finalGroup": "缠梦古堡",
+    "e1Asset": "char_277_sqrrel_1",
+    "finalAsset": "char_277_sqrrel_ghost#1"
+  },
+  "char_4107_vrdant": {
+    "e1": "/img/operators/e1/char_4107_vrdant.webp",
+    "final": "/img/operators/final/char_4107_vrdant.webp",
+    "finalKind": "skin",
+    "finalTitle": "玫瑰骑手",
+    "finalGroup": "待予花冠/III",
+    "e1Asset": "char_4107_vrdant_1",
+    "finalAsset": "char_4107_vrdant_unveiling#3"
+  },
+  "char_4165_ctrail": {
+    "e1": "/img/operators/e1/char_4165_ctrail.webp",
+    "final": "/img/operators/final/char_4165_ctrail.webp",
+    "finalKind": "skin",
+    "finalTitle": "渡澄空",
+    "finalGroup": "0011/韵系列/XI",
+    "e1Asset": "char_4165_ctrail_1",
+    "finalAsset": "char_4165_ctrail_yun#11"
+  },
+  "char_128_plosis": {
+    "e1": "/img/operators/e1/char_128_plosis.webp",
+    "final": "/img/operators/final/char_128_plosis.webp",
+    "finalKind": "skin",
+    "finalTitle": "抚云间",
+    "finalGroup": "0011/韵系列/IV",
+    "e1Asset": "char_128_plosis_1",
+    "finalAsset": "char_128_plosis_yun#4"
+  },
+  "char_275_breeze": {
+    "e1": "/img/operators/e1/char_275_breeze.webp",
+    "final": "/img/operators/final/char_275_breeze.webp",
+    "finalKind": "skin",
+    "finalTitle": "半甜草莓",
+    "finalGroup": "待予花冠/IV",
+    "e1Asset": "char_275_breeze_1",
+    "finalAsset": "char_275_breeze_unveiling#4"
+  },
+  "char_4163_rosesa": {
+    "e1": "/img/operators/e1/char_4163_rosesa.webp",
+    "final": "/img/operators/final/char_4163_rosesa.webp",
+    "finalKind": "skin",
+    "finalTitle": "冒险启程",
+    "finalGroup": "成就之星/VII",
+    "e1Asset": "char_4163_rosesa_1",
+    "finalAsset": "char_4163_rosesa_game#7"
+  },
+  "char_115_headbr": {
+    "e1": "/img/operators/e1/char_115_headbr.webp",
+    "final": "/img/operators/final/char_115_headbr.webp",
+    "finalKind": "skin",
+    "finalTitle": "乌萨斯IO79",
+    "finalGroup": "i.t",
+    "e1Asset": "char_115_headbr_1",
+    "finalAsset": "char_115_headbr_it#1"
+  },
+  "char_102_texas": {
+    "e1": "/img/operators/e1/char_102_texas.webp",
+    "final": "/img/operators/final/char_102_texas.webp",
+    "finalKind": "skin",
+    "finalTitle": "意志",
+    "finalGroup": "时代/VII",
+    "e1Asset": "char_102_texas_1",
+    "finalAsset": "char_102_texas_epoque#7"
+  },
+  "char_349_chiave": {
+    "e1": "/img/operators/e1/char_349_chiave.webp",
+    "final": "/img/operators/final/char_349_chiave.webp",
+    "finalKind": "skin",
+    "finalTitle": "一人车队",
+    "finalGroup": "啸风/II",
+    "e1Asset": "char_349_chiave_1",
+    "finalAsset": "char_349_chiave_race#2"
+  },
+  "char_488_buildr": {
+    "e1": "/img/operators/e1/char_488_buildr.webp",
+    "final": "/img/operators/final/char_488_buildr.webp",
+    "finalKind": "skin",
+    "finalTitle": "晚风休憩",
+    "finalGroup": "时代/XXXIV",
+    "e1Asset": "char_488_buildr_1",
+    "finalAsset": "char_488_buildr_epoque#34"
+  },
+  "char_4023_rfalcn": {
+    "e1": "/img/operators/e1/char_4023_rfalcn.webp",
+    "final": "/img/operators/final/char_4023_rfalcn.webp",
+    "finalKind": "skin",
+    "finalTitle": "三元风情",
+    "finalGroup": "时代/LII",
+    "e1Asset": "char_4023_rfalcn_1",
+    "finalAsset": "char_4023_rfalcn_epoque#52"
+  },
+  "char_4199_makiri": {
+    "e1": "/img/operators/e1/char_4199_makiri.webp",
+    "final": "/img/operators/final/char_4199_makiri.webp",
+    "finalKind": "skin",
+    "finalTitle": "暮时宝光",
+    "finalGroup": "忒斯特收藏/XXI",
+    "e1Asset": "char_4199_makiri_1",
+    "finalAsset": "char_4199_makiri_sale#19"
+  },
+  "char_261_sddrag": {
+    "e1": "/img/operators/e1/char_261_sddrag.webp",
+    "final": "/img/operators/final/char_261_sddrag.webp",
+    "finalKind": "skin",
+    "finalTitle": "翡翠假日",
+    "finalGroup": "音律联觉/II",
+    "e1Asset": "char_261_sddrag_1",
+    "finalAsset": "char_261_sddrag_ambienceSynesthesia#2"
+  },
+  "char_496_wildmn": {
+    "e1": "/img/operators/e1/char_496_wildmn.webp",
+    "final": "/img/operators/final/char_496_wildmn.webp",
+    "finalKind": "skin",
+    "finalTitle": "正义缔造者",
+    "finalGroup": "时代/XVI",
+    "e1Asset": "char_496_wildmn_1",
+    "finalAsset": "char_496_wildmn_epoque#16"
+  },
+  "char_1036_fang2": {
+    "e1": "/img/operators/e1/char_1036_fang2.webp",
+    "final": "/img/operators/final/char_1036_fang2.webp",
+    "finalKind": "skin",
+    "finalTitle": "纯净乐段",
+    "finalGroup": "冰原信使/VIII",
+    "e1Asset": "char_1036_fang2_1",
+    "finalAsset": "char_1036_fang2_snow#8"
+  },
+  "char_401_elysm": {
+    "e1": "/img/operators/e1/char_401_elysm.webp",
+    "final": "/img/operators/final/char_401_elysm.webp",
+    "finalKind": "skin",
+    "finalTitle": "灿阳朝露 SDm11",
+    "finalGroup": "珊瑚海岸/IX",
+    "e1Asset": "char_401_elysm_1",
+    "finalAsset": "char_401_elysm_summer#9"
+  },
+  "char_4119_wanqin": {
+    "e1": "/img/operators/e1/char_4119_wanqin.webp",
+    "final": "/img/operators/final/char_4119_wanqin.webp",
+    "finalKind": "skin",
+    "finalTitle": "万顷阳光",
+    "finalGroup": "时代/XL",
+    "e1Asset": "char_4119_wanqin_1",
+    "finalAsset": "char_4119_wanqin_epoque#41"
+  },
+  "char_4237_jcinta": {
+    "e1": "/img/operators/e1/char_4237_jcinta.webp",
+    "final": "/img/operators/final/char_4237_jcinta.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4237_jcinta_1",
+    "finalAsset": "char_4237_jcinta_2"
+  },
+  "char_476_blkngt": {
+    "e1": "/img/operators/e1/char_476_blkngt.webp",
+    "final": "/img/operators/final/char_476_blkngt.webp",
+    "finalKind": "skin",
+    "finalTitle": "枝头馥",
+    "finalGroup": "0011制造/VII",
+    "e1Asset": "char_476_blkngt_1",
+    "finalAsset": "char_476_blkngt_nian#8"
+  },
+  "char_4147_mitm": {
+    "e1": "/img/operators/e1/char_4147_mitm.webp",
+    "final": "/img/operators/final/char_4147_mitm.webp",
+    "finalKind": "skin",
+    "finalTitle": "无影灯下",
+    "finalGroup": "破格视界",
+    "e1Asset": "char_4147_mitm_1",
+    "finalAsset": "char_4147_mitm_breaker#1"
+  },
+  "char_497_ctable": {
+    "e1": "/img/operators/e1/char_497_ctable.webp",
+    "final": "/img/operators/final/char_497_ctable.webp",
+    "finalKind": "skin",
+    "finalTitle": "湖畔歌者",
+    "finalGroup": "时代/XLIII",
+    "e1Asset": "char_497_ctable_1",
+    "finalAsset": "char_497_ctable_epoque#44"
+  },
+  "char_4017_puzzle": {
+    "e1": "/img/operators/e1/char_4017_puzzle.webp",
+    "final": "/img/operators/final/char_4017_puzzle.webp",
+    "finalKind": "skin",
+    "finalTitle": "冷色摇滚",
+    "finalGroup": "闪耀阶梯/III",
+    "e1Asset": "char_4017_puzzle_1",
+    "finalAsset": "char_4017_puzzle_shining#3"
+  },
+  "char_4144_chilc": {
+    "e1": "/img/operators/e1/char_4144_chilc.webp",
+    "final": "/img/operators/final/char_4144_chilc.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4144_chilc_1",
+    "finalAsset": "char_4144_chilc_2"
+  },
+  "char_4052_surfer": {
+    "e1": "/img/operators/e1/char_4052_surfer.webp",
+    "final": "/img/operators/final/char_4052_surfer.webp",
+    "finalKind": "skin",
+    "finalTitle": "共凭栏",
+    "finalGroup": "0011制造/XII",
+    "e1Asset": "char_4052_surfer_1",
+    "finalAsset": "char_4052_surfer_nian#12"
+  },
+  "char_308_swire": {
+    "e1": "/img/operators/e1/char_308_swire.webp",
+    "final": "/img/operators/final/char_308_swire.webp",
+    "finalKind": "skin",
+    "finalTitle": "富贵荣华",
+    "finalGroup": "0011制造/II",
+    "e1Asset": "char_308_swire_1",
+    "finalAsset": "char_308_swire_nian#2"
+  },
+  "char_265_sophia": {
+    "e1": "/img/operators/e1/char_265_sophia.webp",
+    "final": "/img/operators/final/char_265_sophia.webp",
+    "finalKind": "skin",
+    "finalTitle": "荣耀之紫",
+    "finalGroup": "时代/XI",
+    "e1Asset": "char_265_sophia_1",
+    "finalAsset": "char_265_sophia_epoque#11"
+  },
+  "char_4106_bryota": {
+    "e1": "/img/operators/e1/char_4106_bryota.webp",
+    "final": "/img/operators/final/char_4106_bryota.webp",
+    "finalKind": "skin",
+    "finalTitle": "动感",
+    "finalGroup": "时代/XXXV",
+    "e1Asset": "char_4106_bryota_1",
+    "finalAsset": "char_4106_bryota_epoque#34"
+  },
+  "char_4125_rdoc": {
+    "e1": "/img/operators/e1/char_4125_rdoc.webp",
+    "final": "/img/operators/final/char_4125_rdoc.webp",
+    "finalKind": "skin",
+    "finalTitle": "展览",
+    "finalGroup": "彩虹六号：围攻/II",
+    "e1Asset": "char_4125_rdoc_1",
+    "finalAsset": "char_4125_rdoc_rainbow6#2"
+  },
+  "char_106_franka": {
+    "e1": "/img/operators/e1/char_106_franka.webp",
+    "final": "/img/operators/final/char_106_franka.webp",
+    "finalKind": "skin",
+    "finalTitle": "林虹之间",
+    "finalGroup": "国家地理",
+    "e1Asset": "char_106_franka_1",
+    "finalAsset": "char_106_franka_ncg#1"
+  },
+  "char_131_flameb": {
+    "e1": "/img/operators/e1/char_131_flameb.webp",
+    "final": "/img/operators/final/char_131_flameb.webp",
+    "finalKind": "skin",
+    "finalTitle": "单刀",
+    "finalGroup": "0011/飙系列/VI",
+    "e1Asset": "char_131_flameb_1",
+    "finalAsset": "char_131_flameb_whirlwind#6"
+  },
+  "char_154_morgan": {
+    "e1": "/img/operators/e1/char_154_morgan.webp",
+    "final": "/img/operators/final/char_154_morgan.webp",
+    "finalKind": "skin",
+    "finalTitle": "字里行间",
+    "finalGroup": "时代/XLVI",
+    "e1Asset": "char_154_morgan_1",
+    "finalAsset": "char_154_morgan_epoque#47"
+  },
+  "char_4142_laios": {
+    "e1": "/img/operators/e1/char_4142_laios.webp",
+    "final": "/img/operators/final/char_4142_laios.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4142_laios_1",
+    "finalAsset": "char_4142_laios_2"
+  },
+  "char_155_tiger": {
+    "e1": "/img/operators/e1/char_155_tiger.webp",
+    "final": "/img/operators/final/char_155_tiger.webp",
+    "finalKind": "skin",
+    "finalTitle": "悍将",
+    "finalGroup": "雷神推进者/II",
+    "e1Asset": "char_155_tiger_1",
+    "finalAsset": "char_155_tiger_striker#2"
+  },
+  "char_415_flint": {
+    "e1": "/img/operators/e1/char_415_flint.webp",
+    "final": "/img/operators/final/char_415_flint.webp",
+    "finalKind": "skin",
+    "finalTitle": "绚烂夏花",
+    "finalGroup": "斗争血脉/III",
+    "e1Asset": "char_415_flint_1",
+    "finalAsset": "char_415_flint_boc#3"
+  },
+  "char_157_dagda": {
+    "e1": "/img/operators/e1/char_157_dagda.webp",
+    "final": "/img/operators/final/char_157_dagda.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_157_dagda_1",
+    "finalAsset": "char_157_dagda_2"
+  },
+  "char_140_whitew": {
+    "e1": "/img/operators/e1/char_140_whitew.webp",
+    "final": "/img/operators/final/char_140_whitew.webp",
+    "finalKind": "skin",
+    "finalTitle": "典雅噩兆",
+    "finalGroup": "斗争血脉/I",
+    "e1Asset": "char_140_whitew_1",
+    "finalAsset": "char_140_whitew_boc#1"
+  },
+  "char_294_ayer": {
+    "e1": "/img/operators/e1/char_294_ayer.webp",
+    "final": "/img/operators/final/char_294_ayer.webp",
+    "finalKind": "skin",
+    "finalTitle": "受验者",
+    "finalGroup": "斗争血脉/III",
+    "e1Asset": "char_294_ayer_1",
+    "finalAsset": "char_294_ayer_boc#3"
+  },
+  "char_194_leto": {
+    "e1": "/img/operators/e1/char_194_leto.webp",
+    "final": "/img/operators/final/char_194_leto.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_194_leto_1",
+    "finalAsset": "char_194_leto_2"
+  },
+  "char_4083_chimes": {
+    "e1": "/img/operators/e1/char_4083_chimes.webp",
+    "final": "/img/operators/final/char_4083_chimes.webp",
+    "finalKind": "skin",
+    "finalTitle": "松间月",
+    "finalGroup": "0011/韵系列/V",
+    "e1Asset": "char_4083_chimes_1",
+    "finalAsset": "char_4083_chimes_yun#5"
+  },
+  "char_252_bibeak": {
+    "e1": "/img/operators/e1/char_252_bibeak.webp",
+    "final": "/img/operators/final/char_252_bibeak.webp",
+    "finalKind": "skin",
+    "finalTitle": "软绒",
+    "finalGroup": "寒武纪/II",
+    "e1Asset": "char_252_bibeak_1",
+    "finalAsset": "char_252_bibeak_winter#2"
+  },
+  "char_459_tachak": {
+    "e1": "/img/operators/e1/char_459_tachak.webp",
+    "final": "/img/operators/final/char_459_tachak.webp",
+    "finalKind": "skin",
+    "finalTitle": "领主",
+    "finalGroup": "彩虹六号：围攻",
+    "e1Asset": "char_459_tachak_1",
+    "finalAsset": "char_459_tachak_rainbow6#1"
+  },
+  "char_143_ghost": {
+    "e1": "/img/operators/e1/char_143_ghost.webp",
+    "final": "/img/operators/final/char_143_ghost.webp",
+    "finalKind": "skin",
+    "finalTitle": "暗流",
+    "finalGroup": "寒武纪/I",
+    "e1Asset": "char_143_ghost_1",
+    "finalAsset": "char_143_ghost_winter#1"
+  },
+  "char_356_broca": {
+    "e1": "/img/operators/e1/char_356_broca.webp",
+    "final": "/img/operators/final/char_356_broca.webp",
+    "finalKind": "skin",
+    "finalTitle": "组间休息",
+    "finalGroup": "玛尔特/IV",
+    "e1Asset": "char_356_broca_1",
+    "finalAsset": "char_356_broca_marthe#4"
+  },
+  "char_4126_fuze": {
+    "e1": "/img/operators/e1/char_4126_fuze.webp",
+    "final": "/img/operators/final/char_4126_fuze.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4126_fuze_1",
+    "finalAsset": "char_4126_fuze_2"
+  },
+  "char_4166_varkis": {
+    "e1": "/img/operators/e1/char_4166_varkis.webp",
+    "final": "/img/operators/final/char_4166_varkis.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4166_varkis_1",
+    "finalAsset": "char_4166_varkis_2"
+  },
+  "char_274_astesi": {
+    "e1": "/img/operators/e1/char_274_astesi.webp",
+    "final": "/img/operators/final/char_274_astesi.webp",
+    "finalKind": "skin",
+    "finalTitle": "奇工妙想",
+    "finalGroup": "时代/XXIII",
+    "e1Asset": "char_274_astesi_1",
+    "finalAsset": "char_274_astesi_epoque#23"
+  },
+  "char_333_sidero": {
+    "e1": "/img/operators/e1/char_333_sidero.webp",
+    "final": "/img/operators/final/char_333_sidero.webp",
+    "finalKind": "skin",
+    "finalTitle": "轻风 LB03",
+    "finalGroup": "珊瑚海岸/VI",
+    "e1Asset": "char_333_sidero_1",
+    "finalAsset": "char_333_sidero_summer#6"
+  },
+  "char_475_akafyu": {
+    "e1": "/img/operators/e1/char_475_akafyu.webp",
+    "final": "/img/operators/final/char_475_akafyu.webp",
+    "finalKind": "skin",
+    "finalTitle": "心性",
+    "finalGroup": "时代/XV",
+    "e1Asset": "char_475_akafyu_1",
+    "finalAsset": "char_475_akafyu_epoque#15"
+  },
+  "char_1030_noirc2": {
+    "e1": "/img/operators/e1/char_1030_noirc2.webp",
+    "final": "/img/operators/final/char_1030_noirc2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1030_noirc2_1",
+    "finalAsset": "char_1030_noirc2_2"
+  },
+  "char_421_crow": {
+    "e1": "/img/operators/e1/char_421_crow.webp",
+    "final": "/img/operators/final/char_421_crow.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA210",
+    "finalGroup": "珊瑚海岸/IX",
+    "e1Asset": "char_421_crow_1",
+    "finalAsset": "char_421_crow_summer#9"
+  },
+  "char_4066_highmo": {
+    "e1": "/img/operators/e1/char_4066_highmo.webp",
+    "final": "/img/operators/final/char_4066_highmo.webp",
+    "finalKind": "skin",
+    "finalTitle": "搁浅",
+    "finalGroup": "时代/XLIV",
+    "e1Asset": "char_4066_highmo_1",
+    "finalAsset": "char_4066_highmo_epoque#45"
+  },
+  "char_486_takila": {
+    "e1": "/img/operators/e1/char_486_takila.webp",
+    "final": "/img/operators/final/char_486_takila.webp",
+    "finalKind": "skin",
+    "finalTitle": "巅峰现场",
+    "finalGroup": "闪耀阶梯/II",
+    "e1Asset": "char_486_takila_1",
+    "finalAsset": "char_486_takila_shining#2"
+  },
+  "char_4131_odda": {
+    "e1": "/img/operators/e1/char_4131_odda.webp",
+    "final": "/img/operators/final/char_4131_odda.webp",
+    "finalKind": "skin",
+    "finalTitle": "糖果暴击",
+    "finalGroup": "0011/飙系列/VIII",
+    "e1Asset": "char_4131_odda_1",
+    "finalAsset": "char_4131_odda_whirlwind#8"
+  },
+  "char_4187_graceb": {
+    "e1": "/img/operators/e1/char_4187_graceb.webp",
+    "final": "/img/operators/final/char_4187_graceb.webp",
+    "finalKind": "skin",
+    "finalTitle": "追想涤尘",
+    "finalGroup": "斗争血脉/XI",
+    "e1Asset": "char_4187_graceb_1",
+    "finalAsset": "char_4187_graceb_boc#11"
+  },
+  "char_4185_amoris": {
+    "e1": "/img/operators/e1/char_4185_amoris.webp",
+    "final": "/img/operators/final/char_4185_amoris.webp",
+    "finalKind": "skin",
+    "finalTitle": "情热魔术师",
+    "finalGroup": "Ave Mujica",
+    "e1Asset": "char_4185_amoris_1",
+    "finalAsset": "char_4185_amoris_avemujica#1"
+  },
+  "char_394_hadiya": {
+    "e1": "/img/operators/e1/char_394_hadiya.webp",
+    "final": "/img/operators/final/char_394_hadiya.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_394_hadiya_1",
+    "finalAsset": "char_394_hadiya_2"
+  },
+  "char_1049_catap2": {
+    "e1": "/img/operators/e1/char_1049_catap2.webp",
+    "final": "/img/operators/final/char_1049_catap2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1049_catap2_1",
+    "finalAsset": "char_1049_catap2_2"
+  },
+  "char_129_bluep": {
+    "e1": "/img/operators/e1/char_129_bluep.webp",
+    "final": "/img/operators/final/char_129_bluep.webp",
+    "finalKind": "skin",
+    "finalTitle": "哀律西昂夜曲",
+    "finalGroup": "命途迭代/II",
+    "e1Asset": "char_129_bluep_1",
+    "finalAsset": "char_129_bluep_iteration#2"
+  },
+  "char_204_platnm": {
+    "e1": "/img/operators/e1/char_204_platnm.webp",
+    "final": "/img/operators/final/char_204_platnm.webp",
+    "finalKind": "skin",
+    "finalTitle": "灿阳朝露 SD05",
+    "finalGroup": "珊瑚海岸/III",
+    "e1Asset": "char_204_platnm_1",
+    "finalAsset": "char_204_platnm_summer#3"
+  },
+  "char_367_swllow": {
+    "e1": "/img/operators/e1/char_367_swllow.webp",
+    "final": "/img/operators/final/char_367_swllow.webp",
+    "finalKind": "skin",
+    "finalTitle": "归巢",
+    "finalGroup": "斗争血脉/I",
+    "e1Asset": "char_367_swllow_1",
+    "finalAsset": "char_367_swllow_boc#1"
+  },
+  "char_365_aprl": {
+    "e1": "/img/operators/e1/char_365_aprl.webp",
+    "final": "/img/operators/final/char_365_aprl.webp",
+    "finalKind": "skin",
+    "finalTitle": "远望",
+    "finalGroup": "生命之地/III",
+    "e1Asset": "char_365_aprl_1",
+    "finalAsset": "char_365_aprl_wild#3"
+  },
+  "char_1021_kroos2": {
+    "e1": "/img/operators/e1/char_1021_kroos2.webp",
+    "final": "/img/operators/final/char_1021_kroos2.webp",
+    "finalKind": "skin",
+    "finalTitle": "新手光环",
+    "finalGroup": "成就之星/III",
+    "e1Asset": "char_1021_kroos2_1",
+    "finalAsset": "char_1021_kroos2_game#3"
+  },
+  "char_498_inside": {
+    "e1": "/img/operators/e1/char_498_inside.webp",
+    "final": "/img/operators/final/char_498_inside.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HDm25",
+    "finalGroup": "珊瑚海岸/XXII",
+    "e1Asset": "char_498_inside_1",
+    "finalAsset": "char_498_inside_summer#22"
+  },
+  "char_219_meteo": {
+    "e1": "/img/operators/e1/char_219_meteo.webp",
+    "final": "/img/operators/final/char_219_meteo.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA240",
+    "finalGroup": "珊瑚海岸/XXII",
+    "e1Asset": "char_219_meteo_1",
+    "finalAsset": "char_219_meteo_summer#22"
+  },
+  "char_379_sesa": {
+    "e1": "/img/operators/e1/char_379_sesa.webp",
+    "final": "/img/operators/final/char_379_sesa.webp",
+    "finalKind": "skin",
+    "finalTitle": "万物有灵",
+    "finalGroup": "成就之星/V",
+    "e1Asset": "char_379_sesa_1",
+    "finalAsset": "char_379_sesa_game#5"
+  },
+  "char_4078_bdhkgt": {
+    "e1": "/img/operators/e1/char_4078_bdhkgt.webp",
+    "final": "/img/operators/final/char_4078_bdhkgt.webp",
+    "finalKind": "skin",
+    "finalTitle": "伴青莲",
+    "finalGroup": "0011/韵系列/II",
+    "e1Asset": "char_4078_bdhkgt_1",
+    "finalAsset": "char_4078_bdhkgt_yun#2"
+  },
+  "char_279_excu": {
+    "e1": "/img/operators/e1/char_279_excu.webp",
+    "final": "/img/operators/final/char_279_excu.webp",
+    "finalKind": "skin",
+    "finalTitle": "无题密令",
+    "finalGroup": "斗争血脉/I",
+    "e1Asset": "char_279_excu_1",
+    "finalAsset": "char_279_excu_boc#1"
+  },
+  "char_346_aosta": {
+    "e1": "/img/operators/e1/char_346_aosta.webp",
+    "final": "/img/operators/final/char_346_aosta.webp",
+    "finalKind": "skin",
+    "finalTitle": "光铳调试员",
+    "finalGroup": "成就之星/II",
+    "e1Asset": "char_346_aosta_1",
+    "finalAsset": "char_346_aosta_game#2"
+  },
+  "char_4203_kichi": {
+    "e1": "/img/operators/e1/char_4203_kichi.webp",
+    "final": "/img/operators/final/char_4203_kichi.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4203_kichi_1",
+    "finalAsset": "char_4203_kichi_2"
+  },
+  "char_4213_skybx": {
+    "e1": "/img/operators/e1/char_4213_skybx.webp",
+    "final": "/img/operators/final/char_4213_skybx.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4213_skybx_1",
+    "finalAsset": "char_4213_skybx_2"
+  },
+  "char_002_amiya": {
+    "e1": "/img/operators/e1/char_002_amiya.webp",
+    "final": "/img/operators/final/char_002_amiya.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_002_amiya_1",
+    "finalAsset": "char_002_amiya_2"
+  },
+  "char_405_absin": {
+    "e1": "/img/operators/e1/char_405_absin.webp",
+    "final": "/img/operators/final/char_405_absin.webp",
+    "finalKind": "skin",
+    "finalTitle": "正午余光",
+    "finalGroup": "时代/XXVIII",
+    "e1Asset": "char_405_absin_1",
+    "finalAsset": "char_405_absin_epoque#28"
+  },
+  "char_411_tomimi": {
+    "e1": "/img/operators/e1/char_411_tomimi.webp",
+    "final": "/img/operators/final/char_411_tomimi.webp",
+    "finalKind": "skin",
+    "finalTitle": "静谧午夜 DN04",
+    "finalGroup": "珊瑚海岸/V",
+    "e1Asset": "char_411_tomimi_1",
+    "finalAsset": "char_411_tomimi_summer#5"
+  },
+  "char_466_qanik": {
+    "e1": "/img/operators/e1/char_466_qanik.webp",
+    "final": "/img/operators/final/char_466_qanik.webp",
+    "finalKind": "skin",
+    "finalTitle": "回礼",
+    "finalGroup": "冰原信使/VI",
+    "e1Asset": "char_466_qanik_1",
+    "finalAsset": "char_466_qanik_snow#6"
+  },
+  "char_166_skfire": {
+    "e1": "/img/operators/e1/char_166_skfire.webp",
+    "final": "/img/operators/final/char_166_skfire.webp",
+    "finalKind": "skin",
+    "finalTitle": "温差 RT.RX01",
+    "finalGroup": "珊瑚海岸/I",
+    "e1Asset": "char_166_skfire_1",
+    "finalAsset": "char_166_skfire_summer#1"
+  },
+  "char_306_leizi": {
+    "e1": "/img/operators/e1/char_306_leizi.webp",
+    "final": "/img/operators/final/char_306_leizi.webp",
+    "finalKind": "skin",
+    "finalTitle": "遗迹游学者",
+    "finalGroup": "成就之星/III",
+    "e1Asset": "char_306_leizi_1",
+    "finalAsset": "char_306_leizi_game#3"
+  },
+  "char_135_halo": {
+    "e1": "/img/operators/e1/char_135_halo.webp",
+    "final": "/img/operators/final/char_135_halo.webp",
+    "finalKind": "skin",
+    "finalTitle": "所愿",
+    "finalGroup": "时代/XXV",
+    "e1Asset": "char_135_halo_1",
+    "finalAsset": "char_135_halo_epoque#25"
+  },
+  "char_344_beewax": {
+    "e1": "/img/operators/e1/char_344_beewax.webp",
+    "final": "/img/operators/final/char_344_beewax.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD61",
+    "finalGroup": "珊瑚海岸/XI",
+    "e1Asset": "char_344_beewax_1",
+    "finalAsset": "char_344_beewax_summer#11"
+  },
+  "char_373_lionhd": {
+    "e1": "/img/operators/e1/char_373_lionhd.webp",
+    "final": "/img/operators/final/char_373_lionhd.webp",
+    "finalKind": "skin",
+    "finalTitle": "希望巡游",
+    "finalGroup": "冰原信使/III",
+    "e1Asset": "char_373_lionhd_1",
+    "finalAsset": "char_373_lionhd_snow#3"
+  },
+  "char_341_sntlla": {
+    "e1": "/img/operators/e1/char_341_sntlla.webp",
+    "final": "/img/operators/final/char_341_sntlla.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD71",
+    "finalGroup": "珊瑚海岸/XV",
+    "e1Asset": "char_341_sntlla_1",
+    "finalAsset": "char_341_sntlla_summer#15"
+  },
+  "char_4031_liesel": {
+    "e1": "/img/operators/e1/char_4031_liesel.webp",
+    "final": "/img/operators/final/char_4031_liesel.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4031_liesel_1",
+    "finalAsset": "char_4031_liesel_2"
+  },
+  "char_388_mint": {
+    "e1": "/img/operators/e1/char_388_mint.webp",
+    "final": "/img/operators/final/char_388_mint.webp",
+    "finalKind": "skin",
+    "finalTitle": "私人书房",
+    "finalGroup": "时代/XXX",
+    "e1Asset": "char_388_mint_1",
+    "finalAsset": "char_388_mint_epoque#30"
+  },
+  "char_338_iris": {
+    "e1": "/img/operators/e1/char_338_iris.webp",
+    "final": "/img/operators/final/char_338_iris.webp",
+    "finalKind": "skin",
+    "finalTitle": "镜中来访",
+    "finalGroup": "巫异盛宴/III",
+    "e1Asset": "char_338_iris_1",
+    "finalAsset": "char_338_iris_witch#3"
+  },
+  "char_297_hamoni": {
+    "e1": "/img/operators/e1/char_297_hamoni.webp",
+    "final": "/img/operators/final/char_297_hamoni.webp",
+    "finalKind": "skin",
+    "finalTitle": "装点",
+    "finalGroup": "待予花冠/I",
+    "e1Asset": "char_297_hamoni_1",
+    "finalAsset": "char_297_hamoni_unveiling#1"
+  },
+  "char_4110_delphn": {
+    "e1": "/img/operators/e1/char_4110_delphn.webp",
+    "final": "/img/operators/final/char_4110_delphn.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4110_delphn_1",
+    "finalAsset": "char_4110_delphn_2"
+  },
+  "char_1011_lava2": {
+    "e1": "/img/operators/e1/char_1011_lava2.webp",
+    "final": "/img/operators/final/char_1011_lava2.webp",
+    "finalKind": "skin",
+    "finalTitle": "镇邪焱",
+    "finalGroup": "0011/飙系列/IX",
+    "e1Asset": "char_1011_lava2_1",
+    "finalAsset": "char_1011_lava2_whirlwind#9"
+  },
+  "char_489_serum": {
+    "e1": "/img/operators/e1/char_489_serum.webp",
+    "final": "/img/operators/final/char_489_serum.webp",
+    "finalKind": "skin",
+    "finalTitle": "逸趣",
+    "finalGroup": "时代/XXXI",
+    "e1Asset": "char_489_serum_1",
+    "finalAsset": "char_489_serum_epoque#31"
+  },
+  "char_446_aroma": {
+    "e1": "/img/operators/e1/char_446_aroma.webp",
+    "final": "/img/operators/final/char_446_aroma.webp",
+    "finalKind": "skin",
+    "finalTitle": "舒心野趣",
+    "finalGroup": "时代/LIV",
+    "e1Asset": "char_446_aroma_1",
+    "finalAsset": "char_446_aroma_epoque#54"
+  },
+  "char_4013_kjera": {
+    "e1": "/img/operators/e1/char_4013_kjera.webp",
+    "final": "/img/operators/final/char_4013_kjera.webp",
+    "finalKind": "skin",
+    "finalTitle": "灵巧侍者",
+    "finalGroup": "时代/XVIII",
+    "e1Asset": "char_4013_kjera_1",
+    "finalAsset": "char_4013_kjera_epoque#18"
+  },
+  "char_4040_rockr": {
+    "e1": "/img/operators/e1/char_4040_rockr.webp",
+    "final": "/img/operators/final/char_4040_rockr.webp",
+    "finalKind": "skin",
+    "finalTitle": "欢唱之前",
+    "finalGroup": "罗小黑战记",
+    "e1Asset": "char_4040_rockr_1",
+    "finalAsset": "char_4040_rockr_lxh#1"
+  },
+  "char_4054_malist": {
+    "e1": "/img/operators/e1/char_4054_malist.webp",
+    "final": "/img/operators/final/char_4054_malist.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HDm74",
+    "finalGroup": "珊瑚海岸/XIV",
+    "e1Asset": "char_4054_malist_1",
+    "finalAsset": "char_4054_malist_summer#14"
+  },
+  "char_4236_tmslot": {
+    "e1": "/img/operators/e1/char_4236_tmslot.webp",
+    "final": "/img/operators/final/char_4236_tmslot.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4236_tmslot_1",
+    "finalAsset": "char_4236_tmslot_2"
+  },
+  "char_499_kaitou": {
+    "e1": "/img/operators/e1/char_499_kaitou.webp",
+    "final": "/img/operators/final/char_499_kaitou.webp",
+    "finalKind": "skin",
+    "finalTitle": "斜照",
+    "finalGroup": "时代/XXXVII",
+    "e1Asset": "char_499_kaitou_1",
+    "finalAsset": "char_499_kaitou_epoque#37"
+  },
+  "char_4081_warmy": {
+    "e1": "/img/operators/e1/char_4081_warmy.webp",
+    "final": "/img/operators/final/char_4081_warmy.webp",
+    "finalKind": "skin",
+    "finalTitle": "街角暖绒",
+    "finalGroup": "寒武纪/IV",
+    "e1Asset": "char_4081_warmy_1",
+    "finalAsset": "char_4081_warmy_winter#4"
+  },
+  "char_4198_christ": {
+    "e1": "/img/operators/e1/char_4198_christ.webp",
+    "final": "/img/operators/final/char_4198_christ.webp",
+    "finalKind": "skin",
+    "finalTitle": "底绒舞会",
+    "finalGroup": "时代/LVI",
+    "e1Asset": "char_4198_christ_1",
+    "finalAsset": "char_4198_christ_epoque#56"
+  },
+  "char_4164_tecno": {
+    "e1": "/img/operators/e1/char_4164_tecno.webp",
+    "final": "/img/operators/final/char_4164_tecno.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4164_tecno_1",
+    "finalAsset": "char_4164_tecno_2"
+  },
+  "char_242_otter": {
+    "e1": "/img/operators/e1/char_242_otter.webp",
+    "final": "/img/operators/final/char_242_otter.webp",
+    "finalKind": "skin",
+    "finalTitle": "庭院寻梦尖兵",
+    "finalGroup": "缠梦古堡",
+    "e1Asset": "char_242_otter_1",
+    "finalAsset": "char_242_otter_ghost#1"
+  },
+  "char_336_folivo": {
+    "e1": "/img/operators/e1/char_336_folivo.webp",
+    "final": "/img/operators/final/char_336_folivo.webp",
+    "finalKind": "skin",
+    "finalTitle": "新地形",
+    "finalGroup": "生命之地/XI",
+    "e1Asset": "char_336_folivo_1",
+    "finalAsset": "char_336_folivo_wild#11"
+  },
+  "char_4140_lasher": {
+    "e1": "/img/operators/e1/char_4140_lasher.webp",
+    "final": "/img/operators/final/char_4140_lasher.webp",
+    "finalKind": "skin",
+    "finalTitle": "憩羽",
+    "finalGroup": "错位巡礼/III",
+    "e1Asset": "char_4140_lasher_1",
+    "finalAsset": "char_4140_lasher_sightseer#3"
+  },
+  "char_108_silent": {
+    "e1": "/img/operators/e1/char_108_silent.webp",
+    "final": "/img/operators/final/char_108_silent.webp",
+    "finalKind": "skin",
+    "finalTitle": "霜息",
+    "finalGroup": "寒武纪/II",
+    "e1Asset": "char_108_silent_1",
+    "finalAsset": "char_108_silent_winter#2"
+  },
+  "char_171_bldsk": {
+    "e1": "/img/operators/e1/char_171_bldsk.webp",
+    "final": "/img/operators/final/char_171_bldsk.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD31",
+    "finalGroup": "珊瑚海岸/VII",
+    "e1Asset": "char_171_bldsk_1",
+    "finalAsset": "char_171_bldsk_summer#7"
+  },
+  "char_345_folnic": {
+    "e1": "/img/operators/e1/char_345_folnic.webp",
+    "final": "/img/operators/final/char_345_folnic.webp",
+    "finalKind": "skin",
+    "finalTitle": "残葛",
+    "finalGroup": "生命之地/IV",
+    "e1Asset": "char_345_folnic_1",
+    "finalAsset": "char_345_folnic_wild#4"
+  },
+  "char_4196_reckpr": {
+    "e1": "/img/operators/e1/char_4196_reckpr.webp",
+    "final": "/img/operators/final/char_4196_reckpr.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4196_reckpr_1",
+    "finalAsset": "char_4196_reckpr_2"
+  },
+  "char_348_ceylon": {
+    "e1": "/img/operators/e1/char_348_ceylon.webp",
+    "final": "/img/operators/final/char_348_ceylon.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD49",
+    "finalGroup": "珊瑚海岸/XIII",
+    "e1Asset": "char_348_ceylon_1",
+    "finalAsset": "char_348_ceylon_summer#13"
+  },
+  "char_436_whispr": {
+    "e1": "/img/operators/e1/char_436_whispr.webp",
+    "final": "/img/operators/final/char_436_whispr.webp",
+    "finalKind": "skin",
+    "finalTitle": "幽邃隐修",
+    "finalGroup": "巫异盛宴/IV",
+    "e1Asset": "char_436_whispr_1",
+    "finalAsset": "char_436_whispr_witch#4"
+  },
+  "char_4173_nowell": {
+    "e1": "/img/operators/e1/char_4173_nowell.webp",
+    "final": "/img/operators/final/char_4173_nowell.webp",
+    "finalKind": "skin",
+    "finalTitle": "幽蓝渡灵师",
+    "finalGroup": "命途迭代/VI",
+    "e1Asset": "char_4173_nowell_1",
+    "finalAsset": "char_4173_nowell_iteration#6"
+  },
+  "char_402_tuye": {
+    "e1": "/img/operators/e1/char_402_tuye.webp",
+    "final": "/img/operators/final/char_402_tuye.webp",
+    "finalKind": "skin",
+    "finalTitle": "培翠",
+    "finalGroup": "时代/XIV",
+    "e1Asset": "char_402_tuye_1",
+    "finalAsset": "char_402_tuye_epoque#14"
+  },
+  "char_473_mberry": {
+    "e1": "/img/operators/e1/char_473_mberry.webp",
+    "final": "/img/operators/final/char_473_mberry.webp",
+    "finalKind": "skin",
+    "finalTitle": "照冰轮",
+    "finalGroup": "0011制造/VIII",
+    "e1Asset": "char_473_mberry_1",
+    "finalAsset": "char_473_mberry_nian#9"
+  },
+  "char_449_glider": {
+    "e1": "/img/operators/e1/char_449_glider.webp",
+    "final": "/img/operators/final/char_449_glider.webp",
+    "finalKind": "skin",
+    "finalTitle": "洇灵雨",
+    "finalGroup": "0011制造/IX",
+    "e1Asset": "char_449_glider_1",
+    "finalAsset": "char_449_glider_nian#10"
+  },
+  "char_4114_harold": {
+    "e1": "/img/operators/e1/char_4114_harold.webp",
+    "final": "/img/operators/final/char_4114_harold.webp",
+    "finalKind": "skin",
+    "finalTitle": "邀雪",
+    "finalGroup": "冰原信使/VII",
+    "e1Asset": "char_4114_harold_1",
+    "finalAsset": "char_4114_harold_snow#7"
+  },
+  "char_1024_hbisc2": {
+    "e1": "/img/operators/e1/char_1024_hbisc2.webp",
+    "final": "/img/operators/final/char_1024_hbisc2.webp",
+    "finalKind": "skin",
+    "finalTitle": "浪漫满厢",
+    "finalGroup": "待予花冠/II",
+    "e1Asset": "char_1024_hbisc2_1",
+    "finalAsset": "char_1024_hbisc2_unveiling#2"
+  },
+  "char_494_vendla": {
+    "e1": "/img/operators/e1/char_494_vendla.webp",
+    "final": "/img/operators/final/char_494_vendla.webp",
+    "finalKind": "skin",
+    "finalTitle": "蔷薇之谜",
+    "finalGroup": "成就之星/X",
+    "e1Asset": "char_494_vendla_1",
+    "finalAsset": "char_494_vendla_game#10"
+  },
+  "char_4071_peper": {
+    "e1": "/img/operators/e1/char_4071_peper.webp",
+    "final": "/img/operators/final/char_4071_peper.webp",
+    "finalKind": "skin",
+    "finalTitle": "来路",
+    "finalGroup": "0011/飙系列/Ⅴ",
+    "e1Asset": "char_4071_peper_1",
+    "finalAsset": "char_4071_peper_whirlwind#5"
+  },
+  "char_4139_papyrs": {
+    "e1": "/img/operators/e1/char_4139_papyrs.webp",
+    "final": "/img/operators/final/char_4139_papyrs.webp",
+    "finalKind": "skin",
+    "finalTitle": "下一个任务",
+    "finalGroup": "成就之星/VIII",
+    "e1Asset": "char_4139_papyrs_1",
+    "finalAsset": "char_4139_papyrs_game#8"
+  },
+  "char_4224_turdus": {
+    "e1": "/img/operators/e1/char_4224_turdus.webp",
+    "final": "/img/operators/final/char_4224_turdus.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4224_turdus_1",
+    "finalAsset": "char_4224_turdus_2"
+  },
+  "char_4222_taraxa": {
+    "e1": "/img/operators/e1/char_4222_taraxa.webp",
+    "final": "/img/operators/final/char_4222_taraxa.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4222_taraxa_1",
+    "finalAsset": "char_4222_taraxa_2"
+  },
+  "char_148_nearl": {
+    "e1": "/img/operators/e1/char_148_nearl.webp",
+    "final": "/img/operators/final/char_148_nearl.webp",
+    "finalKind": "skin",
+    "finalTitle": "灿阳朝露 SD01",
+    "finalGroup": "珊瑚海岸/II",
+    "e1Asset": "char_148_nearl_1",
+    "finalAsset": "char_148_nearl_summer#2"
+  },
+  "char_226_hmau": {
+    "e1": "/img/operators/e1/char_226_hmau.webp",
+    "final": "/img/operators/final/char_226_hmau.webp",
+    "finalKind": "skin",
+    "finalTitle": "一介车夫",
+    "finalGroup": "0011制造/III",
+    "e1Asset": "char_226_hmau_1",
+    "finalAsset": "char_226_hmau_nian#4"
+  },
+  "char_4109_baslin": {
+    "e1": "/img/operators/e1/char_4109_baslin.webp",
+    "final": "/img/operators/final/char_4109_baslin.webp",
+    "finalKind": "skin",
+    "finalTitle": "夜空星芒",
+    "finalGroup": "巫异盛宴/V",
+    "e1Asset": "char_4109_baslin_1",
+    "finalAsset": "char_4109_baslin_witch#5"
+  },
+  "char_4143_sensi": {
+    "e1": "/img/operators/e1/char_4143_sensi.webp",
+    "final": "/img/operators/final/char_4143_sensi.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4143_sensi_1",
+    "finalAsset": "char_4143_sensi_2"
+  },
+  "char_144_red": {
+    "e1": "/img/operators/e1/char_144_red.webp",
+    "final": "/img/operators/final/char_144_red.webp",
+    "finalKind": "skin",
+    "finalTitle": "轻风 LB01",
+    "finalGroup": "珊瑚海岸/VI",
+    "e1Asset": "char_144_red_1",
+    "finalAsset": "char_144_red_summer#6"
+  },
+  "char_243_waaifu": {
+    "e1": "/img/operators/e1/char_243_waaifu.webp",
+    "final": "/img/operators/final/char_243_waaifu.webp",
+    "finalKind": "skin",
+    "finalTitle": "街道狂花",
+    "finalGroup": "0011/飙系列/II",
+    "e1Asset": "char_243_waaifu_1",
+    "finalAsset": "char_243_waaifu_whirlwind#2"
+  },
+  "char_214_kafka": {
+    "e1": "/img/operators/e1/char_214_kafka.webp",
+    "final": "/img/operators/final/char_214_kafka.webp",
+    "finalKind": "skin",
+    "finalTitle": "纸板仙子",
+    "finalGroup": "冰原信使/III",
+    "e1Asset": "char_214_kafka_1",
+    "finalAsset": "char_214_kafka_snow#3"
+  },
+  "char_455_nothin": {
+    "e1": "/img/operators/e1/char_455_nothin.webp",
+    "final": "/img/operators/final/char_455_nothin.webp",
+    "finalKind": "skin",
+    "finalTitle": "冷山月",
+    "finalGroup": "0011制造/VI",
+    "e1Asset": "char_455_nothin_1",
+    "finalAsset": "char_455_nothin_nian#7"
+  },
+  "char_4155_talr": {
+    "e1": "/img/operators/e1/char_4155_talr.webp",
+    "final": "/img/operators/final/char_4155_talr.webp",
+    "finalKind": "skin",
+    "finalTitle": "桂影窗",
+    "finalGroup": "0011/韵系列/IX",
+    "e1Asset": "char_4155_talr_1",
+    "finalAsset": "char_4155_talr_yun#9"
+  },
+  "char_107_liskam": {
+    "e1": "/img/operators/e1/char_107_liskam.webp",
+    "final": "/img/operators/final/char_107_liskam.webp",
+    "finalKind": "skin",
+    "finalTitle": "超载",
+    "finalGroup": "雷神推进者",
+    "e1Asset": "char_107_liskam_1",
+    "finalAsset": "char_107_liskam_striker#1"
+  },
+  "char_4137_udflow": {
+    "e1": "/img/operators/e1/char_4137_udflow.webp",
+    "final": "/img/operators/final/char_4137_udflow.webp",
+    "finalKind": "skin",
+    "finalTitle": "层流",
+    "finalGroup": "时代/XLV",
+    "e1Asset": "char_4137_udflow_1",
+    "finalAsset": "char_4137_udflow_epoque#46"
+  },
+  "char_201_moeshd": {
+    "e1": "/img/operators/e1/char_201_moeshd.webp",
+    "final": "/img/operators/final/char_201_moeshd.webp",
+    "finalKind": "skin",
+    "finalTitle": "探寻者 SK03",
+    "finalGroup": "珊瑚海岸/IV",
+    "e1Asset": "char_201_moeshd_1",
+    "finalAsset": "char_201_moeshd_summer#4"
+  },
+  "char_325_bison": {
+    "e1": "/img/operators/e1/char_325_bison.webp",
+    "final": "/img/operators/final/char_325_bison.webp",
+    "finalKind": "skin",
+    "finalTitle": "凌云意",
+    "finalGroup": "0011/韵系列/VII",
+    "e1Asset": "char_325_bison_1",
+    "finalAsset": "char_325_bison_yun#7"
+  },
+  "char_163_hpsts": {
+    "e1": "/img/operators/e1/char_163_hpsts.webp",
+    "final": "/img/operators/final/char_163_hpsts.webp",
+    "finalKind": "skin",
+    "finalTitle": "火种",
+    "finalGroup": "斗争血脉/X",
+    "e1Asset": "char_163_hpsts_1",
+    "finalAsset": "char_163_hpsts_boc#10"
+  },
+  "char_4207_branch": {
+    "e1": "/img/operators/e1/char_4207_branch.webp",
+    "final": "/img/operators/final/char_4207_branch.webp",
+    "finalKind": "skin",
+    "finalTitle": "撷香霭",
+    "finalGroup": "0011/韵系列/X",
+    "e1Asset": "char_4207_branch_1",
+    "finalAsset": "char_4207_branch_yun#10"
+  },
+  "char_378_asbest": {
+    "e1": "/img/operators/e1/char_378_asbest.webp",
+    "final": "/img/operators/final/char_378_asbest.webp",
+    "finalKind": "skin",
+    "finalTitle": "幽谷奏鸣",
+    "finalGroup": "0011/飙系列/III",
+    "e1Asset": "char_378_asbest_1",
+    "finalAsset": "char_378_asbest_whirlwind#3"
+  },
+  "char_4025_aprot2": {
+    "e1": "/img/operators/e1/char_4025_aprot2.webp",
+    "final": "/img/operators/final/char_4025_aprot2.webp",
+    "finalKind": "skin",
+    "finalTitle": "结果",
+    "finalGroup": "0011/飙系列/Ⅴ",
+    "e1Asset": "char_4025_aprot2_1",
+    "finalAsset": "char_4025_aprot2_whirlwind#5"
+  },
+  "char_4047_pianst": {
+    "e1": "/img/operators/e1/char_4047_pianst.webp",
+    "final": "/img/operators/final/char_4047_pianst.webp",
+    "finalKind": "skin",
+    "finalTitle": "荒野寻音",
+    "finalGroup": "生命之地/VIII",
+    "e1Asset": "char_4047_pianst_1",
+    "finalAsset": "char_4047_pianst_wild#8"
+  },
+  "char_457_blitz": {
+    "e1": "/img/operators/e1/char_457_blitz.webp",
+    "final": "/img/operators/final/char_457_blitz.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_457_blitz_1",
+    "finalAsset": "char_457_blitz_2"
+  },
+  "char_304_zebra": {
+    "e1": "/img/operators/e1/char_304_zebra.webp",
+    "final": "/img/operators/final/char_304_zebra.webp",
+    "finalKind": "skin",
+    "finalTitle": "幽苔",
+    "finalGroup": "生命之地/VI",
+    "e1Asset": "char_304_zebra_1",
+    "finalAsset": "char_304_zebra_wild#6"
+  },
+  "char_431_ashlok": {
+    "e1": "/img/operators/e1/char_431_ashlok.webp",
+    "final": "/img/operators/final/char_431_ashlok.webp",
+    "finalKind": "skin",
+    "finalTitle": "卡利斯卡群枪",
+    "finalGroup": "时代/XXVIII",
+    "e1Asset": "char_431_ashlok_1",
+    "finalAsset": "char_431_ashlok_epoque#28"
+  },
+  "char_493_firwhl": {
+    "e1": "/img/operators/e1/char_493_firwhl.webp",
+    "final": "/img/operators/final/char_493_firwhl.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_493_firwhl_1",
+    "finalAsset": "char_493_firwhl_2"
+  },
+  "char_422_aurora": {
+    "e1": "/img/operators/e1/char_422_aurora.webp",
+    "final": "/img/operators/final/char_422_aurora.webp",
+    "finalKind": "skin",
+    "finalTitle": "极昼捕手",
+    "finalGroup": "斗争血脉/IV",
+    "e1Asset": "char_422_aurora_1",
+    "finalAsset": "char_422_aurora_boc#4"
+  },
+  "char_464_cement": {
+    "e1": "/img/operators/e1/char_464_cement.webp",
+    "final": "/img/operators/final/char_464_cement.webp",
+    "finalKind": "skin",
+    "finalTitle": "全新业务",
+    "finalGroup": "时代/XXXI",
+    "e1Asset": "char_464_cement_1",
+    "finalAsset": "char_464_cement_epoque#31"
+  },
+  "char_4148_philae": {
+    "e1": "/img/operators/e1/char_4148_philae.webp",
+    "final": "/img/operators/final/char_4148_philae.webp",
+    "finalKind": "skin",
+    "finalTitle": "花绸曲",
+    "finalGroup": "0011制造/XII",
+    "e1Asset": "char_4148_philae_1",
+    "finalAsset": "char_4148_philae_nian#12"
+  },
+  "char_4225_tanya": {
+    "e1": "/img/operators/e1/char_4225_tanya.webp",
+    "final": "/img/operators/final/char_4225_tanya.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4225_tanya_1",
+    "finalAsset": "char_4225_tanya_2"
+  },
+  "char_145_prove": {
+    "e1": "/img/operators/e1/char_145_prove.webp",
+    "final": "/img/operators/final/char_145_prove.webp",
+    "finalKind": "skin",
+    "finalTitle": "荒原行者",
+    "finalGroup": "生命之地/V",
+    "e1Asset": "char_145_prove_1",
+    "finalAsset": "char_145_prove_wild#5"
+  },
+  "char_4006_melnte": {
+    "e1": "/img/operators/e1/char_4006_melnte.webp",
+    "final": "/img/operators/final/char_4006_melnte.webp",
+    "finalKind": "skin",
+    "finalTitle": "赴宴",
+    "finalGroup": "时代/XXXIII",
+    "e1Asset": "char_4006_melnte_1",
+    "finalAsset": "char_4006_melnte_epoque#33"
+  },
+  "char_158_milu": {
+    "e1": "/img/operators/e1/char_158_milu.webp",
+    "final": "/img/operators/final/char_158_milu.webp",
+    "finalKind": "skin",
+    "finalTitle": "覆雪",
+    "finalGroup": "冰原信使/II",
+    "e1Asset": "char_158_milu_1",
+    "finalAsset": "char_158_milu_snow#2"
+  },
+  "char_218_cuttle": {
+    "e1": "/img/operators/e1/char_218_cuttle.webp",
+    "final": "/img/operators/final/char_218_cuttle.webp",
+    "finalKind": "skin",
+    "finalTitle": "暗矢",
+    "finalGroup": "时代/XII",
+    "e1Asset": "char_218_cuttle_1",
+    "finalAsset": "char_218_cuttle_epoque#12"
+  },
+  "char_4014_lunacu": {
+    "e1": "/img/operators/e1/char_4014_lunacu.webp",
+    "final": "/img/operators/final/char_4014_lunacu.webp",
+    "finalKind": "skin",
+    "finalTitle": "棠云巧梦",
+    "finalGroup": "0011/韵系列/I",
+    "e1Asset": "char_4014_lunacu_1",
+    "finalAsset": "char_4014_lunacu_yun#1"
+  },
+  "char_363_toddi": {
+    "e1": "/img/operators/e1/char_363_toddi.webp",
+    "final": "/img/operators/final/char_363_toddi.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_363_toddi_1",
+    "finalAsset": "char_363_toddi_2"
+  },
+  "char_4043_erato": {
+    "e1": "/img/operators/e1/char_4043_erato.webp",
+    "final": "/img/operators/final/char_4043_erato.webp",
+    "finalKind": "skin",
+    "finalTitle": "未讲述的故事",
+    "finalGroup": "冰原信使/V",
+    "e1Asset": "char_4043_erato_1",
+    "finalAsset": "char_4043_erato_snow#5"
+  },
+  "char_4221_ju": {
+    "e1": "/img/operators/e1/char_4221_ju.webp",
+    "final": "/img/operators/final/char_4221_ju.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4221_ju_1",
+    "finalAsset": "char_4221_ju_2"
+  },
+  "char_1027_greyy2": {
+    "e1": "/img/operators/e1/char_1027_greyy2.webp",
+    "final": "/img/operators/final/char_1027_greyy2.webp",
+    "finalKind": "skin",
+    "finalTitle": "生化沉溺",
+    "finalGroup": "破格视界",
+    "e1Asset": "char_1027_greyy2_1",
+    "finalAsset": "char_1027_greyy2_breaker#1"
+  },
+  "char_4104_coldst": {
+    "e1": "/img/operators/e1/char_4104_coldst.webp",
+    "final": "/img/operators/final/char_4104_coldst.webp",
+    "finalKind": "skin",
+    "finalTitle": "破晓",
+    "finalGroup": "雷神推进者/III",
+    "e1Asset": "char_4104_coldst_1",
+    "finalAsset": "char_4104_coldst_striker#3"
+  },
+  "char_4211_snhunt": {
+    "e1": "/img/operators/e1/char_4211_snhunt.webp",
+    "final": "/img/operators/final/char_4211_snhunt.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4211_snhunt_1",
+    "finalAsset": "char_4211_snhunt_2"
+  },
+  "char_4177_brigid": {
+    "e1": "/img/operators/e1/char_4177_brigid.webp",
+    "final": "/img/operators/final/char_4177_brigid.webp",
+    "finalKind": "skin",
+    "finalTitle": "轻语入梦",
+    "finalGroup": "时代/LIII",
+    "e1Asset": "char_4177_brigid_1",
+    "finalAsset": "char_4177_brigid_epoque#53"
+  },
+  "char_4015_spuria": {
+    "e1": "/img/operators/e1/char_4015_spuria.webp",
+    "final": "/img/operators/final/char_4015_spuria.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4015_spuria_1",
+    "finalAsset": "char_4015_spuria_2"
+  },
+  "char_173_slchan": {
+    "e1": "/img/operators/e1/char_173_slchan.webp",
+    "final": "/img/operators/final/char_173_slchan.webp",
+    "finalKind": "skin",
+    "finalTitle": "高原访客",
+    "finalGroup": "WWF",
+    "e1Asset": "char_173_slchan_1",
+    "finalAsset": "char_173_slchan_wwf#1"
+  },
+  "char_383_snsant": {
+    "e1": "/img/operators/e1/char_383_snsant.webp",
+    "final": "/img/operators/final/char_383_snsant.webp",
+    "finalKind": "skin",
+    "finalTitle": "天命勇者",
+    "finalGroup": "巫异盛宴/II",
+    "e1Asset": "char_383_snsant_1",
+    "finalAsset": "char_383_snsant_witch#2"
+  },
+  "char_4105_almond": {
+    "e1": "/img/operators/e1/char_4105_almond.webp",
+    "final": "/img/operators/final/char_4105_almond.webp",
+    "finalKind": "skin",
+    "finalTitle": "“杏仁”拼盘",
+    "finalGroup": "0011制造/XI",
+    "e1Asset": "char_4105_almond_1",
+    "finalAsset": "char_4105_almond_epoque#38"
+  },
+  "char_174_slbell": {
+    "e1": "/img/operators/e1/char_174_slbell.webp",
+    "final": "/img/operators/final/char_174_slbell.webp",
+    "finalKind": "skin",
+    "finalTitle": "开斯特之霜",
+    "finalGroup": "冰原信使/I",
+    "e1Asset": "char_174_slbell_1",
+    "finalAsset": "char_174_slbell_snow#1"
+  },
+  "char_254_vodfox": {
+    "e1": "/img/operators/e1/char_254_vodfox.webp",
+    "final": "/img/operators/final/char_254_vodfox.webp",
+    "finalKind": "skin",
+    "finalTitle": "绣云鹤",
+    "finalGroup": "0011/韵系列/VIII",
+    "e1Asset": "char_254_vodfox_1",
+    "finalAsset": "char_254_vodfox_yun#8"
+  },
+  "char_4079_haini": {
+    "e1": "/img/operators/e1/char_4079_haini.webp",
+    "final": "/img/operators/final/char_4079_haini.webp",
+    "finalKind": "skin",
+    "finalTitle": "翻涌",
+    "finalGroup": "时代/XLIV",
+    "e1Asset": "char_4079_haini_1",
+    "finalAsset": "char_4079_haini_epoque#45"
+  },
+  "char_195_glassb": {
+    "e1": "/img/operators/e1/char_195_glassb.webp",
+    "final": "/img/operators/final/char_195_glassb.webp",
+    "finalKind": "skin",
+    "finalTitle": "书味",
+    "finalGroup": "罗德厨房",
+    "e1Asset": "char_195_glassb_1",
+    "finalAsset": "char_195_glassb_kitchen#1"
+  },
+  "char_326_glacus": {
+    "e1": "/img/operators/e1/char_326_glacus.webp",
+    "final": "/img/operators/final/char_326_glacus.webp",
+    "finalKind": "skin",
+    "finalTitle": "广场扫荡客",
+    "finalGroup": "缠梦古堡",
+    "e1Asset": "char_326_glacus_1",
+    "finalAsset": "char_326_glacus_ghost#1"
+  },
+  "char_4032_provs": {
+    "e1": "/img/operators/e1/char_4032_provs.webp",
+    "final": "/img/operators/final/char_4032_provs.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD78",
+    "finalGroup": "珊瑚海岸/XVII",
+    "e1Asset": "char_4032_provs_1",
+    "finalAsset": "char_4032_provs_summer#17"
+  },
+  "char_4122_grabds": {
+    "e1": "/img/operators/e1/char_4122_grabds.webp",
+    "final": "/img/operators/final/char_4122_grabds.webp",
+    "finalKind": "skin",
+    "finalTitle": "步芳兰",
+    "finalGroup": "0011/韵系列/III",
+    "e1Asset": "char_4122_grabds_1",
+    "finalAsset": "char_4122_grabds_yun#3"
+  },
+  "char_433_windft": {
+    "e1": "/img/operators/e1/char_433_windft.webp",
+    "final": "/img/operators/final/char_433_windft.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_433_windft_1",
+    "finalAsset": "char_433_windft_2"
+  },
+  "char_4162_cathy": {
+    "e1": "/img/operators/e1/char_4162_cathy.webp",
+    "final": "/img/operators/final/char_4162_cathy.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4162_cathy_1",
+    "finalAsset": "char_4162_cathy_2"
+  },
+  "char_4178_alanna": {
+    "e1": "/img/operators/e1/char_4178_alanna.webp",
+    "final": "/img/operators/final/char_4178_alanna.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4178_alanna_1",
+    "finalAsset": "char_4178_alanna_2"
+  },
+  "char_101_sora": {
+    "e1": "/img/operators/e1/char_101_sora.webp",
+    "final": "/img/operators/final/char_101_sora.webp",
+    "finalKind": "skin",
+    "finalTitle": "如歌",
+    "finalGroup": "时代/XVII",
+    "e1Asset": "char_101_sora_1",
+    "finalAsset": "char_101_sora_epoque#17"
+  },
+  "char_4045_heidi": {
+    "e1": "/img/operators/e1/char_4045_heidi.webp",
+    "final": "/img/operators/final/char_4045_heidi.webp",
+    "finalKind": "skin",
+    "finalTitle": "书信零落",
+    "finalGroup": "时代/XXIV",
+    "e1Asset": "char_4045_heidi_1",
+    "finalAsset": "char_4045_heidi_epoque#24"
+  },
+  "char_4184_dolris": {
+    "e1": "/img/operators/e1/char_4184_dolris.webp",
+    "final": "/img/operators/final/char_4184_dolris.webp",
+    "finalKind": "skin",
+    "finalTitle": "笼中歌者",
+    "finalGroup": "Ave Mujica",
+    "e1Asset": "char_4184_dolris_1",
+    "finalAsset": "char_4184_dolris_avemujica#1"
+  },
+  "char_343_tknogi": {
+    "e1": "/img/operators/e1/char_343_tknogi.webp",
+    "final": "/img/operators/final/char_343_tknogi.webp",
+    "finalKind": "skin",
+    "finalTitle": "舞",
+    "finalGroup": "冰原信使/VI",
+    "e1Asset": "char_343_tknogi_1",
+    "finalAsset": "char_343_tknogi_snow#6"
+  },
+  "char_4019_ncdeer": {
+    "e1": "/img/operators/e1/char_4019_ncdeer.webp",
+    "final": "/img/operators/final/char_4019_ncdeer.webp",
+    "finalKind": "skin",
+    "finalTitle": "古往今来的月",
+    "finalGroup": "九色鹿",
+    "e1Asset": "char_4019_ncdeer_1",
+    "finalAsset": "char_4019_ncdeer_ncdeer#1"
+  },
+  "char_492_quercu": {
+    "e1": "/img/operators/e1/char_492_quercu.webp",
+    "final": "/img/operators/final/char_492_quercu.webp",
+    "finalKind": "skin",
+    "finalTitle": "树影吟游",
+    "finalGroup": "巫异盛宴/IV",
+    "e1Asset": "char_492_quercu_1",
+    "finalAsset": "char_492_quercu_witch#4"
+  },
+  "char_4172_xingzh": {
+    "e1": "/img/operators/e1/char_4172_xingzh.webp",
+    "final": "/img/operators/final/char_4172_xingzh.webp",
+    "finalKind": "skin",
+    "finalTitle": "留影",
+    "finalGroup": "时代/L",
+    "e1Asset": "char_4172_xingzh_1",
+    "finalAsset": "char_4172_xingzh_epoque#51"
+  },
+  "char_1022_flwr2": {
+    "e1": "/img/operators/e1/char_1022_flwr2.webp",
+    "final": "/img/operators/final/char_1022_flwr2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1022_flwr2_1",
+    "finalAsset": "char_1022_flwr2_2"
+  },
+  "char_4102_threye": {
+    "e1": "/img/operators/e1/char_4102_threye.webp",
+    "final": "/img/operators/final/char_4102_threye.webp",
+    "finalKind": "skin",
+    "finalTitle": "林间暖阳",
+    "finalGroup": "时代/XLI",
+    "e1Asset": "char_4102_threye_1",
+    "finalAsset": "char_4102_threye_epoque#42"
+  },
+  "char_487_bobb": {
+    "e1": "/img/operators/e1/char_487_bobb.webp",
+    "final": "/img/operators/final/char_487_bobb.webp",
+    "finalKind": "skin",
+    "finalTitle": "温情烘焙",
+    "finalGroup": "罗德厨房/IV",
+    "e1Asset": "char_487_bobb_1",
+    "finalAsset": "char_487_bobb_kitchen#4"
+  },
+  "char_4223_botany": {
+    "e1": "/img/operators/e1/char_4223_botany.webp",
+    "final": "/img/operators/final/char_4223_botany.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4223_botany_1",
+    "finalAsset": "char_4223_botany_2"
+  },
+  "char_4234_pedro": {
+    "e1": "/img/operators/e1/char_4234_pedro.webp",
+    "final": "/img/operators/final/char_4234_pedro.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4234_pedro_1",
+    "finalAsset": "char_4234_pedro_2"
+  },
+  "char_215_mantic": {
+    "e1": "/img/operators/e1/char_215_mantic.webp",
+    "final": "/img/operators/final/char_215_mantic.webp",
+    "finalKind": "skin",
+    "finalTitle": "面纱之下",
+    "finalGroup": "时代/XX",
+    "e1Asset": "char_215_mantic_1",
+    "finalAsset": "char_215_mantic_epoque#19"
+  },
+  "char_478_kirara": {
+    "e1": "/img/operators/e1/char_478_kirara.webp",
+    "final": "/img/operators/final/char_478_kirara.webp",
+    "finalKind": "skin",
+    "finalTitle": "轻闲快照",
+    "finalGroup": "时代/LVII",
+    "e1Asset": "char_478_kirara_1",
+    "finalAsset": "char_478_kirara_epoque#57"
+  },
+  "char_4186_tmoris": {
+    "e1": "/img/operators/e1/char_4186_tmoris.webp",
+    "final": "/img/operators/final/char_4186_tmoris.webp",
+    "finalKind": "skin",
+    "finalTitle": "月下执行者",
+    "finalGroup": "Ave Mujica",
+    "e1Asset": "char_4186_tmoris_1",
+    "finalAsset": "char_4186_tmoris_avemujica#1"
+  },
+  "char_241_panda": {
+    "e1": "/img/operators/e1/char_241_panda.webp",
+    "final": "/img/operators/final/char_241_panda.webp",
+    "finalKind": "skin",
+    "finalTitle": "且试箸",
+    "finalGroup": "0011制造/VI",
+    "e1Asset": "char_241_panda_1",
+    "finalAsset": "char_241_panda_nian#7"
+  },
+  "char_4036_forcer": {
+    "e1": "/img/operators/e1/char_4036_forcer.webp",
+    "final": "/img/operators/final/char_4036_forcer.webp",
+    "finalKind": "skin",
+    "finalTitle": "拾翼",
+    "finalGroup": "时代/XXI",
+    "e1Asset": "char_4036_forcer_1",
+    "finalAsset": "char_4036_forcer_epoque#20"
+  },
+  "char_451_robin": {
+    "e1": "/img/operators/e1/char_451_robin.webp",
+    "final": "/img/operators/final/char_451_robin.webp",
+    "finalKind": "skin",
+    "finalTitle": "原野的馈赠",
+    "finalGroup": "时代/XIII",
+    "e1Asset": "char_451_robin_1",
+    "finalAsset": "char_451_robin_epoque#13"
+  },
+  "char_458_rfrost": {
+    "e1": "/img/operators/e1/char_458_rfrost.webp",
+    "final": "/img/operators/final/char_458_rfrost.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_458_rfrost_1",
+    "finalAsset": "char_458_rfrost_2"
+  },
+  "char_4171_wulfen": {
+    "e1": "/img/operators/e1/char_4171_wulfen.webp",
+    "final": "/img/operators/final/char_4171_wulfen.webp",
+    "finalKind": "skin",
+    "finalTitle": "跃动节拍",
+    "finalGroup": "玛尔特/XIV",
+    "e1Asset": "char_4171_wulfen_1",
+    "finalAsset": "char_4171_wulfen_marthe#14"
+  },
+  "char_369_bena": {
+    "e1": "/img/operators/e1/char_369_bena.webp",
+    "final": "/img/operators/final/char_369_bena.webp",
+    "finalKind": "skin",
+    "finalTitle": "草原小帮手",
+    "finalGroup": "0011制造/XI",
+    "e1Asset": "char_369_bena_1",
+    "finalAsset": "char_369_bena_epoque#38"
+  },
+  "char_4016_kazema": {
+    "e1": "/img/operators/e1/char_4016_kazema.webp",
+    "final": "/img/operators/final/char_4016_kazema.webp",
+    "finalKind": "skin",
+    "finalTitle": "幻影轻悄",
+    "finalGroup": "巫异盛宴/III",
+    "e1Asset": "char_4016_kazema_1",
+    "finalAsset": "char_4016_kazema_witch#3"
+  },
+  "char_4124_iana": {
+    "e1": "/img/operators/e1/char_4124_iana.webp",
+    "final": "/img/operators/final/char_4124_iana.webp",
+    "finalKind": "skin",
+    "finalTitle": "镜廊",
+    "finalGroup": "彩虹六号：围攻/II",
+    "e1Asset": "char_4124_iana_1",
+    "finalAsset": "char_4124_iana_rainbow6#2"
+  },
+  "char_4183_mortis": {
+    "e1": "/img/operators/e1/char_4183_mortis.webp",
+    "final": "/img/operators/final/char_4183_mortis.webp",
+    "finalKind": "skin",
+    "finalTitle": "提线的本我",
+    "finalGroup": "Ave Mujica",
+    "e1Asset": "char_4183_mortis_1",
+    "finalAsset": "char_4183_mortis_avemujica#1"
+  },
+  "char_4151_tinman": {
+    "e1": "/img/operators/e1/char_4151_tinman.webp",
+    "final": "/img/operators/final/char_4151_tinman.webp",
+    "finalKind": "skin",
+    "finalTitle": "相位面容",
+    "finalGroup": "忒斯特收藏/XII",
+    "e1Asset": "char_4151_tinman_1",
+    "finalAsset": "char_4151_tinman_sale#11"
+  },
+  "char_4191_tippi": {
+    "e1": "/img/operators/e1/char_4191_tippi.webp",
+    "final": "/img/operators/final/char_4191_tippi.webp",
+    "finalKind": "skin",
+    "finalTitle": "清新布景",
+    "finalGroup": "时代/LVII",
+    "e1Asset": "char_4191_tippi_1",
+    "finalAsset": "char_4191_tippi_epoque#57"
+  },
+  "char_103_angel": {
+    "e1": "/img/operators/e1/char_103_angel.webp",
+    "final": "/img/operators/final/char_103_angel.webp",
+    "finalKind": "skin",
+    "finalTitle": "午夜邮差",
+    "finalGroup": "忒斯特收藏/IX",
+    "e1Asset": "char_103_angel_1",
+    "finalAsset": "char_103_angel_sale#8"
+  },
+  "char_332_archet": {
+    "e1": "/img/operators/e1/char_332_archet.webp",
+    "final": "/img/operators/final/char_332_archet.webp",
+    "finalKind": "skin",
+    "finalTitle": "至虔者荣光",
+    "finalGroup": "忒斯特收藏/XV",
+    "e1Asset": "char_332_archet_1",
+    "finalAsset": "char_332_archet_sale#14"
+  },
+  "char_456_ash": {
+    "e1": "/img/operators/e1/char_456_ash.webp",
+    "final": "/img/operators/final/char_456_ash.webp",
+    "finalKind": "skin",
+    "finalTitle": "游侠",
+    "finalGroup": "彩虹六号：围攻",
+    "e1Asset": "char_456_ash_1",
+    "finalAsset": "char_456_ash_rainbow6#1"
+  },
+  "char_340_shwaz": {
+    "e1": "/img/operators/e1/char_340_shwaz.webp",
+    "final": "/img/operators/final/char_340_shwaz.webp",
+    "finalKind": "skin",
+    "finalTitle": "天际线",
+    "finalGroup": "雷神推进者",
+    "e1Asset": "char_340_shwaz_1",
+    "finalAsset": "char_340_shwaz_striker#1"
+  },
+  "char_4055_bgsnow": {
+    "e1": "/img/operators/e1/char_4055_bgsnow.webp",
+    "final": "/img/operators/final/char_4055_bgsnow.webp",
+    "finalKind": "skin",
+    "finalTitle": "行梦侧畔",
+    "finalGroup": "0011/韵系列/VII",
+    "e1Asset": "char_4055_bgsnow_1",
+    "finalAsset": "char_4055_bgsnow_yun#7"
+  },
+  "char_1048_orchd2": {
+    "e1": "/img/operators/e1/char_1048_orchd2.webp",
+    "final": "/img/operators/final/char_1048_orchd2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1048_orchd2_1",
+    "finalAsset": "char_1048_orchd2_2"
+  },
+  "char_430_fartth": {
+    "e1": "/img/operators/e1/char_430_fartth.webp",
+    "final": "/img/operators/final/char_430_fartth.webp",
+    "finalKind": "skin",
+    "finalTitle": "捉风",
+    "finalGroup": "0011/飙系列/Ⅴ",
+    "e1Asset": "char_430_fartth_1",
+    "finalAsset": "char_430_fartth_whirlwind#5"
+  },
+  "char_4193_lemuen": {
+    "e1": "/img/operators/e1/char_4193_lemuen.webp",
+    "final": "/img/operators/final/char_4193_lemuen.webp",
+    "finalKind": "skin",
+    "finalTitle": "暮星安魂曲",
+    "finalGroup": "音律联觉/VIII",
+    "e1Asset": "char_4193_lemuen_1",
+    "finalAsset": "char_4193_lemuen_ambienceSynesthesia#7"
+  },
+  "char_113_cqbw": {
+    "e1": "/img/operators/e1/char_113_cqbw.webp",
+    "final": "/img/operators/final/char_113_cqbw.webp",
+    "finalKind": "skin",
+    "finalTitle": "恍惚",
+    "finalGroup": "时代/VII",
+    "e1Asset": "char_113_cqbw_1",
+    "finalAsset": "char_113_cqbw_epoque#7"
+  },
+  "char_300_phenxi": {
+    "e1": "/img/operators/e1/char_300_phenxi.webp",
+    "final": "/img/operators/final/char_300_phenxi.webp",
+    "finalKind": "skin",
+    "finalTitle": "审判日",
+    "finalGroup": "斗争血脉/IX",
+    "e1Asset": "char_300_phenxi_1",
+    "finalAsset": "char_300_phenxi_boc#9"
+  },
+  "char_197_poca": {
+    "e1": "/img/operators/e1/char_197_poca.webp",
+    "final": "/img/operators/final/char_197_poca.webp",
+    "finalKind": "skin",
+    "finalTitle": "常伴我身",
+    "finalGroup": "轻松小熊",
+    "e1Asset": "char_197_poca_1",
+    "finalAsset": "char_197_poca_rilakkuma#1"
+  },
+  "char_2012_typhon": {
+    "e1": "/img/operators/e1/char_2012_typhon.webp",
+    "final": "/img/operators/final/char_2012_typhon.webp",
+    "finalKind": "skin",
+    "finalTitle": "温差 RT.RX07",
+    "finalGroup": "珊瑚海岸/XVII",
+    "e1Asset": "char_2012_typhon_1",
+    "finalAsset": "char_2012_typhon_summer#17"
+  },
+  "char_391_rosmon": {
+    "e1": "/img/operators/e1/char_391_rosmon.webp",
+    "final": "/img/operators/final/char_391_rosmon.webp",
+    "finalKind": "skin",
+    "finalTitle": "轻盈一梦",
+    "finalGroup": "忒斯特收藏/XVIII",
+    "e1Asset": "char_391_rosmon_1",
+    "finalAsset": "char_391_rosmon_sale#16"
+  },
+  "char_1035_wisdel": {
+    "e1": "/img/operators/e1/char_1035_wisdel.webp",
+    "final": "/img/operators/final/char_1035_wisdel.webp",
+    "finalKind": "skin",
+    "finalTitle": "绝对主角",
+    "finalGroup": "成就之星/IX",
+    "e1Asset": "char_1035_wisdel_1",
+    "finalAsset": "char_1035_wisdel_game#9"
+  },
+  "char_1013_chen2": {
+    "e1": "/img/operators/e1/char_1013_chen2.webp",
+    "final": "/img/operators/final/char_1013_chen2.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD79",
+    "finalGroup": "珊瑚海岸/XX",
+    "e1Asset": "char_1013_chen2_1",
+    "finalAsset": "char_1013_chen2_summer#20"
+  },
+  "char_4117_ray": {
+    "e1": "/img/operators/e1/char_4117_ray.webp",
+    "final": "/img/operators/final/char_4117_ray.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA098",
+    "finalGroup": "珊瑚海岸/XXII",
+    "e1Asset": "char_4117_ray_1",
+    "finalAsset": "char_4117_ray_summer#22"
+  },
+  "char_4138_narant": {
+    "e1": "/img/operators/e1/char_4138_narant.webp",
+    "final": "/img/operators/final/char_4138_narant.webp",
+    "finalKind": "skin",
+    "finalTitle": "率直诚实之人",
+    "finalGroup": "小马宝莉",
+    "e1Asset": "char_4138_narant_1",
+    "finalAsset": "char_4138_narant_littlePony#1"
+  },
+  "char_112_siege": {
+    "e1": "/img/operators/e1/char_112_siege.webp",
+    "final": "/img/operators/final/char_112_siege.webp",
+    "finalKind": "skin",
+    "finalTitle": "摧城",
+    "finalGroup": "雷神推进者/II",
+    "e1Asset": "char_112_siege_1",
+    "finalAsset": "char_112_siege_striker#2"
+  },
+  "char_222_bpipe": {
+    "e1": "/img/operators/e1/char_222_bpipe.webp",
+    "final": "/img/operators/final/char_222_bpipe.webp",
+    "finalKind": "skin",
+    "finalTitle": "风笛声声",
+    "finalGroup": "时代/XXXIX",
+    "e1Asset": "char_222_bpipe_1",
+    "finalAsset": "char_222_bpipe_epoque#40"
+  },
+  "char_362_saga": {
+    "e1": "/img/operators/e1/char_362_saga.webp",
+    "final": "/img/operators/final/char_362_saga.webp",
+    "finalKind": "skin",
+    "finalTitle": "彼有",
+    "finalGroup": "忒斯特收藏/X",
+    "e1Asset": "char_362_saga_1",
+    "finalAsset": "char_362_saga_sale#9"
+  },
+  "char_4026_vulpis": {
+    "e1": "/img/operators/e1/char_4026_vulpis.webp",
+    "final": "/img/operators/final/char_4026_vulpis.webp",
+    "finalKind": "skin",
+    "finalTitle": "失焦",
+    "finalGroup": "时代/LV",
+    "e1Asset": "char_4026_vulpis_1",
+    "finalAsset": "char_4026_vulpis_epoque#55"
+  },
+  "char_479_sleach": {
+    "e1": "/img/operators/e1/char_479_sleach.webp",
+    "final": "/img/operators/final/char_479_sleach.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA317",
+    "finalGroup": "珊瑚海岸/XI",
+    "e1Asset": "char_479_sleach_1",
+    "finalAsset": "char_479_sleach_summer#11"
+  },
+  "char_420_flamtl": {
+    "e1": "/img/operators/e1/char_420_flamtl.webp",
+    "final": "/img/operators/final/char_420_flamtl.webp",
+    "finalKind": "skin",
+    "finalTitle": "小健将",
+    "finalGroup": "成就之星/II",
+    "e1Asset": "char_420_flamtl_1",
+    "finalAsset": "char_420_flamtl_game#2"
+  },
+  "char_427_vigil": {
+    "e1": "/img/operators/e1/char_427_vigil.webp",
+    "final": "/img/operators/final/char_427_vigil.webp",
+    "finalKind": "skin",
+    "finalTitle": "叙拉古的彼面",
+    "finalGroup": "时代/XXVII",
+    "e1Asset": "char_427_vigil_1",
+    "finalAsset": "char_427_vigil_epoque#27"
+  },
+  "char_249_mlyss": {
+    "e1": "/img/operators/e1/char_249_mlyss.webp",
+    "final": "/img/operators/final/char_249_mlyss.webp",
+    "finalKind": "skin",
+    "finalTitle": "漫步于黄金之梦",
+    "finalGroup": "音律联觉/VI",
+    "e1Asset": "char_249_mlyss_1",
+    "finalAsset": "char_249_mlyss_ambienceSynesthesia#6"
+  },
+  "char_4228_closur": {
+    "e1": "/img/operators/e1/char_4228_closur.webp",
+    "final": "/img/operators/final/char_4228_closur.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4228_closur_1",
+    "finalAsset": "char_4228_closur_2"
+  },
+  "char_1045_svash2": {
+    "e1": "/img/operators/e1/char_1045_svash2.webp",
+    "final": "/img/operators/final/char_1045_svash2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1045_svash2_1",
+    "finalAsset": "char_1045_svash2_2"
+  },
+  "char_4087_ines": {
+    "e1": "/img/operators/e1/char_4087_ines.webp",
+    "final": "/img/operators/final/char_4087_ines.webp",
+    "finalKind": "skin",
+    "finalTitle": "蝶舞华章",
+    "finalGroup": "音律联觉/V",
+    "e1Asset": "char_4087_ines_1",
+    "finalAsset": "char_4087_ines_ambienceSynesthesia#5"
+  },
+  "char_134_ifrit": {
+    "e1": "/img/operators/e1/char_134_ifrit.webp",
+    "final": "/img/operators/final/char_134_ifrit.webp",
+    "finalKind": "skin",
+    "finalTitle": "轻松旅途",
+    "finalGroup": "轻松小熊",
+    "e1Asset": "char_134_ifrit_1",
+    "finalAsset": "char_134_ifrit_rilakkuma#1"
+  },
+  "char_4229_aphris": {
+    "e1": "/img/operators/e1/char_4229_aphris.webp",
+    "final": "/img/operators/final/char_4229_aphris.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4229_aphris_1",
+    "finalAsset": "char_4229_aphris_2"
+  },
+  "char_213_mostma": {
+    "e1": "/img/operators/e1/char_213_mostma.webp",
+    "final": "/img/operators/final/char_213_mostma.webp",
+    "finalKind": "skin",
+    "finalTitle": "幻语乐痕",
+    "finalGroup": "音律联觉/VI",
+    "e1Asset": "char_213_mostma_1",
+    "finalAsset": "char_213_mostma_ambienceSynesthesia#6"
+  },
+  "char_180_amgoat": {
+    "e1": "/img/operators/e1/char_180_amgoat.webp",
+    "final": "/img/operators/final/char_180_amgoat.webp",
+    "finalKind": "skin",
+    "finalTitle": "绵绒小魔女",
+    "finalGroup": "三丽鸥家族/II",
+    "e1Asset": "char_180_amgoat_1",
+    "finalAsset": "char_180_amgoat_sanrio#2"
+  },
+  "char_2013_cerber": {
+    "e1": "/img/operators/e1/char_2013_cerber.webp",
+    "final": "/img/operators/final/char_2013_cerber.webp",
+    "finalKind": "skin",
+    "finalTitle": "无拘无束",
+    "finalGroup": "0011/飙系列/II",
+    "e1Asset": "char_2013_cerber_1",
+    "finalAsset": "char_2013_cerber_whirlwind#2"
+  },
+  "char_4027_heyak": {
+    "e1": "/img/operators/e1/char_4027_heyak.webp",
+    "final": "/img/operators/final/char_4027_heyak.webp",
+    "finalKind": "skin",
+    "finalTitle": "恒久祭礼",
+    "finalGroup": "时代/XLIX",
+    "e1Asset": "char_4027_heyak_1",
+    "finalAsset": "char_4027_heyak_epoque#50"
+  },
+  "char_4133_logos": {
+    "e1": "/img/operators/e1/char_4133_logos.webp",
+    "final": "/img/operators/final/char_4133_logos.webp",
+    "finalKind": "skin",
+    "finalTitle": "辉煌的静谧",
+    "finalGroup": "音律联觉/VI",
+    "e1Asset": "char_4133_logos_1",
+    "finalAsset": "char_4133_logos_ambienceSynesthesia#6"
+  },
+  "char_2015_dusk": {
+    "e1": "/img/operators/e1/char_2015_dusk.webp",
+    "final": "/img/operators/final/char_2015_dusk.webp",
+    "finalKind": "skin",
+    "finalTitle": "青玉砚",
+    "finalGroup": "0011制造/XII",
+    "e1Asset": "char_2015_dusk_1",
+    "finalAsset": "char_2015_dusk_nian#12"
+  },
+  "char_4141_marcil": {
+    "e1": "/img/operators/e1/char_4141_marcil.webp",
+    "final": "/img/operators/final/char_4141_marcil.webp",
+    "finalKind": "skin",
+    "finalTitle": "泰拉冒险",
+    "finalGroup": "迷宫饭",
+    "e1Asset": "char_4141_marcil_1",
+    "finalAsset": "char_4141_marcil_dungeon#1"
+  },
+  "char_472_pasngr": {
+    "e1": "/img/operators/e1/char_472_pasngr.webp",
+    "final": "/img/operators/final/char_472_pasngr.webp",
+    "finalKind": "skin",
+    "finalTitle": "今昔须臾之梦",
+    "finalGroup": "时代/XVII",
+    "e1Asset": "char_472_pasngr_1",
+    "finalAsset": "char_472_pasngr_epoque#17"
+  },
+  "char_426_billro": {
+    "e1": "/img/operators/e1/char_426_billro.webp",
+    "final": "/img/operators/final/char_426_billro.webp",
+    "finalKind": "skin",
+    "finalTitle": "灿阳朝露 SD08",
+    "finalGroup": "珊瑚海岸/VIII",
+    "e1Asset": "char_426_billro_1",
+    "finalAsset": "char_426_billro_summer#8"
+  },
+  "char_4080_lin": {
+    "e1": "/img/operators/e1/char_4080_lin.webp",
+    "final": "/img/operators/final/char_4080_lin.webp",
+    "finalKind": "skin",
+    "finalTitle": "求知的魔法",
+    "finalGroup": "小马宝莉",
+    "e1Asset": "char_4080_lin_1",
+    "finalAsset": "char_4080_lin_littlePony#1"
+  },
+  "char_1046_sbell2": {
+    "e1": "/img/operators/e1/char_1046_sbell2.webp",
+    "final": "/img/operators/final/char_1046_sbell2.webp",
+    "finalKind": "skin",
+    "finalTitle": "曙光祝颂",
+    "finalGroup": "音律联觉/IX",
+    "e1Asset": "char_1046_sbell2_1",
+    "finalAsset": "char_1046_sbell2_ambienceSynesthesia#8"
+  },
+  "char_377_gdglow": {
+    "e1": "/img/operators/e1/char_377_gdglow.webp",
+    "final": "/img/operators/final/char_377_gdglow.webp",
+    "finalKind": "skin",
+    "finalTitle": "花房茶话会",
+    "finalGroup": "三丽鸥家族",
+    "e1Asset": "char_377_gdglow_1",
+    "finalAsset": "char_377_gdglow_sanrio#1"
+  },
+  "char_1038_whitw2": {
+    "e1": "/img/operators/e1/char_1038_whitw2.webp",
+    "final": "/img/operators/final/char_1038_whitw2.webp",
+    "finalKind": "skin",
+    "finalTitle": "无序的谦卑",
+    "finalGroup": "忒斯特收藏/XVII",
+    "e1Asset": "char_1038_whitw2_1",
+    "finalAsset": "char_1038_whitw2_sale#15"
+  },
+  "char_4046_ebnhlz": {
+    "e1": "/img/operators/e1/char_4046_ebnhlz.webp",
+    "final": "/img/operators/final/char_4046_ebnhlz.webp",
+    "finalKind": "skin",
+    "finalTitle": "变奏",
+    "finalGroup": "斗争血脉/VI",
+    "e1Asset": "char_4046_ebnhlz_1",
+    "finalAsset": "char_4046_ebnhlz_boc#6"
+  },
+  "char_4226_veen": {
+    "e1": "/img/operators/e1/char_4226_veen.webp",
+    "final": "/img/operators/final/char_4226_veen.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4226_veen_1",
+    "finalAsset": "char_4226_veen_2"
+  },
+  "char_4146_nymph": {
+    "e1": "/img/operators/e1/char_4146_nymph.webp",
+    "final": "/img/operators/final/char_4146_nymph.webp",
+    "finalKind": "skin",
+    "finalTitle": "繁花梦幻谈",
+    "finalGroup": "音律联觉/VII",
+    "e1Asset": "char_4146_nymph_1",
+    "finalAsset": "char_4146_nymph_ambienceSynesthesia#6"
+  },
+  "char_1040_blaze2": {
+    "e1": "/img/operators/e1/char_1040_blaze2.webp",
+    "final": "/img/operators/final/char_1040_blaze2.webp",
+    "finalKind": "skin",
+    "finalTitle": "夜归人",
+    "finalGroup": "寒武纪/V",
+    "e1Asset": "char_1040_blaze2_1",
+    "finalAsset": "char_1040_blaze2_winter#5"
+  },
+  "char_4204_mantra": {
+    "e1": "/img/operators/e1/char_4204_mantra.webp",
+    "final": "/img/operators/final/char_4204_mantra.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4204_mantra_1",
+    "finalAsset": "char_4204_mantra_2"
+  },
+  "char_450_necras": {
+    "e1": "/img/operators/e1/char_450_necras.webp",
+    "final": "/img/operators/final/char_450_necras.webp",
+    "finalKind": "skin",
+    "finalTitle": "晶化信念",
+    "finalGroup": "音律联觉/VIII",
+    "e1Asset": "char_450_necras_1",
+    "finalAsset": "char_450_necras_ambienceSynesthesia#7"
+  },
+  "char_206_gnosis": {
+    "e1": "/img/operators/e1/char_206_gnosis.webp",
+    "final": "/img/operators/final/char_206_gnosis.webp",
+    "finalKind": "skin",
+    "finalTitle": "先驱",
+    "finalGroup": "斗争血脉/IV",
+    "e1Asset": "char_206_gnosis_1",
+    "finalAsset": "char_206_gnosis_boc#4"
+  },
+  "char_291_aglina": {
+    "e1": "/img/operators/e1/char_291_aglina.webp",
+    "final": "/img/operators/final/char_291_aglina.webp",
+    "finalKind": "skin",
+    "finalTitle": "夏卉 FA017",
+    "finalGroup": "珊瑚海岸/V",
+    "e1Asset": "char_291_aglina_1",
+    "finalAsset": "char_291_aglina_summer#5"
+  },
+  "char_358_lisa": {
+    "e1": "/img/operators/e1/char_358_lisa.webp",
+    "final": "/img/operators/final/char_358_lisa.webp",
+    "finalKind": "skin",
+    "finalTitle": "雪霁",
+    "finalGroup": "时代/XXII",
+    "e1Asset": "char_358_lisa_1",
+    "finalAsset": "char_358_lisa_epoque#22"
+  },
+  "char_1047_halo2": {
+    "e1": "/img/operators/e1/char_1047_halo2.webp",
+    "final": "/img/operators/final/char_1047_halo2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1047_halo2_1",
+    "finalAsset": "char_1047_halo2_2"
+  },
+  "char_248_mgllan": {
+    "e1": "/img/operators/e1/char_248_mgllan.webp",
+    "final": "/img/operators/final/char_248_mgllan.webp",
+    "finalKind": "skin",
+    "finalTitle": "回味冰霜雪",
+    "finalGroup": "罗德厨房",
+    "e1Asset": "char_248_mgllan_1",
+    "finalAsset": "char_248_mgllan_kitchen#1"
+  },
+  "char_4195_radian": {
+    "e1": "/img/operators/e1/char_4195_radian.webp",
+    "final": "/img/operators/final/char_4195_radian.webp",
+    "finalKind": "skin",
+    "finalTitle": "乱数法则",
+    "finalGroup": "成就之星/VIII",
+    "e1Asset": "char_4195_radian_1",
+    "finalAsset": "char_4195_radian_game#8"
+  },
+  "char_1012_skadi2": {
+    "e1": "/img/operators/e1/char_1012_skadi2.webp",
+    "final": "/img/operators/final/char_1012_skadi2.webp",
+    "finalKind": "skin",
+    "finalTitle": "红女爵",
+    "finalGroup": "命途迭代/II",
+    "e1Asset": "char_1012_skadi2_1",
+    "finalAsset": "char_1012_skadi2_iteration#2"
+  },
+  "char_4134_cetsyr": {
+    "e1": "/img/operators/e1/char_4134_cetsyr.webp",
+    "final": "/img/operators/final/char_4134_cetsyr.webp",
+    "finalKind": "skin",
+    "finalTitle": "追悼",
+    "finalGroup": "时代/XLIX",
+    "e1Asset": "char_4134_cetsyr_1",
+    "finalAsset": "char_4134_cetsyr_epoque#50"
+  },
+  "char_1031_slent2": {
+    "e1": "/img/operators/e1/char_1031_slent2.webp",
+    "final": "/img/operators/final/char_1031_slent2.webp",
+    "finalKind": "skin",
+    "finalTitle": "栖息",
+    "finalGroup": "时代/XXXII",
+    "e1Asset": "char_1031_slent2_1",
+    "finalAsset": "char_1031_slent2_epoque#32"
+  },
+  "char_4202_haruka": {
+    "e1": "/img/operators/e1/char_4202_haruka.webp",
+    "final": "/img/operators/final/char_4202_haruka.webp",
+    "finalKind": "skin",
+    "finalTitle": "常世之幻",
+    "finalGroup": "命途迭代/VI",
+    "e1Asset": "char_4202_haruka_1",
+    "finalAsset": "char_4202_haruka_iteration#6"
+  },
+  "char_2023_ling": {
+    "e1": "/img/operators/e1/char_2023_ling.webp",
+    "final": "/img/operators/final/char_2023_ling.webp",
+    "finalKind": "skin",
+    "finalTitle": "方遒卷",
+    "finalGroup": "0011制造/XII",
+    "e1Asset": "char_2023_ling_1",
+    "finalAsset": "char_2023_ling_nian#12"
+  },
+  "char_4072_ironmn": {
+    "e1": "/img/operators/e1/char_4072_ironmn.webp",
+    "final": "/img/operators/final/char_4072_ironmn.webp",
+    "finalKind": "skin",
+    "finalTitle": "空心王冠",
+    "finalGroup": "音律联觉/V",
+    "e1Asset": "char_4072_ironmn_1",
+    "finalAsset": "char_4072_ironmn_ambienceSynesthesia#5"
+  },
+  "char_4212_nasti": {
+    "e1": "/img/operators/e1/char_4212_nasti.webp",
+    "final": "/img/operators/final/char_4212_nasti.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4212_nasti_1",
+    "finalAsset": "char_4212_nasti_2"
+  },
+  "char_245_cello": {
+    "e1": "/img/operators/e1/char_245_cello.webp",
+    "final": "/img/operators/final/char_245_cello.webp",
+    "finalKind": "skin",
+    "finalTitle": "无我唯识",
+    "finalGroup": "忒斯特收藏/XIII",
+    "e1Asset": "char_245_cello_1",
+    "finalAsset": "char_245_cello_sale#12"
+  },
+  "char_1042_phatm2": {
+    "e1": "/img/operators/e1/char_1042_phatm2.webp",
+    "final": "/img/operators/final/char_1042_phatm2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1042_phatm2_1",
+    "finalAsset": "char_1042_phatm2_2"
+  },
+  "char_250_phatom": {
+    "e1": "/img/operators/e1/char_250_phatom.webp",
+    "final": "/img/operators/final/char_250_phatom.webp",
+    "finalKind": "skin",
+    "finalTitle": "焦点",
+    "finalGroup": "忒斯特收藏/V",
+    "e1Asset": "char_250_phatom_1",
+    "finalAsset": "char_250_phatom_sale#4"
+  },
+  "char_1028_texas2": {
+    "e1": "/img/operators/e1/char_1028_texas2.webp",
+    "final": "/img/operators/final/char_1028_texas2.webp",
+    "finalKind": "skin",
+    "finalTitle": "幽兰秘辛",
+    "finalGroup": "时代/XXXVI",
+    "e1Asset": "char_1028_texas2_1",
+    "finalAsset": "char_1028_texas2_epoque#36"
+  },
+  "char_1029_yato2": {
+    "e1": "/img/operators/e1/char_1029_yato2.webp",
+    "final": "/img/operators/final/char_1029_yato2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1029_yato2_1",
+    "finalAsset": "char_1029_yato2_2"
+  },
+  "char_1502_crosly": {
+    "e1": "/img/operators/e1/char_1502_crosly.webp",
+    "final": "/img/operators/final/char_1502_crosly.webp",
+    "finalKind": "skin",
+    "finalTitle": "夜之终局",
+    "finalGroup": "命途迭代/V",
+    "e1Asset": "char_1502_crosly_1",
+    "finalAsset": "char_1502_crosly_iteration#5"
+  },
+  "char_322_lmlee": {
+    "e1": "/img/operators/e1/char_322_lmlee.webp",
+    "final": "/img/operators/final/char_322_lmlee.webp",
+    "finalKind": "skin",
+    "finalTitle": "鉴浮生",
+    "finalGroup": "0011/飙系列/X",
+    "e1Asset": "char_322_lmlee_1",
+    "finalAsset": "char_322_lmlee_whirlwind#10"
+  },
+  "char_1033_swire2": {
+    "e1": "/img/operators/e1/char_1033_swire2.webp",
+    "final": "/img/operators/final/char_1033_swire2.webp",
+    "finalKind": "skin",
+    "finalTitle": "律动方格",
+    "finalGroup": "音律联觉/IV",
+    "e1Asset": "char_1033_swire2_1",
+    "finalAsset": "char_1033_swire2_ambienceSynesthesia#4"
+  },
+  "char_400_weedy": {
+    "e1": "/img/operators/e1/char_400_weedy.webp",
+    "final": "/img/operators/final/char_400_weedy.webp",
+    "finalKind": "skin",
+    "finalTitle": "倾听",
+    "finalGroup": "错位巡礼/I",
+    "e1Asset": "char_400_weedy_1",
+    "finalAsset": "char_400_weedy_sightseer#1"
+  },
+  "char_225_haak": {
+    "e1": "/img/operators/e1/char_225_haak.webp",
+    "final": "/img/operators/final/char_225_haak.webp",
+    "finalKind": "skin",
+    "finalTitle": "妙手玄心",
+    "finalGroup": "0011制造/IV",
+    "e1Asset": "char_225_haak_1",
+    "finalAsset": "char_225_haak_nian#5"
+  },
+  "char_1041_angel2": {
+    "e1": "/img/operators/e1/char_1041_angel2.webp",
+    "final": "/img/operators/final/char_1041_angel2.webp",
+    "finalKind": "skin",
+    "finalTitle": "寻翼之歌",
+    "finalGroup": "命途迭代/VI",
+    "e1Asset": "char_1041_angel2_1",
+    "finalAsset": "char_1041_angel2_iteration#6"
+  },
+  "char_474_glady": {
+    "e1": "/img/operators/e1/char_474_glady.webp",
+    "final": "/img/operators/final/char_474_glady.webp",
+    "finalKind": "skin",
+    "finalTitle": "我即潮汐",
+    "finalGroup": "时代/XXXIII",
+    "e1Asset": "char_474_glady_1",
+    "finalAsset": "char_474_glady_epoque#33"
+  },
+  "char_437_mizuki": {
+    "e1": "/img/operators/e1/char_437_mizuki.webp",
+    "final": "/img/operators/final/char_437_mizuki.webp",
+    "finalKind": "skin",
+    "finalTitle": "永恒玩家",
+    "finalGroup": "成就之星/VI",
+    "e1Asset": "char_437_mizuki_1",
+    "finalAsset": "char_437_mizuki_game#6"
+  },
+  "char_4132_ascln": {
+    "e1": "/img/operators/e1/char_4132_ascln.webp",
+    "final": "/img/operators/final/char_4132_ascln.webp",
+    "finalKind": "skin",
+    "finalTitle": "趋光之暗",
+    "finalGroup": "命途迭代/IV",
+    "e1Asset": "char_4132_ascln_1",
+    "finalAsset": "char_4132_ascln_iteration#4"
+  },
+  "char_1023_ghost2": {
+    "e1": "/img/operators/e1/char_1023_ghost2.webp",
+    "final": "/img/operators/final/char_1023_ghost2.webp",
+    "finalKind": "skin",
+    "finalTitle": "生而为一",
+    "finalGroup": "斗争血脉/VI",
+    "e1Asset": "char_1023_ghost2_1",
+    "finalAsset": "char_1023_ghost2_boc#6"
+  },
+  "char_4048_doroth": {
+    "e1": "/img/operators/e1/char_4048_doroth.webp",
+    "final": "/img/operators/final/char_4048_doroth.webp",
+    "finalKind": "skin",
+    "finalTitle": "命运主宰",
+    "finalGroup": "巫异盛宴/IV",
+    "e1Asset": "char_4048_doroth_1",
+    "finalAsset": "char_4048_doroth_witch#4"
+  },
+  "char_4123_ela": {
+    "e1": "/img/operators/e1/char_4123_ela.webp",
+    "final": "/img/operators/final/char_4123_ela.webp",
+    "finalKind": "skin",
+    "finalTitle": "密室",
+    "finalGroup": "彩虹六号：围攻/II",
+    "e1Asset": "char_4123_ela_1",
+    "finalAsset": "char_4123_ela_rainbow6#2"
+  },
+  "char_2027_wang": {
+    "e1": "/img/operators/e1/char_2027_wang.webp",
+    "final": "/img/operators/final/char_2027_wang.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_2027_wang_1",
+    "finalAsset": "char_2027_wang_2"
+  },
+  "char_1039_thorn2": {
+    "e1": "/img/operators/e1/char_1039_thorn2.webp",
+    "final": "/img/operators/final/char_1039_thorn2.webp",
+    "finalKind": "skin",
+    "finalTitle": "无际之帆",
+    "finalGroup": "玛尔特/IX",
+    "e1Asset": "char_1039_thorn2_1",
+    "finalAsset": "char_1039_thorn2_marthe#9"
+  },
+  "char_1015_aglna2": {
+    "e1": "/img/operators/e1/char_1015_aglna2.webp",
+    "final": "/img/operators/final/char_1015_aglna2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1015_aglna2_1",
+    "finalAsset": "char_1015_aglna2_2"
+  },
+  "char_147_shining": {
+    "e1": "/img/operators/e1/char_147_shining.webp",
+    "final": "/img/operators/final/char_147_shining.webp",
+    "finalKind": "skin",
+    "finalTitle": "静谧午夜 DN02",
+    "finalGroup": "珊瑚海岸/I",
+    "e1Asset": "char_147_shining_1",
+    "finalAsset": "char_147_shining_summer#1"
+  },
+  "char_179_cgbird": {
+    "e1": "/img/operators/e1/char_179_cgbird.webp",
+    "final": "/img/operators/final/char_179_cgbird.webp",
+    "finalKind": "skin",
+    "finalTitle": "流辉",
+    "finalGroup": "错位巡礼/I",
+    "e1Asset": "char_179_cgbird_1",
+    "finalAsset": "char_179_cgbird_sightseer#1"
+  },
+  "char_003_kalts": {
+    "e1": "/img/operators/e1/char_003_kalts.webp",
+    "final": "/img/operators/final/char_003_kalts.webp",
+    "finalKind": "skin",
+    "finalTitle": "时遗",
+    "finalGroup": "忒斯特收藏/XVI",
+    "e1Asset": "char_003_kalts_1",
+    "finalAsset": "char_003_kalts_sale#14"
+  },
+  "char_4042_lumen": {
+    "e1": "/img/operators/e1/char_4042_lumen.webp",
+    "final": "/img/operators/final/char_4042_lumen.webp",
+    "finalKind": "skin",
+    "finalTitle": "雨霓行游客",
+    "finalGroup": "三丽鸥家族/II",
+    "e1Asset": "char_4042_lumen_1",
+    "finalAsset": "char_4042_lumen_sanrio#2"
+  },
+  "char_1016_agoat2": {
+    "e1": "/img/operators/e1/char_1016_agoat2.webp",
+    "final": "/img/operators/final/char_1016_agoat2.webp",
+    "finalKind": "skin",
+    "finalTitle": "后来的故事",
+    "finalGroup": "时代/LVII",
+    "e1Asset": "char_1016_agoat2_1",
+    "finalAsset": "char_1016_agoat2_epoque#57"
+  },
+  "char_1020_reed2": {
+    "e1": "/img/operators/e1/char_1020_reed2.webp",
+    "final": "/img/operators/final/char_1020_reed2.webp",
+    "finalKind": "skin",
+    "finalTitle": "闪焰之夜",
+    "finalGroup": "冰原信使/VIII",
+    "e1Asset": "char_1020_reed2_1",
+    "finalAsset": "char_1020_reed2_snow#8"
+  },
+  "char_4056_titi": {
+    "e1": "/img/operators/e1/char_4056_titi.webp",
+    "final": "/img/operators/final/char_4056_titi.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4056_titi_1",
+    "finalAsset": "char_4056_titi_2"
+  },
+  "char_4179_monstr": {
+    "e1": "/img/operators/e1/char_4179_monstr.webp",
+    "final": "/img/operators/final/char_4179_monstr.webp",
+    "finalKind": "skin",
+    "finalTitle": "锋锐",
+    "finalGroup": "斗争血脉/XI",
+    "e1Asset": "char_4179_monstr_1",
+    "finalAsset": "char_4179_monstr_boc#11"
+  },
+  "char_1052_kalts2": {
+    "e1": "/img/operators/e1/char_1052_kalts2.webp",
+    "final": "/img/operators/final/char_1052_kalts2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1052_kalts2_1",
+    "finalAsset": "char_1052_kalts2_2"
+  },
+  "char_136_hsguma": {
+    "e1": "/img/operators/e1/char_136_hsguma.webp",
+    "final": "/img/operators/final/char_136_hsguma.webp",
+    "finalKind": "skin",
+    "finalTitle": "探寻者 SK97",
+    "finalGroup": "珊瑚海岸/XVI",
+    "e1Asset": "char_136_hsguma_1",
+    "finalAsset": "char_136_hsguma_summer#16"
+  },
+  "char_202_demkni": {
+    "e1": "/img/operators/e1/char_202_demkni.webp",
+    "final": "/img/operators/final/char_202_demkni.webp",
+    "finalKind": "skin",
+    "finalTitle": "黑白冷峻",
+    "finalGroup": "音律联觉/VIII",
+    "e1Asset": "char_202_demkni_1",
+    "finalAsset": "char_202_demkni_ambienceSynesthesia#7"
+  },
+  "char_423_blemsh": {
+    "e1": "/img/operators/e1/char_423_blemsh.webp",
+    "final": "/img/operators/final/char_423_blemsh.webp",
+    "finalKind": "skin",
+    "finalTitle": "善良坚强之心",
+    "finalGroup": "小马宝莉",
+    "e1Asset": "char_423_blemsh_1",
+    "finalAsset": "char_423_blemsh_littlePony#1"
+  },
+  "char_2025_shu": {
+    "e1": "/img/operators/e1/char_2025_shu.webp",
+    "final": "/img/operators/final/char_2025_shu.webp",
+    "finalKind": "skin",
+    "finalTitle": "春日宴",
+    "finalGroup": "0011制造/XI",
+    "e1Asset": "char_2025_shu_1",
+    "finalAsset": "char_2025_shu_nian#11"
+  },
+  "char_2014_nian": {
+    "e1": "/img/operators/e1/char_2014_nian.webp",
+    "final": "/img/operators/final/char_2014_nian.webp",
+    "finalKind": "skin",
+    "finalTitle": "霹雳导演",
+    "finalGroup": "中国电影资料馆",
+    "e1Asset": "char_2014_nian_1",
+    "finalAsset": "char_2014_nian_cfa#1"
+  },
+  "char_311_mudrok": {
+    "e1": "/img/operators/e1/char_311_mudrok.webp",
+    "final": "/img/operators/final/char_311_mudrok.webp",
+    "finalKind": "skin",
+    "finalTitle": "砾瓦",
+    "finalGroup": "生命之地/X",
+    "e1Asset": "char_311_mudrok_1",
+    "finalAsset": "char_311_mudrok_wild#10"
+  },
+  "char_4065_judge": {
+    "e1": "/img/operators/e1/char_4065_judge.webp",
+    "final": "/img/operators/final/char_4065_judge.webp",
+    "finalKind": "skin",
+    "finalTitle": "记叙",
+    "finalGroup": "时代/XXXIII",
+    "e1Asset": "char_4065_judge_1",
+    "finalAsset": "char_4065_judge_epoque#33"
+  },
+  "char_416_zumama": {
+    "e1": "/img/operators/e1/char_416_zumama.webp",
+    "final": "/img/operators/final/char_416_zumama.webp",
+    "finalKind": "skin",
+    "finalTitle": "熔锻铸匠",
+    "finalGroup": "斗争血脉/III",
+    "e1Asset": "char_416_zumama_1",
+    "finalAsset": "char_416_zumama_boc#3"
+  },
+  "char_4039_horn": {
+    "e1": "/img/operators/e1/char_4039_horn.webp",
+    "final": "/img/operators/final/char_4039_horn.webp",
+    "finalKind": "skin",
+    "finalTitle": "化花",
+    "finalGroup": "时代/XXIV",
+    "e1Asset": "char_4039_horn_1",
+    "finalAsset": "char_4039_horn_epoque#24"
+  },
+  "char_1034_jesca2": {
+    "e1": "/img/operators/e1/char_1034_jesca2.webp",
+    "final": "/img/operators/final/char_1034_jesca2.webp",
+    "finalKind": "skin",
+    "finalTitle": "《上任达维镇》",
+    "finalGroup": "中国电影资料馆",
+    "e1Asset": "char_1034_jesca2_1",
+    "finalAsset": "char_1034_jesca2_cfa#1"
+  },
+  "char_4194_rmixer": {
+    "e1": "/img/operators/e1/char_4194_rmixer.webp",
+    "final": "/img/operators/final/char_4194_rmixer.webp",
+    "finalKind": "skin",
+    "finalTitle": "天穹肇始",
+    "finalGroup": "斗争血脉/XII",
+    "e1Asset": "char_4194_rmixer_1",
+    "finalAsset": "char_4194_rmixer_boc#12"
+  },
+  "char_4230_mcnist": {
+    "e1": "/img/operators/e1/char_4230_mcnist.webp",
+    "final": "/img/operators/final/char_4230_mcnist.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4230_mcnist_1",
+    "finalAsset": "char_4230_mcnist_2"
+  },
+  "char_2026_yu": {
+    "e1": "/img/operators/e1/char_2026_yu.webp",
+    "final": "/img/operators/final/char_2026_yu.webp",
+    "finalKind": "skin",
+    "finalTitle": "愿清晓",
+    "finalGroup": "0011制造/XII",
+    "e1Asset": "char_2026_yu_1",
+    "finalAsset": "char_2026_yu_nian#12"
+  },
+  "char_4235_thumpy": {
+    "e1": "/img/operators/e1/char_4235_thumpy.webp",
+    "final": "/img/operators/final/char_4235_thumpy.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4235_thumpy_1",
+    "finalAsset": "char_4235_thumpy_2"
+  },
+  "char_1044_hsgma2": {
+    "e1": "/img/operators/e1/char_1044_hsgma2.webp",
+    "final": "/img/operators/final/char_1044_hsgma2.webp",
+    "finalKind": "skin",
+    "finalTitle": "一闪极意",
+    "finalGroup": "0011/飙系列/XI",
+    "e1Asset": "char_1044_hsgma2_1",
+    "finalAsset": "char_1044_hsgma2_whirlwind#11"
+  },
+  "char_264_f12yin": {
+    "e1": "/img/operators/e1/char_264_f12yin.webp",
+    "final": "/img/operators/final/char_264_f12yin.webp",
+    "finalKind": "skin",
+    "finalTitle": "硬派速度",
+    "finalGroup": "玛尔特/XIII",
+    "e1Asset": "char_264_f12yin_1",
+    "finalAsset": "char_264_f12yin_marthe#13"
+  },
+  "char_2024_chyue": {
+    "e1": "/img/operators/e1/char_2024_chyue.webp",
+    "final": "/img/operators/final/char_2024_chyue.webp",
+    "finalKind": "skin",
+    "finalTitle": "全能演员",
+    "finalGroup": "中国电影资料馆",
+    "e1Asset": "char_2024_chyue_1",
+    "finalAsset": "char_2024_chyue_cfa#1"
+  },
+  "char_4037_demetr": {
+    "e1": "/img/operators/e1/char_4037_demetr.webp",
+    "final": "/img/operators/final/char_4037_demetr.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4037_demetr_1",
+    "finalAsset": "char_4037_demetr_2"
+  },
+  "char_172_svrash": {
+    "e1": "/img/operators/e1/char_172_svrash.webp",
+    "final": "/img/operators/final/char_172_svrash.webp",
+    "finalKind": "skin",
+    "finalTitle": "不融冰",
+    "finalGroup": "音律联觉/IV",
+    "e1Asset": "char_172_svrash_1",
+    "finalAsset": "char_172_svrash_ambienceSynesthesia#4"
+  },
+  "char_293_thorns": {
+    "e1": "/img/operators/e1/char_293_thorns.webp",
+    "final": "/img/operators/final/char_293_thorns.webp",
+    "finalKind": "skin",
+    "finalTitle": "锋潮",
+    "finalGroup": "斗争血脉/VIII",
+    "e1Asset": "char_293_thorns_1",
+    "finalAsset": "char_293_thorns_boc#8"
+  },
+  "char_4082_qiubai": {
+    "e1": "/img/operators/e1/char_4082_qiubai.webp",
+    "final": "/img/operators/final/char_4082_qiubai.webp",
+    "finalKind": "skin",
+    "finalTitle": "礼遇",
+    "finalGroup": "时代/XXXI",
+    "e1Asset": "char_4082_qiubai_1",
+    "finalAsset": "char_4082_qiubai_epoque#31"
+  },
+  "char_4182_oblvns": {
+    "e1": "/img/operators/e1/char_4182_oblvns.webp",
+    "final": "/img/operators/final/char_4182_oblvns.webp",
+    "finalKind": "skin",
+    "finalTitle": "旋律的主人",
+    "finalGroup": "Ave Mujica",
+    "e1Asset": "char_4182_oblvns_1",
+    "finalAsset": "char_4182_oblvns_avemujica#1"
+  },
+  "char_4088_hodrer": {
+    "e1": "/img/operators/e1/char_4088_hodrer.webp",
+    "final": "/img/operators/final/char_4088_hodrer.webp",
+    "finalKind": "skin",
+    "finalTitle": "沉思之庭",
+    "finalGroup": "错位巡礼/I",
+    "e1Asset": "char_4088_hodrer_1",
+    "finalAsset": "char_4088_hodrer_sightseer#1"
+  },
+  "char_4145_ulpia": {
+    "e1": "/img/operators/e1/char_4145_ulpia.webp",
+    "final": "/img/operators/final/char_4145_ulpia.webp",
+    "finalKind": "skin",
+    "finalTitle": "注目深渊",
+    "finalGroup": "时代/XLVII",
+    "e1Asset": "char_4145_ulpia_1",
+    "finalAsset": "char_4145_ulpia_epoque#48"
+  },
+  "char_4058_pepe": {
+    "e1": "/img/operators/e1/char_4058_pepe.webp",
+    "final": "/img/operators/final/char_4058_pepe.webp",
+    "finalKind": "skin",
+    "finalTitle": "星移",
+    "finalGroup": "错位巡礼/II",
+    "e1Asset": "char_4058_pepe_1",
+    "finalAsset": "char_4058_pepe_sightseer#2"
+  },
+  "char_1051_headb2": {
+    "e1": "/img/operators/e1/char_1051_headb2.webp",
+    "final": "/img/operators/final/char_1051_headb2.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1051_headb2_1",
+    "finalAsset": "char_1051_headb2_2"
+  },
+  "char_010_chen": {
+    "e1": "/img/operators/e1/char_010_chen.webp",
+    "final": "/img/operators/final/char_010_chen.webp",
+    "finalKind": "skin",
+    "finalTitle": "初晴",
+    "finalGroup": "忒斯特收藏/XI",
+    "e1Asset": "char_010_chen_1",
+    "finalAsset": "char_010_chen_sale#10"
+  },
+  "char_4009_irene": {
+    "e1": "/img/operators/e1/char_4009_irene.webp",
+    "final": "/img/operators/final/char_4009_irene.webp",
+    "finalKind": "skin",
+    "finalTitle": "至高判决",
+    "finalGroup": "成就之星/III",
+    "e1Asset": "char_4009_irene_1",
+    "finalAsset": "char_4009_irene_game#3"
+  },
+  "char_4116_blkkgt": {
+    "e1": "/img/operators/e1/char_4116_blkkgt.webp",
+    "final": "/img/operators/final/char_4116_blkkgt.webp",
+    "finalKind": "skin",
+    "finalTitle": "暗月的影子",
+    "finalGroup": "巫异盛宴/V",
+    "e1Asset": "char_4116_blkkgt_1",
+    "finalAsset": "char_4116_blkkgt_witch#5"
+  },
+  "char_017_huang": {
+    "e1": "/img/operators/e1/char_017_huang.webp",
+    "final": "/img/operators/final/char_017_huang.webp",
+    "finalKind": "skin",
+    "finalTitle": "易爆蓝焰",
+    "finalGroup": "巫异盛宴/V",
+    "e1Asset": "char_017_huang_1",
+    "finalAsset": "char_017_huang_witch#5"
+  },
+  "char_1026_gvial2": {
+    "e1": "/img/operators/e1/char_1026_gvial2.webp",
+    "final": "/img/operators/final/char_1026_gvial2.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD26",
+    "finalGroup": "珊瑚海岸/XII",
+    "e1Asset": "char_1026_gvial2_1",
+    "finalAsset": "char_1026_gvial2_summer#12"
+  },
+  "char_350_surtr": {
+    "e1": "/img/operators/e1/char_350_surtr.webp",
+    "final": "/img/operators/final/char_350_surtr.webp",
+    "finalKind": "skin",
+    "finalTitle": "超然序曲",
+    "finalGroup": "音律联觉/VII",
+    "e1Asset": "char_350_surtr_1",
+    "finalAsset": "char_350_surtr_ambienceSynesthesia#6"
+  },
+  "char_4098_vvana": {
+    "e1": "/img/operators/e1/char_4098_vvana.webp",
+    "final": "/img/operators/final/char_4098_vvana.webp",
+    "finalKind": "skin",
+    "finalTitle": "寄自奥格尼斯科",
+    "finalGroup": "时代/XXXIX",
+    "e1Asset": "char_4098_vvana_1",
+    "finalAsset": "char_4098_vvana_epoque#40"
+  },
+  "char_1019_siege2": {
+    "e1": "/img/operators/e1/char_1019_siege2.webp",
+    "final": "/img/operators/final/char_1019_siege2.webp",
+    "finalKind": "skin",
+    "finalTitle": "光耀之途",
+    "finalGroup": "时代/XLIX",
+    "e1Asset": "char_1019_siege2_1",
+    "finalAsset": "char_1019_siege2_epoque#50"
+  },
+  "char_1050_chen3": {
+    "e1": "/img/operators/e1/char_1050_chen3.webp",
+    "final": "/img/operators/final/char_1050_chen3.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_1050_chen3_1",
+    "finalAsset": "char_1050_chen3_2"
+  },
+  "char_188_helage": {
+    "e1": "/img/operators/e1/char_188_helage.webp",
+    "final": "/img/operators/final/char_188_helage.webp",
+    "finalKind": "skin",
+    "finalTitle": "歧路幻影",
+    "finalGroup": "斗争血脉/II",
+    "e1Asset": "char_188_helage_1",
+    "finalAsset": "char_188_helage_boc#2"
+  },
+  "char_4121_zuole": {
+    "e1": "/img/operators/e1/char_4121_zuole.webp",
+    "final": "/img/operators/final/char_4121_zuole.webp",
+    "finalKind": "skin",
+    "finalTitle": "无息破局",
+    "finalGroup": "忒斯特收藏/XVIII",
+    "e1Asset": "char_4121_zuole_1",
+    "finalAsset": "char_4121_zuole_sale#16"
+  },
+  "char_485_pallas": {
+    "e1": "/img/operators/e1/char_485_pallas.webp",
+    "final": "/img/operators/final/char_485_pallas.webp",
+    "finalKind": "skin",
+    "finalTitle": "山川的酿造",
+    "finalGroup": "时代/XIX",
+    "e1Asset": "char_485_pallas_1",
+    "finalAsset": "char_485_pallas_epoque#19"
+  },
+  "char_1014_nearl2": {
+    "e1": "/img/operators/e1/char_1014_nearl2.webp",
+    "final": "/img/operators/final/char_1014_nearl2.webp",
+    "finalKind": "skin",
+    "finalTitle": "复现荣光",
+    "finalGroup": "时代/XVII",
+    "e1Asset": "char_1014_nearl2_1",
+    "finalAsset": "char_1014_nearl2_epoque#17"
+  },
+  "char_4011_lessng": {
+    "e1": "/img/operators/e1/char_4011_lessng.webp",
+    "final": "/img/operators/final/char_4011_lessng.webp",
+    "finalKind": "skin",
+    "finalTitle": "幻火",
+    "finalGroup": "0011/飙系列/VII",
+    "e1Asset": "char_4011_lessng_1",
+    "finalAsset": "char_4011_lessng_whirlwind#7"
+  },
+  "char_1032_excu2": {
+    "e1": "/img/operators/e1/char_1032_excu2.webp",
+    "final": "/img/operators/final/char_1032_excu2.webp",
+    "finalKind": "skin",
+    "finalTitle": "蒸汽寻踪者",
+    "finalGroup": "三丽鸥家族/II",
+    "e1Asset": "char_1032_excu2_1",
+    "finalAsset": "char_1032_excu2_sanrio#2"
+  },
+  "char_4010_etlchi": {
+    "e1": "/img/operators/e1/char_4010_etlchi.webp",
+    "final": "/img/operators/final/char_4010_etlchi.webp",
+    "finalKind": "skin",
+    "finalTitle": "耀目之蓝",
+    "finalGroup": "寒武纪/V",
+    "e1Asset": "char_4010_etlchi_1",
+    "finalAsset": "char_4010_etlchi_winter#5"
+  },
+  "char_4064_mlynar": {
+    "e1": "/img/operators/e1/char_4064_mlynar.webp",
+    "final": "/img/operators/final/char_4064_mlynar.webp",
+    "finalKind": "skin",
+    "finalTitle": "苍茫怒号",
+    "finalGroup": "命途迭代/III",
+    "e1Asset": "char_4064_mlynar_1",
+    "finalAsset": "char_4064_mlynar_iteration#3"
+  },
+  "char_1043_leizi2": {
+    "e1": "/img/operators/e1/char_1043_leizi2.webp",
+    "final": "/img/operators/final/char_1043_leizi2.webp",
+    "finalKind": "skin",
+    "finalTitle": "血翼蔷薇",
+    "finalGroup": "成就之星/VIII",
+    "e1Asset": "char_1043_leizi2_1",
+    "finalAsset": "char_1043_leizi2_game#8"
+  },
+  "char_4214_cairn": {
+    "e1": "/img/operators/e1/char_4214_cairn.webp",
+    "final": "/img/operators/final/char_4214_cairn.webp",
+    "finalKind": "e2",
+    "finalTitle": "精英二阶段",
+    "finalGroup": "精英档案",
+    "e1Asset": "char_4214_cairn_1",
+    "finalAsset": "char_4214_cairn_2"
+  },
+  "char_230_savage": {
+    "e1": "/img/operators/e1/char_230_savage.webp",
+    "final": "/img/operators/final/char_230_savage.webp",
+    "finalKind": "skin",
+    "finalTitle": "又一年秋季",
+    "finalGroup": "忒斯特收藏/XIX",
+    "e1Asset": "char_230_savage_1",
+    "finalAsset": "char_230_savage_sale#17"
+  },
+  "char_282_catap": {
+    "e1": "/img/operators/e1/char_282_catap.webp",
+    "final": "/img/operators/final/char_282_catap.webp",
+    "finalKind": "skin",
+    "finalTitle": "悠然假日 HD66",
+    "finalGroup": "珊瑚海岸/XVII",
+    "e1Asset": "char_282_catap_1",
+    "finalAsset": "char_282_catap_summer#17"
+  },
+  "char_283_midn": {
+    "e1": "/img/operators/e1/char_283_midn.webp",
+    "final": "/img/operators/final/char_283_midn.webp",
+    "finalKind": "skin",
+    "finalTitle": "第七夜苏醒魔君",
+    "finalGroup": "斗争血脉/I",
+    "e1Asset": "char_283_midn_1",
+    "finalAsset": "char_283_midn_boc#1"
+  },
+  "char_137_brownb": {
+    "e1": "/img/operators/e1/char_137_brownb.webp",
+    "final": "/img/operators/final/char_137_brownb.webp",
+    "finalKind": "skin",
+    "finalTitle": "掠蜜能手",
+    "finalGroup": "罗德厨房",
+    "e1Asset": "char_137_brownb_1",
+    "finalAsset": "char_137_brownb_kitchen#1"
+  },
+  "char_347_jaksel": {
+    "e1": "/img/operators/e1/char_347_jaksel.webp",
+    "final": "/img/operators/final/char_347_jaksel.webp",
+    "finalKind": "skin",
+    "finalTitle": "纵身一跃",
+    "finalGroup": "0011/飙系列/II",
+    "e1Asset": "char_347_jaksel_1",
+    "finalAsset": "char_347_jaksel_whirlwind#2"
+  },
+  "char_164_nightm": {
+    "e1": "/img/operators/e1/char_164_nightm.webp",
+    "final": "/img/operators/final/char_164_nightm.webp",
+    "finalKind": "skin",
+    "finalTitle": "湖畔的少女",
+    "finalGroup": "待予花冠/II",
+    "e1Asset": "char_164_nightm_1",
+    "finalAsset": "char_164_nightm_unveiling#2"
+  },
+  "char_220_grani": {
+    "e1": "/img/operators/e1/char_220_grani.webp",
+    "final": "/img/operators/final/char_220_grani.webp",
+    "finalKind": "skin",
+    "finalTitle": "美妙时光",
+    "finalGroup": "时代/VI",
+    "e1Asset": "char_220_grani_1",
+    "finalAsset": "char_220_grani_epoque#6"
+  },
+  "char_263_skadi": {
+    "e1": "/img/operators/e1/char_263_skadi.webp",
+    "final": "/img/operators/final/char_263_skadi.webp",
+    "finalKind": "skin",
+    "finalTitle": "下一顿午茶",
+    "finalGroup": "玛尔特/V",
+    "e1Asset": "char_263_skadi_1",
+    "finalAsset": "char_263_skadi_marthe#5"
+  }
+}
