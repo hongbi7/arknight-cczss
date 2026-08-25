@@ -6,6 +6,7 @@ const apiGuess = require("./api/guess.js");
 const apiReveal = require("./api/reveal.js");
 const apiChoices = require("./api/choices.js");
 const apiPick = require("./api/pick.js");
+const apiClue = require("./api/clue.js");
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, "public");
@@ -49,6 +50,7 @@ const server = http.createServer((req, res) => {
   if (url.pathname === "/api/reveal") return apiReveal(req, res);
   if (url.pathname === "/api/choices") return apiChoices(req, res);
   if (url.pathname === "/api/pick") return apiPick(req, res);
+  if (url.pathname === "/api/clue") return apiClue(req, res);
   serveStatic(url.pathname, req, res);
 });
 
