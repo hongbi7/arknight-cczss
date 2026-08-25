@@ -32,7 +32,18 @@
       <p class="brand-en">OPERATOR TRACE · IDENTIFICATION PROTOCOL</p>
     </div>
   </div>
-  <p class="subtitle">根据 12 项档案线索，猜出谜底干员。支持拼音搜索（如 nts = 能天使）。</p>
+  <div class="topbar-context">
+    <span id="topbarContextEn">OPERATOR INTELLIGENCE NETWORK</span>
+    <p id="topbarSubtitle" class="subtitle">罗德岛人员档案 · 干员身份识别终端</p>
+  </div>
+  <div id="desktopQuickGuess" class="topbar-quick-guess" aria-label="继续猜测">
+    <span>CONTINUE TRACE</span>
+    <div class="topbar-quick-field">
+      <input id="quickGuessInput" placeholder="输入下一名干员" autocomplete="off">
+      <div id="quickSuggest" class="suggest hidden"></div>
+    </div>
+    <button id="quickGuessBtn" type="button"><span>提交</span><i aria-hidden="true">↗</i></button>
+  </div>
 </header>
 
 <main>
@@ -121,6 +132,19 @@
           <span><i class="legend-wrong"></i>不符</span>
           <span><i class="legend-unknown"></i>未知</span>
         </div>
+        <section id="assistPanel" class="assist-panel" data-status="monitoring" data-trend="stable" aria-label="辅助情报协议">
+          <header class="assist-head">
+            <span class="assist-eyebrow">ASSIST PROTOCOL</span>
+            <span id="assistState" class="assist-state">MONITORING</span>
+          </header>
+          <p id="assistMessage" class="assist-message">推理链路稳定，辅助情报暂未授权</p>
+          <div class="assist-signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div id="assistChips" class="assist-chips" aria-live="polite"></div>
+          <button id="assistDecodeBtn" class="assist-decode hidden" type="button">
+            <span class="assist-decode-ping" aria-hidden="true"></span>
+            <span class="assist-decode-text">辅助档案已授权<i>DECODE INTEL</i></span>
+          </button>
+        </section>
       </aside>
 
       <div class="game-workspace">
@@ -199,6 +223,7 @@
                 </div>
               </div>
             </div>
+            <div id="intelRail" class="intel-rail hidden" aria-label="已解码情报"></div>
             <div id="rows" class="guess-list"></div>
           </div>
         </section>
@@ -235,6 +260,32 @@
     <div class="reveal-confirm-actions">
       <button id="revealCancel" class="ghost" type="button">继续检索</button>
       <button id="revealConfirm" type="button"><span>确认揭晓</span><i aria-hidden="true">↗</i></button>
+    </div>
+  </div>
+</div>
+
+<div id="clueModal" class="modal clue-modal hidden" role="dialog" aria-modal="true" aria-labelledby="clueModalTitle" aria-describedby="clueModalDesc">
+  <div class="modal-box clue-modal-box">
+    <header class="clue-modal-head">
+      <span class="modal-en" aria-hidden="true">AUXILIARY INTEL // DECODE</span>
+      <span id="clueModalChannel" class="clue-channel" aria-hidden="true">CH-07 // SECURE</span>
+    </header>
+    <h3 id="clueModalTitle">待解码情报</h3>
+    <p id="clueModalDesc" class="modal-sub">辅助协议已授权一条加密情报。解码后可作为本局推理线索，且仅本局有效。</p>
+    <div id="clueModalBody" class="clue-modal-body" aria-live="polite">
+      <div id="cluePendingView" class="clue-pending-view">
+        <span class="clue-pending-scan" aria-hidden="true"></span>
+        <span class="clue-pending-icon" aria-hidden="true"></span>
+        <strong>ENCRYPTED INTEL</strong>
+        <p>检测到连续推理停滞 · 情报已注入缓冲区</p>
+      </div>
+      <div id="clueDecodedView" class="clue-decoded-view hidden"></div>
+    </div>
+    <div id="clueModalError" class="clue-modal-error hidden" role="alert"></div>
+    <div class="clue-modal-actions">
+      <button id="clueSkipBtn" class="ghost" type="button">暂不查看</button>
+      <button id="clueDecodeBtn" type="button"><span>解码情报</span><i aria-hidden="true">↗</i></button>
+      <button id="clueCloseBtn" class="ghost hidden" type="button">关闭</button>
     </div>
   </div>
 </div>
