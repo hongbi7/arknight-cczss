@@ -203,7 +203,18 @@ def save_webp(image, path, max_width, max_height, quality):
     image.save(path, "WEBP", quality=quality, method=3)
 
 
-def build_operator_art(game_root, operators_path, skin_table_path, public_root):
+def public_asset_exists(public_root, url):
+    if not url or not url.startswith("/"):
+        return False
+    path = (public_root / url.lstrip("/")).resolve()
+    try:
+        path.relative_to(public_root.resolve())
+    except ValueError:
+        return False
+    return path.is_file()
+
+
+def build_operator_art(game_root, operators_path, skin_table_path, public_root, missing_only=False):
     operators = json.loads(operators_path.read_text(encoding="utf-8"))
     skins = latest_skin_map(skin_table_path)
     e1_dir = public_root / "img" / "operators" / "e1"
@@ -212,10 +223,26 @@ def build_operator_art(game_root, operators_path, skin_table_path, public_root):
     e1_dir.mkdir(parents=True, exist_ok=True)
     final_dir.mkdir(parents=True, exist_ok=True)
 
+    existing_manifest = {}
+    if missing_only and manifest_path.is_file():
+        existing_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
     manifest = {}
     failures = []
+    reused = 0
     for index, operator in enumerate(operators.values(), 1):
         operator_id = operator["id"]
+        existing = existing_manifest.get(operator_id)
+        if (
+            existing
+            and not existing.get("pendingAsset")
+            and public_asset_exists(public_root, existing.get("e1"))
+            and public_asset_exists(public_root, existing.get("final"))
+        ):
+            manifest[operator_id] = existing
+            reused += 1
+            continue
+
         char_bundle = find_bundle(game_root, "chararts", operator_id)
         skin_bundle = find_bundle(game_root, "skinpack", operator_id)
 
@@ -282,7 +309,12 @@ def build_operator_art(game_root, operators_path, skin_table_path, public_root):
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(json.dumps({"written": len(manifest), "failures": failures}, ensure_ascii=False, indent=2))
+    print(json.dumps({
+        "records": len(manifest),
+        "reused": reused,
+        "extracted": len(manifest) - reused,
+        "failures": failures,
+    }, ensure_ascii=False, indent=2))
 
 
 def main():
@@ -297,6 +329,11 @@ def main():
     parser.add_argument("--operators", type=Path, default=PROJECT_ROOT / "server-data" / "operators.json")
     parser.add_argument("--skin-table", type=Path, default=PROJECT_ROOT / ".skin-table.json")
     parser.add_argument("--public-root", type=Path, default=PROJECT_ROOT / "public")
+    parser.add_argument(
+        "--missing-only",
+        action="store_true",
+        help="keep valid manifest entries and only extract newly missing operator art",
+    )
     args = parser.parse_args()
 
     if args.build_all:
@@ -304,7 +341,13 @@ def main():
             parser.error("--build-all requires a valid --game-root")
         if not args.operators.is_file() or not args.skin_table.is_file():
             parser.error("Operator data or skin table does not exist")
-        build_operator_art(args.game_root, args.operators, args.skin_table, args.public_root)
+        build_operator_art(
+            args.game_root,
+            args.operators,
+            args.skin_table,
+            args.public_root,
+            missing_only=args.missing_only,
+        )
         return
     if not args.bundle or not args.bundle.is_file():
         parser.error(f"Bundle does not exist: {args.bundle}")

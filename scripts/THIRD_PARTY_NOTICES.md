@@ -33,3 +33,18 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Public Arknights data and resource sources
+
+The automated update pipeline reads Chinese game tables from
+[Kengxxiao/ArknightsGameData](https://github.com/Kengxxiao/ArknightsGameData).
+When files are missing locally, it may also download individual illustrations,
+skill icons, and faction logos from
+[fexli/ArknightsResource](https://github.com/fexli/ArknightsResource). No source
+code from either repository is copied into this project.
+
+The ArknightsResource maintainer states that the game files in that repository
+are copyrighted by Hypergryph Network Technology Co., Ltd. and are provided for
+educational and research use. Arknights game data and artwork remain the
+property of their respective rights holders. This fan project is non-commercial
+and should honor removal requests from the source or rights holder.

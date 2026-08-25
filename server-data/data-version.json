@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "status": "ready",
+  "source": {
+    "repository": "https://github.com/Kengxxiao/ArknightsGameData.git",
+    "revision": "6844859c664c7b5716b3f6a9feaf2c3606168838",
+    "commitTime": "2026-08-18T16:02:18+08:00"
+  },
+  "counts": {
+    "operators": 425,
+    "publicNames": 425,
+    "archives": 435,
+    "clues": 425,
+    "familiarityRecords": 425,
+    "operatorArtRecords": 425,
+    "requiredAssetGaps": 0,
+    "optionalSkillIconGaps": 14,
+    "manualReviewItems": 0
+  },
+  "manualReview": {
+    "unknownProfessions": [],
+    "unknownSubprofessions": [],
+    "powersWithoutLogo": []
+  },
+  "requiredAssets": {
+    "operatorArtManifest": [],
+    "pendingOperatorArt": [],
+    "e1Images": [],
+    "finalImages": [],
+    "silhouettes": [],
+    "fragments": [],
+    "factionLogos": []
+  },
+  "optionalSkillIcons": [
+    "/img/clues/skill/01abcb7af6c0c7f7359e.webp",
+    "/img/clues/skill/220bb7dd5d9808ebf27e.webp",
+    "/img/clues/skill/26b2f3963628f65fc40b.webp",
+    "/img/clues/skill/39417d2e9af29814bee0.webp",
+    "/img/clues/skill/536320ab0145ee1ea8b1.webp",
+    "/img/clues/skill/5afee644b3ee630a1e6d.webp",
+    "/img/clues/skill/72fa86fa1ec1bce8ffef.webp",
+    "/img/clues/skill/7340934814de5ead6c9d.webp",
+    "/img/clues/skill/8efaf3bc957dde1e109e.webp",
+    "/img/clues/skill/90d2c051ed14159f367b.webp",
+    "/img/clues/skill/bdb0f59231c019fda862.webp",
+    "/img/clues/skill/e20111956e40ec9518d7.webp",
+    "/img/clues/skill/fc91e94766ad76f3580b.webp",
+    "/img/clues/skill/ffbdcbc5d0f6e3629ce5.webp"
+  ],
+  "generatedData": {
+    "public/data/names.json": {
+      "bytes": 30030,
+      "sha256": "e4273f1569668cbe028be615c2cfd401c4fc589a50286f542814a254450cdacc"
+    },
+    "server-data/operators.json": {
+      "bytes": 603791,
+      "sha256": "57aba77dbc6474e91c2bd81d595b6cef3eb23b7da519b865cc151c4e8880aac9"
+    },
+    "server-data/operator-archives.json": {
+      "bytes": 3564639,
+      "sha256": "a1595adca354bfb67851e38d25e65752efdde0ecf731af403ce108b56b1be23e"
+    },
+    "server-data/operator-clues.json": {
+      "bytes": 1367586,
+      "sha256": "9d273f42fc726bd0616425c00f905fee38fd27b52d7433ca579ca4773ad1794e"
+    },
+    "server-data/operator-familiarity.json": {
+      "bytes": 75381,
+      "sha256": "53f11d32d4dfb19f793e1e791769703caf65f4088fe3dc161383d9ca96676d4c"
+    }
+  }
+}
