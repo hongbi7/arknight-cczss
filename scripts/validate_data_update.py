@@ -16,6 +16,8 @@ GENERATED_DATA_FILES = (
     "server-data/operator-archives.json",
     "server-data/operator-clues.json",
     "server-data/operator-familiarity.json",
+    "server-data/operator-identities.json",
+    "server-data/operator-themes.json",
 )
 
 
@@ -49,8 +51,18 @@ def validate(source):
     archives = load_json("server-data/operator-archives.json")
     clues = load_json("server-data/operator-clues.json")
     familiarity = load_json("server-data/operator-familiarity.json")
+    identities = load_json("server-data/operator-identities.json")
+    themes = load_json("server-data/operator-themes.json")
     names = load_json("public/data/names.json")
     operator_art = load_json("public/data/operator-art.json")
+    attention_path = PROJECT_ROOT / "scripts" / "operator-attention-signals.json"
+    attention = json.loads(attention_path.read_text(encoding="utf-8")) if attention_path.is_file() else {}
+    attention_records = attention.get("operators", {})
+    attention_weights_path = PROJECT_ROOT / "scripts" / "popularity-source-weights.json"
+    attention_weights = (
+        json.loads(attention_weights_path.read_text(encoding="utf-8"))
+        if attention_weights_path.is_file() else {}
+    )
 
     operator_ids = {record.get("id") for record in operators.values() if record.get("id")}
     operator_names = set(operators)
@@ -68,6 +80,40 @@ def validate(source):
         if extra:
             structural_errors.append(f"{label} has {len(extra)} unknown operator ids: {', '.join(extra[:8])}")
 
+    attention_coverage = {}
+    attention_providers = set(attention.get("_meta", {}).get("providers") or [])
+    attention_providers.update(
+        provider for provider in (attention_weights.get("providers") or {})
+        if provider != "communityAnchor"
+    )
+    for provider in sorted(attention_providers):
+        valid = 0
+        for operator_id in operator_ids:
+            provider_record = (attention_records.get(operator_id) or {}).get(provider) or {}
+            value = provider_record.get("index")
+            if not isinstance(value, (int, float)):
+                continue
+            if provider == "bilibiliVideo" and provider_record.get("resultCount", 0) <= 0:
+                continue
+            valid += 1
+        coverage = valid / len(operator_ids) if operator_ids else 0
+        used = sum(
+            1 for record in familiarity.values()
+            if provider in (record.get("activeAttentionProviders") or [])
+        )
+        enabled = coverage >= 0.9
+        attention_coverage[provider] = {
+            "valid": valid,
+            "expected": len(operator_ids),
+            "coverage": round(coverage, 4),
+            "enabled": enabled,
+            "familiarityRecordsUsingProvider": used,
+        }
+        if not enabled and used:
+            structural_errors.append(
+                f"attention provider {provider} has only {coverage:.1%} coverage but is used by {used} records"
+            )
+
     missing_archives = sorted(operator_ids - set(archives))
     if missing_archives:
         structural_errors.append(
@@ -81,6 +127,46 @@ def validate(source):
             "public name index differs from server operators "
             f"(missing={missing_names[:8]}, extra={extra_names[:8]})"
         )
+
+    identity_members = set((identities.get("byOperator") or {}).keys())
+    for group in identities.get("groups") or []:
+        member_ids = set(group.get("memberIds") or [])
+        if group.get("baseId") not in member_ids:
+            structural_errors.append(f"identity group {group.get('id')} does not contain its base operator")
+        unknown = sorted(member_ids - operator_ids)
+        if unknown:
+            structural_errors.append(f"identity group {group.get('id')} has unknown operators: {unknown[:8]}")
+    unknown_identity_members = sorted(identity_members - operator_ids)
+    if unknown_identity_members:
+        structural_errors.append(f"identity index has unknown operators: {unknown_identity_members[:8]}")
+
+    theme_definitions = themes.get("definitions") or {}
+    themes_by_operator = themes.get("byOperator") or {}
+    if set(themes_by_operator) != operator_ids:
+        missing_theme_operators = sorted(operator_ids - set(themes_by_operator))
+        extra_theme_operators = sorted(set(themes_by_operator) - operator_ids)
+        structural_errors.append(
+            "theme index differs from server operators "
+            f"(missing={missing_theme_operators[:8]}, extra={extra_theme_operators[:8]})"
+        )
+    for theme_id, definition in theme_definitions.items():
+        members = set(definition.get("members") or [])
+        if len(members) < 3:
+            structural_errors.append(f"theme {theme_id} has fewer than three members")
+        if definition.get("memberCount") != len(members):
+            structural_errors.append(f"theme {theme_id} memberCount is inconsistent")
+        unknown = sorted(members - operator_ids)
+        if unknown:
+            structural_errors.append(f"theme {theme_id} has unknown operators: {unknown[:8]}")
+        for operator_id in members:
+            if theme_id not in (themes_by_operator.get(operator_id) or []):
+                structural_errors.append(f"theme index is missing {theme_id} for {operator_id}")
+                break
+    uncovered_theme_operators = sorted(
+        operator_id for operator_id in operator_ids if not themes_by_operator.get(operator_id)
+    )
+    if uncovered_theme_operators:
+        structural_errors.append(f"theme bank leaves operators uncovered: {uncovered_theme_operators[:8]}")
 
     unknown_professions = sorted({
         record.get("profession")
@@ -155,6 +241,11 @@ def validate(source):
         "unknownProfessions": unknown_professions,
         "unknownSubprofessions": unknown_subprofessions,
         "powersWithoutLogo": sorted(powers_without_logo),
+        "themeCandidates": sorted(
+            f"{theme_id}:{operator_id}"
+            for theme_id, operator_ids_to_review in (themes.get("manualReview") or {}).items()
+            for operator_id in operator_ids_to_review
+        ),
     }
     manual_review_count = sum(len(values) for values in manual_review.values())
 
@@ -177,15 +268,19 @@ def validate(source):
             "archives": len(archives),
             "clues": len(clues),
             "familiarityRecords": len(familiarity),
+            "identityGroups": len(identities.get("groups") or []),
+            "themes": len(theme_definitions),
             "operatorArtRecords": len(operator_art),
             "requiredAssetGaps": required_asset_count,
             "optionalSkillIconGaps": len(missing_skill_icons),
             "manualReviewItems": manual_review_count,
+            "attentionProviders": len(attention_coverage),
         },
         "structuralErrors": structural_errors,
         "manualReview": manual_review,
         "requiredAssets": required_assets,
         "optionalSkillIcons": sorted(missing_skill_icons),
+        "attentionCoverage": attention_coverage,
         "generatedData": {
             relative_path: file_digest(relative_path)
             for relative_path in GENERATED_DATA_FILES
@@ -202,6 +297,7 @@ def compact_version(report):
         "manualReview": report["manualReview"],
         "requiredAssets": report["requiredAssets"],
         "optionalSkillIcons": report["optionalSkillIcons"],
+        "attentionCoverage": report["attentionCoverage"],
         "generatedData": report["generatedData"],
     }
 

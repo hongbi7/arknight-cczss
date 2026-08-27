@@ -1,0 +1,37 @@
+{
+  "battle_block_control": {
+    "include": [
+      "char_151_myrtle", "char_337_utage", "char_271_spikes", "char_491_humus",
+      "char_445_wscoot", "char_150_snakek", "char_484_robrta", "char_4107_vrdant",
+      "char_1036_fang2", "char_401_elysm", "char_4119_wanqin", "char_4237_jcinta",
+      "char_4147_mitm", "char_265_sophia", "char_415_flint", "char_274_astesi",
+      "char_475_akafyu", "char_486_takila", "char_4164_tecno", "char_4222_taraxa",
+      "char_214_kafka", "char_455_nothin", "char_163_hpsts", "char_431_ashlok",
+      "char_422_aurora", "char_4045_heidi", "char_369_bena", "char_4016_kazema",
+      "char_4124_iana", "char_4183_mortis", "char_222_bpipe", "char_479_sleach",
+      "char_420_flamtl", "char_427_vigil", "char_4228_closur", "char_450_necras",
+      "char_4212_nasti", "char_1502_crosly", "char_1023_ghost2", "char_4179_monstr",
+      "char_1052_kalts2", "char_2025_shu", "char_2014_nian", "char_416_zumama",
+      "char_2026_yu", "char_4235_thumpy", "char_264_f12yin", "char_4088_hodrer",
+      "char_4145_ulpia", "char_1026_gvial2", "char_4098_vvana", "char_4121_zuole",
+      "char_485_pallas", "char_1032_excu2", "char_4064_mlynar", "char_1043_leizi2",
+      "char_220_grani"
+    ],
+    "exclude": [
+      "char_4106_bryota", "char_421_crow", "char_4066_highmo",
+      "char_249_mlyss", "char_1039_thorn2", "char_4010_etlchi"
+    ]
+  },
+  "battle_concealment": {
+    "include": [
+      "char_497_ctable", "char_365_aprl", "char_1021_kroos2", "char_336_folivo",
+      "char_4224_turdus", "char_214_kafka", "char_304_zebra", "char_158_milu",
+      "char_4014_lunacu", "char_215_mantic", "char_4124_iana", "char_1035_wisdel",
+      "char_4026_vulpis", "char_4087_ines", "char_248_mgllan", "char_1502_crosly"
+    ],
+    "exclude": [
+      "char_4062_totter", "char_401_elysm", "char_343_tknogi", "char_1045_svash2",
+      "char_4204_mantra", "char_4039_horn", "char_172_svrash"
+    ]
+  }
+}

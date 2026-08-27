@@ -3,6 +3,7 @@ import json
 import re
 import os
 import hashlib
+import math
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -27,6 +28,7 @@ def find_excel_root():
         ROOT_PATH / ".gamedata" / "excel",
         ROOT_PATH / ".gamedata" / "zh_CN" / "gamedata" / "excel",
         ROOT_PATH / ".gamedata" / "cn" / "gamedata" / "excel",
+        ROOT_PATH / ".cache" / "arknights-gamedata" / "zh_CN" / "gamedata" / "excel",
         Path(r"H:\配置\下载"),
     ])
     required = ("character_table.json", "handbook_info_table.json", "range_table.json")
@@ -48,6 +50,8 @@ OUT_SERVER = os.path.join(ROOT, "server-data", "operators.json")
 OUT_NAMES = os.path.join(ROOT, "public", "data", "names.json")
 OUT_CLUES = os.path.join(ROOT, "server-data", "operator-clues.json")
 OUT_FAMILIARITY = os.path.join(ROOT, "server-data", "operator-familiarity.json")
+OUT_IDENTITIES = os.path.join(ROOT, "server-data", "operator-identities.json")
+OUT_THEMES = os.path.join(ROOT, "server-data", "operator-themes.json")
 
 EXP_KEYS = [
     "战斗经验", "格斗经验", "表演经验", "保镖经验", "偷窃经验", "向导经验",
@@ -198,7 +202,7 @@ def familiarity_tier(score):
     return "C"
 
 
-def familiarity_score(character_record, skin_count, override):
+def structural_familiarity_score(character_record, skin_count):
     rarity = int(character_record.get("rarity", "TIER_1")[-1])
     rarity_score = {1: 1, 2: 2, 3: 6, 4: 5, 5: 5, 6: 8}.get(rarity, 0)
     approach = character_record.get("itemObtainApproach") or ""
@@ -216,10 +220,82 @@ def familiarity_score(character_record, skin_count, override):
     identity = 7 if character_record.get("isSpChar") else 0
     skin_exposure = min(12, skin_count * 3)
     rhodes_exposure = 3 if (character_record.get("mainPower") or {}).get("nationId") == "rhodes" else 0
-    score = clamp(10 + rarity_score + exposure + identity + skin_exposure + rhodes_exposure, 10, 79)
-    if override is not None:
-        score = clamp(int(override), 0, 100)
-    return score
+    return clamp(10 + rarity_score + exposure + identity + skin_exposure + rhodes_exposure, 10, 79)
+
+
+def progression_usage_score(character_record, progression):
+    if not progression:
+        return None
+    rarity = int(character_record.get("rarity", "TIER_1")[-1])
+    ownership = clamp(float(progression.get("ownership", 0)), 0, 100)
+    elite2 = clamp(float(progression.get("elite2", 0)), 0, 100)
+    mastery = clamp(float(progression.get("mastery", 0)), 0, 100)
+    if rarity <= 3:
+        return round(0.82 * ownership + 0.18 * max(elite2, mastery))
+    return round(0.25 * ownership + 0.50 * elite2 + 0.25 * mastery)
+
+
+def attention_signal_score(attention_record, community_score, provider_weights, active_providers):
+    weighted_total = 0
+    total_weight = 0
+    used_sources = {}
+    for provider in sorted(active_providers):
+        weight = float((provider_weights.get(provider) or {}).get("weight", 0))
+        if weight <= 0:
+            continue
+        source_record = (attention_record or {}).get(provider) or {}
+        value = source_record.get("index")
+        if not isinstance(value, (int, float)) or not math.isfinite(value):
+            value = 50
+        else:
+            used_sources[provider] = round(clamp(float(value), 0, 100), 1)
+        weighted_total += weight * clamp(float(value), 0, 100)
+        total_weight += weight
+    if community_score is not None:
+        weight = float((provider_weights.get("communityAnchor") or {}).get("weight", 0))
+        value = clamp(float(community_score), 0, 100)
+        if weight > 0:
+            weighted_total += weight * value
+            total_weight += weight
+            used_sources["communityAnchor"] = round(value, 1)
+    if total_weight <= 0:
+        return {"score": None, "sources": {}, "confidence": 0}
+    active_weight = sum(
+        float((provider_weights.get(provider) or {}).get("weight", 0))
+        for provider in active_providers
+    )
+    confidence = clamp(0.5 + 0.7 * active_weight + (0.08 if community_score is not None else 0), 0, 0.95)
+    return {
+        "score": round(weighted_total / total_weight),
+        "sources": used_sources,
+        "confidence": round(confidence, 2),
+    }
+
+
+def familiarity_score(character_record, skin_count, progression, attention):
+    structural_score = structural_familiarity_score(character_record, skin_count)
+    usage_score = progression_usage_score(character_record, progression)
+    attention_score = attention.get("score")
+    if usage_score is not None and attention_score is not None:
+        score = round(0.15 * structural_score + 0.52 * usage_score + 0.33 * attention_score)
+        confidence = round(0.82 + 0.12 * attention.get("confidence", 0), 2)
+    elif usage_score is not None:
+        score = round(0.25 * structural_score + 0.75 * usage_score)
+        confidence = 0.78
+    elif attention_score is not None:
+        score = round(0.35 * structural_score + 0.65 * attention_score)
+        confidence = round(0.52 + 0.15 * attention.get("confidence", 0), 2)
+    else:
+        score = structural_score
+        confidence = 0.35
+    return {
+        "score": clamp(score, 0, 100),
+        "structuralScore": structural_score,
+        "usageScore": usage_score,
+        "attentionScore": attention_score,
+        "attentionSources": attention.get("sources", {}),
+        "confidence": confidence,
+    }
 
 
 def opaque_asset_url(kind, identity, suffix=""):
@@ -341,6 +417,44 @@ def skill_candidates(character_record, base_range_id):
     return result
 
 
+def character_gameplay_text(character_record):
+    values = [character_record.get("description")]
+    for talent in character_record.get("talents") or []:
+        for candidate in talent.get("candidates") or []:
+            values.extend((candidate.get("name"), candidate.get("description")))
+    for candidate in (character_record.get("trait") or {}).get("candidates") or []:
+        values.append(candidate.get("overrideDescripton"))
+    for skill_ref in character_record.get("skills") or []:
+        skill = skills.get(skill_ref.get("skillId")) or {}
+        levels = skill.get("levels") or []
+        if levels:
+            values.extend((levels[-1].get("name"), levels[-1].get("description")))
+    return "\n".join(str(value) for value in values if value)
+
+
+def highest_respawn_time(character_record):
+    phases = character_record.get("phases") or []
+    if not phases:
+        return None
+    frames = phases[-1].get("attributesKeyFrames") or []
+    if not frames:
+        return None
+    value = (frames[-1].get("data") or {}).get("respawnTime")
+    return int(value) if value is not None else None
+
+
+def has_force_mechanic(character_record):
+    force_keys = {"force", "p_force", "attack@force", "base_force_level"}
+    for skill_ref in character_record.get("skills") or []:
+        skill = skills.get(skill_ref.get("skillId")) or {}
+        levels = skill.get("levels") or []
+        if not levels:
+            continue
+        if any(str(item.get("key")) in force_keys for item in levels[-1].get("blackboard") or []):
+            return True
+    return False
+
+
 def power_record(character_record):
     main_power = character_record.get("mainPower") or {}
     nation_id = main_power.get("nationId") or character_record.get("nationId")
@@ -400,12 +514,59 @@ ranges = json.load(open(EXCEL_ROOT / "range_table.json", encoding="utf-8"))
 skills = json.load(open(EXCEL_ROOT / "skill_table.json", encoding="utf-8"))
 charwords = json.load(open(EXCEL_ROOT / "charword_table.json", encoding="utf-8"))
 skin_table = json.load(open(EXCEL_ROOT / "skin_table.json", encoding="utf-8"))
+identity_source = json.loads((ROOT_PATH / "scripts" / "operator-identities.json").read_text(encoding="utf-8"))
+theme_overrides = json.loads((ROOT_PATH / "scripts" / "theme-overrides.json").read_text(encoding="utf-8"))
 
 override_path = ROOT_PATH / "scripts" / "familiarity-overrides.json"
 familiarity_overrides = json.loads(override_path.read_text(encoding="utf-8")) if override_path.is_file() else {}
+popularity_path = ROOT_PATH / "scripts" / "operator-popularity-signals.json"
+popularity_source = json.loads(popularity_path.read_text(encoding="utf-8")) if popularity_path.is_file() else {}
+progression_by_operator = popularity_source.get("operators", {})
+popularity_meta = popularity_source.get("_meta", {})
+attention_path = ROOT_PATH / "scripts" / "operator-attention-signals.json"
+attention_source = json.loads(attention_path.read_text(encoding="utf-8")) if attention_path.is_file() else {}
+attention_by_operator = attention_source.get("operators", {})
+attention_meta = attention_source.get("_meta", {})
+attention_weight_path = ROOT_PATH / "scripts" / "popularity-source-weights.json"
+attention_weight_source = (
+    json.loads(attention_weight_path.read_text(encoding="utf-8"))
+    if attention_weight_path.is_file() else {}
+)
+attention_provider_weights = attention_weight_source.get("providers", {})
 logo_manifest_path = ROOT_PATH / "public" / "data" / "faction-logos.json"
 logo_manifest = json.loads(logo_manifest_path.read_text(encoding="utf-8")) if logo_manifest_path.is_file() else {}
 faction_logo_ids = set(logo_manifest)
+
+eligible_operator_ids = {
+    operator_id for operator_id, record in character.items()
+    if not operator_id.startswith(("npc_", "token_", "trap_"))
+    and not record.get("isNotObtainable")
+    and operator_id in handbook
+    and record.get("name")
+}
+attention_provider_coverage = {}
+active_attention_providers = set()
+for provider in attention_provider_weights:
+    if provider == "communityAnchor":
+        continue
+    valid_count = 0
+    for operator_id in eligible_operator_ids:
+        provider_record = (attention_by_operator.get(operator_id) or {}).get(provider) or {}
+        value = provider_record.get("index")
+        if not isinstance(value, (int, float)) or not math.isfinite(value):
+            continue
+        if provider == "bilibiliVideo" and provider_record.get("resultCount", 0) <= 0:
+            continue
+        valid_count += 1
+    coverage = valid_count / len(eligible_operator_ids) if eligible_operator_ids else 0
+    attention_provider_coverage[provider] = {
+        "valid": valid_count,
+        "expected": len(eligible_operator_ids),
+        "coverage": round(coverage, 4),
+        "enabled": coverage >= 0.9,
+    }
+    if coverage >= 0.9:
+        active_attention_providers.add(provider)
 
 skin_counts = Counter()
 for skin in skin_table.get("charSkins", {}).values():
@@ -460,7 +621,19 @@ for cid, cv in character.items():
     phase_attributes = phase_attributes or {}
     range_id = phase.get("rangeId") if phase else None
     range_cells = range_cells_for(range_id)
-    familiarity = familiarity_score(cv, skin_counts[cid], familiarity_overrides.get(name))
+    attention_signals = attention_signal_score(
+        attention_by_operator.get(cid),
+        familiarity_overrides.get(name),
+        attention_provider_weights,
+        active_attention_providers,
+    )
+    familiarity_signals = familiarity_score(
+        cv,
+        skin_counts[cid],
+        progression_by_operator.get(cid),
+        attention_signals,
+    )
+    familiarity = familiarity_signals["score"]
     tier = familiarity_tier(familiarity)
     operator_skills = skill_candidates(cv, range_id)
     skill_ranges = [{
@@ -479,7 +652,7 @@ for cid, cv in character.items():
         "hot": familiarity >= 60,
         "familiarityScore": familiarity,
         "familiarityTier": tier,
-        "familiarityConfidence": 0.35 if name not in familiarity_overrides else 0.6,
+        "familiarityConfidence": familiarity_signals["confidence"],
         "rarity": rarity,
         "position": cv.get("position"),
         "profession": cv.get("profession"),
@@ -530,16 +703,187 @@ for cid, cv in character.items():
         "score": familiarity,
         "tier": tier,
         "confidence": record["familiarityConfidence"],
-        "manualOverride": familiarity_overrides.get(name),
-        "version": "2026-08-seed-1",
+        "structuralScore": familiarity_signals["structuralScore"],
+        "usageScore": familiarity_signals["usageScore"],
+        "communityScore": familiarity_overrides.get(name),
+        "attentionScore": familiarity_signals["attentionScore"],
+        "attentionSources": familiarity_signals["attentionSources"],
+        "progressionSignalsVersion": popularity_meta.get("version"),
+        "signalsVersion": popularity_meta.get("version"),
+        "attentionSignalsVersion": attention_meta.get("version"),
+        "activeAttentionProviders": sorted(active_attention_providers),
+        "version": "2026-08-popularity-3",
     }
 
 names = sorted(names, key=lambda x: x["n"])
+
+operator_ids = {record["id"] for record in result.values()}
+operator_by_id = {record["id"]: record for record in result.values()}
+
+identity_groups = []
+identity_by_operator = {}
+for group in identity_source.get("groups") or []:
+    base_id = group.get("baseId")
+    member_ids = list(dict.fromkeys(group.get("memberIds") or []))
+    missing_ids = [operator_id for operator_id in member_ids if operator_id not in operator_ids]
+    if base_id not in member_ids:
+        raise ValueError(f"Identity group {group.get('id')} does not include its base operator {base_id}")
+    if missing_ids:
+        raise ValueError(f"Identity group {group.get('id')} contains unknown operators: {missing_ids}")
+    normalized = {
+        "id": group["id"],
+        "type": "alter",
+        "baseId": base_id,
+        "memberIds": member_ids,
+        "alterIds": [operator_id for operator_id in member_ids if operator_id != base_id],
+        "memberNames": [operator_by_id[operator_id]["name"] for operator_id in member_ids],
+    }
+    identity_groups.append(normalized)
+    for operator_id in member_ids:
+        if operator_id in identity_by_operator:
+            raise ValueError(f"Operator {operator_id} occurs in multiple identity groups")
+        identity_by_operator[operator_id] = {
+            "groupId": group["id"],
+            "role": "base" if operator_id == base_id else "alter",
+        }
+
+identity_data = {
+    "schemaVersion": 1,
+    "groups": identity_groups,
+    "byOperator": identity_by_operator,
+}
+
+theme_specs = [
+    ("skill_attack_recovery", "skill", "攻势蓄能", "至少一个技能采用攻击回复"),
+    ("skill_auto_trigger", "skill", "自律响应", "至少一个技能会自动触发"),
+    ("skill_passive", "skill", "被动响应", "至少拥有一个被动技能"),
+    ("skill_all_manual", "skill", "指令响应", "所有技能均需手动触发"),
+    ("skill_manual_auto", "skill", "双轨触发", "同时拥有手动与自动触发技能"),
+    ("skill_chargeable", "skill", "多重蓄能", "至少一个技能可以充能"),
+    ("skill_ammo", "skill", "弹药协议", "至少一个技能使用弹药机制"),
+    ("skill_range_change", "skill", "火力域重构", "至少一个技能会改变攻击范围"),
+    ("skill_distinct_ranges", "skill", "复合火力域", "不同技能使用不同攻击范围"),
+    ("skill_none", "skill", "简式作战协议", "没有常规战斗技能"),
+    ("battle_block_control", "battle", "阵线重构", "可以主动改变自身、友方或召唤物的阻挡数"),
+    ("battle_fast_redeploy", "battle", "快速再投", "自身基础再部署时间不高于35秒"),
+    ("battle_forced_movement", "battle", "位移干预", "能够推动、拖拽或强制移动目标"),
+    ("battle_concealment", "battle", "光学遮蔽", "自身、友方或召唤物能够获得隐匿或迷彩"),
+    ("battle_elemental", "battle", "元素干涉", "能够造成、治疗、减免或改变元素损伤机制"),
+    ("identity_alter_family", "identity", "平行履历", "属于拥有异格形态的身份组"),
+    ("identity_alter_form", "identity", "异格档案", "当前档案是一名异格干员"),
+]
+
+theme_members = {theme_id: set() for theme_id, _, _, _ in theme_specs}
+for operator_id, operator in operator_by_id.items():
+    operator_skills = (clue_data.get(operator_id) or {}).get("skills") or []
+    mechanics = [skill.get("mechanic") or {} for skill in operator_skills]
+    if any(mechanic.get("spRecovery") == "attack" for mechanic in mechanics):
+        theme_members["skill_attack_recovery"].add(operator_id)
+    if any(mechanic.get("activation") == "auto" for mechanic in mechanics):
+        theme_members["skill_auto_trigger"].add(operator_id)
+    if any(mechanic.get("activation") == "passive" for mechanic in mechanics):
+        theme_members["skill_passive"].add(operator_id)
+    if mechanics and all(mechanic.get("activation") == "manual" for mechanic in mechanics):
+        theme_members["skill_all_manual"].add(operator_id)
+    if (
+        any(mechanic.get("activation") == "manual" for mechanic in mechanics)
+        and any(mechanic.get("activation") == "auto" for mechanic in mechanics)
+    ):
+        theme_members["skill_manual_auto"].add(operator_id)
+    if any(mechanic.get("chargeable") for mechanic in mechanics):
+        theme_members["skill_chargeable"].add(operator_id)
+    if any(mechanic.get("ammo") for mechanic in mechanics):
+        theme_members["skill_ammo"].add(operator_id)
+    if any(skill.get("rangeOverridden") for skill in operator_skills):
+        theme_members["skill_range_change"].add(operator_id)
+    if len({skill.get("rangeId") for skill in operator_skills}) >= 2:
+        theme_members["skill_distinct_ranges"].add(operator_id)
+    if not operator_skills:
+        theme_members["skill_none"].add(operator_id)
+
+    character_record = character[operator_id]
+    if highest_respawn_time(character_record) is not None and highest_respawn_time(character_record) <= 35:
+        theme_members["battle_fast_redeploy"].add(operator_id)
+    if has_force_mechanic(character_record):
+        theme_members["battle_forced_movement"].add(operator_id)
+    if re.search(r"元素损伤|神经损伤|侵蚀损伤|灼燃损伤|凋亡损伤", character_gameplay_text(character_record)):
+        theme_members["battle_elemental"].add(operator_id)
+
+for theme_id in ("battle_block_control", "battle_concealment"):
+    override = theme_overrides.get(theme_id) or {}
+    included = set(override.get("include") or [])
+    excluded = set(override.get("exclude") or [])
+    unknown = sorted((included | excluded) - operator_ids)
+    if unknown:
+        raise ValueError(f"Theme override {theme_id} contains unknown operators: {unknown}")
+    theme_members[theme_id].update(included)
+
+block_candidates = {
+    operator_id for operator_id in operator_ids
+    if "阻挡数" in character_gameplay_text(character[operator_id])
+}
+concealment_candidates = {
+    operator_id for operator_id in operator_ids
+    if re.search(r"隐匿|迷彩", character_gameplay_text(character[operator_id]))
+}
+review_candidates = {}
+for theme_id, candidates in (
+    ("battle_block_control", block_candidates),
+    ("battle_concealment", concealment_candidates),
+):
+    override = theme_overrides.get(theme_id) or {}
+    reviewed = set(override.get("include") or []) | set(override.get("exclude") or [])
+    review_candidates[theme_id] = sorted(candidates - reviewed)
+
+alter_family_ids = set(identity_by_operator)
+alter_ids = {
+    operator_id for operator_id, identity in identity_by_operator.items()
+    if identity["role"] == "alter"
+}
+theme_members["identity_alter_family"].update(alter_family_ids)
+theme_members["identity_alter_form"].update(alter_ids)
+
+theme_definitions = {}
+themes_by_operator = {operator_id: [] for operator_id in operator_ids}
+for theme_id, family, title, description in theme_specs:
+    members = sorted(theme_members[theme_id])
+    if len(members) < 3:
+        raise ValueError(f"Theme {theme_id} has fewer than three matching operators")
+    scores = sorted((operator_by_id[operator_id]["familiarityScore"] for operator_id in members), reverse=True)
+    anchor_familiarity = sum(scores[:3]) / min(3, len(scores))
+    information = clamp(math.log2(len(operator_ids) / len(members)) / 5, 0, 1)
+    challenge = clamp(1 - anchor_familiarity / 100, 0, 1)
+    theme_definitions[theme_id] = {
+        "id": theme_id,
+        "family": family,
+        "title": title,
+        "description": description,
+        "memberCount": len(members),
+        "informationStrength": round(information, 4),
+        "challengeDifficulty": round(challenge, 4),
+        "members": members,
+    }
+    for operator_id in members:
+        themes_by_operator[operator_id].append(theme_id)
+
+uncovered = sorted(operator_id for operator_id, theme_ids in themes_by_operator.items() if not theme_ids)
+if uncovered:
+    raise ValueError(f"Theme bank does not cover {len(uncovered)} operators: {uncovered[:8]}")
+
+theme_data = {
+    "schemaVersion": 1,
+    "definitions": theme_definitions,
+    "byOperator": themes_by_operator,
+    "manualReview": review_candidates,
+}
+
 os.makedirs(os.path.dirname(OUT_SERVER), exist_ok=True)
 os.makedirs(os.path.dirname(OUT_NAMES), exist_ok=True)
 json.dump(result, open(OUT_SERVER, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 json.dump(names, open(OUT_NAMES, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 json.dump(clue_data, open(OUT_CLUES, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+json.dump(identity_data, open(OUT_IDENTITIES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+json.dump(theme_data, open(OUT_THEMES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 json.dump(
     familiarity_data,
     open(OUT_FAMILIARITY, "w", encoding="utf-8"),
@@ -550,10 +894,13 @@ json.dump(
 print("operators:", len(result))
 print("hot:", sum(1 for r in result.values() if r["hot"]))
 print("familiarity tiers:", dict(sorted(Counter(r["familiarityTier"] for r in result.values()).items())))
+print("attention provider coverage:", attention_provider_coverage)
 print("power coverage:", sum(1 for r in result.values() if r["power"]["id"] != "none"))
 print("range coverage:", sum(1 for r in result.values() if r["rangeCells"]))
 print("skill coverage:", sum(1 for r in result.values() if clue_data[r["id"]]["skills"]))
 print("quote coverage:", sum(1 for r in result.values() if clue_data[r["id"]]["quotes"]))
+print("identity groups:", len(identity_groups))
+print("themes:", {theme_id: definition["memberCount"] for theme_id, definition in theme_definitions.items()})
 print("exp special:", sum(1 for r in result.values() if r.get("expSpecial")))
 print("origin special:", sum(1 for r in result.values() if r.get("originSpecial")))
 print("race special:", sum(1 for r in result.values() if r.get("raceSpecial")))

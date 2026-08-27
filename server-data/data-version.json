@@ -2,9 +2,8 @@
   "schemaVersion": 1,
   "status": "ready",
   "source": {
-    "repository": "https://github.com/Kengxxiao/ArknightsGameData.git",
-    "revision": "6844859c664c7b5716b3f6a9feaf2c3606168838",
-    "commitTime": "2026-08-18T16:02:18+08:00"
+    "repository": "unknown",
+    "revision": "unknown"
   },
   "counts": {
     "operators": 425,
@@ -12,15 +11,19 @@
     "archives": 435,
     "clues": 425,
     "familiarityRecords": 425,
+    "identityGroups": 37,
+    "themes": 17,
     "operatorArtRecords": 425,
     "requiredAssetGaps": 0,
     "optionalSkillIconGaps": 14,
-    "manualReviewItems": 0
+    "manualReviewItems": 0,
+    "attentionProviders": 5
   },
   "manualReview": {
     "unknownProfessions": [],
     "unknownSubprofessions": [],
-    "powersWithoutLogo": []
+    "powersWithoutLogo": [],
+    "themeCandidates": []
   },
   "requiredAssets": {
     "operatorArtManifest": [],
@@ -47,14 +50,51 @@
     "/img/clues/skill/fc91e94766ad76f3580b.webp",
     "/img/clues/skill/ffbdcbc5d0f6e3629ce5.webp"
   ],
+  "attentionCoverage": {
+    "baiduIndex": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "bilibiliVideo": {
+      "valid": 144,
+      "expected": 425,
+      "coverage": 0.3388,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "bingWeb": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "prtsWiki": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "youtubeVideo": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    }
+  },
   "generatedData": {
     "public/data/names.json": {
-      "bytes": 30030,
-      "sha256": "e4273f1569668cbe028be615c2cfd401c4fc589a50286f542814a254450cdacc"
+      "bytes": 29964,
+      "sha256": "18f4974a2a770454970a4ec838bdefb84d926522dd13f5ab3d287dd3a4567518"
     },
     "server-data/operators.json": {
-      "bytes": 603791,
-      "sha256": "57aba77dbc6474e91c2bd81d595b6cef3eb23b7da519b865cc151c4e8880aac9"
+      "bytes": 603767,
+      "sha256": "d28a7a23792ba1cd0d5725fe605c05cbc04625cd36c244ed2c97c9302e6acfa3"
     },
     "server-data/operator-archives.json": {
       "bytes": 3564639,
@@ -65,8 +105,16 @@
       "sha256": "9d273f42fc726bd0616425c00f905fee38fd27b52d7433ca579ca4773ad1794e"
     },
     "server-data/operator-familiarity.json": {
-      "bytes": 75381,
-      "sha256": "53f11d32d4dfb19f793e1e791769703caf65f4088fe3dc161383d9ca96676d4c"
+      "bytes": 210767,
+      "sha256": "90a5b5066b94843cd0cbb027941db612c51d60e1d046a31cfc0cc0a56ba9e66c"
+    },
+    "server-data/operator-identities.json": {
+      "bytes": 18457,
+      "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
+    },
+    "server-data/operator-themes.json": {
+      "bytes": 100428,
+      "sha256": "13290af6cb98f99911328cec6010e32423645e93454e063385b7e311344656b2"
     }
   }
 }

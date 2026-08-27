@@ -1,0 +1,2146 @@
+{
+  "_meta": {
+    "version": "2026-08-26-yituliu-1",
+    "capturedAt": "2026-08-26T19:32:09+08:00",
+    "sampleSize": 89941,
+    "source": "https://dev.yituliu.cn/survey/operator-progression-statistics/",
+    "note": "Ownership, Elite 2 and highest skill mastery rates. Used as a gameplay usage/investment proxy; not a literal deployment-frequency census."
+  },
+  "operators": {
+    "char_002_amiya": {
+      "ownership": 100,
+      "elite2": 96.3,
+      "mastery": 12.2
+    },
+    "char_003_kalts": {
+      "ownership": 70.7,
+      "elite2": 92.1,
+      "mastery": 80.1
+    },
+    "char_009_12fce": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_010_chen": {
+      "ownership": 63.5,
+      "elite2": 67.5,
+      "mastery": 39.7
+    },
+    "char_017_huang": {
+      "ownership": 71.7,
+      "elite2": 88.2,
+      "mastery": 78.8
+    },
+    "char_1001_amiya2": {
+      "ownership": 86.2,
+      "elite2": 100,
+      "mastery": 15.4
+    },
+    "char_101_sora": {
+      "ownership": 64.2,
+      "elite2": 15.7,
+      "mastery": 3.4
+    },
+    "char_1011_lava2": {
+      "ownership": 79.2,
+      "elite2": 12.4,
+      "mastery": 0.5
+    },
+    "char_1012_skadi2": {
+      "ownership": 59.5,
+      "elite2": 94.9,
+      "mastery": 86.6
+    },
+    "char_1013_chen2": {
+      "ownership": 49.5,
+      "elite2": 94.8,
+      "mastery": 89.6
+    },
+    "char_1014_nearl2": {
+      "ownership": 45.8,
+      "elite2": 91.5,
+      "mastery": 70.8
+    },
+    "char_1015_aglna2": {
+      "ownership": 10.4,
+      "elite2": 63.2,
+      "mastery": 6.9
+    },
+    "char_1016_agoat2": {
+      "ownership": 53.6,
+      "elite2": 99,
+      "mastery": 88.4
+    },
+    "char_1019_siege2": {
+      "ownership": 50.6,
+      "elite2": 73.2,
+      "mastery": 49.8
+    },
+    "char_102_texas": {
+      "ownership": 95.6,
+      "elite2": 73.6,
+      "mastery": 28.7
+    },
+    "char_1020_reed2": {
+      "ownership": 66.3,
+      "elite2": 91.3,
+      "mastery": 73.4
+    },
+    "char_1021_kroos2": {
+      "ownership": 89.1,
+      "elite2": 45.6,
+      "mastery": 21.5
+    },
+    "char_1022_flwr2": {
+      "ownership": 52.7,
+      "elite2": 4,
+      "mastery": 1.2
+    },
+    "char_1023_ghost2": {
+      "ownership": 50.5,
+      "elite2": 89.4,
+      "mastery": 49.2
+    },
+    "char_1024_hbisc2": {
+      "ownership": 78.6,
+      "elite2": 8.8,
+      "mastery": 0.8
+    },
+    "char_1026_gvial2": {
+      "ownership": 46.7,
+      "elite2": 90.3,
+      "mastery": 66.7
+    },
+    "char_1027_greyy2": {
+      "ownership": 79.1,
+      "elite2": 41.1,
+      "mastery": 12.1
+    },
+    "char_1028_texas2": {
+      "ownership": 57.7,
+      "elite2": 98.6,
+      "mastery": 91.4
+    },
+    "char_1029_yato2": {
+      "ownership": 59.2,
+      "elite2": 94.4,
+      "mastery": 79.6
+    },
+    "char_103_angel": {
+      "ownership": 74.2,
+      "elite2": 88.9,
+      "mastery": 71.7
+    },
+    "char_1030_noirc2": {
+      "ownership": 63.5,
+      "elite2": 19.5,
+      "mastery": 2.9
+    },
+    "char_1031_slent2": {
+      "ownership": 75.7,
+      "elite2": 34.1,
+      "mastery": 6.4
+    },
+    "char_1032_excu2": {
+      "ownership": 46,
+      "elite2": 70.5,
+      "mastery": 49.1
+    },
+    "char_1033_swire2": {
+      "ownership": 53.8,
+      "elite2": 44.3,
+      "mastery": 12.7
+    },
+    "char_1034_jesca2": {
+      "ownership": 46.1,
+      "elite2": 65.6,
+      "mastery": 35
+    },
+    "char_1035_wisdel": {
+      "ownership": 72.4,
+      "elite2": 99.1,
+      "mastery": 97.4
+    },
+    "char_1036_fang2": {
+      "ownership": 81.1,
+      "elite2": 5.6,
+      "mastery": 1
+    },
+    "char_1037_amiya3": {
+      "ownership": 79.3,
+      "elite2": 100,
+      "mastery": 28.3
+    },
+    "char_1038_whitw2": {
+      "ownership": 60,
+      "elite2": 96.3,
+      "mastery": 88.4
+    },
+    "char_1039_thorn2": {
+      "ownership": 40.5,
+      "elite2": 71.1,
+      "mastery": 36.6
+    },
+    "char_1040_blaze2": {
+      "ownership": 58.4,
+      "elite2": 66.9,
+      "mastery": 39.2
+    },
+    "char_1041_angel2": {
+      "ownership": 67.6,
+      "elite2": 96.2,
+      "mastery": 82
+    },
+    "char_1042_phatm2": {
+      "ownership": 58.5,
+      "elite2": 95.7,
+      "mastery": 84.8
+    },
+    "char_1043_leizi2": {
+      "ownership": 44.7,
+      "elite2": 87.8,
+      "mastery": 60.4
+    },
+    "char_1044_hsgma2": {
+      "ownership": 58.6,
+      "elite2": 96,
+      "mastery": 77.1
+    },
+    "char_1045_svash2": {
+      "ownership": 72.4,
+      "elite2": 96.1,
+      "mastery": 74.5
+    },
+    "char_1046_sbell2": {
+      "ownership": 77.4,
+      "elite2": 96.7,
+      "mastery": 89.7
+    },
+    "char_1047_halo2": {
+      "ownership": 78.4,
+      "elite2": 14.1,
+      "mastery": 2.2
+    },
+    "char_1048_orchd2": {
+      "ownership": 84.2,
+      "elite2": 71.4,
+      "mastery": 38.1
+    },
+    "char_1049_catap2": {
+      "ownership": 89.1,
+      "elite2": 6.9,
+      "mastery": 1.1
+    },
+    "char_1050_chen3": {
+      "ownership": 74.7,
+      "elite2": 89.6,
+      "mastery": 72.9
+    },
+    "char_1051_headb2": {
+      "ownership": 50,
+      "elite2": 93.6,
+      "mastery": 83.8
+    },
+    "char_1052_kalts2": {
+      "ownership": 86,
+      "elite2": 93.3,
+      "mastery": 69.4
+    },
+    "char_106_franka": {
+      "ownership": 65.3,
+      "elite2": 8.2,
+      "mastery": 0.9
+    },
+    "char_107_liskam": {
+      "ownership": 78.8,
+      "elite2": 29.4,
+      "mastery": 2
+    },
+    "char_108_silent": {
+      "ownership": 85.6,
+      "elite2": 38.1,
+      "mastery": 9
+    },
+    "char_109_fmout": {
+      "ownership": 98.6,
+      "elite2": 16.3,
+      "mastery": 0.9
+    },
+    "char_110_deepcl": {
+      "ownership": 98.2,
+      "elite2": 20.3,
+      "mastery": 2.6
+    },
+    "char_112_siege": {
+      "ownership": 66.9,
+      "elite2": 68,
+      "mastery": 26.6
+    },
+    "char_113_cqbw": {
+      "ownership": 45.6,
+      "elite2": 74.6,
+      "mastery": 36.4
+    },
+    "char_115_headbr": {
+      "ownership": 72,
+      "elite2": 25.6,
+      "mastery": 1.7
+    },
+    "char_117_myrrh": {
+      "ownership": 98.5,
+      "elite2": 9.2,
+      "mastery": 0.5
+    },
+    "char_118_yuki": {
+      "ownership": 98.7,
+      "elite2": 18.3,
+      "mastery": 1.4
+    },
+    "char_120_hibisc": {
+      "ownership": 100,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_121_lava": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_122_beagle": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_123_fang": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_124_kroos": {
+      "ownership": 99.8,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_126_shotst": {
+      "ownership": 99,
+      "elite2": 15,
+      "mastery": 2.1
+    },
+    "char_127_estell": {
+      "ownership": 92,
+      "elite2": 7.9,
+      "mastery": 0.8
+    },
+    "char_128_plosis": {
+      "ownership": 92.7,
+      "elite2": 82.5,
+      "mastery": 24.5
+    },
+    "char_129_bluep": {
+      "ownership": 73.5,
+      "elite2": 49.5,
+      "mastery": 20.2
+    },
+    "char_130_doberm": {
+      "ownership": 98.8,
+      "elite2": 4.2,
+      "mastery": 0.4
+    },
+    "char_131_flameb": {
+      "ownership": 81.3,
+      "elite2": 5,
+      "mastery": 0.7
+    },
+    "char_133_mm": {
+      "ownership": 97.3,
+      "elite2": 23.9,
+      "mastery": 7.5
+    },
+    "char_134_ifrit": {
+      "ownership": 70.3,
+      "elite2": 87.9,
+      "mastery": 67.9
+    },
+    "char_135_halo": {
+      "ownership": 75.9,
+      "elite2": 6.6,
+      "mastery": 0.7
+    },
+    "char_136_hsguma": {
+      "ownership": 66.9,
+      "elite2": 89.4,
+      "mastery": 60.6
+    },
+    "char_137_brownb": {
+      "ownership": 97.1,
+      "elite2": 4.2,
+      "mastery": 0.5
+    },
+    "char_140_whitew": {
+      "ownership": 90.6,
+      "elite2": 80.6,
+      "mastery": 48.6
+    },
+    "char_141_nights": {
+      "ownership": 98.9,
+      "elite2": 10,
+      "mastery": 1.1
+    },
+    "char_143_ghost": {
+      "ownership": 79.6,
+      "elite2": 56,
+      "mastery": 30.7
+    },
+    "char_144_red": {
+      "ownership": 84.5,
+      "elite2": 33.5,
+      "mastery": 6.8
+    },
+    "char_145_prove": {
+      "ownership": 65.8,
+      "elite2": 9.8,
+      "mastery": 1
+    },
+    "char_147_shining": {
+      "ownership": 66.1,
+      "elite2": 80.3,
+      "mastery": 29.9
+    },
+    "char_148_nearl": {
+      "ownership": 72.7,
+      "elite2": 38.3,
+      "mastery": 10.8
+    },
+    "char_149_scave": {
+      "ownership": 98.6,
+      "elite2": 9.4,
+      "mastery": 0.7
+    },
+    "char_150_snakek": {
+      "ownership": 98.6,
+      "elite2": 45.1,
+      "mastery": 9.3
+    },
+    "char_1502_crosly": {
+      "ownership": 72.4,
+      "elite2": 25.2,
+      "mastery": 8.2
+    },
+    "char_151_myrtle": {
+      "ownership": 99.1,
+      "elite2": 91.8,
+      "mastery": 80.9
+    },
+    "char_154_morgan": {
+      "ownership": 80.8,
+      "elite2": 12.9,
+      "mastery": 0.3
+    },
+    "char_155_tiger": {
+      "ownership": 78,
+      "elite2": 8.9,
+      "mastery": 0.5
+    },
+    "char_157_dagda": {
+      "ownership": 83.8,
+      "elite2": 2.5,
+      "mastery": 0.2
+    },
+    "char_158_milu": {
+      "ownership": 71.9,
+      "elite2": 14,
+      "mastery": 2.1
+    },
+    "char_159_peacok": {
+      "ownership": 71,
+      "elite2": 10.6,
+      "mastery": 1.5
+    },
+    "char_163_hpsts": {
+      "ownership": 81,
+      "elite2": 25,
+      "mastery": 0.7
+    },
+    "char_164_nightm": {
+      "ownership": 71.9,
+      "elite2": 6.1,
+      "mastery": 0.9
+    },
+    "char_166_skfire": {
+      "ownership": 66.3,
+      "elite2": 20.4,
+      "mastery": 2.1
+    },
+    "char_171_bldsk": {
+      "ownership": 80.2,
+      "elite2": 72,
+      "mastery": 49
+    },
+    "char_172_svrash": {
+      "ownership": 80.9,
+      "elite2": 91.4,
+      "mastery": 78.7
+    },
+    "char_173_slchan": {
+      "ownership": 85.4,
+      "elite2": 16.8,
+      "mastery": 5.4
+    },
+    "char_174_slbell": {
+      "ownership": 73.7,
+      "elite2": 21.6,
+      "mastery": 5.3
+    },
+    "char_179_cgbird": {
+      "ownership": 68.4,
+      "elite2": 93.1,
+      "mastery": 58.2
+    },
+    "char_180_amgoat": {
+      "ownership": 70.8,
+      "elite2": 94.7,
+      "mastery": 79.1
+    },
+    "char_181_flower": {
+      "ownership": 98.5,
+      "elite2": 37.9,
+      "mastery": 3.3
+    },
+    "char_183_skgoat": {
+      "ownership": 98.5,
+      "elite2": 8.2,
+      "mastery": 1.1
+    },
+    "char_185_frncat": {
+      "ownership": 98.4,
+      "elite2": 12.2,
+      "mastery": 2.9
+    },
+    "char_187_ccheal": {
+      "ownership": 98.6,
+      "elite2": 12.8,
+      "mastery": 2.1
+    },
+    "char_188_helage": {
+      "ownership": 57.1,
+      "elite2": 58.4,
+      "mastery": 20.3
+    },
+    "char_190_clour": {
+      "ownership": 97,
+      "elite2": 7.9,
+      "mastery": 0.6
+    },
+    "char_192_falco": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_193_frostl": {
+      "ownership": 97.8,
+      "elite2": 8.7,
+      "mastery": 0.7
+    },
+    "char_194_leto": {
+      "ownership": 74.4,
+      "elite2": 3,
+      "mastery": 0.3
+    },
+    "char_195_glassb": {
+      "ownership": 69.8,
+      "elite2": 12.5,
+      "mastery": 0.7
+    },
+    "char_196_sunbr": {
+      "ownership": 97.7,
+      "elite2": 48.6,
+      "mastery": 15.1
+    },
+    "char_197_poca": {
+      "ownership": 55.3,
+      "elite2": 57.7,
+      "mastery": 23.5
+    },
+    "char_198_blackd": {
+      "ownership": 99.3,
+      "elite2": 11.8,
+      "mastery": 0.8
+    },
+    "char_199_yak": {
+      "ownership": 98.4,
+      "elite2": 12.2,
+      "mastery": 1.8
+    },
+    "char_201_moeshd": {
+      "ownership": 70.5,
+      "elite2": 6.2,
+      "mastery": 0.6
+    },
+    "char_2012_typhon": {
+      "ownership": 52.2,
+      "elite2": 87.6,
+      "mastery": 75.3
+    },
+    "char_2013_cerber": {
+      "ownership": 62.1,
+      "elite2": 87.4,
+      "mastery": 69.8
+    },
+    "char_2014_nian": {
+      "ownership": 45.9,
+      "elite2": 85.1,
+      "mastery": 30.5
+    },
+    "char_2015_dusk": {
+      "ownership": 40.9,
+      "elite2": 83.5,
+      "mastery": 25.5
+    },
+    "char_202_demkni": {
+      "ownership": 86.1,
+      "elite2": 92.4,
+      "mastery": 71.6
+    },
+    "char_2023_ling": {
+      "ownership": 46.7,
+      "elite2": 95.3,
+      "mastery": 85.2
+    },
+    "char_2024_chyue": {
+      "ownership": 50.8,
+      "elite2": 92.7,
+      "mastery": 85.3
+    },
+    "char_2025_shu": {
+      "ownership": 61.2,
+      "elite2": 99.2,
+      "mastery": 87.9
+    },
+    "char_2026_yu": {
+      "ownership": 59.5,
+      "elite2": 94.8,
+      "mastery": 74.3
+    },
+    "char_2027_wang": {
+      "ownership": 78.2,
+      "elite2": 96.5,
+      "mastery": 89.3
+    },
+    "char_204_platnm": {
+      "ownership": 71.1,
+      "elite2": 37.9,
+      "mastery": 13.8
+    },
+    "char_206_gnosis": {
+      "ownership": 49.4,
+      "elite2": 82,
+      "mastery": 47.4
+    },
+    "char_208_melan": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_209_ardign": {
+      "ownership": 99,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_210_stward": {
+      "ownership": 99.6,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_211_adnach": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_212_ansel": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_213_mostma": {
+      "ownership": 63.9,
+      "elite2": 72,
+      "mastery": 44.8
+    },
+    "char_214_kafka": {
+      "ownership": 71.9,
+      "elite2": 27.2,
+      "mastery": 1.9
+    },
+    "char_215_mantic": {
+      "ownership": 71.7,
+      "elite2": 36.6,
+      "mastery": 15.2
+    },
+    "char_218_cuttle": {
+      "ownership": 70.4,
+      "elite2": 24.4,
+      "mastery": 6.7
+    },
+    "char_219_meteo": {
+      "ownership": 70.1,
+      "elite2": 35.7,
+      "mastery": 11
+    },
+    "char_220_grani": {
+      "ownership": 85.8,
+      "elite2": 5.7,
+      "mastery": 0.5
+    },
+    "char_222_bpipe": {
+      "ownership": 72.1,
+      "elite2": 94.1,
+      "mastery": 61.2
+    },
+    "char_225_haak": {
+      "ownership": 56.9,
+      "elite2": 60.8,
+      "mastery": 37.4
+    },
+    "char_226_hmau": {
+      "ownership": 67,
+      "elite2": 7.1,
+      "mastery": 0.9
+    },
+    "char_230_savage": {
+      "ownership": 88.7,
+      "elite2": 6,
+      "mastery": 0.4
+    },
+    "char_235_jesica": {
+      "ownership": 99.9,
+      "elite2": 12.9,
+      "mastery": 0.8
+    },
+    "char_236_rope": {
+      "ownership": 99,
+      "elite2": 12.4,
+      "mastery": 1.7
+    },
+    "char_237_gravel": {
+      "ownership": 99.3,
+      "elite2": 48.2,
+      "mastery": 9.7
+    },
+    "char_240_wyvern": {
+      "ownership": 99.7,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_241_panda": {
+      "ownership": 73.4,
+      "elite2": 26.9,
+      "mastery": 7.7
+    },
+    "char_242_otter": {
+      "ownership": 79.7,
+      "elite2": 15.3,
+      "mastery": 2.7
+    },
+    "char_243_waaifu": {
+      "ownership": 74.8,
+      "elite2": 32.7,
+      "mastery": 1.4
+    },
+    "char_245_cello": {
+      "ownership": 57,
+      "elite2": 96,
+      "mastery": 75.1
+    },
+    "char_248_mgllan": {
+      "ownership": 61.1,
+      "elite2": 48.5,
+      "mastery": 8
+    },
+    "char_249_mlyss": {
+      "ownership": 54.1,
+      "elite2": 84.5,
+      "mastery": 46.8
+    },
+    "char_250_phatom": {
+      "ownership": 61.3,
+      "elite2": 68.6,
+      "mastery": 33.5
+    },
+    "char_252_bibeak": {
+      "ownership": 64.8,
+      "elite2": 31.3,
+      "mastery": 4.1
+    },
+    "char_253_greyy": {
+      "ownership": 97.8,
+      "elite2": 5.9,
+      "mastery": 0.4
+    },
+    "char_254_vodfox": {
+      "ownership": 75.4,
+      "elite2": 69.7,
+      "mastery": 38.3
+    },
+    "char_258_podego": {
+      "ownership": 97.6,
+      "elite2": 16.4,
+      "mastery": 2.2
+    },
+    "char_260_durnar": {
+      "ownership": 94.4,
+      "elite2": 6,
+      "mastery": 0.5
+    },
+    "char_261_sddrag": {
+      "ownership": 66.6,
+      "elite2": 10.4,
+      "mastery": 1.1
+    },
+    "char_263_skadi": {
+      "ownership": 62.3,
+      "elite2": 73.5,
+      "mastery": 26.4
+    },
+    "char_264_f12yin": {
+      "ownership": 75.1,
+      "elite2": 88.8,
+      "mastery": 78
+    },
+    "char_265_sophia": {
+      "ownership": 77.4,
+      "elite2": 5.7,
+      "mastery": 0.4
+    },
+    "char_271_spikes": {
+      "ownership": 96.8,
+      "elite2": 7.9,
+      "mastery": 1.1
+    },
+    "char_272_strong": {
+      "ownership": 98.6,
+      "elite2": 41.3,
+      "mastery": 15.5
+    },
+    "char_274_astesi": {
+      "ownership": 70.3,
+      "elite2": 25.4,
+      "mastery": 3.7
+    },
+    "char_275_breeze": {
+      "ownership": 64.3,
+      "elite2": 7.8,
+      "mastery": 0.4
+    },
+    "char_277_sqrrel": {
+      "ownership": 99.7,
+      "elite2": 15,
+      "mastery": 3.3
+    },
+    "char_278_orchid": {
+      "ownership": 99.8,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_279_excu": {
+      "ownership": 65.9,
+      "elite2": 14.9,
+      "mastery": 1.3
+    },
+    "char_281_popka": {
+      "ownership": 99.6,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_282_catap": {
+      "ownership": 99.5,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_283_midn": {
+      "ownership": 99.4,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_284_spot": {
+      "ownership": 99.5,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_285_medic2": {
+      "ownership": 99.7,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_286_cast3": {
+      "ownership": 70.3,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_289_gyuki": {
+      "ownership": 98.4,
+      "elite2": 5.6,
+      "mastery": 0.6
+    },
+    "char_290_vigna": {
+      "ownership": 98.6,
+      "elite2": 16.4,
+      "mastery": 1.3
+    },
+    "char_291_aglina": {
+      "ownership": 55.8,
+      "elite2": 80.2,
+      "mastery": 46.7
+    },
+    "char_293_thorns": {
+      "ownership": 72.7,
+      "elite2": 91,
+      "mastery": 84.9
+    },
+    "char_294_ayer": {
+      "ownership": 68.2,
+      "elite2": 6.5,
+      "mastery": 0.7
+    },
+    "char_297_hamoni": {
+      "ownership": 79,
+      "elite2": 4.1,
+      "mastery": 0.6
+    },
+    "char_298_susuro": {
+      "ownership": 97.4,
+      "elite2": 28.9,
+      "mastery": 6.9
+    },
+    "char_300_phenxi": {
+      "ownership": 53.3,
+      "elite2": 75.4,
+      "mastery": 48.9
+    },
+    "char_301_cutter": {
+      "ownership": 98.4,
+      "elite2": 12.8,
+      "mastery": 2.5
+    },
+    "char_302_glaze": {
+      "ownership": 97.3,
+      "elite2": 16.1,
+      "mastery": 5.2
+    },
+    "char_304_zebra": {
+      "ownership": 82.8,
+      "elite2": 8.3,
+      "mastery": 2.4
+    },
+    "char_306_leizi": {
+      "ownership": 64.2,
+      "elite2": 12.3,
+      "mastery": 1.7
+    },
+    "char_308_swire": {
+      "ownership": 67.4,
+      "elite2": 6.9,
+      "mastery": 0.5
+    },
+    "char_311_mudrok": {
+      "ownership": 66.4,
+      "elite2": 93.2,
+      "mastery": 80.5
+    },
+    "char_322_lmlee": {
+      "ownership": 56.4,
+      "elite2": 67.5,
+      "mastery": 40.8
+    },
+    "char_325_bison": {
+      "ownership": 83.4,
+      "elite2": 3.5,
+      "mastery": 0.3
+    },
+    "char_326_glacus": {
+      "ownership": 69.2,
+      "elite2": 8.4,
+      "mastery": 0.8
+    },
+    "char_328_cammou": {
+      "ownership": 97.9,
+      "elite2": 29.6,
+      "mastery": 5.9
+    },
+    "char_332_archet": {
+      "ownership": 51.9,
+      "elite2": 75,
+      "mastery": 34.4
+    },
+    "char_333_sidero": {
+      "ownership": 90.1,
+      "elite2": 4.1,
+      "mastery": 0.3
+    },
+    "char_336_folivo": {
+      "ownership": 66.1,
+      "elite2": 36,
+      "mastery": 6.3
+    },
+    "char_337_utage": {
+      "ownership": 97,
+      "elite2": 16.3,
+      "mastery": 3.8
+    },
+    "char_338_iris": {
+      "ownership": 65.9,
+      "elite2": 18.2,
+      "mastery": 1.1
+    },
+    "char_340_shwaz": {
+      "ownership": 58,
+      "elite2": 74.9,
+      "mastery": 51
+    },
+    "char_341_sntlla": {
+      "ownership": 75.9,
+      "elite2": 5.7,
+      "mastery": 1.8
+    },
+    "char_343_tknogi": {
+      "ownership": 71.7,
+      "elite2": 4.8,
+      "mastery": 0.3
+    },
+    "char_344_beewax": {
+      "ownership": 70.3,
+      "elite2": 8.1,
+      "mastery": 1
+    },
+    "char_345_folnic": {
+      "ownership": 79.7,
+      "elite2": 3.6,
+      "mastery": 0.3
+    },
+    "char_346_aosta": {
+      "ownership": 66.3,
+      "elite2": 4.2,
+      "mastery": 0.4
+    },
+    "char_347_jaksel": {
+      "ownership": 96.9,
+      "elite2": 3.3,
+      "mastery": 0.3
+    },
+    "char_348_ceylon": {
+      "ownership": 88.4,
+      "elite2": 8,
+      "mastery": 0.3
+    },
+    "char_349_chiave": {
+      "ownership": 68.2,
+      "elite2": 5.1,
+      "mastery": 1
+    },
+    "char_350_surtr": {
+      "ownership": 77.3,
+      "elite2": 93.7,
+      "mastery": 87.1
+    },
+    "char_355_ethan": {
+      "ownership": 92.3,
+      "elite2": 54.7,
+      "mastery": 18.8
+    },
+    "char_356_broca": {
+      "ownership": 64,
+      "elite2": 8.6,
+      "mastery": 0.8
+    },
+    "char_358_lisa": {
+      "ownership": 71.8,
+      "elite2": 90.4,
+      "mastery": 72.2
+    },
+    "char_362_saga": {
+      "ownership": 53.8,
+      "elite2": 65,
+      "mastery": 21.1
+    },
+    "char_363_toddi": {
+      "ownership": 63.9,
+      "elite2": 6.5,
+      "mastery": 0.8
+    },
+    "char_365_aprl": {
+      "ownership": 66.8,
+      "elite2": 15.9,
+      "mastery": 7.1
+    },
+    "char_366_acdrop": {
+      "ownership": 97,
+      "elite2": 4.1,
+      "mastery": 0.4
+    },
+    "char_367_swllow": {
+      "ownership": 63.6,
+      "elite2": 12.3,
+      "mastery": 1.4
+    },
+    "char_369_bena": {
+      "ownership": 77.1,
+      "elite2": 6.8,
+      "mastery": 0.5
+    },
+    "char_373_lionhd": {
+      "ownership": 72.5,
+      "elite2": 6.1,
+      "mastery": 1
+    },
+    "char_376_therex": {
+      "ownership": 93.8,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_377_gdglow": {
+      "ownership": 64.5,
+      "elite2": 95.9,
+      "mastery": 83.3
+    },
+    "char_378_asbest": {
+      "ownership": 68.3,
+      "elite2": 6.9,
+      "mastery": 0.5
+    },
+    "char_379_sesa": {
+      "ownership": 64.3,
+      "elite2": 4.2,
+      "mastery": 0.4
+    },
+    "char_381_bubble": {
+      "ownership": 97,
+      "elite2": 7.1,
+      "mastery": 0.9
+    },
+    "char_383_snsant": {
+      "ownership": 82.5,
+      "elite2": 8.7,
+      "mastery": 0.8
+    },
+    "char_385_finlpp": {
+      "ownership": 94.7,
+      "elite2": 23.9,
+      "mastery": 3.5
+    },
+    "char_388_mint": {
+      "ownership": 77.3,
+      "elite2": 7.4,
+      "mastery": 1.3
+    },
+    "char_391_rosmon": {
+      "ownership": 46.1,
+      "elite2": 81.1,
+      "mastery": 28.2
+    },
+    "char_394_hadiya": {
+      "ownership": 49.7,
+      "elite2": 5.1,
+      "mastery": 1.2
+    },
+    "char_400_weedy": {
+      "ownership": 66.4,
+      "elite2": 79.8,
+      "mastery": 50.5
+    },
+    "char_4000_jnight": {
+      "ownership": 68,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4004_pudd": {
+      "ownership": 73.5,
+      "elite2": 7.4,
+      "mastery": 0.8
+    },
+    "char_4006_melnte": {
+      "ownership": 81.1,
+      "elite2": 2.9,
+      "mastery": 0.4
+    },
+    "char_4009_irene": {
+      "ownership": 56.2,
+      "elite2": 77.1,
+      "mastery": 53.5
+    },
+    "char_401_elysm": {
+      "ownership": 77.8,
+      "elite2": 60.1,
+      "mastery": 38.7
+    },
+    "char_4010_etlchi": {
+      "ownership": 32.4,
+      "elite2": 60.2,
+      "mastery": 29.4
+    },
+    "char_4011_lessng": {
+      "ownership": 70.5,
+      "elite2": 15.6,
+      "mastery": 1.9
+    },
+    "char_4013_kjera": {
+      "ownership": 85.2,
+      "elite2": 6.9,
+      "mastery": 1.1
+    },
+    "char_4014_lunacu": {
+      "ownership": 81.9,
+      "elite2": 5.9,
+      "mastery": 1.1
+    },
+    "char_4015_spuria": {
+      "ownership": 78.4,
+      "elite2": 4.4,
+      "mastery": 0.6
+    },
+    "char_4016_kazema": {
+      "ownership": 77.3,
+      "elite2": 10.8,
+      "mastery": 2
+    },
+    "char_4017_puzzle": {
+      "ownership": 74.5,
+      "elite2": 9,
+      "mastery": 1.4
+    },
+    "char_4019_ncdeer": {
+      "ownership": 61.4,
+      "elite2": 22.7,
+      "mastery": 1.3
+    },
+    "char_402_tuye": {
+      "ownership": 61,
+      "elite2": 11.1,
+      "mastery": 0.6
+    },
+    "char_4023_rfalcn": {
+      "ownership": 87.1,
+      "elite2": 4,
+      "mastery": 0.4
+    },
+    "char_4025_aprot2": {
+      "ownership": 78.9,
+      "elite2": 6.4,
+      "mastery": 0.7
+    },
+    "char_4026_vulpis": {
+      "ownership": 53.8,
+      "elite2": 55.6,
+      "mastery": 27.4
+    },
+    "char_4027_heyak": {
+      "ownership": 55.3,
+      "elite2": 42.2,
+      "mastery": 13.6
+    },
+    "char_4031_liesel": {
+      "ownership": 43.2,
+      "elite2": 3.8,
+      "mastery": 0.9
+    },
+    "char_4032_provs": {
+      "ownership": 81.9,
+      "elite2": 44.1,
+      "mastery": 0.4
+    },
+    "char_4036_forcer": {
+      "ownership": 81.1,
+      "elite2": 9.1,
+      "mastery": 1.8
+    },
+    "char_4037_demetr": {
+      "ownership": 23.3,
+      "elite2": 62.1,
+      "mastery": 27.6
+    },
+    "char_4039_horn": {
+      "ownership": 56,
+      "elite2": 88.3,
+      "mastery": 67.5
+    },
+    "char_4040_rockr": {
+      "ownership": 78.4,
+      "elite2": 4.9,
+      "mastery": 0.9
+    },
+    "char_4041_chnut": {
+      "ownership": 96.2,
+      "elite2": 11.1,
+      "mastery": 1.1
+    },
+    "char_4042_lumen": {
+      "ownership": 85.9,
+      "elite2": 73.5,
+      "mastery": 40
+    },
+    "char_4043_erato": {
+      "ownership": 63.9,
+      "elite2": 12.7,
+      "mastery": 1.7
+    },
+    "char_4045_heidi": {
+      "ownership": 86.4,
+      "elite2": 9,
+      "mastery": 2.2
+    },
+    "char_4046_ebnhlz": {
+      "ownership": 49.5,
+      "elite2": 59.3,
+      "mastery": 24.6
+    },
+    "char_4047_pianst": {
+      "ownership": 72.2,
+      "elite2": 11.6,
+      "mastery": 0.4
+    },
+    "char_4048_doroth": {
+      "ownership": 51.2,
+      "elite2": 72.7,
+      "mastery": 36.2
+    },
+    "char_405_absin": {
+      "ownership": 77.9,
+      "elite2": 5.7,
+      "mastery": 0.5
+    },
+    "char_4051_akkord": {
+      "ownership": 58.7,
+      "elite2": 5.4,
+      "mastery": 0.7
+    },
+    "char_4052_surfer": {
+      "ownership": 77.6,
+      "elite2": 25.9,
+      "mastery": 14.1
+    },
+    "char_4054_malist": {
+      "ownership": 73.5,
+      "elite2": 22.4,
+      "mastery": 0.8
+    },
+    "char_4055_bgsnow": {
+      "ownership": 62,
+      "elite2": 83.9,
+      "mastery": 72.4
+    },
+    "char_4056_titi": {
+      "ownership": 23.7,
+      "elite2": 57.8,
+      "mastery": 27.2
+    },
+    "char_4058_pepe": {
+      "ownership": 49.9,
+      "elite2": 68,
+      "mastery": 34.3
+    },
+    "char_4062_totter": {
+      "ownership": 96,
+      "elite2": 14,
+      "mastery": 2.4
+    },
+    "char_4063_quartz": {
+      "ownership": 72.8,
+      "elite2": 9.2,
+      "mastery": 1.3
+    },
+    "char_4064_mlynar": {
+      "ownership": 71.4,
+      "elite2": 96.9,
+      "mastery": 92.7
+    },
+    "char_4065_judge": {
+      "ownership": 59.5,
+      "elite2": 76.1,
+      "mastery": 51.6
+    },
+    "char_4066_highmo": {
+      "ownership": 77.1,
+      "elite2": 25.3,
+      "mastery": 8.1
+    },
+    "char_4067_lolxh": {
+      "ownership": 48.1,
+      "elite2": 38.5,
+      "mastery": 5.5
+    },
+    "char_4071_peper": {
+      "ownership": 78.4,
+      "elite2": 7,
+      "mastery": 0.5
+    },
+    "char_4072_ironmn": {
+      "ownership": 49.9,
+      "elite2": 54.2,
+      "mastery": 15.3
+    },
+    "char_4077_palico": {
+      "ownership": 64.4,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4078_bdhkgt": {
+      "ownership": 74.7,
+      "elite2": 4.6,
+      "mastery": 0.7
+    },
+    "char_4079_haini": {
+      "ownership": 71.3,
+      "elite2": 5.2,
+      "mastery": 0.5
+    },
+    "char_4080_lin": {
+      "ownership": 57.2,
+      "elite2": 81.2,
+      "mastery": 59
+    },
+    "char_4081_warmy": {
+      "ownership": 72.2,
+      "elite2": 6.9,
+      "mastery": 0.8
+    },
+    "char_4082_qiubai": {
+      "ownership": 53.6,
+      "elite2": 78.8,
+      "mastery": 62
+    },
+    "char_4083_chimes": {
+      "ownership": 78.2,
+      "elite2": 2.9,
+      "mastery": 0.3
+    },
+    "char_4087_ines": {
+      "ownership": 70.1,
+      "elite2": 97.9,
+      "mastery": 83.8
+    },
+    "char_4088_hodrer": {
+      "ownership": 45.3,
+      "elite2": 57.7,
+      "mastery": 22.3
+    },
+    "char_4091_ulika": {
+      "ownership": 68.1,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4093_frston": {
+      "ownership": 61.5,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4098_vvana": {
+      "ownership": 56.7,
+      "elite2": 63.3,
+      "mastery": 34.1
+    },
+    "char_4100_caper": {
+      "ownership": 69.5,
+      "elite2": 19,
+      "mastery": 2.7
+    },
+    "char_4102_threye": {
+      "ownership": 70.9,
+      "elite2": 8.1,
+      "mastery": 1.1
+    },
+    "char_4104_coldst": {
+      "ownership": 70.7,
+      "elite2": 4.5,
+      "mastery": 0.4
+    },
+    "char_4105_almond": {
+      "ownership": 75.6,
+      "elite2": 5.1,
+      "mastery": 0.4
+    },
+    "char_4106_bryota": {
+      "ownership": 73.3,
+      "elite2": 25,
+      "mastery": 0.4
+    },
+    "char_4107_vrdant": {
+      "ownership": 95.3,
+      "elite2": 5.1,
+      "mastery": 0.4
+    },
+    "char_4109_baslin": {
+      "ownership": 80.9,
+      "elite2": 5.5,
+      "mastery": 1.3
+    },
+    "char_411_tomimi": {
+      "ownership": 79.5,
+      "elite2": 5.9,
+      "mastery": 0.5
+    },
+    "char_4110_delphn": {
+      "ownership": 79.1,
+      "elite2": 11.1,
+      "mastery": 0.5
+    },
+    "char_4114_harold": {
+      "ownership": 71.1,
+      "elite2": 5.7,
+      "mastery": 1.3
+    },
+    "char_4116_blkkgt": {
+      "ownership": 56.2,
+      "elite2": 91.2,
+      "mastery": 83.9
+    },
+    "char_4117_ray": {
+      "ownership": 40.7,
+      "elite2": 76.1,
+      "mastery": 62.3
+    },
+    "char_4119_wanqin": {
+      "ownership": 75.5,
+      "elite2": 8.8,
+      "mastery": 4.2
+    },
+    "char_4121_zuole": {
+      "ownership": 54.3,
+      "elite2": 61.1,
+      "mastery": 38.9
+    },
+    "char_4122_grabds": {
+      "ownership": 79.4,
+      "elite2": 3.7,
+      "mastery": 0.5
+    },
+    "char_4123_ela": {
+      "ownership": 51.5,
+      "elite2": 94.9,
+      "mastery": 83
+    },
+    "char_4124_iana": {
+      "ownership": 54.8,
+      "elite2": 18.5,
+      "mastery": 5.9
+    },
+    "char_4125_rdoc": {
+      "ownership": 54.8,
+      "elite2": 8,
+      "mastery": 1.3
+    },
+    "char_4126_fuze": {
+      "ownership": 54.7,
+      "elite2": 6.9,
+      "mastery": 1
+    },
+    "char_4130_luton": {
+      "ownership": 94,
+      "elite2": 10.4,
+      "mastery": 1.2
+    },
+    "char_4131_odda": {
+      "ownership": 73.8,
+      "elite2": 3.2,
+      "mastery": 0.8
+    },
+    "char_4132_ascln": {
+      "ownership": 54.4,
+      "elite2": 91.5,
+      "mastery": 61.7
+    },
+    "char_4133_logos": {
+      "ownership": 73.8,
+      "elite2": 97.9,
+      "mastery": 87.4
+    },
+    "char_4134_cetsyr": {
+      "ownership": 78.9,
+      "elite2": 50.5,
+      "mastery": 15.6
+    },
+    "char_4136_phonor": {
+      "ownership": 77.5,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4137_udflow": {
+      "ownership": 71.4,
+      "elite2": 8.8,
+      "mastery": 1.3
+    },
+    "char_4138_narant": {
+      "ownership": 55.5,
+      "elite2": 84.5,
+      "mastery": 52.4
+    },
+    "char_4139_papyrs": {
+      "ownership": 71.7,
+      "elite2": 7.4,
+      "mastery": 0.9
+    },
+    "char_4140_lasher": {
+      "ownership": 80,
+      "elite2": 2.6,
+      "mastery": 0.3
+    },
+    "char_4141_marcil": {
+      "ownership": 53.6,
+      "elite2": 76.3,
+      "mastery": 51
+    },
+    "char_4142_laios": {
+      "ownership": 57.2,
+      "elite2": 7.4,
+      "mastery": 0.9
+    },
+    "char_4143_sensi": {
+      "ownership": 57.9,
+      "elite2": 11.5,
+      "mastery": 1.8
+    },
+    "char_4144_chilc": {
+      "ownership": 57.1,
+      "elite2": 29.8,
+      "mastery": 18.8
+    },
+    "char_4145_ulpia": {
+      "ownership": 60.6,
+      "elite2": 96,
+      "mastery": 85.5
+    },
+    "char_4146_nymph": {
+      "ownership": 44.3,
+      "elite2": 78.9,
+      "mastery": 62.1
+    },
+    "char_4147_mitm": {
+      "ownership": 68.2,
+      "elite2": 4.9,
+      "mastery": 0.6
+    },
+    "char_4148_philae": {
+      "ownership": 55.6,
+      "elite2": 7.1,
+      "mastery": 1.9
+    },
+    "char_415_flint": {
+      "ownership": 66.7,
+      "elite2": 4.1,
+      "mastery": 0.4
+    },
+    "char_4151_tinman": {
+      "ownership": 74.5,
+      "elite2": 54.3,
+      "mastery": 18.1
+    },
+    "char_4155_talr": {
+      "ownership": 78.1,
+      "elite2": 2,
+      "mastery": 0.2
+    },
+    "char_416_zumama": {
+      "ownership": 56.9,
+      "elite2": 64.3,
+      "mastery": 19.3
+    },
+    "char_4162_cathy": {
+      "ownership": 71.2,
+      "elite2": 3.6,
+      "mastery": 0.8
+    },
+    "char_4163_rosesa": {
+      "ownership": 69.6,
+      "elite2": 9.4,
+      "mastery": 4.2
+    },
+    "char_4164_tecno": {
+      "ownership": 61.9,
+      "elite2": 3.9,
+      "mastery": 0.6
+    },
+    "char_4165_ctrail": {
+      "ownership": 66.5,
+      "elite2": 20.3,
+      "mastery": 5
+    },
+    "char_4166_varkis": {
+      "ownership": 74.6,
+      "elite2": 3.5,
+      "mastery": 0.8
+    },
+    "char_4171_wulfen": {
+      "ownership": 59.3,
+      "elite2": 4.4,
+      "mastery": 0.6
+    },
+    "char_4172_xingzh": {
+      "ownership": 71.5,
+      "elite2": 3.3,
+      "mastery": 0.3
+    },
+    "char_4173_nowell": {
+      "ownership": 57.8,
+      "elite2": 4.4,
+      "mastery": 0.7
+    },
+    "char_4177_brigid": {
+      "ownership": 70.1,
+      "elite2": 5.3,
+      "mastery": 0.8
+    },
+    "char_4178_alanna": {
+      "ownership": 65.6,
+      "elite2": 2.9,
+      "mastery": 0.2
+    },
+    "char_4179_monstr": {
+      "ownership": 64.9,
+      "elite2": 96.7,
+      "mastery": 77.2
+    },
+    "char_4182_oblvns": {
+      "ownership": 72.2,
+      "elite2": 95.2,
+      "mastery": 80.1
+    },
+    "char_4183_mortis": {
+      "ownership": 74.5,
+      "elite2": 68.5,
+      "mastery": 26.7
+    },
+    "char_4184_dolris": {
+      "ownership": 74.5,
+      "elite2": 58,
+      "mastery": 14.7
+    },
+    "char_4185_amoris": {
+      "ownership": 74.2,
+      "elite2": 34.3,
+      "mastery": 5.3
+    },
+    "char_4186_tmoris": {
+      "ownership": 74,
+      "elite2": 61.7,
+      "mastery": 15.4
+    },
+    "char_4187_graceb": {
+      "ownership": 82.2,
+      "elite2": 4.2,
+      "mastery": 0.9
+    },
+    "char_4188_confes": {
+      "ownership": 72.8,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4191_tippi": {
+      "ownership": 66.1,
+      "elite2": 3.6,
+      "mastery": 0.8
+    },
+    "char_4193_lemuen": {
+      "ownership": 64.1,
+      "elite2": 91.9,
+      "mastery": 72.7
+    },
+    "char_4194_rmixer": {
+      "ownership": 78.5,
+      "elite2": 25.5,
+      "mastery": 4.8
+    },
+    "char_4195_radian": {
+      "ownership": 90.3,
+      "elite2": 83,
+      "mastery": 34.1
+    },
+    "char_4196_reckpr": {
+      "ownership": 60.2,
+      "elite2": 4,
+      "mastery": 0.6
+    },
+    "char_4198_christ": {
+      "ownership": 68.5,
+      "elite2": 11.3,
+      "mastery": 1.2
+    },
+    "char_4199_makiri": {
+      "ownership": 68.6,
+      "elite2": 16.6,
+      "mastery": 6.6
+    },
+    "char_420_flamtl": {
+      "ownership": 49.8,
+      "elite2": 58.8,
+      "mastery": 18.5
+    },
+    "char_4202_haruka": {
+      "ownership": 65.6,
+      "elite2": 94.8,
+      "mastery": 83.6
+    },
+    "char_4203_kichi": {
+      "ownership": 79.8,
+      "elite2": 8.2,
+      "mastery": 0.4
+    },
+    "char_4204_mantra": {
+      "ownership": 41.1,
+      "elite2": 81,
+      "mastery": 63.6
+    },
+    "char_4207_branch": {
+      "ownership": 62.2,
+      "elite2": 3.5,
+      "mastery": 0.7
+    },
+    "char_4208_wintim": {
+      "ownership": 89.2,
+      "elite2": 12.4,
+      "mastery": 3.4
+    },
+    "char_421_crow": {
+      "ownership": 78.7,
+      "elite2": 56.3,
+      "mastery": 25.9
+    },
+    "char_4211_snhunt": {
+      "ownership": 86,
+      "elite2": 2.6,
+      "mastery": 0.5
+    },
+    "char_4212_nasti": {
+      "ownership": 31,
+      "elite2": 62.8,
+      "mastery": 34.2
+    },
+    "char_4213_skybx": {
+      "ownership": 74.8,
+      "elite2": 4.5,
+      "mastery": 1
+    },
+    "char_4214_cairn": {
+      "ownership": 50,
+      "elite2": 3.3,
+      "mastery": 0.8
+    },
+    "char_4215_buddy": {
+      "ownership": 91.7,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_422_aurora": {
+      "ownership": 69.7,
+      "elite2": 7.7,
+      "mastery": 1.5
+    },
+    "char_4221_ju": {
+      "ownership": 81.6,
+      "elite2": 2.7,
+      "mastery": 0.4
+    },
+    "char_4222_taraxa": {
+      "ownership": 88.3,
+      "elite2": 2.1,
+      "mastery": 0.3
+    },
+    "char_4223_botany": {
+      "ownership": 81.4,
+      "elite2": 3,
+      "mastery": 0.5
+    },
+    "char_4224_turdus": {
+      "ownership": 57.3,
+      "elite2": 17,
+      "mastery": 9.3
+    },
+    "char_4225_tanya": {
+      "ownership": 91.6,
+      "elite2": 2.7,
+      "mastery": 0.4
+    },
+    "char_4226_veen": {
+      "ownership": 85.2,
+      "elite2": 9.3,
+      "mastery": 1.5
+    },
+    "char_4227_gallus": {
+      "ownership": 91.5,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_4228_closur": {
+      "ownership": 81.8,
+      "elite2": 91.7,
+      "mastery": 65.3
+    },
+    "char_4229_aphris": {
+      "ownership": 25.6,
+      "elite2": 57.9,
+      "mastery": 26.8
+    },
+    "char_423_blemsh": {
+      "ownership": 53.7,
+      "elite2": 60.4,
+      "mastery": 13.6
+    },
+    "char_4230_mcnist": {
+      "ownership": 51.9,
+      "elite2": 66.9,
+      "mastery": 26.5
+    },
+    "char_4234_pedro": {
+      "ownership": 26.8,
+      "elite2": 5,
+      "mastery": 0.8
+    },
+    "char_4235_thumpy": {
+      "ownership": 8.5,
+      "elite2": 18.3,
+      "mastery": 0.5
+    },
+    "char_4236_tmslot": {
+      "ownership": 63.3,
+      "elite2": 1.9,
+      "mastery": 0.2
+    },
+    "char_4237_jcinta": {
+      "ownership": 82.9,
+      "elite2": 3.4,
+      "mastery": 0.7
+    },
+    "char_426_billro": {
+      "ownership": 46.7,
+      "elite2": 50.4,
+      "mastery": 18.7
+    },
+    "char_427_vigil": {
+      "ownership": 81.8,
+      "elite2": 29.5,
+      "mastery": 2.1
+    },
+    "char_430_fartth": {
+      "ownership": 43.7,
+      "elite2": 51.3,
+      "mastery": 19.3
+    },
+    "char_431_ashlok": {
+      "ownership": 68.6,
+      "elite2": 13.1,
+      "mastery": 1
+    },
+    "char_433_windft": {
+      "ownership": 79.9,
+      "elite2": 4.8,
+      "mastery": 0.4
+    },
+    "char_436_whispr": {
+      "ownership": 72.8,
+      "elite2": 33.7,
+      "mastery": 7.1
+    },
+    "char_437_mizuki": {
+      "ownership": 56.4,
+      "elite2": 76.1,
+      "mastery": 38.3
+    },
+    "char_440_pinecn": {
+      "ownership": 97.3,
+      "elite2": 14.4,
+      "mastery": 2.7
+    },
+    "char_445_wscoot": {
+      "ownership": 90.8,
+      "elite2": 7.7,
+      "mastery": 2.1
+    },
+    "char_446_aroma": {
+      "ownership": 72.4,
+      "elite2": 19.7,
+      "mastery": 0.3
+    },
+    "char_449_glider": {
+      "ownership": 85,
+      "elite2": 52,
+      "mastery": 22.1
+    },
+    "char_450_necras": {
+      "ownership": 36.7,
+      "elite2": 76,
+      "mastery": 57.3
+    },
+    "char_451_robin": {
+      "ownership": 78.8,
+      "elite2": 5.7,
+      "mastery": 1
+    },
+    "char_452_bstalk": {
+      "ownership": 98.6,
+      "elite2": 22.6,
+      "mastery": 3.1
+    },
+    "char_455_nothin": {
+      "ownership": 69.3,
+      "elite2": 19.4,
+      "mastery": 1.5
+    },
+    "char_456_ash": {
+      "ownership": 45.6,
+      "elite2": 76.8,
+      "mastery": 52.8
+    },
+    "char_457_blitz": {
+      "ownership": 51.5,
+      "elite2": 10.9,
+      "mastery": 1.5
+    },
+    "char_458_rfrost": {
+      "ownership": 51.4,
+      "elite2": 9.5,
+      "mastery": 1.1
+    },
+    "char_459_tachak": {
+      "ownership": 59.7,
+      "elite2": 12.9,
+      "mastery": 4.2
+    },
+    "char_464_cement": {
+      "ownership": 77.7,
+      "elite2": 3.6,
+      "mastery": 0.6
+    },
+    "char_466_qanik": {
+      "ownership": 57.8,
+      "elite2": 5.5,
+      "mastery": 0.8
+    },
+    "char_469_indigo": {
+      "ownership": 96.7,
+      "elite2": 13.6,
+      "mastery": 2.8
+    },
+    "char_472_pasngr": {
+      "ownership": 48.9,
+      "elite2": 69.4,
+      "mastery": 44.7
+    },
+    "char_473_mberry": {
+      "ownership": 71.2,
+      "elite2": 25.2,
+      "mastery": 4.6
+    },
+    "char_474_glady": {
+      "ownership": 92,
+      "elite2": 78.6,
+      "mastery": 40.1
+    },
+    "char_475_akafyu": {
+      "ownership": 73.1,
+      "elite2": 5.9,
+      "mastery": 1
+    },
+    "char_476_blkngt": {
+      "ownership": 80.9,
+      "elite2": 13.4,
+      "mastery": 4.3
+    },
+    "char_478_kirara": {
+      "ownership": 71.3,
+      "elite2": 8.6,
+      "mastery": 0.6
+    },
+    "char_479_sleach": {
+      "ownership": 58.2,
+      "elite2": 83.8,
+      "mastery": 51
+    },
+    "char_484_robrta": {
+      "ownership": 96.3,
+      "elite2": 13.8,
+      "mastery": 2
+    },
+    "char_485_pallas": {
+      "ownership": 45.3,
+      "elite2": 54.5,
+      "mastery": 15.1
+    },
+    "char_486_takila": {
+      "ownership": 83.2,
+      "elite2": 49.5,
+      "mastery": 4.5
+    },
+    "char_487_bobb": {
+      "ownership": 67,
+      "elite2": 2.8,
+      "mastery": 0.4
+    },
+    "char_488_buildr": {
+      "ownership": 80.5,
+      "elite2": 8.8,
+      "mastery": 3.7
+    },
+    "char_489_serum": {
+      "ownership": 69.8,
+      "elite2": 5,
+      "mastery": 0.4
+    },
+    "char_491_humus": {
+      "ownership": 95.7,
+      "elite2": 16.3,
+      "mastery": 2.6
+    },
+    "char_492_quercu": {
+      "ownership": 78.1,
+      "elite2": 16.8,
+      "mastery": 8.2
+    },
+    "char_493_firwhl": {
+      "ownership": 82.5,
+      "elite2": 7.4,
+      "mastery": 1.1
+    },
+    "char_494_vendla": {
+      "ownership": 74,
+      "elite2": 6.3,
+      "mastery": 0.9
+    },
+    "char_496_wildmn": {
+      "ownership": 74.5,
+      "elite2": 13.3,
+      "mastery": 1.2
+    },
+    "char_497_ctable": {
+      "ownership": 85.1,
+      "elite2": 57.2,
+      "mastery": 22.9
+    },
+    "char_498_inside": {
+      "ownership": 70.7,
+      "elite2": 4.3,
+      "mastery": 0.9
+    },
+    "char_499_kaitou": {
+      "ownership": 56.9,
+      "elite2": 7.3,
+      "mastery": 0.6
+    },
+    "char_500_noirc": {
+      "ownership": 100,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_501_durin": {
+      "ownership": 99.9,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_502_nblade": {
+      "ownership": 100,
+      "elite2": 0,
+      "mastery": 0
+    },
+    "char_503_rang": {
+      "ownership": 100,
+      "elite2": 0,
+      "mastery": 0
+    }
+  }
+}

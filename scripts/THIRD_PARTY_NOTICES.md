@@ -48,3 +48,28 @@ are copyrighted by Hypergryph Network Technology Co., Ltd. and are provided for
 educational and research use. Arknights game data and artwork remain the
 property of their respective rights holders. This fan project is non-commercial
 and should honor removal requests from the source or rights holder.
+
+## 明日方舟一图流 progression statistics
+
+`operator-popularity-signals.json` contains a dated snapshot of public operator
+ownership, Elite 2, and skill-mastery percentages from
+[明日方舟一图流](https://dev.yituliu.cn/survey/operator-progression-statistics/).
+The snapshot is used only as an aggregate gameplay familiarity signal; it does
+not contain player-level data. The source page states that its non-game content
+is available under the
+[Creative Commons Attribution-NonCommercial 4.0 International license](https://creativecommons.org/licenses/by-nc/4.0/).
+
+## Search and video attention signals
+
+`operator-attention-signals.json` may contain dated aggregate search-result and
+engagement fields collected from anonymous public result pages. The Bilibili
+collector follows the response fields documented by
+[bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/search/search_request.md);
+the project does not copy that repository's source code. Bing result totals are
+treated as estimates. [Baidu Index](https://index.baidu.com/Helper/) has no
+anonymous open API in this pipeline and therefore requires a user-authorized
+manual export; YouTube likewise remains disabled without an authorized API key.
+
+Search/video data is used only after a provider covers at least 90% of the
+operator pool. Incomplete snapshots remain auditable but are disabled for game
+scoring, so blocked requests and missing results cannot label operators cold.

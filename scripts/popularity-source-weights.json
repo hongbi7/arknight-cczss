@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "version": "2026-08-attention-1",
+    "note": "Provider weights are normalized across available sources only. Each source is first shrunk toward 50 by its reliability score."
+  },
+  "providers": {
+    "bilibiliVideo": {
+      "weight": 0.48,
+      "status": "active",
+      "kind": "video-search"
+    },
+    "baiduIndex": {
+      "weight": 0.18,
+      "status": "manual-export-required",
+      "kind": "search-index"
+    },
+    "bingWeb": {
+      "weight": 0.12,
+      "status": "optional-live",
+      "kind": "web-search"
+    },
+    "youtubeVideo": {
+      "weight": 0.1,
+      "status": "api-key-required",
+      "kind": "video-search"
+    },
+    "prtsWiki": {
+      "weight": 0.07,
+      "status": "optional-live",
+      "kind": "community-search"
+    },
+    "communityAnchor": {
+      "weight": 0.05,
+      "status": "active",
+      "kind": "curated-community"
+    }
+  }
+}
