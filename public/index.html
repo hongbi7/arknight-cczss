@@ -86,7 +86,6 @@
           <span class="mode-index" aria-hidden="true">01</span>
           <img class="mode-card-sticker mode-card-sticker-sudden" src="img/paradise-fulcrum.jpg" alt="" aria-hidden="true">
           <i class="mode-beam" aria-hidden="true"></i>
-          <span class="mode-badge">高危 HIGH-RISK</span>
           <span class="mode-en">FINAL&nbsp;VERIFICATION</span>
           <span class="mode-name">终局校验</span>
           <span id="suddenModeDesc" class="mode-desc">全干员池，限 6 次猜测<br>第 6 次后进入终局抉择，猜错即结束</span>
@@ -103,7 +102,6 @@
           <span class="mode-index" aria-hidden="true">02</span>
           <img class="mode-card-sticker mode-card-sticker-endless" src="img/endfield-toad.png" alt="" aria-hidden="true">
           <i class="mode-beam" aria-hidden="true"></i>
-          <span class="mode-badge">不限次 UNLIMITED</span>
           <span class="mode-en">ENDLESS&nbsp;ARCHIVE&nbsp;SEARCH</span>
           <span class="mode-name">全域检索</span>
           <span class="mode-desc">全干员池，不限猜测次数<br>靠 12 维线索一路逼近答案</span>
@@ -138,18 +136,46 @@
           <span><i class="legend-wrong"></i>不符</span>
           <span><i class="legend-unknown"></i>未知</span>
         </div>
-        <section id="assistPanel" class="assist-panel" data-status="monitoring" data-trend="stable" aria-label="辅助情报协议">
-          <header class="assist-head">
-            <span class="assist-eyebrow">ASSIST PROTOCOL</span>
-            <span id="assistState" class="assist-state">MONITORING</span>
-          </header>
-          <p id="assistMessage" class="assist-message">推理链路稳定，辅助情报暂未授权</p>
-          <div class="assist-signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <div id="assistChips" class="assist-chips" aria-live="polite"></div>
-          <button id="assistDecodeBtn" class="assist-decode hidden" type="button">
-            <span class="assist-decode-ping" aria-hidden="true"></span>
-            <span class="assist-decode-text">辅助档案已授权<i>DECODE INTEL</i></span>
-          </button>
+        <section id="directivePanel" class="directive-panel" data-status="idle" data-family="" aria-label="战术指令">
+          <div class="directive-stage">
+            <div id="directiveMainView" class="directive-main-view">
+              <header class="directive-head">
+                <span class="directive-eyebrow">TACTICAL DIRECTIVE<i>战术指令</i></span>
+                <span id="directiveState" class="directive-state">STANDBY</span>
+              </header>
+              <div class="directive-brief">
+                <i class="directive-sigil" aria-hidden="true"></i>
+                <div class="directive-brief-text">
+                  <span id="directiveFamily" class="directive-family">战术指令</span>
+                  <h3 id="directiveTitle" class="directive-title">等待指令下发</h3>
+                </div>
+              </div>
+              <div class="directive-rule">
+                <span class="directive-rule-tag">本局校验条件<i>ALWAYS TRUE</i></span>
+                <p id="directiveDesc" class="directive-desc">识别协议启动后，将在此公开本局战术指令与校验目标。</p>
+              </div>
+              <div class="directive-track">
+                <div id="directiveNodes" class="directive-nodes" aria-hidden="true"></div>
+                <span id="directiveProgress" class="directive-progress">--</span>
+              </div>
+              <p id="directiveNote" class="directive-note"></p>
+              <button id="directiveDecodeBtn" class="directive-decode hidden" type="button">
+                <span class="directive-decode-ping" aria-hidden="true"></span>
+                <span class="directive-decode-text">情报读取失败，点击重试<i>RETRY DECODE</i></span>
+              </button>
+            </div>
+          <div id="directiveIntelView" class="directive-intel-view" aria-live="polite" aria-hidden="true"></div>
+        </div>
+        <div class="directive-confirmation" aria-hidden="true">
+          <i class="directive-confirmation-mark"><b></b></i>
+          <span class="directive-confirmation-copy">
+            <strong>指令校验完成</strong>
+            <small>CONDITION VERIFIED&nbsp;&nbsp;//&nbsp;&nbsp;ACCESS GRANTED</small>
+          </span>
+          <em>P.R.T.S.</em>
+        </div>
+        <span id="directiveAnnounce" class="sr-only" aria-live="polite"></span>
+          <span class="directive-scan" aria-hidden="true"></span>
         </section>
       </aside>
 
@@ -175,6 +201,16 @@
             <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
           </div>
         </div>
+
+        <section id="mobileDirectiveDock" class="mobile-directive-dock" data-status="idle" aria-label="战术指令进度">
+          <span class="mobile-directive-code">TACTICAL DIRECTIVE</span>
+          <div class="mobile-directive-text">
+            <strong id="mobileDirectiveTitle">等待指令下发</strong>
+            <span id="mobileDirectiveDesc" class="mobile-directive-desc"></span>
+          </div>
+          <span id="mobileDirectiveProgress" class="mobile-directive-progress">--</span>
+          <button id="mobileDirectiveDecodeBtn" class="hidden" type="button">解码情报</button>
+        </section>
 
         <div id="mobileEndlessBubble" class="mobile-endless-callout" aria-live="polite">
           <img src="img/endfield-toad.png" alt="" aria-hidden="true">
@@ -266,32 +302,6 @@
     <div class="reveal-confirm-actions">
       <button id="revealCancel" class="ghost" type="button">继续检索</button>
       <button id="revealConfirm" type="button"><span>确认揭晓</span><i aria-hidden="true">↗</i></button>
-    </div>
-  </div>
-</div>
-
-<div id="clueModal" class="modal clue-modal hidden" role="dialog" aria-modal="true" aria-labelledby="clueModalTitle" aria-describedby="clueModalDesc">
-  <div class="modal-box clue-modal-box">
-    <header class="clue-modal-head">
-      <span class="modal-en" aria-hidden="true">AUXILIARY INTEL // DECODE</span>
-      <span id="clueModalChannel" class="clue-channel" aria-hidden="true">CH-07 // SECURE</span>
-    </header>
-    <h3 id="clueModalTitle">待解码情报</h3>
-    <p id="clueModalDesc" class="modal-sub">辅助协议已授权一条加密情报。解码后可作为本局推理线索，且仅本局有效。</p>
-    <div id="clueModalBody" class="clue-modal-body" aria-live="polite">
-      <div id="cluePendingView" class="clue-pending-view">
-        <span class="clue-pending-scan" aria-hidden="true"></span>
-        <span class="clue-pending-icon" aria-hidden="true"></span>
-        <strong>ENCRYPTED INTEL</strong>
-        <p>检测到连续推理停滞 · 情报已注入缓冲区</p>
-      </div>
-      <div id="clueDecodedView" class="clue-decoded-view hidden"></div>
-    </div>
-    <div id="clueModalError" class="clue-modal-error hidden" role="alert"></div>
-    <div class="clue-modal-actions">
-      <button id="clueSkipBtn" class="ghost" type="button">暂不查看</button>
-      <button id="clueDecodeBtn" type="button"><span>解码情报</span><i aria-hidden="true">↗</i></button>
-      <button id="clueCloseBtn" class="ghost hidden" type="button">关闭</button>
     </div>
   </div>
 </div>

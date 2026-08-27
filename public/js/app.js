@@ -2,7 +2,9 @@ const MODE_LABELS = { sudden: "终局校验", endless: "全域检索" };
 const DEFAULT_SUDDEN_ATTEMPTS = 6;
 const SUDDEN_MIN = 1;
 const SUDDEN_LIMIT = 20;
-const SUDDEN_VERSION = 2;
+const SUDDEN_VERSION = 3;
+const DIRECTIVE_HISTORY_KEY = "operator-trace-directive-history-v1";
+const DIRECTIVE_HISTORY_LIMIT = 40;
 
 let token = null;
 let namesIndex = [];
@@ -26,12 +28,17 @@ let mobileBubbleHideTimer = null;
 let finalFocusTimer = null;
 let finalArchiveTimer = null;
 let operatorArt = {};
+let gameStartSequence = 0;
+let wipeSequence = 0;
+let directiveIntroTimer = null;
+let roundContentTimer = null;
 
-/* ---- sudden V2 状态 ---- */
-let assistSnapshot = null;
+/* ---- 战术指令（V3）状态 ---- */
+let directiveSnapshot = null;
 let pendingClue = null;
 let decodedIntel = [];
 let clueDecoding = false;
+let directiveCompletionPlayed = false;
 
 const modeScreen = document.getElementById("modeScreen");
 const gameScreen = document.getElementById("gameScreen");
@@ -91,35 +98,58 @@ const artPreviewImage = document.getElementById("artPreviewImage");
 const artPreviewTitle = document.getElementById("artPreviewTitle");
 const artPreviewMeta = document.getElementById("artPreviewMeta");
 const artPreviewClose = document.getElementById("artPreviewClose");
+const artPreviewCanvas = document.querySelector(".art-preview-canvas");
 const boardEl = document.getElementById("board");
 const gameMeta = document.querySelector(".game-meta");
 const dossierHead = document.querySelector(".dossier-head");
 const topbar = document.querySelector(".topbar");
 
-/* ---- sudden V2 DOM ---- */
-const assistPanel = document.getElementById("assistPanel");
-const assistState = document.getElementById("assistState");
-const assistMessage = document.getElementById("assistMessage");
-const assistChips = document.getElementById("assistChips");
-const assistDecodeBtn = document.getElementById("assistDecodeBtn");
+/* ---- 战术指令（V3）DOM ---- */
+const directivePanel = document.getElementById("directivePanel");
+const directiveMainView = document.getElementById("directiveMainView");
+const directiveIntelView = document.getElementById("directiveIntelView");
+const directiveState = document.getElementById("directiveState");
+const directiveFamily = document.getElementById("directiveFamily");
+const directiveTitle = document.getElementById("directiveTitle");
+const directiveDesc = document.getElementById("directiveDesc");
+const directiveNodes = document.getElementById("directiveNodes");
+const directiveProgress = document.getElementById("directiveProgress");
+const directiveNote = document.getElementById("directiveNote");
+const directiveDecodeBtn = document.getElementById("directiveDecodeBtn");
+const directiveAnnounce = document.getElementById("directiveAnnounce");
+const mobileDirectiveDock = document.getElementById("mobileDirectiveDock");
+const mobileDirectiveTitle = document.getElementById("mobileDirectiveTitle");
+const mobileDirectiveProgress = document.getElementById("mobileDirectiveProgress");
+const mobileDirectiveDecodeBtn = document.getElementById("mobileDirectiveDecodeBtn");
+const mobileDirectiveDesc = document.getElementById("mobileDirectiveDesc");
 const intelRail = document.getElementById("intelRail");
-const clueModal = document.getElementById("clueModal");
-const clueModalTitle = document.getElementById("clueModalTitle");
-const clueModalDesc = document.getElementById("clueModalDesc");
-const cluePendingView = document.getElementById("cluePendingView");
-const clueDecodedView = document.getElementById("clueDecodedView");
-const clueModalError = document.getElementById("clueModalError");
-const clueSkipBtn = document.getElementById("clueSkipBtn");
-const clueDecodeBtn = document.getElementById("clueDecodeBtn");
-const clueCloseBtn = document.getElementById("clueCloseBtn");
 
 let pendingRevealSource = null;
 let revealReturnFocus = null;
 let artPreviewReturnFocus = null;
+let artPreviewMetaBase = "";
+let artPreviewScale = 1;
+let artPreviewOriginX = 50;
+let artPreviewOriginY = 50;
 
 function setStatus(msg, isError) {
   statusEl.textContent = msg;
   statusEl.className = "status" + (isError ? " error" : "");
+}
+
+function updateArtPreviewZoom() {
+  artPreviewImage.style.setProperty("--preview-scale", artPreviewScale.toFixed(3));
+  artPreviewImage.style.setProperty("--preview-origin-x", artPreviewOriginX.toFixed(2) + "%");
+  artPreviewImage.style.setProperty("--preview-origin-y", artPreviewOriginY.toFixed(2) + "%");
+  artPreview.dataset.zoomed = artPreviewScale > 1.001 ? "true" : "false";
+  artPreviewMeta.textContent = artPreviewMetaBase + " // " + Math.round(artPreviewScale * 100) + "% · 滚轮缩放";
+}
+
+function resetArtPreviewZoom() {
+  artPreviewScale = 1;
+  artPreviewOriginX = 50;
+  artPreviewOriginY = 50;
+  updateArtPreviewZoom();
 }
 
 function openArtPreview(image, operatorName, artLabel, returnFocus, imageKind) {
@@ -131,7 +161,8 @@ function openArtPreview(image, operatorName, artLabel, returnFocus, imageKind) {
   artPreviewImage.src = source;
   artPreviewImage.alt = operatorName + " " + artLabel + "大图";
   artPreviewTitle.textContent = operatorName;
-  artPreviewMeta.textContent = artLabel + " // FULL IMAGE ARCHIVE";
+  artPreviewMetaBase = artLabel + " // FULL IMAGE ARCHIVE";
+  resetArtPreviewZoom();
   artPreview.classList.remove("hidden");
   document.body.classList.add("art-preview-open");
   artPreviewClose.focus({ preventScroll: true });
@@ -141,7 +172,12 @@ function closeArtPreview(restoreFocus) {
   artPreview.classList.add("hidden");
   document.body.classList.remove("art-preview-open");
   delete artPreview.dataset.imageKind;
+  delete artPreview.dataset.zoomed;
   artPreviewImage.removeAttribute("src");
+  artPreviewImage.style.removeProperty("--preview-scale");
+  artPreviewImage.style.removeProperty("--preview-origin-x");
+  artPreviewImage.style.removeProperty("--preview-origin-y");
+  artPreviewMetaBase = "";
   if (restoreFocus && artPreviewReturnFocus && typeof artPreviewReturnFocus.focus === "function") {
     artPreviewReturnFocus.focus({ preventScroll: true });
   }
@@ -155,10 +191,91 @@ async function fetchJSON(url, options) {
 
 function playWipe() {
   const wipe = document.querySelector(".wipe");
-  if (!wipe) return;
+  if (!wipe) return { covered: Promise.resolve(), finished: Promise.resolve() };
+  const runId = ++wipeSequence;
+  let coverResolve;
+  const covered = new Promise((resolve) => { coverResolve = resolve; });
   wipe.classList.remove("play");
   void wipe.offsetWidth;
   wipe.classList.add("play");
+  const finished = new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      wipe.removeEventListener("animationend", onAnimationEnd);
+      if (runId === wipeSequence) wipe.classList.remove("play");
+      resolve();
+    };
+    const onAnimationEnd = (event) => {
+      if (event.target === wipe && event.animationName === "wipe-overlay") finish();
+    };
+    wipe.addEventListener("animationend", onAnimationEnd);
+    window.setTimeout(finish, isReducedMotion() ? 40 : 940);
+  });
+  window.setTimeout(coverResolve, isReducedMotion() ? 0 : 210);
+  return { covered, finished };
+}
+
+function stageDirectiveIntro(enabled) {
+  if (!directivePanel) return;
+  if (directiveIntroTimer) window.clearTimeout(directiveIntroTimer);
+  directiveIntroTimer = null;
+  directivePanel.classList.remove("directive-boot", "directive-flash", "directive-round-enter");
+  directivePanel.classList.toggle("directive-awaiting", Boolean(enabled));
+}
+
+function releaseDirectiveIntro() {
+  if (!directivePanel) return;
+  directivePanel.classList.remove("directive-awaiting", "directive-round-enter");
+}
+
+function setModeLaunching(mode, launching) {
+  modeSuddenCard.classList.toggle("is-launching", Boolean(launching && mode === "sudden"));
+  modeEndlessBtn.classList.toggle("is-launching", Boolean(launching && mode === "endless"));
+}
+
+function resetRoundInterface(mode) {
+  clearFinalSequence();
+  resetDirectiveState();
+  gameScreen.classList.remove("has-guesses", "is-finished");
+  document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  quickInput.value = "";
+  rowsEl.innerHTML = "";
+  boardEmpty.classList.remove("hidden");
+  victoryEl.classList.add("hidden");
+  victoryEl.classList.remove("fail");
+  choiceModal.classList.add("hidden");
+  hideSuggest();
+  modeLabel.textContent = MODE_LABELS[mode];
+  modeLabel.classList.toggle("hot", mode === "sudden");
+  suddenGameConfig.classList.toggle("hidden", mode !== "sudden");
+  updateAttemptConfigState();
+  setStatus("正在准备谜题……");
+}
+
+function stageRoundContentExit() {
+  if (roundContentTimer) window.clearTimeout(roundContentTimer);
+  roundContentTimer = null;
+  gameScreen.classList.remove("round-content-enter", "round-content-staged", "round-content-buffer-staged", "round-content-buffered");
+  gameScreen.classList.add("round-content-exit");
+}
+
+function stageRoundContentEntry() {
+  if (roundContentTimer) window.clearTimeout(roundContentTimer);
+  roundContentTimer = null;
+  gameScreen.classList.remove("round-content-enter", "round-content-exit");
+  gameScreen.classList.add("round-content-buffered", "round-content-buffer-staged", "round-content-staged");
+}
+
+function playRoundContentEntry() {
+  gameScreen.classList.remove("round-buffering");
+  gameScreen.classList.add("round-content-enter");
+  gameScreen.classList.remove("round-content-staged", "round-content-buffer-staged");
+  roundContentTimer = window.setTimeout(() => {
+    gameScreen.classList.remove("round-content-enter", "round-content-buffered");
+    roundContentTimer = null;
+  }, 980);
 }
 
 function normalizeAttempts(value) {
@@ -173,6 +290,25 @@ function syncSuddenControls(value) {
   suddenAttemptsGame.value = suddenMax;
   suddenModeDesc.innerHTML = "全干员池，限 " + suddenMax + " 次猜测<br>第 " + suddenMax + " 次后进入终局抉择，猜错即结束";
   if (document.body.dataset.mode === "sudden") updateSidebarModeCopy("sudden");
+}
+
+function directiveHistory() {
+  try {
+    const value = JSON.parse(localStorage.getItem(DIRECTIVE_HISTORY_KEY) || "[]");
+    return Array.isArray(value) ? value.filter((themeId) => typeof themeId === "string").slice(0, DIRECTIVE_HISTORY_LIMIT) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function rememberDirective(theme) {
+  if (!theme || !theme.id) return;
+  try {
+    const next = [theme.id].concat(directiveHistory().filter((themeId) => themeId !== theme.id));
+    localStorage.setItem(DIRECTIVE_HISTORY_KEY, JSON.stringify(next.slice(0, DIRECTIVE_HISTORY_LIMIT)));
+  } catch (error) {
+    /* 隐私模式或存储受限时退化为无历史的服务端随机。 */
+  }
 }
 
 function updateAttemptConfigState() {
@@ -218,42 +354,58 @@ function settleMobileKeyboard() {
 }
 
 async function startGame(mode, requestedMax) {
+  const startSequence = ++gameStartSequence;
+  const firstEntry = gameScreen.classList.contains("hidden");
   currentMode = mode;
   currentGameVersion = 1;
   if (mode === "sudden") syncSuddenControls(requestedMax == null ? suddenMax : requestedMax);
-  document.body.dataset.mode = mode;
-  updateHudTags(mode);
-  playWipe();
   token = null;
   attempts = 0;
   lastRemaining = null;
   finished = false;
-  clearFinalSequence();
-  resetSuddenV2State();
-  gameScreen.classList.remove("has-guesses", "is-finished");
-  document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
-  quickInput.value = "";
-  rowsEl.innerHTML = "";
-  boardEmpty.classList.remove("hidden");
-  victoryEl.classList.add("hidden");
-  victoryEl.classList.remove("fail");
-  choiceModal.classList.add("hidden");
-  hideSuggest();
   setInputEnabled(false);
-  modeLabel.textContent = MODE_LABELS[mode];
-  modeLabel.classList.toggle("hot", mode === "sudden");
-  suddenGameConfig.classList.toggle("hidden", mode !== "sudden");
-  updateAttemptConfigState();
   applySuddenAttempts.disabled = mode !== "sudden";
-  setStatus("正在准备谜题……");
+  let transition = null;
+  if (firstEntry) {
+    setModeLaunching(mode, true);
+    stageDirectiveIntro(mode === "sudden");
+    resetRoundInterface(mode);
+    document.body.dataset.mode = mode;
+    updateHudTags(mode);
+    transition = playWipe();
+  } else {
+    document.body.dataset.mode = mode;
+    updateHudTags(mode);
+    gameScreen.classList.add("round-buffering");
+    stageRoundContentExit();
+    transition = playWipe();
+  }
   const params = new URLSearchParams({ mode });
   if (mode === "sudden") {
     params.set("attempts", suddenMax);
     params.set("v", SUDDEN_VERSION);
+    const recentThemes = directiveHistory();
+    if (recentThemes.length) params.set("themes", recentThemes.join(","));
   }
-  const data = await fetchJSON("/api/new?" + params.toString());
+  const dataRequest = fetchJSON("/api/new?" + params.toString());
+  await transition.covered;
+  if (startSequence !== gameStartSequence) return;
+  if (firstEntry) {
+    showGameScreen();
+  } else {
+    stageDirectiveIntro(mode === "sudden");
+    resetRoundInterface(mode);
+  }
+  stageRoundContentEntry();
+  const data = await dataRequest;
+  if (startSequence !== gameStartSequence) return;
   if (data.error) {
+    if (transition) await transition.finished;
+    setModeLaunching(mode, false);
+    gameScreen.classList.remove("round-buffering");
+    releaseDirectiveIntro();
     setStatus("出错了：" + data.error, true);
+    playRoundContentEntry();
     return;
   }
   token = data.token;
@@ -264,25 +416,35 @@ async function startGame(mode, requestedMax) {
   updateEndlessBubble();
   hideEndlessBubble();
   updateAttemptLabel();
-  if (isSuddenV2()) initSuddenV2Assist(data.assist);
+  if (isSuddenV3()) {
+    rememberDirective(data.theme);
+    updateDirectivePanel(data.theme);
+  } else {
+    releaseDirectiveIntro();
+  }
   setStatus("谜底已就绪（共 " + data.total + " 名干员）");
+  if (transition) await transition.finished;
+  if (startSequence !== gameStartSequence) return;
+  setModeLaunching(mode, false);
+  playRoundContentEntry();
+  if (isSuddenV3()) initDirective(data.theme, true);
   setInputEnabled(true);
   applySuddenAttempts.disabled = false;
   focusGuessEntry();
 }
 
-function isSuddenV2() {
+function isSuddenV3() {
   return currentMode === "sudden" && currentGameVersion === SUDDEN_VERSION;
 }
 
-function resetSuddenV2State() {
-  assistSnapshot = null;
+function resetDirectiveState() {
+  directiveSnapshot = null;
   pendingClue = null;
   decodedIntel = [];
   clueDecoding = false;
+  directiveCompletionPlayed = false;
   renderIntelRail();
-  updateAssistPanel(null);
-  closeClueModal(false);
+  updateDirectivePanel(null);
 }
 
 function updateSidebarModeCopy(mode) {
@@ -295,7 +457,7 @@ function updateSidebarModeCopy(mode) {
   } else if (mode === "sudden") {
     gameSidebarIndex.textContent = "/ 01";
     gameSidebarTitle.innerHTML = "有限校验，<br>终局定案。";
-    gameSidebarDesc.textContent = "在有限回合内压缩候选；推理停滞时可能获得动态情报，次数耗尽后进入最终抉择。";
+    gameSidebarDesc.textContent = "在有限回合内压缩候选；按战术指令完成校验必定解锁一条情报，次数耗尽后进入最终抉择。";
     topbarContextEn.textContent = "FINAL VERIFICATION PROTOCOL";
     topbarSubtitle.textContent = "罗德岛人员档案 · 终局校验终端";
   } else {
@@ -467,14 +629,10 @@ function renderSuggest(results) {
     const d = document.createElement("div");
     d.className = "suggest-item" + (idx === activeIndex ? " active" : "");
     const name = document.createElement("span");
-    name.textContent = r.op.n + (r.op.hot ? " " : "");
-    const hot = document.createElement("span");
-    hot.className = "hot-mark";
-    hot.textContent = r.op.hot ? "🔥" : "";
+    name.textContent = r.op.n;
     const py = document.createElement("span");
     py.className = "py";
     py.textContent = r.op.p;
-    name.appendChild(hot);
     d.appendChild(name);
     d.appendChild(py);
     d.addEventListener("mousedown", (e) => { e.preventDefault(); chooseSuggestion(idx); });
@@ -519,14 +677,10 @@ function renderQuickSuggest(results) {
     const item = document.createElement("div");
     item.className = "suggest-item" + (index === quickActiveIndex ? " active" : "");
     const name = document.createElement("span");
-    name.textContent = result.op.n + (result.op.hot ? " " : "");
-    const hot = document.createElement("span");
-    hot.className = "hot-mark";
-    hot.textContent = result.op.hot ? "🔥" : "";
+    name.textContent = result.op.n;
     const py = document.createElement("span");
     py.className = "py";
     py.textContent = result.op.p;
-    name.appendChild(hot);
     item.appendChild(name);
     item.appendChild(py);
     item.addEventListener("mousedown", (event) => {
@@ -617,7 +771,7 @@ async function submitQuickGuess() {
 
 /* ---------- 猜测 ---------- */
 
-const V2_ERROR_TEXT = {
+const SUDDEN_ERROR_TEXT = {
   duplicate_guess: "该干员本局已经提交过，请选择其他干员。",
   attempts_exhausted: "本局猜测次数已用尽，进入终局校验。",
   invalid_phase: "当前状态无法执行该操作。",
@@ -627,8 +781,8 @@ const V2_ERROR_TEXT = {
   bad_request: "请求格式有误，请重试。",
 };
 
-function suddenV2ErrorText(code) {
-  return V2_ERROR_TEXT[code] || ("出错了：" + code);
+function suddenErrorText(code) {
+  return SUDDEN_ERROR_TEXT[code] || ("出错了：" + code);
 }
 
 async function submitGuess() {
@@ -659,7 +813,7 @@ async function submitGuess() {
       return;
     }
     if (data.error) {
-      setStatus(isSuddenV2() ? suddenV2ErrorText(data.error) : ("出错了：" + data.error), true);
+      setStatus(isSuddenV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
       setInputEnabled(true);
       return;
     }
@@ -668,8 +822,8 @@ async function submitGuess() {
     token = data.token;
     lastRemaining = data.remaining;
     await mobileViewportReady;
-    if (isSuddenV2() && Number(data.version) === SUDDEN_VERSION) {
-      const open = await handleSuddenV2Guess(data);
+    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
+      const open = await handleSuddenV3Guess(data);
       input.value = "";
       if (open) {
         setStatus("已猜 " + attempts + " 次");
@@ -702,40 +856,38 @@ async function submitGuess() {
   focusGuessEntry();
 }
 
-/* 返回 true 表示仍在常规猜测阶段（恢复输入）；false 表示已获胜/进入终局/弹出情报 */
-async function handleSuddenV2Guess(data) {
-  const prevStatus = assistSnapshot && assistSnapshot.status;
+/* 返回 true 表示仍在常规猜测阶段（恢复输入）；false 表示已获胜或进入终局 */
+async function handleSuddenV3Guess(data) {
+  const themeResult = data.themeResult || null;
   const clue = Array.isArray(data.pendingClues) && data.pendingClues.length ? data.pendingClues[0] : null;
   if (clue) pendingClue = clue;
-  updateAssistPanel(data.assist);
+  updateDirectivePanel(data.theme, themeResult);
   updateAttemptLabel();
   if (data.win) {
-    if (data.archive) renderSuddenV2FinalRecord(data);
-    else renderSuddenV2Row(data);
+    if (data.archive) renderSuddenV3FinalRecord(data);
+    else renderSuddenV3Row(data);
     finishGame(true, "终局校验通过！答案是 " + data.answerName + "，共用 " + attempts + " 次");
     return false;
   }
-  renderSuddenV2Row(data);
+  renderSuddenV3Row(data);
+  if (themeResult && themeResult.newlyCompleted && clue) {
+    setStatus("战术指令条件达成，正在确认情报权限……");
+    await waitForDirectiveConfirmation();
+    setStatus("情报权限已开放，正在读取情报……");
+    await requestClueReveal();
+  }
   if (data.remaining === 0) {
     await continueToFinalChoices(data);
-    return false;
-  }
-  /* 非最后一猜：情报刚授权时滑入弹出待解码情报（解码或跳过后由 dismissClueModal 恢复输入） */
-  if (clue && prevStatus !== "pending") {
-    setStatus("辅助协议已授权一条加密情报。");
-    openClueModal("side");
     return false;
   }
   return true;
 }
 
-/* 最后一猜：若有待解码情报，先让玩家处理，再进入四选一 */
-async function continueToFinalChoices(data) {
-  const clues = (data && data.pendingClues) || (pendingClue ? [pendingClue] : []);
-  if (clues.length) {
-    pendingClue = clues[0];
-    setStatus("常规核验结束，检测到已授权的辅助情报。");
-    await resolvePendingClueBeforeFinal();
+/* 最后一猜：若此前自动读取失败，则再尝试一次后进入四选一 */
+async function continueToFinalChoices() {
+  if (pendingClue) {
+    setStatus("常规核验结束，正在读取战术指令情报……");
+    await requestClueReveal();
   }
   await showChoiceModal();
 }
@@ -801,23 +953,33 @@ async function showChoiceModal() {
       const art = document.createElement("span");
       art.className = "choice-art";
       const image = document.createElement("img");
-      image.src = artUrl(operator.id, false);
-      image.alt = operator.name + " 精英一阶段立绘";
+      const usesSilhouette = data.choicePresentation === "silhouette" && Boolean(operator.choiceImageUrl);
+      if (usesSilhouette) art.classList.add("choice-silhouette");
+      image.src = usesSilhouette ? operator.choiceImageUrl : artUrl(operator.id, false);
+      image.alt = operator.name + (usesSilhouette ? " 剪影" : " 精英一阶段立绘");
       image.loading = "lazy";
       image.addEventListener("error", () => art.classList.add("image-missing"));
       art.appendChild(image);
       art.title = "点击选择 " + operator.name;
       const preview = document.createElement("span");
       preview.className = "choice-preview-trigger";
-      preview.textContent = "查看立绘 +";
-      preview.title = "查看 " + operator.name + " 的立绘大图";
+      preview.textContent = usesSilhouette ? "查看剪影 +" : "查看立绘 +";
+      preview.title = "查看 " + operator.name + (usesSilhouette ? " 的剪影大图" : " 的立绘大图");
       preview.setAttribute("role", "button");
       preview.setAttribute("tabindex", "0");
-      preview.setAttribute("aria-label", "查看 " + operator.name + " 的立绘大图");
+      preview.setAttribute("aria-label", "查看 " + operator.name + (usesSilhouette ? " 的剪影大图" : " 的立绘大图"));
       const openPreview = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!art.classList.contains("image-missing")) openArtPreview(image, operator.name, "精英一阶段立绘", preview);
+        if (!art.classList.contains("image-missing")) {
+          openArtPreview(
+            image,
+            operator.name,
+            usesSilhouette ? "候选干员剪影" : "精英一阶段立绘",
+            preview,
+            usesSilhouette ? "silhouette" : null
+          );
+        }
       };
       preview.addEventListener("click", openPreview);
       preview.addEventListener("keydown", (e) => {
@@ -828,22 +990,13 @@ async function showChoiceModal() {
       info.className = "choice-info";
       const name = document.createElement("strong");
       name.textContent = operator.name;
-      const meta = document.createElement("small");
-      meta.textContent = operator.professionText + " · " + rarityText(operator.rarity);
       info.appendChild(name);
-      info.appendChild(meta);
       b.appendChild(art);
       b.appendChild(info);
       b.addEventListener("click", () => onPick(operator.name, b));
       choiceList.appendChild(b);
     });
     choiceModal.querySelectorAll(".modal-note").forEach((n) => n.remove());
-    if (data.relaxedCount > 0) {
-      const note = document.createElement("p");
-      note.className = "modal-sub modal-note";
-      note.textContent = "完全符合的候选不足，已优先保留职业与性别条件；其中 " + data.fullMatches + " 项满足全部绿色线索。";
-      choiceModal.querySelector(".modal-box").appendChild(note);
-    }
     choiceModal.classList.remove("hidden");
   } catch (e) {
     setStatus("网络错误，请重试。", true);
@@ -878,8 +1031,8 @@ async function onPick(name, selectedButton) {
     if (data.error) throw new Error(data.error);
     choiceModal.classList.add("hidden");
     choiceModal.classList.remove("is-resolving");
-    if (isSuddenV2() && Number(data.version) === SUDDEN_VERSION) {
-      renderSuddenV2FinalRecord(data);
+    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
+      renderSuddenV3FinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
     }
@@ -898,7 +1051,7 @@ async function onPick(name, selectedButton) {
   }
 }
 
-/* ---------- sudden 终局校验 V2 ---------- */
+/* ---------- sudden 终局校验 V3：12 维比对卡（渲染助手沿用 V2 命名） ---------- */
 
 /* 统一的 12 格展示顺序：作战维 → 档案维 → 势力/范围 → 费用/轮换情报 */
 const V2_DIM_ORDER = [
@@ -1063,7 +1216,14 @@ function renderPowerDimension(power) {
   const visual = v2VisualState(safe.state, false);
   const clue = document.createElement("div");
   clue.className = "clue power-clue cell-" + visual;
-  clue.title = "势力层级：与谜底最具体势力比对，related 表示同属一个顶层国家或地区";
+  /* 分层级提示：related（黄）= 顶层势力相同、具体所属不同；wrong（红）= 顶层已不同 */
+  const topName = guess.parentName || guess.name || "未知";
+  const levelHint = safe.state === "related"
+    ? "同属顶层势力「" + topName + "」· 具体所属势力不同"
+    : safe.state === "exact" ? "顶层势力与所属势力均吻合"
+    : safe.state === "unknown" ? "势力情报未知"
+    : "顶层势力即不同 · 所属势力也不同";
+  clue.title = levelHint;
 
   const labelEl = document.createElement("span");
   labelEl.className = "clue-label";
@@ -1105,6 +1265,12 @@ function renderPowerDimension(power) {
   valueEl.appendChild(idBox);
   clue.appendChild(labelEl);
   clue.appendChild(valueEl);
+  if (safe.state !== "exact") {
+    const levelEl = document.createElement("span");
+    levelEl.className = "clue-hint";
+    levelEl.textContent = levelHint;
+    clue.appendChild(levelEl);
+  }
   return { clue, visual };
 }
 
@@ -1139,12 +1305,23 @@ function buildRangeGrid(cells) {
   return { grid, cols, rows };
 }
 
+function skillMechanicSummary(mechanic) {
+  if (!mechanic) return "";
+  const parts = [
+    V2_MECHANIC_TEXT.activation[mechanic.activation] || "触发未知",
+    V2_MECHANIC_TEXT.spRecovery[mechanic.spRecovery] || "技力未知",
+  ];
+  if (mechanic.chargeable) parts.push("可充能×" + (mechanic.maxChargeTime || 1));
+  if (mechanic.ammo) parts.push("弹药");
+  return parts.join(" · ");
+}
+
 function renderRangeOverlap(template) {
   const safe = template || { state: "unknown", cells: [], overlapCount: 0, guessCellCount: 0 };
   const visual = v2VisualState(safe.state, false);
   const clue = document.createElement("div");
   clue.className = "clue range-clue cell-" + visual;
-  clue.title = "逐技能范围交集：每个技能与谜底的同槽位技能一一比较（S1–S3 对应）· 绿=与谜底重叠 · 灰红=仅该干员拥有";
+  clue.title = "逐技能范围交集：每个技能与谜底的同槽位技能一一比较（S1–S3 对应）";
 
   const labelEl = document.createElement("span");
   labelEl.className = "clue-label";
@@ -1192,13 +1369,25 @@ function renderRangeOverlap(template) {
     item.appendChild(head);
     item.appendChild(built.grid);
     item.appendChild(count);
+    if (directiveSnapshot && directiveSnapshot.family === "skill") {
+      const mechanicText = skillMechanicSummary(slot.mechanic);
+      if (mechanicText) {
+        const mechanic = document.createElement("span");
+        mechanic.className = "skill-range-mechanic";
+        mechanic.textContent = mechanicText;
+        mechanic.title = mechanicText;
+        item.appendChild(mechanic);
+      }
+    }
     list.appendChild(item);
   });
   wrap.appendChild(list);
-  const sub = document.createElement("span");
-  sub.className = "range-sub";
-  sub.textContent = safe.state === "unknown" ? "技能范围资料不足" : "绿=重叠 · 灰红=独有";
-  wrap.appendChild(sub);
+  if (safe.state === "unknown") {
+    const sub = document.createElement("span");
+    sub.className = "range-sub";
+    sub.textContent = "技能范围资料不足";
+    wrap.appendChild(sub);
+  }
   valueEl.appendChild(wrap);
   clue.appendChild(labelEl);
   clue.appendChild(valueEl);
@@ -1254,8 +1443,48 @@ function renderRotatingIntel(rotating) {
   return { clue, visual };
 }
 
-/* 提交猜测后：把最新档案卡平滑带入可见区域 */
-function focusNewRecord(card, delay) {
+function waitForRecordImage(image) {
+  if (!image) return Promise.resolve();
+  const loaded = image.complete
+    ? Promise.resolve()
+    : new Promise((resolve) => {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeout);
+        resolve();
+      };
+      const timeout = window.setTimeout(finish, 2200);
+      image.addEventListener("load", finish, { once: true });
+      image.addEventListener("error", finish, { once: true });
+    });
+  return loaded.then(() => {
+    if (typeof image.decode !== "function" || !image.naturalWidth) return null;
+    return Promise.race([
+      image.decode().catch(() => null),
+      new Promise((resolve) => window.setTimeout(resolve, 900)),
+    ]);
+  });
+}
+
+function prepareGuessCardHover(card, entering) {
+  if (!card) return;
+  const armHover = () => {
+    if (!card.classList.contains("card-entering")) card.classList.add("hover-armed");
+  };
+  card.addEventListener("pointerenter", armHover);
+  if (!entering) card.classList.add("hover-armed");
+}
+
+function finishGuessCardEntry(card) {
+  if (!card || !card.isConnected) return;
+  card.classList.remove("card-entering");
+  if (!card.matches(":hover")) card.classList.add("hover-armed");
+}
+
+/* 提交猜测后：首张档案等待立绘完成加载，其余卡片沿用折叠展开节奏。 */
+function focusNewRecord(card, delay, image) {
   if (!card) return;
   if (isMobileLayout()) {
     rowsEl.scrollTop = 0;
@@ -1268,51 +1497,53 @@ function focusNewRecord(card, delay) {
       card.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     } catch (e) { /* noop */ }
   });
-  if (delay && !reduced) {
-    window.setTimeout(bringIntoView, delay);
-  } else {
-    bringIntoView();
-  }
+  const startFocus = () => {
+    if (delay && !reduced) window.setTimeout(bringIntoView, delay);
+    else bringIntoView();
+  };
+  if (image) waitForRecordImage(image).then(startFocus);
+  else startFocus();
 }
 
-/* 让新档案由折叠状态展开，自然推开旧卡，避免与页面滚动产生位移叠加。 */
+/* 已有档案的下移与新卡 0.94 → 1 的缩放收尾共用同一时间轴，避免末段二次下抖。 */
 function prependGuessCard(card, animateExisting) {
-  const canAnimate = animateExisting && !isMobileLayout() && !isReducedMotion()
-    && typeof card.animate === "function" && rowsEl.querySelector(".guess-card");
-
+  const existingCards = Array.from(rowsEl.querySelectorAll(":scope > .guess-card"));
+  const previousTops = new Map(existingCards.map((item) => [item, item.getBoundingClientRect().top]));
   rowsEl.prepend(card);
+  const canAnimate = animateExisting && !isMobileLayout() && !isReducedMotion()
+    && existingCards.length && typeof existingCards[0].animate === "function";
   if (!canAnimate) return 0;
-
-  const expandedHeight = card.getBoundingClientRect().height;
-  if (expandedHeight < 2) return 0;
-  const duration = 680;
-  card.style.height = expandedHeight + "px";
-  card.style.minHeight = "0";
-  card.style.willChange = "height, opacity";
-  const animation = card.animate([
-    { height: "0px", opacity: .24 },
-    { height: expandedHeight + "px", opacity: 1 },
-  ], {
-    duration,
-    easing: "cubic-bezier(.16,.76,.18,1)",
+  const cardHeight = card.offsetHeight;
+  if (cardHeight < 2) return 0;
+  const scaleCompensation = -cardHeight * .06;
+  const duration = 1180;
+  existingCards.forEach((item) => {
+    const startDelta = previousTops.get(item) - item.getBoundingClientRect().top;
+    if (Math.abs(startDelta) < 1) return;
+    const animation = item.animate([
+      { translate: "0 " + startDelta + "px", offset: 0, easing: "cubic-bezier(.24,.58,.24,1)" },
+      { translate: "0 " + scaleCompensation + "px", offset: .46, easing: "linear" },
+      { translate: "0 " + scaleCompensation + "px", offset: .78, easing: "cubic-bezier(.16,.78,.18,1)" },
+      { translate: "0 0", offset: 1 },
+    ], {
+      duration,
+      fill: "both",
+    });
+    const release = () => animation.cancel();
+    animation.finished.then(release, release);
   });
-  const clearAnimationHint = () => {
-    if (!card.isConnected) return;
-    card.style.height = "";
-    card.style.minHeight = "";
-    card.style.willChange = "";
-  };
-  animation.finished.then(clearAnimationHint, clearAnimationHint);
   return duration;
 }
 
-function renderSuddenV2Row(r) {
+function renderSuddenV3Row(r) {
   const d = r.dims || {};
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
+  const firstRecord = !rowsEl.querySelector(".guess-card");
   const card = document.createElement("article");
   card.className = "guess-card v2-guess-card card-entering";
-  window.setTimeout(() => card.classList.remove("card-entering"), 1280);
+  prepareGuessCardHover(card, true);
+  window.setTimeout(() => finishGuessCardEntry(card), 1280);
 
   const layout = document.createElement("div");
   layout.className = "operator-record-layout";
@@ -1322,10 +1553,10 @@ function renderSuddenV2Row(r) {
   visualScan.className = "operator-visual-scan";
   const image = document.createElement("img");
   image.className = "operator-art";
-  image.src = artUrl(operator.id, false);
   image.alt = r.guessName + " 精英一阶段立绘";
-  image.loading = window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
+  image.loading = firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
   image.decoding = "async";
+  image.src = artUrl(operator.id, false);
   image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
@@ -1423,6 +1654,7 @@ function renderSuddenV2Row(r) {
   head.appendChild(identity);
   head.appendChild(summary);
   record.appendChild(head);
+  if (r.themeResult) record.appendChild(buildDirectiveMatchMark(r.themeResult));
   record.appendChild(grid);
 
   layout.appendChild(visual);
@@ -1434,17 +1666,18 @@ function renderSuddenV2Row(r) {
   boardEmpty.classList.add("hidden");
   const shiftDuration = prependGuessCard(card, true);
   rowsEl.scrollTop = 0;
-  focusNewRecord(card, shiftDuration);
+  focusNewRecord(card, firstRecord ? 480 : shiftDuration, firstRecord ? image : null);
   requestQuickGuessVisibilitySync();
 }
 
-/* ---------- sudden V2 结算档案 ---------- */
+/* ---------- sudden V3 结算档案 ---------- */
 
-function renderSuddenV2FinalRecord(r) {
+function renderSuddenV3FinalRecord(r) {
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
   const card = document.createElement("article");
   card.className = "guess-card is-final-record v2-final-record";
+  prepareGuessCardHover(card, false);
 
   const layout = document.createElement("div");
   layout.className = "operator-record-layout";
@@ -1514,7 +1747,7 @@ function renderSuddenV2FinalRecord(r) {
   head.appendChild(identity);
   head.appendChild(summary);
   record.appendChild(head);
-  record.appendChild(renderV2FinalArchive(operator, r.archive));
+  record.appendChild(renderFinalArchiveSheet(operator, r.archive));
   layout.appendChild(visual);
   layout.appendChild(record);
   card.appendChild(layout);
@@ -1525,7 +1758,7 @@ function renderSuddenV2FinalRecord(r) {
   rowsEl.scrollTop = 0;
 }
 
-function renderV2FinalArchive(operator, archiveData) {
+function renderFinalArchiveSheet(operator, archiveData) {
   const sheet = document.createElement("div");
   sheet.className = "final-archive-sheet";
   const heading = document.createElement("div");
@@ -1646,125 +1879,194 @@ function renderV2FinalArchive(operator, archiveData) {
   return sheet;
 }
 
-/* ---------- 动态辅助系统 ---------- */
+/* ---------- 战术指令系统（V3） ---------- */
 
-const ASSIST_STATE_TEXT = {
-  monitoring: "MONITORING",
-  rising: "RISING",
-  pending: "AUTHORIZED",
-  revealed: "REVEALED",
+const DIRECTIVE_STATE_TEXT = {
+  active: "ACTIVE",
+  complete: "COMPLETE",
+  revealed: "DECODED",
 };
 
-const ASSIST_KEY_LABELS = {
-  profession: "职业", subProfession: "分支", rarity: "星级", position: "部署位",
-  tags: "标签", gender: "性别", origin: "出身地", race: "种族",
-  power: "势力", deploymentTemplate: "技能范围", deploymentCost: "标准费用",
-  birthday: "生日", height: "身高", exp: "战斗经验", infected: "矿石病",
-};
-
-function initSuddenV2Assist(assist) {
-  updateAssistPanel(assist || { status: "monitoring", trend: "stable", message: "推理链路稳定，辅助情报暂未授权", confirmedCount: 0, newlyConfirmed: [] });
+/* 开局：按服务端 theme 渲染指令与 goal 个进度节点，并播放一次接入动画 */
+function initDirective(theme, roundEntry) {
+  updateDirectivePanel(theme);
+  if (!directivePanel || !theme) return;
+  if (directiveIntroTimer) window.clearTimeout(directiveIntroTimer);
+  directiveIntroTimer = null;
+  directivePanel.classList.remove("directive-boot", "directive-round-enter");
+  void directivePanel.offsetWidth;
+  if (roundEntry) {
+    directivePanel.classList.remove("directive-awaiting");
+    directivePanel.classList.add("directive-round-enter");
+    directiveIntroTimer = window.setTimeout(() => {
+      directivePanel.classList.remove("directive-round-enter");
+      directiveIntroTimer = null;
+    }, gameScreen.classList.contains("round-content-enter") ? 960 : 760);
+  } else {
+    directivePanel.classList.remove("directive-awaiting");
+    directivePanel.classList.add("directive-boot");
+  }
+  announceDirective("已接收战术指令：" + (theme.title || "") + "。使用符合指令的干员完成 " + (Number(theme.goal) || 0) + " 次吻合，即可解锁一条情报。");
 }
 
-function updateAssistPanel(assist) {
-  if (!assistPanel) return;
-  const prev = assistSnapshot;
-  assistSnapshot = assist || null;
-  const status = assist && assist.status ? assist.status : "monitoring";
-  const trend = assist && assist.trend ? assist.trend : "stable";
-  assistPanel.dataset.status = status;
-  assistPanel.dataset.trend = trend;
-  assistState.textContent = ASSIST_STATE_TEXT[status] || "MONITORING";
-  assistMessage.textContent = assist && assist.message ? assist.message : "推理链路稳定，辅助情报暂未授权";
-
-  assistChips.innerHTML = "";
-  const confirmed = assist && typeof assist.confirmedCount === "number" ? assist.confirmedCount : 0;
-  const newly = assist && Array.isArray(assist.newlyConfirmed) ? assist.newlyConfirmed : [];
-  if (status !== "monitoring" || confirmed > 0 || newly.length) {
-    const countChip = document.createElement("span");
-    countChip.className = "assist-chip assist-chip-count";
-    countChip.textContent = "已锁定 " + confirmed + " 维";
-    assistChips.appendChild(countChip);
-    newly.forEach((key) => {
-      const chip = document.createElement("span");
-      chip.className = "assist-chip";
-      chip.textContent = "+ " + (ASSIST_KEY_LABELS[key] || key);
-      assistChips.appendChild(chip);
-    });
-  }
-
-  const isPending = status === "pending";
-  assistDecodeBtn.classList.toggle("hidden", !isPending);
-  if (isPending && (!prev || prev.status !== "pending")) {
-    announceAssist("辅助档案已授权，可解码一条情报");
+function buildDirectiveNodes(goal) {
+  directiveNodes.innerHTML = "";
+  for (let i = 0; i < goal; i++) {
+    const node = document.createElement("span");
+    node.className = "directive-node";
+    directiveNodes.appendChild(node);
   }
 }
 
-function announceAssist(text) {
-  const chip = document.createElement("span");
-  chip.className = "assist-chip";
-  chip.textContent = text;
-  assistChips.appendChild(chip);
-  window.setTimeout(() => { if (chip.parentNode) chip.parentNode.removeChild(chip); }, 4000);
+function announceDirective(text) {
+  if (!directiveAnnounce) return;
+  directiveAnnounce.textContent = "";
+  window.setTimeout(() => { directiveAnnounce.textContent = text; }, 30);
 }
 
-/* ---------- 待解码情报 ---------- */
-
-let clueReturnFocus = null;
-
-function openClueModal(mode) {
-  clueReturnFocus = document.activeElement;
-  clueModalError.classList.add("hidden");
-  clueModalError.textContent = "";
-  clueDecodedView.classList.add("hidden");
-  cluePendingView.classList.remove("hidden");
-  clueDecodeBtn.classList.remove("hidden");
-  clueCloseBtn.classList.add("hidden");
-  clueSkipBtn.classList.remove("hidden");
-  clueDecodeBtn.disabled = false;
-  clueSkipBtn.disabled = false;
-  clueCloseBtn.textContent = "关闭";
-  clueModalTitle.textContent = "待解码情报";
-  clueModalDesc.textContent = mode === "final"
-    ? "常规核验已结束。辅助协议授权了一条加密情报，可先解码查看，再进入终局四选一。"
-    : "辅助协议已授权一条加密情报。解码后可作为本局推理线索，且仅本局有效。";
-  clueSkipBtn.textContent = mode === "final" ? "跳过，直接进入终局校验" : "暂不查看";
-  clueModal.classList.remove("hidden", "is-resolving", "is-decoding");
-  clueDecodeBtn.focus({ preventScroll: true });
+/* 指令完成的一次性反馈：面板扫描 + 状态闪烁（prefers-reduced-motion 时由全局 CSS 压平） */
+function playDirectiveCompletion() {
+  directiveCompletionPlayed = true;
+  if (!directivePanel) return;
+  directivePanel.classList.remove("directive-flash");
+  void directivePanel.offsetWidth;
+  directivePanel.classList.add("directive-flash");
+  mobileDirectiveDock.classList.remove("directive-flash");
+  void mobileDirectiveDock.offsetWidth;
+  mobileDirectiveDock.classList.add("directive-flash");
+  window.setTimeout(() => {
+    directivePanel.classList.remove("directive-flash");
+    mobileDirectiveDock.classList.remove("directive-flash");
+  }, 1120);
+  announceDirective("战术指令校验完成，情报访问权限开放。");
 }
 
-function closeClueModal(restoreFocus) {
-  clueModal.classList.add("hidden");
-  clueModal.classList.remove("is-resolving", "is-decoding");
-  clueModalError.classList.add("hidden");
-  if (restoreFocus) {
-    const target = clueReturnFocus && typeof clueReturnFocus.focus === "function" && clueReturnFocus.isConnected
-      ? clueReturnFocus
-      : (assistDecodeBtn.classList.contains("hidden") ? input : assistDecodeBtn);
-    target.focus({ preventScroll: true });
+function waitForDirectiveConfirmation() {
+  const duration = isReducedMotion() ? 80 : 1180;
+  return new Promise((resolve) => window.setTimeout(resolve, duration));
+}
+
+/* 以服务端 theme 为唯一事实来源更新面板；themeResult.newlyCompleted 触发一次完成反馈 */
+function updateDirectivePanel(theme, themeResult) {
+  if (!directivePanel) return;
+  const prev = directiveSnapshot;
+  directiveSnapshot = theme || null;
+  if (!theme) {
+    clearDirectiveIntel();
+    directivePanel.dataset.status = "idle";
+    directivePanel.dataset.family = "";
+    directivePanel.classList.remove("directive-boot", "directive-flash");
+    directiveState.textContent = "STANDBY";
+    directiveFamily.textContent = "战术指令";
+    directiveTitle.textContent = "等待指令下发";
+    directiveDesc.textContent = "识别协议启动后，将在此公开本局战术指令与校验目标。";
+    directiveNodes.innerHTML = "";
+    directiveProgress.textContent = "--";
+    directiveNote.textContent = "";
+    directiveDecodeBtn.classList.add("hidden");
+    mobileDirectiveDock.dataset.status = "idle";
+    mobileDirectiveTitle.textContent = "等待指令下发";
+    mobileDirectiveDesc.textContent = "";
+    mobileDirectiveProgress.textContent = "--";
+    mobileDirectiveDecodeBtn.classList.add("hidden");
+    return;
   }
-  clueReturnFocus = null;
+  const goal = Math.max(1, Number(theme.goal) || 1);
+  const progress = Math.max(0, Math.min(goal, Number(theme.progress) || 0));
+  const sameTheme = !!(prev && prev.id === theme.id);
+  const prevProgress = sameTheme ? Math.max(0, Math.min(goal, Number(prev.progress) || 0)) : progress;
+  const status = theme.status || "active";
+  directivePanel.dataset.status = status;
+  directivePanel.dataset.family = theme.family || "";
+  directiveState.textContent = DIRECTIVE_STATE_TEXT[status] || "ACTIVE";
+  directiveFamily.textContent = theme.familyLabel || "战术指令";
+  directiveTitle.textContent = theme.title || "未命名指令";
+  directiveDesc.textContent = theme.description || "";
+  if (directiveNodes.children.length !== goal) buildDirectiveNodes(goal);
+  const nodes = directiveNodes.children;
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    const lit = i < progress;
+    node.classList.remove("just-lit");
+    node.classList.toggle("lit", lit);
+    /* 只点亮新增节点并播放落锁动画；未命中或进度不变时不做任何闪烁 */
+    if (lit && sameTheme && i >= prevProgress) {
+      void node.offsetWidth;
+      node.classList.add("just-lit");
+    }
+  }
+  directiveProgress.textContent = progress + "/" + goal;
+  mobileDirectiveDock.dataset.status = status;
+  mobileDirectiveTitle.textContent = theme.title || "未命名指令";
+  mobileDirectiveDesc.textContent = theme.description || "";
+  mobileDirectiveProgress.textContent = progress + "/" + goal;
+  if (status === "revealed") directiveNote.textContent = "本局情报已解码";
+  else if (status === "complete") directiveNote.textContent = pendingClue ? "指令已确认 · 准备读取情报" : "指令已确认";
+  else directiveNote.textContent = "";
+  directiveDecodeBtn.classList.add("hidden");
+  mobileDirectiveDecodeBtn.classList.add("hidden");
+  if (themeResult && themeResult.newlyCompleted && !directiveCompletionPlayed) playDirectiveCompletion();
 }
 
-/* 关闭情报模态框后的归位：终局流程继续进四选一，常规流程恢复猜测输入 */
-function dismissClueModal() {
-  const wasFinal = !!clueFinalResolve;
-  closeClueModal(false);
-  settlePendingClueBeforeFinal();
-  if (!wasFinal && !finished) {
-    setInputEnabled(true);
-    setStatus(pendingClue ? "已猜 " + attempts + " 次（情报可稍后从左侧解码）" : "已猜 " + attempts + " 次");
-    focusGuessEntry();
-  }
+/* 每条猜测记录上的指令吻合标记：不是第 13 个比较维度，仅反映 themeResult.matched */
+function buildDirectiveMatchMark(themeResult) {
+  const matched = !!(themeResult && themeResult.matched);
+  const mark = document.createElement("div");
+  mark.className = "directive-match " + (matched ? "is-match" : "is-miss");
+  mark.setAttribute("role", "status");
+  const sigil = document.createElement("i");
+  sigil.className = "dm-sigil";
+  sigil.setAttribute("aria-hidden", "true");
+  const text = document.createElement("span");
+  text.className = "dm-text";
+  text.appendChild(document.createTextNode(matched ? "指令吻合" : "未吻合"));
+  const en = document.createElement("b");
+  en.textContent = matched ? "DIRECTIVE MATCH" : "NO MATCH";
+  text.appendChild(en);
+  const side = document.createElement("span");
+  side.className = "dm-side";
+  side.textContent = matched
+    ? "进度 " + (themeResult.progress != null ? themeResult.progress : "?") + "/" + (themeResult.goal != null ? themeResult.goal : "?")
+    : "进度不变";
+  mark.appendChild(sigil);
+  mark.appendChild(text);
+  mark.appendChild(side);
+  return mark;
+}
+
+/* ---------- 战术指令内联情报 ---------- */
+
+function clearDirectiveIntel() {
+  if (!directivePanel || !directiveIntelView) return;
+  directivePanel.classList.remove("show-intel", "is-decoding");
+  directiveIntelView.innerHTML = "";
+  directiveIntelView.scrollTop = 0;
+  directiveIntelView.setAttribute("aria-hidden", "true");
+  directiveMainView.setAttribute("aria-hidden", "false");
+}
+
+function showDirectiveIntel(clue) {
+  if (!directivePanel || !directiveIntelView || !clue) return;
+  directiveIntelView.innerHTML = "";
+  directiveIntelView.scrollTop = 0;
+  directiveIntelView.appendChild(buildIntelCard(clue, false));
+  directiveIntelView.setAttribute("aria-hidden", "false");
+  directiveMainView.setAttribute("aria-hidden", "true");
+  mobileDirectiveTitle.textContent = clue.title || "已解码情报";
+  mobileDirectiveDesc.textContent = "情报已解码 · 图像情报支持点击放大";
+  mobileDirectiveProgress.textContent = "DECODED";
+  requestAnimationFrame(() => directivePanel.classList.add("show-intel"));
 }
 
 async function requestClueReveal() {
   if (clueDecoding || !pendingClue || !token) return null;
+  const restoreInput = !finished && !input.disabled;
+  if (restoreInput) setInputEnabled(false);
   clueDecoding = true;
-  clueModal.classList.add("is-decoding");
-  clueDecodeBtn.disabled = true;
-  clueSkipBtn.disabled = true;
-  clueModalError.classList.add("hidden");
+  directivePanel.classList.add("is-decoding");
+  directiveNote.textContent = "正在读取授权情报……";
+  directiveDecodeBtn.classList.add("hidden");
+  mobileDirectiveDecodeBtn.classList.add("hidden");
   try {
     const data = await fetchJSON("/api/clue", {
       method: "POST",
@@ -1772,79 +2074,43 @@ async function requestClueReveal() {
       body: JSON.stringify({ token, clueId: pendingClue.id }),
     });
     if (data.error === "invalid_session") {
-      closeClueModal(false);
       setStatus("会话失效，重新开始……");
       await startGame(currentMode);
       return null;
     }
     if (data.error) {
-      clueModalError.textContent = suddenV2ErrorText(data.error) + " 可重试解码。";
-      clueModalError.classList.remove("hidden");
-      clueDecodeBtn.disabled = false;
-      clueSkipBtn.disabled = false;
-      clueModal.classList.remove("is-decoding");
-      clueDecoding = false;
+      directiveNote.textContent = suddenErrorText(data.error) + " · 可点击重试";
+      directiveDecodeBtn.classList.remove("hidden");
+      mobileDirectiveDecodeBtn.classList.remove("hidden");
       return null;
     }
     token = data.token;
-    if (data.clue) {
-      decodedIntel.push(data.clue);
-      renderIntelRail();
-      showDecodedClue(data.clue);
-    }
-    updateAssistPanel(data.assist);
     pendingClue = null;
-    clueDecoding = false;
-    clueModal.classList.remove("is-decoding");
+    updateDirectivePanel(data.theme);
+    if (data.clue) {
+      decodedIntel = [data.clue];
+      renderIntelRail();
+      showDirectiveIntel(data.clue);
+      announceDirective("本局情报已解码并载入战术终端。");
+      setStatus("情报已解码，继续缩小候选范围。");
+      if (!isReducedMotion()) {
+        await new Promise((resolve) => window.setTimeout(resolve, 460));
+      }
+    }
     return data.clue || null;
   } catch (e) {
-    clueModalError.textContent = "网络错误，解码失败。请检查连接后重试。";
-    clueModalError.classList.remove("hidden");
-    clueDecodeBtn.disabled = false;
-    clueSkipBtn.disabled = false;
-    clueModal.classList.remove("is-decoding");
-    clueDecoding = false;
+    directiveNote.textContent = "情报读取失败 · 可点击重试";
+    directiveDecodeBtn.classList.remove("hidden");
+    mobileDirectiveDecodeBtn.classList.remove("hidden");
+    setStatus("情报读取失败，可从战术指令卡重试。", true);
     return null;
-  }
-}
-
-function showDecodedClue(clue) {
-  const isFinal = !!clueFinalResolve;
-  cluePendingView.classList.add("hidden");
-  clueDecodeBtn.classList.add("hidden");
-  clueSkipBtn.classList.add("hidden");
-  clueCloseBtn.classList.remove("hidden");
-  clueCloseBtn.textContent = isFinal ? "进入终局校验 »" : "关闭";
-  clueModalTitle.textContent = clue.title || "已解码情报";
-  clueModalDesc.textContent = isFinal
-    ? "情报已解码并同步至比对区。确认后继续进入终局四选一。"
-    : "情报已解码并同步至比对区，本局内持续可见。";
-  clueDecodedView.innerHTML = "";
-  clueDecodedView.appendChild(buildIntelCard(clue, true));
-  clueDecodedView.classList.remove("hidden");
-  clueCloseBtn.focus({ preventScroll: true });
-}
-
-/* 终局前：弹出待解码情报，等待玩家解码或明确跳过 */
-let clueFinalResolve = null;
-
-/* 终局前：弹出待解码情报，等待玩家解码或明确跳过 */
-function resolvePendingClueBeforeFinal() {
-  return new Promise((resolve) => {
-    if (!pendingClue) {
-      resolve();
-      return;
+  } finally {
+    clueDecoding = false;
+    directivePanel.classList.remove("is-decoding");
+    if (restoreInput && !finished) {
+      setInputEnabled(true);
+      focusGuessEntry();
     }
-    clueFinalResolve = resolve;
-    openClueModal("final");
-  });
-}
-
-function settlePendingClueBeforeFinal() {
-  if (clueFinalResolve) {
-    const resolve = clueFinalResolve;
-    clueFinalResolve = null;
-    resolve();
   }
 }
 
@@ -1852,6 +2118,7 @@ function settlePendingClueBeforeFinal() {
 
 function renderIntelRail() {
   if (!intelRail) return;
+  intelRail.classList.toggle("v3-inline-intel", isSuddenV3());
   intelRail.innerHTML = "";
   if (!decodedIntel.length) {
     intelRail.classList.add("hidden");
@@ -1866,9 +2133,37 @@ function buildIntelCard(clue, inModal) {
   const card = document.createElement("article");
   card.className = "intel-card intel-" + kind;
   const mediaKinds = { silhouette: 1, artFragment: 1, skillIcon: 1 };
+  const skillIconItems = kind === "skillIcon" && Array.isArray(clue.skills) ? clue.skills : [];
+  const mechanicSkillItems = kind === "skillMechanic" && Array.isArray(clue.skills) ? clue.skills : [];
   const hasImage = mediaKinds[kind] && clue.imageUrl;
+  if (skillIconItems.length || mechanicSkillItems.length) card.classList.add("intel-multi-skill");
 
-  if (hasImage) {
+  if (skillIconItems.length) {
+    const media = document.createElement("div");
+    media.className = "intel-media intel-media-icon intel-skill-icons";
+    skillIconItems.forEach((skill) => {
+      const iconButton = document.createElement("button");
+      iconButton.className = "intel-skill-icon";
+      iconButton.type = "button";
+      iconButton.setAttribute("aria-label", "查看" + (skill.slot || "技能") + "图标大图");
+      const img = document.createElement("img");
+      img.src = skill.imageUrl || "";
+      img.alt = skill.imageAlt || ((skill.slot || "技能") + "图标");
+      img.loading = "lazy";
+      img.addEventListener("error", () => iconButton.classList.add("image-missing"));
+      const slot = document.createElement("b");
+      slot.textContent = skill.slot || "SKILL";
+      iconButton.appendChild(img);
+      iconButton.appendChild(slot);
+      iconButton.addEventListener("click", () => {
+        if (!iconButton.classList.contains("image-missing")) {
+          openArtPreview(img, (clue.title || "全技能图标") + " " + (skill.slot || ""), "SKILL ICON", iconButton, kind);
+        }
+      });
+      media.appendChild(iconButton);
+    });
+    card.appendChild(media);
+  } else if (hasImage) {
     const media = document.createElement("div");
     media.className = "intel-media" + (kind === "skillIcon" ? " intel-media-icon" : "");
     const img = document.createElement("img");
@@ -1886,10 +2181,10 @@ function buildIntelCard(clue, inModal) {
     media.classList.add("intel-media-zoom");
     media.tabIndex = 0;
     media.setAttribute("role", "button");
-    media.setAttribute("aria-label", "查看" + (clue.title || "辅助情报") + "大图");
+    media.setAttribute("aria-label", "查看" + (clue.title || "战术情报") + "大图");
     const showLarge = () => {
       if (!media.classList.contains("intel-media-missing")) {
-        openArtPreview(img, clue.title || "辅助情报", artLabel, media, kind);
+        openArtPreview(img, clue.title || "战术情报", artLabel, media, kind);
       }
     };
     media.addEventListener("click", showLarge);
@@ -1918,7 +2213,7 @@ function buildIntelCard(clue, inModal) {
   kindText.textContent = {
     silhouette: "TARGET SILHOUETTE",
     artFragment: "PARTIAL REVEAL",
-    skillIcon: "SKILL ICON",
+    skillIcon: skillIconItems.length ? "SKILL ICON SET" : "SKILL ICON",
     skillName: "SKILL CODENAME",
     quote: "COMMS RECORD",
     skillMechanic: "MECHANIC CHIP",
@@ -1931,7 +2226,7 @@ function buildIntelCard(clue, inModal) {
 
   const title = document.createElement("h4");
   title.className = "intel-title";
-  title.textContent = clue.title || "辅助情报";
+  title.textContent = clue.title || "战术情报";
   body.appendChild(title);
 
   if (kind === "silhouette") {
@@ -1944,6 +2239,12 @@ function buildIntelCard(clue, inModal) {
     note.className = "intel-silhouette-note";
     note.textContent = "局部显影完成：结合完整轮廓、配色与材质继续推理。";
     body.appendChild(note);
+  } else if (kind === "skillIcon" && skillIconItems.length) {
+    const note = document.createElement("p");
+    note.className = "intel-skill-summary";
+    note.textContent = "已同步全部 " + skillIconItems.length + " 项技能图标 · "
+      + skillIconItems.map((skill) => skill.slot).join(" / ");
+    body.appendChild(note);
   } else if (kind === "skillName") {
     const text = document.createElement("p");
     text.className = "intel-text";
@@ -1955,36 +2256,57 @@ function buildIntelCard(clue, inModal) {
     quote.textContent = clue.text || "";
     body.appendChild(quote);
   } else if (kind === "skillMechanic") {
-    const mech = clue.mechanic || {};
-    const chips = document.createElement("div");
-    chips.className = "intel-mech";
-    const items = [
-      ["技能", mech.slot || "—"],
-      ["触发", V2_MECHANIC_TEXT.activation[mech.activation] || "未知"],
-      ["技力", V2_MECHANIC_TEXT.spRecovery[mech.spRecovery] || "未知"],
-    ];
-    items.forEach(([k, v]) => {
-      const chip = document.createElement("span");
-      chip.className = "intel-mech-chip";
-      const b = document.createElement("b");
-      b.textContent = k + " ";
-      chip.appendChild(b);
-      chip.appendChild(document.createTextNode(v));
-      chips.appendChild(chip);
+    const mechanicSkills = Array.isArray(clue.skills) && clue.skills.length
+      ? clue.skills
+      : [{ slot: (clue.mechanic || {}).slot || "技能", mechanic: clue.mechanic || {} }];
+    const summary = document.createElement("p");
+    summary.className = "intel-skill-summary";
+    summary.textContent = Array.isArray(clue.skills)
+      ? "已同步全部 " + mechanicSkills.length + " 项技能机制 · "
+        + mechanicSkills.map((skill) => skill.slot || "技能").join(" / ")
+      : "已同步 1 项技能机制";
+    body.appendChild(summary);
+    const list = document.createElement("div");
+    list.className = "intel-mech-list";
+    mechanicSkills.forEach((skill) => {
+      const row = document.createElement("section");
+      row.className = "intel-mech-skill";
+      const slot = document.createElement("strong");
+      slot.className = "intel-mech-slot";
+      slot.textContent = skill.slot || "技能";
+      const chips = document.createElement("div");
+      chips.className = "intel-mech";
+      const mech = skill.mechanic || {};
+      const items = [
+        ["触发", V2_MECHANIC_TEXT.activation[mech.activation] || "未知"],
+        ["技力", V2_MECHANIC_TEXT.spRecovery[mech.spRecovery] || "未知"],
+      ];
+      items.forEach(([k, v]) => {
+        const chip = document.createElement("span");
+        chip.className = "intel-mech-chip";
+        const b = document.createElement("b");
+        b.textContent = k + " ";
+        chip.appendChild(b);
+        chip.appendChild(document.createTextNode(v));
+        chips.appendChild(chip);
+      });
+      if (mech.chargeable) {
+        const chip = document.createElement("span");
+        chip.className = "intel-mech-chip charge";
+        chip.textContent = "可储存 " + (mech.maxChargeTime || 1) + " 次";
+        chips.appendChild(chip);
+      }
+      if (mech.ammo) {
+        const chip = document.createElement("span");
+        chip.className = "intel-mech-chip charge";
+        chip.textContent = "弹药技能";
+        chips.appendChild(chip);
+      }
+      row.appendChild(slot);
+      row.appendChild(chips);
+      list.appendChild(row);
     });
-    if (mech.chargeable) {
-      const chip = document.createElement("span");
-      chip.className = "intel-mech-chip charge";
-      chip.textContent = "可储存 " + (mech.maxChargeTime || 1) + " 次";
-      chips.appendChild(chip);
-    }
-    if (mech.ammo) {
-      const chip = document.createElement("span");
-      chip.className = "intel-mech-chip charge";
-      chip.textContent = "弹药技能";
-      chips.appendChild(chip);
-    }
-    body.appendChild(chips);
+    body.appendChild(list);
   }
   card.appendChild(body);
   return card;
@@ -2322,11 +2644,13 @@ function renderRow(r) {
   const operator = r.operator || {};
   const finalRecord = !!(r.final || r.win);
   const artEntry = operatorArt[operator.id] || {};
+  const firstRecord = !rowsEl.querySelector(".guess-card");
   const card = document.createElement("article");
   card.className = "guess-card" + (finalRecord ? " is-final-record" : "");
+  prepareGuessCardHover(card, !finalRecord);
   if (!finalRecord) {
     card.classList.add("card-entering");
-    window.setTimeout(() => card.classList.remove("card-entering"), 1280);
+    window.setTimeout(() => finishGuessCardEntry(card), 1280);
   }
 
   const layout = document.createElement("div");
@@ -2337,13 +2661,13 @@ function renderRow(r) {
   visualScan.className = "operator-visual-scan";
   const image = document.createElement("img");
   image.className = "operator-art";
-  image.src = artUrl(operator.id, finalRecord);
   const artLabel = finalRecord
     ? (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘")
     : " 精英一阶段立绘";
   image.alt = r.guessName + artLabel;
-  image.loading = finalRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
+  image.loading = finalRecord || firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
   image.decoding = "async";
+  image.src = artUrl(operator.id, finalRecord);
   image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
@@ -2441,7 +2765,7 @@ function renderRow(r) {
   const shiftDuration = prependGuessCard(card, !finalRecord);
   rowsEl.scrollTop = 0;
   if (!finalRecord) {
-    focusNewRecord(card, shiftDuration);
+    focusNewRecord(card, firstRecord ? 480 : shiftDuration, firstRecord ? image : null);
     requestQuickGuessVisibilitySync();
   }
 }
@@ -2483,8 +2807,8 @@ async function confirmReveal() {
     if (data.error) throw new Error(data.error);
     closeRevealConfirm(false);
     if (source === "choice") choiceModal.classList.add("hidden");
-    if (isSuddenV2() && Number(data.version) === SUDDEN_VERSION) {
-      renderSuddenV2FinalRecord(data);
+    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
+      renderSuddenV3FinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
     }
@@ -2509,6 +2833,8 @@ function giveUpChoice() {
 /* ---------- 模式切换 ---------- */
 
 function showModeScreen() {
+  gameStartSequence++;
+  releaseDirectiveIntro();
   document.body.dataset.mode = "";
   document.body.classList.remove("game-scroll-lock");
   clearFinalSequence();
@@ -2703,36 +3029,33 @@ revealConfirm.addEventListener("click", confirmReveal);
 revealModal.addEventListener("click", (e) => {
   if (e.target === revealModal && !revealModal.classList.contains("is-resolving")) closeRevealConfirm(true);
 });
-assistDecodeBtn.addEventListener("click", () => {
-  if (pendingClue && !clueDecoding) openClueModal("side");
-});
-clueDecodeBtn.addEventListener("click", async () => {
-  /* 解码后停留在情报视图，由玩家手动关闭/进入终局校验，不再自动跳转 */
-  await requestClueReveal();
-});
-clueSkipBtn.addEventListener("click", () => {
-  if (clueDecoding) return;
-  dismissClueModal();
-});
-clueCloseBtn.addEventListener("click", () => {
-  dismissClueModal();
-});
-clueModal.addEventListener("click", (e) => {
-  if (e.target === clueModal && !clueModal.classList.contains("is-resolving") && !clueDecoding) {
-    dismissClueModal();
-  }
-});
+directiveDecodeBtn.addEventListener("click", requestClueReveal);
+mobileDirectiveDecodeBtn.addEventListener("click", requestClueReveal);
 artPreviewClose.addEventListener("click", () => closeArtPreview(true));
+artPreviewCanvas.addEventListener("wheel", (e) => {
+  if (artPreview.classList.contains("hidden") || e.deltaY === 0) return;
+  e.preventDefault();
+  const bounds = artPreviewCanvas.getBoundingClientRect();
+  const cursorX = bounds.width ? ((e.clientX - bounds.left) / bounds.width) * 100 : 50;
+  const cursorY = bounds.height ? ((e.clientY - bounds.top) / bounds.height) * 100 : 50;
+  const wheelDelta = Math.max(-100, Math.min(100, e.deltaY));
+  artPreviewScale = Math.max(1, Math.min(5, artPreviewScale * Math.exp(-wheelDelta * 0.0025)));
+  if (artPreviewScale > 1.001) {
+    artPreviewOriginX = Math.max(0, Math.min(100, cursorX));
+    artPreviewOriginY = Math.max(0, Math.min(100, cursorY));
+  } else {
+    artPreviewOriginX = 50;
+    artPreviewOriginY = 50;
+  }
+  updateArtPreviewZoom();
+}, { passive: false });
+artPreviewCanvas.addEventListener("dblclick", resetArtPreviewZoom);
 artPreview.addEventListener("click", (e) => {
   if (e.target === artPreview) closeArtPreview(true);
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !artPreview.classList.contains("hidden")) {
     closeArtPreview(true);
-    return;
-  }
-  if (e.key === "Escape" && !clueModal.classList.contains("hidden") && !clueModal.classList.contains("is-resolving") && !clueDecoding) {
-    dismissClueModal();
     return;
   }
   if (e.key === "Escape" && !revealModal.classList.contains("hidden") && !revealModal.classList.contains("is-resolving")) {
@@ -2765,12 +3088,10 @@ modeSuddenCard.addEventListener("click", (e) => {
 });
 
 async function startSudden() {
-  showGameScreen();
   await startGame("sudden", suddenAttemptsMode.value);
 }
 
 async function startEndless() {
-  showGameScreen();
   await startGame("endless");
 }
 
