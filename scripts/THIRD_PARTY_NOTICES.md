@@ -33,3 +33,43 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Public Arknights data and resource sources
+
+The automated update pipeline reads Chinese game tables from
+[Kengxxiao/ArknightsGameData](https://github.com/Kengxxiao/ArknightsGameData).
+When files are missing locally, it may also download individual illustrations,
+skill icons, and faction logos from
+[fexli/ArknightsResource](https://github.com/fexli/ArknightsResource). No source
+code from either repository is copied into this project.
+
+The ArknightsResource maintainer states that the game files in that repository
+are copyrighted by Hypergryph Network Technology Co., Ltd. and are provided for
+educational and research use. Arknights game data and artwork remain the
+property of their respective rights holders. This fan project is non-commercial
+and should honor removal requests from the source or rights holder.
+
+## 明日方舟一图流 progression statistics
+
+`operator-popularity-signals.json` contains a dated snapshot of public operator
+ownership, Elite 2, and skill-mastery percentages from
+[明日方舟一图流](https://dev.yituliu.cn/survey/operator-progression-statistics/).
+The snapshot is used only as an aggregate gameplay familiarity signal; it does
+not contain player-level data. The source page states that its non-game content
+is available under the
+[Creative Commons Attribution-NonCommercial 4.0 International license](https://creativecommons.org/licenses/by-nc/4.0/).
+
+## Search and video attention signals
+
+`operator-attention-signals.json` may contain dated aggregate search-result and
+engagement fields collected from anonymous public result pages. The Bilibili
+collector follows the response fields documented by
+[bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/search/search_request.md);
+the project does not copy that repository's source code. Bing result totals are
+treated as estimates. [Baidu Index](https://index.baidu.com/Helper/) has no
+anonymous open API in this pipeline and therefore requires a user-authorized
+manual export; YouTube likewise remains disabled without an authorized API key.
+
+Search/video data is used only after a provider covers at least 90% of the
+operator pool. Incomplete snapshots remain auditable but are disabled for game
+scoring, so blocked requests and missing results cannot label operators cold.

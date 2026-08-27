@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "status": "ready",
+  "source": {
+    "repository": "unknown",
+    "revision": "unknown"
+  },
+  "counts": {
+    "operators": 425,
+    "publicNames": 425,
+    "archives": 435,
+    "clues": 425,
+    "familiarityRecords": 425,
+    "identityGroups": 37,
+    "themes": 17,
+    "operatorArtRecords": 425,
+    "requiredAssetGaps": 0,
+    "optionalSkillIconGaps": 14,
+    "manualReviewItems": 0,
+    "attentionProviders": 5
+  },
+  "manualReview": {
+    "unknownProfessions": [],
+    "unknownSubprofessions": [],
+    "powersWithoutLogo": [],
+    "themeCandidates": []
+  },
+  "requiredAssets": {
+    "operatorArtManifest": [],
+    "pendingOperatorArt": [],
+    "e1Images": [],
+    "finalImages": [],
+    "silhouettes": [],
+    "fragments": [],
+    "factionLogos": []
+  },
+  "optionalSkillIcons": [
+    "/img/clues/skill/01abcb7af6c0c7f7359e.webp",
+    "/img/clues/skill/220bb7dd5d9808ebf27e.webp",
+    "/img/clues/skill/26b2f3963628f65fc40b.webp",
+    "/img/clues/skill/39417d2e9af29814bee0.webp",
+    "/img/clues/skill/536320ab0145ee1ea8b1.webp",
+    "/img/clues/skill/5afee644b3ee630a1e6d.webp",
+    "/img/clues/skill/72fa86fa1ec1bce8ffef.webp",
+    "/img/clues/skill/7340934814de5ead6c9d.webp",
+    "/img/clues/skill/8efaf3bc957dde1e109e.webp",
+    "/img/clues/skill/90d2c051ed14159f367b.webp",
+    "/img/clues/skill/bdb0f59231c019fda862.webp",
+    "/img/clues/skill/e20111956e40ec9518d7.webp",
+    "/img/clues/skill/fc91e94766ad76f3580b.webp",
+    "/img/clues/skill/ffbdcbc5d0f6e3629ce5.webp"
+  ],
+  "attentionCoverage": {
+    "baiduIndex": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "bilibiliVideo": {
+      "valid": 144,
+      "expected": 425,
+      "coverage": 0.3388,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "bingWeb": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "prtsWiki": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    },
+    "youtubeVideo": {
+      "valid": 0,
+      "expected": 425,
+      "coverage": 0.0,
+      "enabled": false,
+      "familiarityRecordsUsingProvider": 0
+    }
+  },
+  "generatedData": {
+    "public/data/names.json": {
+      "bytes": 29964,
+      "sha256": "18f4974a2a770454970a4ec838bdefb84d926522dd13f5ab3d287dd3a4567518"
+    },
+    "server-data/operators.json": {
+      "bytes": 603767,
+      "sha256": "d28a7a23792ba1cd0d5725fe605c05cbc04625cd36c244ed2c97c9302e6acfa3"
+    },
+    "server-data/operator-archives.json": {
+      "bytes": 3564639,
+      "sha256": "a1595adca354bfb67851e38d25e65752efdde0ecf731af403ce108b56b1be23e"
+    },
+    "server-data/operator-clues.json": {
+      "bytes": 1367586,
+      "sha256": "9d273f42fc726bd0616425c00f905fee38fd27b52d7433ca579ca4773ad1794e"
+    },
+    "server-data/operator-familiarity.json": {
+      "bytes": 210767,
+      "sha256": "90a5b5066b94843cd0cbb027941db612c51d60e1d046a31cfc0cc0a56ba9e66c"
+    },
+    "server-data/operator-identities.json": {
+      "bytes": 18457,
+      "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
+    },
+    "server-data/operator-themes.json": {
+      "bytes": 100428,
+      "sha256": "13290af6cb98f99911328cec6010e32423645e93454e063385b7e311344656b2"
+    }
+  }
+}

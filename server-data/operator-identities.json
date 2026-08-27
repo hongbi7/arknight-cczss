@@ -1,0 +1,902 @@
+{
+  "schemaVersion": 1,
+  "groups": [
+    {
+      "id": "lava",
+      "type": "alter",
+      "baseId": "char_121_lava",
+      "memberIds": [
+        "char_121_lava",
+        "char_1011_lava2"
+      ],
+      "alterIds": [
+        "char_1011_lava2"
+      ],
+      "memberNames": [
+        "炎熔",
+        "炎狱炎熔"
+      ]
+    },
+    {
+      "id": "skadi",
+      "type": "alter",
+      "baseId": "char_263_skadi",
+      "memberIds": [
+        "char_263_skadi",
+        "char_1012_skadi2"
+      ],
+      "alterIds": [
+        "char_1012_skadi2"
+      ],
+      "memberNames": [
+        "斯卡蒂",
+        "浊心斯卡蒂"
+      ]
+    },
+    {
+      "id": "chen",
+      "type": "alter",
+      "baseId": "char_010_chen",
+      "memberIds": [
+        "char_010_chen",
+        "char_1013_chen2",
+        "char_1050_chen3"
+      ],
+      "alterIds": [
+        "char_1013_chen2",
+        "char_1050_chen3"
+      ],
+      "memberNames": [
+        "陈",
+        "假日威龙陈",
+        "赤刃明霄陈"
+      ]
+    },
+    {
+      "id": "nearl",
+      "type": "alter",
+      "baseId": "char_148_nearl",
+      "memberIds": [
+        "char_148_nearl",
+        "char_1014_nearl2"
+      ],
+      "alterIds": [
+        "char_1014_nearl2"
+      ],
+      "memberNames": [
+        "临光",
+        "耀骑士临光"
+      ]
+    },
+    {
+      "id": "angelina",
+      "type": "alter",
+      "baseId": "char_291_aglina",
+      "memberIds": [
+        "char_291_aglina",
+        "char_1015_aglna2"
+      ],
+      "alterIds": [
+        "char_1015_aglna2"
+      ],
+      "memberNames": [
+        "安洁莉娜",
+        "予愿安洁莉娜"
+      ]
+    },
+    {
+      "id": "eyjafjalla",
+      "type": "alter",
+      "baseId": "char_180_amgoat",
+      "memberIds": [
+        "char_180_amgoat",
+        "char_1016_agoat2"
+      ],
+      "alterIds": [
+        "char_1016_agoat2"
+      ],
+      "memberNames": [
+        "艾雅法拉",
+        "纯烬艾雅法拉"
+      ]
+    },
+    {
+      "id": "siege",
+      "type": "alter",
+      "baseId": "char_112_siege",
+      "memberIds": [
+        "char_112_siege",
+        "char_1019_siege2"
+      ],
+      "alterIds": [
+        "char_1019_siege2"
+      ],
+      "memberNames": [
+        "推进之王",
+        "维娜·维多利亚"
+      ]
+    },
+    {
+      "id": "reed",
+      "type": "alter",
+      "baseId": "char_261_sddrag",
+      "memberIds": [
+        "char_261_sddrag",
+        "char_1020_reed2"
+      ],
+      "alterIds": [
+        "char_1020_reed2"
+      ],
+      "memberNames": [
+        "苇草",
+        "焰影苇草"
+      ]
+    },
+    {
+      "id": "kroos",
+      "type": "alter",
+      "baseId": "char_124_kroos",
+      "memberIds": [
+        "char_124_kroos",
+        "char_1021_kroos2"
+      ],
+      "alterIds": [
+        "char_1021_kroos2"
+      ],
+      "memberNames": [
+        "克洛丝",
+        "寒芒克洛丝"
+      ]
+    },
+    {
+      "id": "perfumer",
+      "type": "alter",
+      "baseId": "char_181_flower",
+      "memberIds": [
+        "char_181_flower",
+        "char_1022_flwr2"
+      ],
+      "alterIds": [
+        "char_1022_flwr2"
+      ],
+      "memberNames": [
+        "调香师",
+        "撷英调香师"
+      ]
+    },
+    {
+      "id": "specter",
+      "type": "alter",
+      "baseId": "char_143_ghost",
+      "memberIds": [
+        "char_143_ghost",
+        "char_1023_ghost2"
+      ],
+      "alterIds": [
+        "char_1023_ghost2"
+      ],
+      "memberNames": [
+        "幽灵鲨",
+        "归溟幽灵鲨"
+      ]
+    },
+    {
+      "id": "hibiscus",
+      "type": "alter",
+      "baseId": "char_120_hibisc",
+      "memberIds": [
+        "char_120_hibisc",
+        "char_1024_hbisc2"
+      ],
+      "alterIds": [
+        "char_1024_hbisc2"
+      ],
+      "memberNames": [
+        "芙蓉",
+        "濯尘芙蓉"
+      ]
+    },
+    {
+      "id": "gavial",
+      "type": "alter",
+      "baseId": "char_187_ccheal",
+      "memberIds": [
+        "char_187_ccheal",
+        "char_1026_gvial2"
+      ],
+      "alterIds": [
+        "char_1026_gvial2"
+      ],
+      "memberNames": [
+        "嘉维尔",
+        "百炼嘉维尔"
+      ]
+    },
+    {
+      "id": "greyy",
+      "type": "alter",
+      "baseId": "char_253_greyy",
+      "memberIds": [
+        "char_253_greyy",
+        "char_1027_greyy2"
+      ],
+      "alterIds": [
+        "char_1027_greyy2"
+      ],
+      "memberNames": [
+        "格雷伊",
+        "承曦格雷伊"
+      ]
+    },
+    {
+      "id": "texas",
+      "type": "alter",
+      "baseId": "char_102_texas",
+      "memberIds": [
+        "char_102_texas",
+        "char_1028_texas2"
+      ],
+      "alterIds": [
+        "char_1028_texas2"
+      ],
+      "memberNames": [
+        "德克萨斯",
+        "缄默德克萨斯"
+      ]
+    },
+    {
+      "id": "yato",
+      "type": "alter",
+      "baseId": "char_502_nblade",
+      "memberIds": [
+        "char_502_nblade",
+        "char_1029_yato2"
+      ],
+      "alterIds": [
+        "char_1029_yato2"
+      ],
+      "memberNames": [
+        "夜刀",
+        "麒麟R夜刀"
+      ]
+    },
+    {
+      "id": "noir_corne",
+      "type": "alter",
+      "baseId": "char_500_noirc",
+      "memberIds": [
+        "char_500_noirc",
+        "char_1030_noirc2"
+      ],
+      "alterIds": [
+        "char_1030_noirc2"
+      ],
+      "memberNames": [
+        "黑角",
+        "火龙S黑角"
+      ]
+    },
+    {
+      "id": "silence",
+      "type": "alter",
+      "baseId": "char_108_silent",
+      "memberIds": [
+        "char_108_silent",
+        "char_1031_slent2"
+      ],
+      "alterIds": [
+        "char_1031_slent2"
+      ],
+      "memberNames": [
+        "赫默",
+        "淬羽赫默"
+      ]
+    },
+    {
+      "id": "executor",
+      "type": "alter",
+      "baseId": "char_279_excu",
+      "memberIds": [
+        "char_279_excu",
+        "char_1032_excu2"
+      ],
+      "alterIds": [
+        "char_1032_excu2"
+      ],
+      "memberNames": [
+        "送葬人",
+        "圣约送葬人"
+      ]
+    },
+    {
+      "id": "swire",
+      "type": "alter",
+      "baseId": "char_308_swire",
+      "memberIds": [
+        "char_308_swire",
+        "char_1033_swire2"
+      ],
+      "alterIds": [
+        "char_1033_swire2"
+      ],
+      "memberNames": [
+        "诗怀雅",
+        "琳琅诗怀雅"
+      ]
+    },
+    {
+      "id": "jessica",
+      "type": "alter",
+      "baseId": "char_235_jesica",
+      "memberIds": [
+        "char_235_jesica",
+        "char_1034_jesca2"
+      ],
+      "alterIds": [
+        "char_1034_jesca2"
+      ],
+      "memberNames": [
+        "杰西卡",
+        "涤火杰西卡"
+      ]
+    },
+    {
+      "id": "w",
+      "type": "alter",
+      "baseId": "char_113_cqbw",
+      "memberIds": [
+        "char_113_cqbw",
+        "char_1035_wisdel"
+      ],
+      "alterIds": [
+        "char_1035_wisdel"
+      ],
+      "memberNames": [
+        "W",
+        "维什戴尔"
+      ]
+    },
+    {
+      "id": "fang",
+      "type": "alter",
+      "baseId": "char_123_fang",
+      "memberIds": [
+        "char_123_fang",
+        "char_1036_fang2"
+      ],
+      "alterIds": [
+        "char_1036_fang2"
+      ],
+      "memberNames": [
+        "芬",
+        "历阵锐枪芬"
+      ]
+    },
+    {
+      "id": "lappland",
+      "type": "alter",
+      "baseId": "char_140_whitew",
+      "memberIds": [
+        "char_140_whitew",
+        "char_1038_whitw2"
+      ],
+      "alterIds": [
+        "char_1038_whitw2"
+      ],
+      "memberNames": [
+        "拉普兰德",
+        "荒芜拉普兰德"
+      ]
+    },
+    {
+      "id": "thorns",
+      "type": "alter",
+      "baseId": "char_293_thorns",
+      "memberIds": [
+        "char_293_thorns",
+        "char_1039_thorn2"
+      ],
+      "alterIds": [
+        "char_1039_thorn2"
+      ],
+      "memberNames": [
+        "棘刺",
+        "引星棘刺"
+      ]
+    },
+    {
+      "id": "blaze",
+      "type": "alter",
+      "baseId": "char_017_huang",
+      "memberIds": [
+        "char_017_huang",
+        "char_1040_blaze2"
+      ],
+      "alterIds": [
+        "char_1040_blaze2"
+      ],
+      "memberNames": [
+        "煌",
+        "烛煌"
+      ]
+    },
+    {
+      "id": "exusiai",
+      "type": "alter",
+      "baseId": "char_103_angel",
+      "memberIds": [
+        "char_103_angel",
+        "char_1041_angel2"
+      ],
+      "alterIds": [
+        "char_1041_angel2"
+      ],
+      "memberNames": [
+        "能天使",
+        "新约能天使"
+      ]
+    },
+    {
+      "id": "phantom",
+      "type": "alter",
+      "baseId": "char_250_phatom",
+      "memberIds": [
+        "char_250_phatom",
+        "char_1042_phatm2"
+      ],
+      "alterIds": [
+        "char_1042_phatm2"
+      ],
+      "memberNames": [
+        "傀影",
+        "酒神"
+      ]
+    },
+    {
+      "id": "leizi",
+      "type": "alter",
+      "baseId": "char_306_leizi",
+      "memberIds": [
+        "char_306_leizi",
+        "char_1043_leizi2"
+      ],
+      "alterIds": [
+        "char_1043_leizi2"
+      ],
+      "memberNames": [
+        "惊蛰",
+        "司霆惊蛰"
+      ]
+    },
+    {
+      "id": "hoshiguma",
+      "type": "alter",
+      "baseId": "char_136_hsguma",
+      "memberIds": [
+        "char_136_hsguma",
+        "char_1044_hsgma2"
+      ],
+      "alterIds": [
+        "char_1044_hsgma2"
+      ],
+      "memberNames": [
+        "星熊",
+        "斩业星熊"
+      ]
+    },
+    {
+      "id": "silverash",
+      "type": "alter",
+      "baseId": "char_172_svrash",
+      "memberIds": [
+        "char_172_svrash",
+        "char_1045_svash2"
+      ],
+      "alterIds": [
+        "char_1045_svash2"
+      ],
+      "memberNames": [
+        "银灰",
+        "凛御银灰"
+      ]
+    },
+    {
+      "id": "pramanix",
+      "type": "alter",
+      "baseId": "char_174_slbell",
+      "memberIds": [
+        "char_174_slbell",
+        "char_1046_sbell2"
+      ],
+      "alterIds": [
+        "char_1046_sbell2"
+      ],
+      "memberNames": [
+        "初雪",
+        "圣聆初雪"
+      ]
+    },
+    {
+      "id": "astgenne",
+      "type": "alter",
+      "baseId": "char_135_halo",
+      "memberIds": [
+        "char_135_halo",
+        "char_1047_halo2"
+      ],
+      "alterIds": [
+        "char_1047_halo2"
+      ],
+      "memberNames": [
+        "星源",
+        "溯光星源"
+      ]
+    },
+    {
+      "id": "orchid",
+      "type": "alter",
+      "baseId": "char_278_orchid",
+      "memberIds": [
+        "char_278_orchid",
+        "char_1048_orchd2"
+      ],
+      "alterIds": [
+        "char_1048_orchd2"
+      ],
+      "memberNames": [
+        "梓兰",
+        "焰狐龙梓兰"
+      ]
+    },
+    {
+      "id": "catapult",
+      "type": "alter",
+      "baseId": "char_282_catap",
+      "memberIds": [
+        "char_282_catap",
+        "char_1049_catap2"
+      ],
+      "alterIds": [
+        "char_1049_catap2"
+      ],
+      "memberNames": [
+        "空爆",
+        "雷狼龙S空爆"
+      ]
+    },
+    {
+      "id": "zima",
+      "type": "alter",
+      "baseId": "char_115_headbr",
+      "memberIds": [
+        "char_115_headbr",
+        "char_1051_headb2"
+      ],
+      "alterIds": [
+        "char_1051_headb2"
+      ],
+      "memberNames": [
+        "凛冬",
+        "怒潮凛冬"
+      ]
+    },
+    {
+      "id": "kaltsit",
+      "type": "alter",
+      "baseId": "char_003_kalts",
+      "memberIds": [
+        "char_003_kalts",
+        "char_1052_kalts2"
+      ],
+      "alterIds": [
+        "char_1052_kalts2"
+      ],
+      "memberNames": [
+        "凯尔希",
+        "凯尔希·思衡托"
+      ]
+    }
+  ],
+  "byOperator": {
+    "char_121_lava": {
+      "groupId": "lava",
+      "role": "base"
+    },
+    "char_1011_lava2": {
+      "groupId": "lava",
+      "role": "alter"
+    },
+    "char_263_skadi": {
+      "groupId": "skadi",
+      "role": "base"
+    },
+    "char_1012_skadi2": {
+      "groupId": "skadi",
+      "role": "alter"
+    },
+    "char_010_chen": {
+      "groupId": "chen",
+      "role": "base"
+    },
+    "char_1013_chen2": {
+      "groupId": "chen",
+      "role": "alter"
+    },
+    "char_1050_chen3": {
+      "groupId": "chen",
+      "role": "alter"
+    },
+    "char_148_nearl": {
+      "groupId": "nearl",
+      "role": "base"
+    },
+    "char_1014_nearl2": {
+      "groupId": "nearl",
+      "role": "alter"
+    },
+    "char_291_aglina": {
+      "groupId": "angelina",
+      "role": "base"
+    },
+    "char_1015_aglna2": {
+      "groupId": "angelina",
+      "role": "alter"
+    },
+    "char_180_amgoat": {
+      "groupId": "eyjafjalla",
+      "role": "base"
+    },
+    "char_1016_agoat2": {
+      "groupId": "eyjafjalla",
+      "role": "alter"
+    },
+    "char_112_siege": {
+      "groupId": "siege",
+      "role": "base"
+    },
+    "char_1019_siege2": {
+      "groupId": "siege",
+      "role": "alter"
+    },
+    "char_261_sddrag": {
+      "groupId": "reed",
+      "role": "base"
+    },
+    "char_1020_reed2": {
+      "groupId": "reed",
+      "role": "alter"
+    },
+    "char_124_kroos": {
+      "groupId": "kroos",
+      "role": "base"
+    },
+    "char_1021_kroos2": {
+      "groupId": "kroos",
+      "role": "alter"
+    },
+    "char_181_flower": {
+      "groupId": "perfumer",
+      "role": "base"
+    },
+    "char_1022_flwr2": {
+      "groupId": "perfumer",
+      "role": "alter"
+    },
+    "char_143_ghost": {
+      "groupId": "specter",
+      "role": "base"
+    },
+    "char_1023_ghost2": {
+      "groupId": "specter",
+      "role": "alter"
+    },
+    "char_120_hibisc": {
+      "groupId": "hibiscus",
+      "role": "base"
+    },
+    "char_1024_hbisc2": {
+      "groupId": "hibiscus",
+      "role": "alter"
+    },
+    "char_187_ccheal": {
+      "groupId": "gavial",
+      "role": "base"
+    },
+    "char_1026_gvial2": {
+      "groupId": "gavial",
+      "role": "alter"
+    },
+    "char_253_greyy": {
+      "groupId": "greyy",
+      "role": "base"
+    },
+    "char_1027_greyy2": {
+      "groupId": "greyy",
+      "role": "alter"
+    },
+    "char_102_texas": {
+      "groupId": "texas",
+      "role": "base"
+    },
+    "char_1028_texas2": {
+      "groupId": "texas",
+      "role": "alter"
+    },
+    "char_502_nblade": {
+      "groupId": "yato",
+      "role": "base"
+    },
+    "char_1029_yato2": {
+      "groupId": "yato",
+      "role": "alter"
+    },
+    "char_500_noirc": {
+      "groupId": "noir_corne",
+      "role": "base"
+    },
+    "char_1030_noirc2": {
+      "groupId": "noir_corne",
+      "role": "alter"
+    },
+    "char_108_silent": {
+      "groupId": "silence",
+      "role": "base"
+    },
+    "char_1031_slent2": {
+      "groupId": "silence",
+      "role": "alter"
+    },
+    "char_279_excu": {
+      "groupId": "executor",
+      "role": "base"
+    },
+    "char_1032_excu2": {
+      "groupId": "executor",
+      "role": "alter"
+    },
+    "char_308_swire": {
+      "groupId": "swire",
+      "role": "base"
+    },
+    "char_1033_swire2": {
+      "groupId": "swire",
+      "role": "alter"
+    },
+    "char_235_jesica": {
+      "groupId": "jessica",
+      "role": "base"
+    },
+    "char_1034_jesca2": {
+      "groupId": "jessica",
+      "role": "alter"
+    },
+    "char_113_cqbw": {
+      "groupId": "w",
+      "role": "base"
+    },
+    "char_1035_wisdel": {
+      "groupId": "w",
+      "role": "alter"
+    },
+    "char_123_fang": {
+      "groupId": "fang",
+      "role": "base"
+    },
+    "char_1036_fang2": {
+      "groupId": "fang",
+      "role": "alter"
+    },
+    "char_140_whitew": {
+      "groupId": "lappland",
+      "role": "base"
+    },
+    "char_1038_whitw2": {
+      "groupId": "lappland",
+      "role": "alter"
+    },
+    "char_293_thorns": {
+      "groupId": "thorns",
+      "role": "base"
+    },
+    "char_1039_thorn2": {
+      "groupId": "thorns",
+      "role": "alter"
+    },
+    "char_017_huang": {
+      "groupId": "blaze",
+      "role": "base"
+    },
+    "char_1040_blaze2": {
+      "groupId": "blaze",
+      "role": "alter"
+    },
+    "char_103_angel": {
+      "groupId": "exusiai",
+      "role": "base"
+    },
+    "char_1041_angel2": {
+      "groupId": "exusiai",
+      "role": "alter"
+    },
+    "char_250_phatom": {
+      "groupId": "phantom",
+      "role": "base"
+    },
+    "char_1042_phatm2": {
+      "groupId": "phantom",
+      "role": "alter"
+    },
+    "char_306_leizi": {
+      "groupId": "leizi",
+      "role": "base"
+    },
+    "char_1043_leizi2": {
+      "groupId": "leizi",
+      "role": "alter"
+    },
+    "char_136_hsguma": {
+      "groupId": "hoshiguma",
+      "role": "base"
+    },
+    "char_1044_hsgma2": {
+      "groupId": "hoshiguma",
+      "role": "alter"
+    },
+    "char_172_svrash": {
+      "groupId": "silverash",
+      "role": "base"
+    },
+    "char_1045_svash2": {
+      "groupId": "silverash",
+      "role": "alter"
+    },
+    "char_174_slbell": {
+      "groupId": "pramanix",
+      "role": "base"
+    },
+    "char_1046_sbell2": {
+      "groupId": "pramanix",
+      "role": "alter"
+    },
+    "char_135_halo": {
+      "groupId": "astgenne",
+      "role": "base"
+    },
+    "char_1047_halo2": {
+      "groupId": "astgenne",
+      "role": "alter"
+    },
+    "char_278_orchid": {
+      "groupId": "orchid",
+      "role": "base"
+    },
+    "char_1048_orchd2": {
+      "groupId": "orchid",
+      "role": "alter"
+    },
+    "char_282_catap": {
+      "groupId": "catapult",
+      "role": "base"
+    },
+    "char_1049_catap2": {
+      "groupId": "catapult",
+      "role": "alter"
+    },
+    "char_115_headbr": {
+      "groupId": "zima",
+      "role": "base"
+    },
+    "char_1051_headb2": {
+      "groupId": "zima",
+      "role": "alter"
+    },
+    "char_003_kalts": {
+      "groupId": "kaltsit",
+      "role": "base"
+    },
+    "char_1052_kalts2": {
+      "groupId": "kaltsit",
+      "role": "alter"
+    }
+  }
+}

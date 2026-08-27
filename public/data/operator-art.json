@@ -1415,11 +1415,11 @@
   "char_002_amiya": {
     "e1": "/img/operators/e1/char_002_amiya.webp",
     "final": "/img/operators/final/char_002_amiya.webp",
-    "finalKind": "e2",
-    "finalTitle": "精英二阶段",
-    "finalGroup": "精英档案",
+    "finalKind": "skin",
+    "finalTitle": "于万千宇宙之中",
+    "finalGroup": "忒斯特收藏/XVIII",
     "e1Asset": "char_002_amiya_1",
-    "finalAsset": "char_002_amiya_2"
+    "finalAsset": "char_1001_amiya2_sale#16"
   },
   "char_405_absin": {
     "e1": "/img/operators/e1/char_405_absin.webp",

@@ -1,0 +1,1607 @@
+{
+  "_meta": {
+    "version": "2026-08-27-attention-1",
+    "capturedAt": "2026-08-27T09:02:30+08:00",
+    "queries": 425,
+    "providers": [
+      "bilibiliVideo"
+    ],
+    "providerCoverage": {
+      "bilibiliVideo": {
+        "valid": 144,
+        "expected": 425,
+        "coverage": 0.3388,
+        "minimum": 0.9,
+        "enabled": false
+      }
+    },
+    "failures": [],
+    "method": "Per-provider percentile rank; ambiguous short names and weakly relevant result pages are shrunk toward neutral. A provider is eligible for gameplay only at 90% or greater coverage."
+  },
+  "operators": {
+    "char_002_amiya": {
+      "bilibiliVideo": {
+        "raw": 11.943764,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 956617,
+        "topEngagement": 89545,
+        "reliability": 1.0,
+        "index": 34.3
+      }
+    },
+    "char_003_kalts": {
+      "bilibiliVideo": {
+        "raw": 13.377242,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 5501021,
+        "topEngagement": 513010,
+        "reliability": 1.0,
+        "index": 96.5
+      }
+    },
+    "char_009_12fce": {
+      "bilibiliVideo": {
+        "raw": 12.575249,
+        "resultCount": 1000,
+        "relevantTopResults": 16,
+        "topViews": 2421412,
+        "topEngagement": 134726,
+        "reliability": 1.0,
+        "index": 64.3
+      }
+    },
+    "char_010_chen": {
+      "bilibiliVideo": {
+        "raw": 13.376155,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 6125394,
+        "topEngagement": 399744,
+        "reliability": 0.52,
+        "index": 73.8
+      }
+    },
+    "char_017_huang": {
+      "bilibiliVideo": {
+        "raw": 11.884061,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 1221875,
+        "topEngagement": 40363,
+        "reliability": 0.52,
+        "index": 40.7
+      }
+    },
+    "char_1011_lava2": {
+      "bilibiliVideo": {
+        "raw": 12.665443,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 3269729,
+        "topEngagement": 97437,
+        "reliability": 1.0,
+        "index": 67.1
+      }
+    },
+    "char_1012_skadi2": {
+      "bilibiliVideo": {
+        "raw": 13.034849,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 4692535,
+        "topEngagement": 187382,
+        "reliability": 1.0,
+        "index": 86.0
+      }
+    },
+    "char_1013_chen2": {
+      "bilibiliVideo": {
+        "raw": 12.542976,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2919836,
+        "topEngagement": 77276,
+        "reliability": 1.0,
+        "index": 61.5
+      }
+    },
+    "char_1014_nearl2": {
+      "bilibiliVideo": {
+        "raw": 12.67278,
+        "resultCount": 1000,
+        "relevantTopResults": 14,
+        "topViews": 2760553,
+        "topEngagement": 147600,
+        "reliability": 1.0,
+        "index": 67.8
+      }
+    },
+    "char_1015_aglna2": {
+      "bilibiliVideo": {
+        "raw": 12.326557,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 1751293,
+        "topEngagement": 104291,
+        "reliability": 1.0,
+        "index": 48.3
+      }
+    },
+    "char_1016_agoat2": {
+      "bilibiliVideo": {
+        "raw": 13.042995,
+        "resultCount": 1000,
+        "relevantTopResults": 14,
+        "topViews": 4487181,
+        "topEngagement": 214382,
+        "reliability": 1.0,
+        "index": 86.7
+      }
+    },
+    "char_1019_siege2": {
+      "bilibiliVideo": {
+        "raw": 13.05876,
+        "resultCount": 1000,
+        "relevantTopResults": 8,
+        "topViews": 4504852,
+        "topEngagement": 226299,
+        "reliability": 0.88,
+        "index": 83.5
+      }
+    },
+    "char_101_sora": {
+      "bilibiliVideo": {
+        "raw": 12.161258,
+        "resultCount": 1000,
+        "relevantTopResults": 14,
+        "topViews": 1232744,
+        "topEngagement": 119884,
+        "reliability": 0.52,
+        "index": 45.5
+      }
+    },
+    "char_1020_reed2": {
+      "bilibiliVideo": {
+        "raw": 13.128627,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 4795111,
+        "topEngagement": 259553,
+        "reliability": 1.0,
+        "index": 89.5
+      }
+    },
+    "char_1021_kroos2": {
+      "bilibiliVideo": {
+        "raw": 12.701884,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3131339,
+        "topEngagement": 124409,
+        "reliability": 1.0,
+        "index": 69.2
+      }
+    },
+    "char_1022_flwr2": {
+      "bilibiliVideo": {
+        "raw": 11.56326,
+        "resultCount": 1000,
+        "relevantTopResults": 6,
+        "topViews": 855088,
+        "topEngagement": 25242,
+        "reliability": 0.76,
+        "index": 26.3
+      }
+    },
+    "char_1023_ghost2": {
+      "bilibiliVideo": {
+        "raw": 12.812399,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 3267132,
+        "topEngagement": 175712,
+        "reliability": 1.0,
+        "index": 74.8
+      }
+    },
+    "char_1024_hbisc2": {
+      "bilibiliVideo": {
+        "raw": 12.083516,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 1620732,
+        "topEngagement": 47071,
+        "reliability": 1.0,
+        "index": 38.5
+      }
+    },
+    "char_1026_gvial2": {
+      "bilibiliVideo": {
+        "raw": 12.170753,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 1636910,
+        "topEngagement": 65233,
+        "reliability": 1.0,
+        "index": 42.0
+      }
+    },
+    "char_1027_greyy2": {
+      "bilibiliVideo": {
+        "raw": 11.798294,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 1199528,
+        "topEngagement": 29872,
+        "reliability": 1.0,
+        "index": 28.0
+      }
+    },
+    "char_1028_texas2": {
+      "bilibiliVideo": {
+        "raw": 12.813688,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3435579,
+        "topEngagement": 157493,
+        "reliability": 1.0,
+        "index": 75.5
+      }
+    },
+    "char_1029_yato2": {
+      "bilibiliVideo": {
+        "raw": 11.197019,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 539286,
+        "topEngagement": 16685,
+        "reliability": 1.0,
+        "index": 12.6
+      }
+    },
+    "char_102_texas": {
+      "bilibiliVideo": {
+        "raw": 12.43098,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2059148,
+        "topEngagement": 109471,
+        "reliability": 1.0,
+        "index": 53.8
+      }
+    },
+    "char_1030_noirc2": {
+      "bilibiliVideo": {
+        "raw": 11.927784,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 1131522,
+        "topEngagement": 57281,
+        "reliability": 1.0,
+        "index": 32.9
+      }
+    },
+    "char_1031_slent2": {
+      "bilibiliVideo": {
+        "raw": 12.69101,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3094547,
+        "topEngagement": 122367,
+        "reliability": 1.0,
+        "index": 68.5
+      }
+    },
+    "char_1032_excu2": {
+      "bilibiliVideo": {
+        "raw": 11.938845,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 1255082,
+        "topEngagement": 47272,
+        "reliability": 1.0,
+        "index": 33.6
+      }
+    },
+    "char_1033_swire2": {
+      "bilibiliVideo": {
+        "raw": 12.375708,
+        "resultCount": 1000,
+        "relevantTopResults": 11,
+        "topViews": 2033182,
+        "topEngagement": 90333,
+        "reliability": 1.0,
+        "index": 51.7
+      }
+    },
+    "char_1034_jesca2": {
+      "bilibiliVideo": {
+        "raw": 12.825343,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 3299566,
+        "topEngagement": 180928,
+        "reliability": 1.0,
+        "index": 76.2
+      }
+    },
+    "char_1035_wisdel": {
+      "bilibiliVideo": {
+        "raw": 12.6492,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 2473142,
+        "topEngagement": 172579,
+        "reliability": 1.0,
+        "index": 65.7
+      }
+    },
+    "char_1036_fang2": {
+      "bilibiliVideo": {
+        "raw": 11.758353,
+        "resultCount": 1000,
+        "relevantTopResults": 9,
+        "topViews": 1074119,
+        "topEngagement": 32751,
+        "reliability": 0.94,
+        "index": 28.0
+      }
+    },
+    "char_1038_whitw2": {
+      "bilibiliVideo": {
+        "raw": 12.791626,
+        "resultCount": 1000,
+        "relevantTopResults": 7,
+        "topViews": 3338921,
+        "topEngagement": 153884,
+        "reliability": 0.82,
+        "index": 69.2
+      }
+    },
+    "char_1039_thorn2": {
+      "bilibiliVideo": {
+        "raw": 12.536713,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 2559931,
+        "topEngagement": 101724,
+        "reliability": 1.0,
+        "index": 60.8
+      }
+    },
+    "char_103_angel": {
+      "bilibiliVideo": {
+        "raw": 12.460314,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 2278257,
+        "topEngagement": 97753,
+        "reliability": 1.0,
+        "index": 57.3
+      }
+    },
+    "char_1040_blaze2": {
+      "bilibiliVideo": {
+        "raw": 12.728859,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3229312,
+        "topEngagement": 129183,
+        "reliability": 0.78,
+        "index": 65.5
+      }
+    },
+    "char_1041_angel2": {
+      "bilibiliVideo": {
+        "raw": 12.926582,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 3999545,
+        "topEngagement": 174934,
+        "reliability": 1.0,
+        "index": 80.4
+      }
+    },
+    "char_1042_phatm2": {
+      "bilibiliVideo": {
+        "raw": 13.330028,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 6359998,
+        "topEngagement": 305095,
+        "reliability": 0.78,
+        "index": 84.6
+      }
+    },
+    "char_1043_leizi2": {
+      "bilibiliVideo": {
+        "raw": 13.42657,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 7340568,
+        "topEngagement": 323716,
+        "reliability": 1.0,
+        "index": 98.6
+      }
+    },
+    "char_1044_hsgma2": {
+      "bilibiliVideo": {
+        "raw": 12.998024,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 4244152,
+        "topEngagement": 203330,
+        "reliability": 1.0,
+        "index": 84.6
+      }
+    },
+    "char_1045_svash2": {
+      "bilibiliVideo": {
+        "raw": 13.543766,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 8009997,
+        "topEngagement": 423970,
+        "reliability": 1.0,
+        "index": 100
+      }
+    },
+    "char_1046_sbell2": {
+      "bilibiliVideo": {
+        "raw": 13.503929,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 7678996,
+        "topEngagement": 398033,
+        "reliability": 1.0,
+        "index": 99.3
+      }
+    },
+    "char_1047_halo2": {
+      "bilibiliVideo": {
+        "raw": 11.629848,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 842926,
+        "topEngagement": 34040,
+        "reliability": 1.0,
+        "index": 22.4
+      }
+    },
+    "char_1048_orchd2": {
+      "bilibiliVideo": {
+        "raw": 13.146708,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 5084968,
+        "topEngagement": 244073,
+        "reliability": 1.0,
+        "index": 90.9
+      }
+    },
+    "char_1049_catap2": {
+      "bilibiliVideo": {
+        "raw": 12.360684,
+        "resultCount": 1000,
+        "relevantTopResults": 9,
+        "topViews": 2154890,
+        "topEngagement": 74504,
+        "reliability": 0.94,
+        "index": 51.0
+      }
+    },
+    "char_1050_chen3": {
+      "bilibiliVideo": {
+        "raw": 13.414162,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 6731607,
+        "topEngagement": 375286,
+        "reliability": 1.0,
+        "index": 97.9
+      }
+    },
+    "char_1051_headb2": {
+      "bilibiliVideo": {
+        "raw": 12.987258,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 4234077,
+        "topEngagement": 195818,
+        "reliability": 1.0,
+        "index": 82.5
+      }
+    },
+    "char_1052_kalts2": {
+      "bilibiliVideo": {
+        "raw": 13.390652,
+        "resultCount": 1000,
+        "relevantTopResults": 9,
+        "topViews": 5976916,
+        "topEngagement": 447985,
+        "reliability": 0.94,
+        "index": 94.4
+      }
+    },
+    "char_106_franka": {
+      "bilibiliVideo": {
+        "raw": 12.664156,
+        "resultCount": 1000,
+        "relevantTopResults": 16,
+        "topViews": 2442360,
+        "topEngagement": 188526,
+        "reliability": 1.0,
+        "index": 66.4
+      }
+    },
+    "char_107_liskam": {
+      "bilibiliVideo": {
+        "raw": 12.784274,
+        "resultCount": 1000,
+        "relevantTopResults": 8,
+        "topViews": 2622101,
+        "topEngagement": 259253,
+        "reliability": 0.686,
+        "index": 65.6
+      }
+    },
+    "char_108_silent": {
+      "bilibiliVideo": {
+        "raw": 12.009614,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 1236786,
+        "topEngagement": 64876,
+        "reliability": 0.78,
+        "index": 38.8
+      }
+    },
+    "char_109_fmout": {
+      "bilibiliVideo": {
+        "raw": 11.782088,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 1056710,
+        "topEngagement": 37380,
+        "reliability": 0.78,
+        "index": 32.3
+      }
+    },
+    "char_110_deepcl": {
+      "bilibiliVideo": {
+        "raw": 12.187248,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 1341285,
+        "topEngagement": 109737,
+        "reliability": 1.0,
+        "index": 43.4
+      }
+    },
+    "char_112_siege": {
+      "bilibiliVideo": {
+        "raw": 12.26765,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 1850396,
+        "topEngagement": 72679,
+        "reliability": 1.0,
+        "index": 45.5
+      }
+    },
+    "char_113_cqbw": {
+      "bilibiliVideo": {
+        "raw": 13.051361,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3913989,
+        "topEngagement": 302726,
+        "reliability": 0.52,
+        "index": 69.5
+      }
+    },
+    "char_115_headbr": {
+      "bilibiliVideo": {
+        "raw": 12.884569,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 3178497,
+        "topEngagement": 249694,
+        "reliability": 0.78,
+        "index": 71.0
+      }
+    },
+    "char_117_myrrh": {
+      "bilibiliVideo": {
+        "raw": 10.44512,
+        "resultCount": 1000,
+        "relevantTopResults": 10,
+        "topViews": 202621,
+        "topEngagement": 7681,
+        "reliability": 0.78,
+        "index": 13.7
+      }
+    },
+    "char_118_yuki": {
+      "bilibiliVideo": {
+        "raw": 11.863695,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 972217,
+        "topEngagement": 62651,
+        "reliability": 0.78,
+        "index": 34.5
+      }
+    },
+    "char_120_hibisc": {
+      "bilibiliVideo": {
+        "raw": 11.651334,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 749971,
+        "topEngagement": 48419,
+        "reliability": 0.78,
+        "index": 29.5
+      }
+    },
+    "char_121_lava": {
+      "bilibiliVideo": {
+        "raw": 12.068227,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 1519618,
+        "topEngagement": 51284,
+        "reliability": 0.78,
+        "index": 40.5
+      }
+    },
+    "char_122_beagle": {
+      "bilibiliVideo": {
+        "raw": 13.263636,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 4355695,
+        "topEngagement": 554538,
+        "reliability": 1.0,
+        "index": 93.0
+      }
+    },
+    "char_123_fang": {
+      "bilibiliVideo": {
+        "raw": 10.841396,
+        "resultCount": 1000,
+        "relevantTopResults": 14,
+        "topViews": 296618,
+        "topEngagement": 15721,
+        "reliability": 0.52,
+        "index": 26.9
+      }
+    },
+    "char_124_kroos": {
+      "bilibiliVideo": {
+        "raw": 12.195586,
+        "resultCount": 1000,
+        "relevantTopResults": 11,
+        "topViews": 1626503,
+        "topEngagement": 73101,
+        "reliability": 1.0,
+        "index": 44.1
+      }
+    },
+    "char_126_shotst": {
+      "bilibiliVideo": {
+        "raw": 10.097709,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 104220,
+        "topEngagement": 8714,
+        "reliability": 0.78,
+        "index": 12.6
+      }
+    },
+    "char_127_estell": {
+      "bilibiliVideo": {
+        "raw": 11.072387,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 463475,
+        "topEngagement": 14316,
+        "reliability": 1.0,
+        "index": 9.1
+      }
+    },
+    "char_128_plosis": {
+      "bilibiliVideo": {
+        "raw": 13.201627,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 4946404,
+        "topEngagement": 323803,
+        "reliability": 1.0,
+        "index": 92.3
+      }
+    },
+    "char_129_bluep": {
+      "bilibiliVideo": {
+        "raw": 11.803408,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 1085720,
+        "topEngagement": 38270,
+        "reliability": 0.78,
+        "index": 33.4
+      }
+    },
+    "char_130_doberm": {
+      "bilibiliVideo": {
+        "raw": 12.571667,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 1842976,
+        "topEngagement": 247470,
+        "reliability": 0.78,
+        "index": 60.6
+      }
+    },
+    "char_131_flameb": {
+      "bilibiliVideo": {
+        "raw": 12.256278,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2012517,
+        "topEngagement": 57344,
+        "reliability": 0.78,
+        "index": 45.9
+      }
+    },
+    "char_133_mm": {
+      "bilibiliVideo": {
+        "raw": 11.101699,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 416531,
+        "topEngagement": 20535,
+        "reliability": 0.52,
+        "index": 29.5
+      }
+    },
+    "char_134_ifrit": {
+      "bilibiliVideo": {
+        "raw": 12.489249,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 2587840,
+        "topEngagement": 82079,
+        "reliability": 1.0,
+        "index": 58.7
+      }
+    },
+    "char_135_halo": {
+      "bilibiliVideo": {
+        "raw": 12.18126,
+        "resultCount": 1000,
+        "relevantTopResults": 8,
+        "topViews": 1677829,
+        "topEngagement": 64309,
+        "reliability": 0.686,
+        "index": 45.0
+      }
+    },
+    "char_136_hsguma": {
+      "bilibiliVideo": {
+        "raw": 12.582636,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2680403,
+        "topEngagement": 110069,
+        "reliability": 0.78,
+        "index": 61.7
+      }
+    },
+    "char_137_brownb": {
+      "bilibiliVideo": {
+        "raw": 12.019936,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 1287192,
+        "topEngagement": 61725,
+        "reliability": 0.78,
+        "index": 39.4
+      }
+    },
+    "char_140_whitew": {
+      "bilibiliVideo": {
+        "raw": 13.150902,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 4600735,
+        "topEngagement": 311815,
+        "reliability": 1.0,
+        "index": 91.6
+      }
+    },
+    "char_141_nights": {
+      "bilibiliVideo": {
+        "raw": 11.582666,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 730374,
+        "topEngagement": 39079,
+        "reliability": 0.78,
+        "index": 26.8
+      }
+    },
+    "char_143_ghost": {
+      "bilibiliVideo": {
+        "raw": 12.349627,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 1747748,
+        "topEngagement": 114903,
+        "reliability": 1.0,
+        "index": 50.3
+      }
+    },
+    "char_144_red": {
+      "bilibiliVideo": {
+        "raw": 10.701944,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 180281,
+        "topEngagement": 28008,
+        "reliability": 0.52,
+        "index": 26.2
+      }
+    },
+    "char_145_prove": {
+      "bilibiliVideo": {
+        "raw": 9.873299,
+        "resultCount": 1000,
+        "relevantTopResults": 7,
+        "topViews": 81032,
+        "topEngagement": 6303,
+        "reliability": 0.82,
+        "index": 9.6
+      }
+    },
+    "char_147_shining": {
+      "bilibiliVideo": {
+        "raw": 12.454294,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 2349310,
+        "topEngagement": 88974,
+        "reliability": 0.78,
+        "index": 55.2
+      }
+    },
+    "char_148_nearl": {
+      "bilibiliVideo": {
+        "raw": 12.771007,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 2917956,
+        "topEngagement": 192671,
+        "reliability": 0.78,
+        "index": 66.6
+      }
+    },
+    "char_149_scave": {
+      "bilibiliVideo": {
+        "raw": 11.397775,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 532390,
+        "topEngagement": 38356,
+        "reliability": 1.0,
+        "index": 16.1
+      }
+    },
+    "char_1502_crosly": {
+      "bilibiliVideo": {
+        "raw": 13.001302,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 4097986,
+        "topEngagement": 223151,
+        "reliability": 1.0,
+        "index": 85.3
+      }
+    },
+    "char_150_snakek": {
+      "bilibiliVideo": {
+        "raw": 12.521293,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2493230,
+        "topEngagement": 101573,
+        "reliability": 1.0,
+        "index": 59.4
+      }
+    },
+    "char_151_myrtle": {
+      "bilibiliVideo": {
+        "raw": 12.743281,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2944593,
+        "topEngagement": 168909,
+        "reliability": 1.0,
+        "index": 70.6
+      }
+    },
+    "char_154_morgan": {
+      "bilibiliVideo": {
+        "raw": 11.061583,
+        "resultCount": 1000,
+        "relevantTopResults": 11,
+        "topViews": 438540,
+        "topEngagement": 15553,
+        "reliability": 0.78,
+        "index": 17.0
+      }
+    },
+    "char_155_tiger": {
+      "bilibiliVideo": {
+        "raw": 11.869886,
+        "resultCount": 1000,
+        "relevantTopResults": 6,
+        "topViews": 1049465,
+        "topEngagement": 53948,
+        "reliability": 0.76,
+        "index": 35.9
+      }
+    },
+    "char_157_dagda": {
+      "bilibiliVideo": {
+        "raw": 10.872398,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 359062,
+        "topEngagement": 11512,
+        "reliability": 1.0,
+        "index": 6.3
+      }
+    },
+    "char_158_milu": {
+      "bilibiliVideo": {
+        "raw": 12.480674,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 2389839,
+        "topEngagement": 95094,
+        "reliability": 1.0,
+        "index": 58.0
+      }
+    },
+    "char_159_peacok": {
+      "bilibiliVideo": {
+        "raw": 12.086135,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 1629214,
+        "topEngagement": 47004,
+        "reliability": 1.0,
+        "index": 39.2
+      }
+    },
+    "char_163_hpsts": {
+      "bilibiliVideo": {
+        "raw": 12.438766,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 2335395,
+        "topEngagement": 84756,
+        "reliability": 0.78,
+        "index": 54.1
+      }
+    },
+    "char_164_nightm": {
+      "bilibiliVideo": {
+        "raw": 11.029775,
+        "resultCount": 1000,
+        "relevantTopResults": 11,
+        "topViews": 409976,
+        "topEngagement": 15968,
+        "reliability": 0.78,
+        "index": 16.5
+      }
+    },
+    "char_166_skfire": {
+      "bilibiliVideo": {
+        "raw": 11.622805,
+        "resultCount": 1000,
+        "relevantTopResults": 8,
+        "topViews": 732981,
+        "topEngagement": 45514,
+        "reliability": 0.686,
+        "index": 30.6
+      }
+    },
+    "char_171_bldsk": {
+      "bilibiliVideo": {
+        "raw": 12.886905,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3423632,
+        "topEngagement": 212766,
+        "reliability": 1.0,
+        "index": 77.6
+      }
+    },
+    "char_172_svrash": {
+      "bilibiliVideo": {
+        "raw": 12.902434,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3766525,
+        "topEngagement": 182122,
+        "reliability": 0.78,
+        "index": 72.6
+      }
+    },
+    "char_173_slchan": {
+      "bilibiliVideo": {
+        "raw": 10.037382,
+        "resultCount": 1000,
+        "relevantTopResults": 8,
+        "topViews": 135823,
+        "topEngagement": 3742,
+        "reliability": 0.686,
+        "index": 16.7
+      }
+    },
+    "char_174_slbell": {
+      "bilibiliVideo": {
+        "raw": 11.419778,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 570175,
+        "topEngagement": 35823,
+        "reliability": 0.78,
+        "index": 24.6
+      }
+    },
+    "char_179_cgbird": {
+      "bilibiliVideo": {
+        "raw": 12.316088,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 2156901,
+        "topEngagement": 62199,
+        "reliability": 0.78,
+        "index": 48.1
+      }
+    },
+    "char_180_amgoat": {
+      "bilibiliVideo": {
+        "raw": 12.329886,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 2074805,
+        "topEngagement": 71809,
+        "reliability": 1.0,
+        "index": 49.0
+      }
+    },
+    "char_181_flower": {
+      "bilibiliVideo": {
+        "raw": 11.732684,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 986601,
+        "topEngagement": 35875,
+        "reliability": 1.0,
+        "index": 25.2
+      }
+    },
+    "char_183_skgoat": {
+      "bilibiliVideo": {
+        "raw": 11.156454,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 468080,
+        "topEngagement": 19592,
+        "reliability": 0.78,
+        "index": 19.7
+      }
+    },
+    "char_185_frncat": {
+      "bilibiliVideo": {
+        "raw": 11.402256,
+        "resultCount": 1000,
+        "relevantTopResults": 10,
+        "topViews": 584557,
+        "topEngagement": 31554,
+        "reliability": 0.78,
+        "index": 24.1
+      }
+    },
+    "char_187_ccheal": {
+      "bilibiliVideo": {
+        "raw": 11.581928,
+        "resultCount": 1000,
+        "relevantTopResults": 15,
+        "topViews": 777407,
+        "topEngagement": 33796,
+        "reliability": 1.0,
+        "index": 19.6
+      }
+    },
+    "char_188_helage": {
+      "bilibiliVideo": {
+        "raw": 12.442312,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2233693,
+        "topEngagement": 95152,
+        "reliability": 1.0,
+        "index": 55.9
+      }
+    },
+    "char_190_clour": {
+      "bilibiliVideo": {
+        "raw": 11.361237,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 664594,
+        "topEngagement": 19986,
+        "reliability": 0.78,
+        "index": 22.5
+      }
+    },
+    "char_192_falco": {
+      "bilibiliVideo": {
+        "raw": 11.755748,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 814364,
+        "topEngagement": 60931,
+        "reliability": 0.78,
+        "index": 31.2
+      }
+    },
+    "char_193_frostl": {
+      "bilibiliVideo": {
+        "raw": 12.525654,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 1841898,
+        "topEngagement": 206143,
+        "reliability": 0.78,
+        "index": 57.9
+      }
+    },
+    "char_194_leto": {
+      "bilibiliVideo": {
+        "raw": 11.07292,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 436099,
+        "topEngagement": 16483,
+        "reliability": 0.78,
+        "index": 18.6
+      }
+    },
+    "char_195_glassb": {
+      "bilibiliVideo": {
+        "raw": 11.423948,
+        "resultCount": 1000,
+        "relevantTopResults": 10,
+        "topViews": 490422,
+        "topEngagement": 51358,
+        "reliability": 0.78,
+        "index": 25.2
+      }
+    },
+    "char_196_sunbr": {
+      "bilibiliVideo": {
+        "raw": 11.709579,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 937191,
+        "topEngagement": 36773,
+        "reliability": 0.78,
+        "index": 30.1
+      }
+    },
+    "char_197_poca": {
+      "bilibiliVideo": {
+        "raw": 12.568971,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 2418614,
+        "topEngagement": 131732,
+        "reliability": 0.78,
+        "index": 60.1
+      }
+    },
+    "char_198_blackd": {
+      "bilibiliVideo": {
+        "raw": 10.785805,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 315124,
+        "topEngagement": 10964,
+        "reliability": 0.78,
+        "index": 14.8
+      }
+    },
+    "char_199_yak": {
+      "bilibiliVideo": {
+        "raw": 11.864612,
+        "resultCount": 1000,
+        "relevantTopResults": 16,
+        "topViews": 930930,
+        "topEngagement": 69421,
+        "reliability": 0.78,
+        "index": 35.0
+      }
+    },
+    "char_2012_typhon": {
+      "bilibiliVideo": {
+        "raw": 13.129088,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 4599523,
+        "topEngagement": 285932,
+        "reliability": 0.78,
+        "index": 81.4
+      }
+    },
+    "char_2013_cerber": {
+      "bilibiliVideo": {
+        "raw": 12.931372,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 3621736,
+        "topEngagement": 223588,
+        "reliability": 1.0,
+        "index": 81.1
+      }
+    },
+    "char_2014_nian": {
+      "bilibiliVideo": {
+        "raw": 12.803816,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2873682,
+        "topEngagement": 227484,
+        "reliability": 0.52,
+        "index": 62.5
+      }
+    },
+    "char_2015_dusk": {
+      "bilibiliVideo": {
+        "raw": 12.566418,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 2243318,
+        "topEngagement": 154795,
+        "reliability": 0.52,
+        "index": 56.4
+      }
+    },
+    "char_201_moeshd": {
+      "bilibiliVideo": {
+        "raw": 10.32557,
+        "resultCount": 1000,
+        "relevantTopResults": 14,
+        "topViews": 159470,
+        "topEngagement": 8220,
+        "reliability": 0.78,
+        "index": 13.2
+      }
+    },
+    "char_2023_ling": {
+      "bilibiliVideo": {
+        "raw": 12.436784,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 1507835,
+        "topEngagement": 228005,
+        "reliability": 0.52,
+        "index": 52.4
+      }
+    },
+    "char_2024_chyue": {
+      "bilibiliVideo": {
+        "raw": 13.351704,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 6152773,
+        "topEngagement": 358831,
+        "reliability": 0.78,
+        "index": 85.2
+      }
+    },
+    "char_2025_shu": {
+      "bilibiliVideo": {
+        "raw": 12.90196,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 2805115,
+        "topEngagement": 355925,
+        "reliability": 0.52,
+        "index": 64.7
+      }
+    },
+    "char_2026_yu": {
+      "bilibiliVideo": {
+        "raw": 12.279208,
+        "resultCount": 1000,
+        "relevantTopResults": 18,
+        "topViews": 1880637,
+        "topEngagement": 73356,
+        "reliability": 0.52,
+        "index": 48.0
+      }
+    },
+    "char_2027_wang": {
+      "bilibiliVideo": {
+        "raw": 12.776805,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 3421966,
+        "topEngagement": 137126,
+        "reliability": 0.52,
+        "index": 61.5
+      }
+    },
+    "char_249_mlyss": {
+      "bilibiliVideo": {
+        "raw": 12.992534,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 4020564,
+        "topEngagement": 225037,
+        "reliability": 1.0,
+        "index": 83.9
+      }
+    },
+    "char_272_strong": {
+      "bilibiliVideo": {
+        "raw": 12.9434,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 4460723,
+        "topEngagement": 145891,
+        "reliability": 0.52,
+        "index": 66.5
+      }
+    },
+    "char_378_asbest": {
+      "bilibiliVideo": {
+        "raw": 12.331234,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 1955858,
+        "topEngagement": 82600,
+        "reliability": 0.78,
+        "index": 49.7
+      }
+    },
+    "char_4036_forcer": {
+      "bilibiliVideo": {
+        "raw": 12.159673,
+        "resultCount": 1000,
+        "relevantTopResults": 16,
+        "topViews": 1436377,
+        "topEngagement": 84067,
+        "reliability": 1.0,
+        "index": 40.6
+      }
+    },
+    "char_4052_surfer": {
+      "bilibiliVideo": {
+        "raw": 11.630624,
+        "resultCount": 1000,
+        "relevantTopResults": 7,
+        "topViews": 1059593,
+        "topEngagement": 20268,
+        "reliability": 0.64,
+        "index": 32.8
+      }
+    },
+    "char_4054_malist": {
+      "bilibiliVideo": {
+        "raw": 11.605512,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 849074,
+        "topEngagement": 30375,
+        "reliability": 0.78,
+        "index": 27.4
+      }
+    },
+    "char_4080_lin": {
+      "bilibiliVideo": {
+        "raw": 12.400382,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 2063780,
+        "topEngagement": 96365,
+        "reliability": 0.52,
+        "index": 51.6
+      }
+    },
+    "char_4100_caper": {
+      "bilibiliVideo": {
+        "raw": 12.040546,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 1237355,
+        "topEngagement": 73344,
+        "reliability": 0.78,
+        "index": 39.9
+      }
+    },
+    "char_4137_udflow": {
+      "bilibiliVideo": {
+        "raw": 11.190491,
+        "resultCount": 1000,
+        "relevantTopResults": 10,
+        "topViews": 511044,
+        "topEngagement": 18376,
+        "reliability": 0.78,
+        "index": 20.3
+      }
+    },
+    "char_4138_narant": {
+      "bilibiliVideo": {
+        "raw": 12.991575,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 4291703,
+        "topEngagement": 193182,
+        "reliability": 1.0,
+        "index": 83.2
+      }
+    },
+    "char_4141_marcil": {
+      "bilibiliVideo": {
+        "raw": 13.08838,
+        "resultCount": 1000,
+        "relevantTopResults": 14,
+        "topViews": 4692423,
+        "topEngagement": 232137,
+        "reliability": 1.0,
+        "index": 88.8
+      }
+    },
+    "char_4148_philae": {
+      "bilibiliVideo": {
+        "raw": 11.289454,
+        "resultCount": 1000,
+        "relevantTopResults": 9,
+        "topViews": 613282,
+        "topEngagement": 18013,
+        "reliability": 0.733,
+        "index": 23.6
+      }
+    },
+    "char_4151_tinman": {
+      "bilibiliVideo": {
+        "raw": 11.378062,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 700185,
+        "topEngagement": 18980,
+        "reliability": 0.78,
+        "index": 23.0
+      }
+    },
+    "char_4173_nowell": {
+      "bilibiliVideo": {
+        "raw": 9.850856,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 107519,
+        "topEngagement": 3023,
+        "reliability": 1.0,
+        "index": 0
+      }
+    },
+    "char_4199_makiri": {
+      "bilibiliVideo": {
+        "raw": 11.821993,
+        "resultCount": 1000,
+        "relevantTopResults": 20,
+        "topViews": 1042722,
+        "topEngagement": 45202,
+        "reliability": 0.78,
+        "index": 33.9
+      }
+    },
+    "char_4207_branch": {
+      "bilibiliVideo": {
+        "raw": 11.221904,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 433528,
+        "topEngagement": 30319,
+        "reliability": 0.78,
+        "index": 21.4
+      }
+    },
+    "char_4213_skybx": {
+      "bilibiliVideo": {
+        "raw": 11.07214,
+        "resultCount": 1000,
+        "relevantTopResults": 3,
+        "topViews": 440702,
+        "topEngagement": 16043,
+        "reliability": 0.58,
+        "index": 25.9
+      }
+    },
+    "char_421_crow": {
+      "bilibiliVideo": {
+        "raw": 12.120742,
+        "resultCount": 1000,
+        "relevantTopResults": 13,
+        "topViews": 1378330,
+        "topEngagement": 79039,
+        "reliability": 1.0,
+        "index": 39.9
+      }
+    },
+    "char_4224_turdus": {
+      "bilibiliVideo": {
+        "raw": 11.957175,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 1182984,
+        "topEngagement": 58214,
+        "reliability": 0.78,
+        "index": 38.3
+      }
+    },
+    "char_440_pinecn": {
+      "bilibiliVideo": {
+        "raw": 12.29256,
+        "resultCount": 1000,
+        "relevantTopResults": 10,
+        "topViews": 1473597,
+        "topEngagement": 134941,
+        "reliability": 0.78,
+        "index": 47.5
+      }
+    },
+    "char_455_nothin": {
+      "bilibiliVideo": {
+        "raw": 12.386222,
+        "resultCount": 1000,
+        "relevantTopResults": 17,
+        "topViews": 1957553,
+        "topEngagement": 102718,
+        "reliability": 0.78,
+        "index": 51.9
+      }
+    },
+    "char_456_ash": {
+      "bilibiliVideo": {
+        "raw": 12.920827,
+        "resultCount": 1000,
+        "relevantTopResults": 12,
+        "topViews": 4063015,
+        "topEngagement": 164925,
+        "reliability": 0.78,
+        "index": 73.2
+      }
+    },
+    "char_472_pasngr": {
+      "bilibiliVideo": {
+        "raw": 13.303633,
+        "resultCount": 1000,
+        "relevantTopResults": 19,
+        "topViews": 6187492,
+        "topEngagement": 292287,
+        "reliability": 0.78,
+        "index": 84.1
+      }
+    }
+  }
+}

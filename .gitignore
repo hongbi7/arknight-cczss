@@ -1,10 +1,14 @@
 node_modules/
+.venv/
 __pycache__/
 *.pyc
 .env
 .DS_Store
 .claude
 .tools/
+.cache/
+.vercel/
+.update-work/
 .art-sample/
 .skin-table.json
 .handbook-info-table.json

@@ -32,7 +32,18 @@
       <p class="brand-en">OPERATOR TRACE · IDENTIFICATION PROTOCOL</p>
     </div>
   </div>
-  <p class="subtitle">根据 12 项档案线索，猜出谜底干员。支持拼音搜索（如 nts = 能天使）。</p>
+  <div class="topbar-context">
+    <span id="topbarContextEn">OPERATOR INTELLIGENCE NETWORK</span>
+    <p id="topbarSubtitle" class="subtitle">罗德岛人员档案 · 干员身份识别终端</p>
+  </div>
+  <div id="desktopQuickGuess" class="topbar-quick-guess" aria-label="继续猜测">
+    <span>CONTINUE TRACE</span>
+    <div class="topbar-quick-field">
+      <input id="quickGuessInput" placeholder="输入下一名干员" autocomplete="off">
+      <div id="quickSuggest" class="suggest hidden"></div>
+    </div>
+    <button id="quickGuessBtn" type="button"><span>提交</span><i aria-hidden="true">↗</i></button>
+  </div>
 </header>
 
 <main>
@@ -63,6 +74,7 @@
         <img src="img/chessmaster.png" alt="">
         <span class="scene-scan"></span>
       </div>
+      <span class="mode-seam" aria-hidden="true"></span>
 
       <div class="section-head mode-heading">
         <h2 class="mode-title">选择游戏模式</h2>
@@ -71,8 +83,9 @@
 
       <div class="mode-cards">
         <article id="modeSuddenCard" class="mode-card mode-sudden">
+          <span class="mode-index" aria-hidden="true">01</span>
           <img class="mode-card-sticker mode-card-sticker-sudden" src="img/paradise-fulcrum.jpg" alt="" aria-hidden="true">
-          <span class="mode-badge">高危 HIGH-RISK</span>
+          <i class="mode-beam" aria-hidden="true"></i>
           <span class="mode-en">FINAL&nbsp;VERIFICATION</span>
           <span class="mode-name">终局校验</span>
           <span id="suddenModeDesc" class="mode-desc">全干员池，限 6 次猜测<br>第 6 次后进入终局抉择，猜错即结束</span>
@@ -86,7 +99,9 @@
           </div>
         </article>
         <button id="modeEndless" class="mode-card mode-endless">
+          <span class="mode-index" aria-hidden="true">02</span>
           <img class="mode-card-sticker mode-card-sticker-endless" src="img/endfield-toad.png" alt="" aria-hidden="true">
+          <i class="mode-beam" aria-hidden="true"></i>
           <span class="mode-en">ENDLESS&nbsp;ARCHIVE&nbsp;SEARCH</span>
           <span class="mode-name">全域检索</span>
           <span class="mode-desc">全干员池，不限猜测次数<br>靠 12 维线索一路逼近答案</span>
@@ -121,6 +136,47 @@
           <span><i class="legend-wrong"></i>不符</span>
           <span><i class="legend-unknown"></i>未知</span>
         </div>
+        <section id="directivePanel" class="directive-panel" data-status="idle" data-family="" aria-label="战术指令">
+          <div class="directive-stage">
+            <div id="directiveMainView" class="directive-main-view">
+              <header class="directive-head">
+                <span class="directive-eyebrow">TACTICAL DIRECTIVE<i>战术指令</i></span>
+                <span id="directiveState" class="directive-state">STANDBY</span>
+              </header>
+              <div class="directive-brief">
+                <i class="directive-sigil" aria-hidden="true"></i>
+                <div class="directive-brief-text">
+                  <span id="directiveFamily" class="directive-family">战术指令</span>
+                  <h3 id="directiveTitle" class="directive-title">等待指令下发</h3>
+                </div>
+              </div>
+              <div class="directive-rule">
+                <span class="directive-rule-tag">本局校验条件<i>ALWAYS TRUE</i></span>
+                <p id="directiveDesc" class="directive-desc">识别协议启动后，将在此公开本局战术指令与校验目标。</p>
+              </div>
+              <div class="directive-track">
+                <div id="directiveNodes" class="directive-nodes" aria-hidden="true"></div>
+                <span id="directiveProgress" class="directive-progress">--</span>
+              </div>
+              <p id="directiveNote" class="directive-note"></p>
+              <button id="directiveDecodeBtn" class="directive-decode hidden" type="button">
+                <span class="directive-decode-ping" aria-hidden="true"></span>
+                <span class="directive-decode-text">情报读取失败，点击重试<i>RETRY DECODE</i></span>
+              </button>
+            </div>
+          <div id="directiveIntelView" class="directive-intel-view" aria-live="polite" aria-hidden="true"></div>
+        </div>
+        <div class="directive-confirmation" aria-hidden="true">
+          <i class="directive-confirmation-mark"><b></b></i>
+          <span class="directive-confirmation-copy">
+            <strong>指令校验完成</strong>
+            <small>CONDITION VERIFIED&nbsp;&nbsp;//&nbsp;&nbsp;ACCESS GRANTED</small>
+          </span>
+          <em>P.R.T.S.</em>
+        </div>
+        <span id="directiveAnnounce" class="sr-only" aria-live="polite"></span>
+          <span class="directive-scan" aria-hidden="true"></span>
+        </section>
       </aside>
 
       <div class="game-workspace">
@@ -145,6 +201,16 @@
             <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
           </div>
         </div>
+
+        <section id="mobileDirectiveDock" class="mobile-directive-dock" data-status="idle" aria-label="战术指令进度">
+          <span class="mobile-directive-code">TACTICAL DIRECTIVE</span>
+          <div class="mobile-directive-text">
+            <strong id="mobileDirectiveTitle">等待指令下发</strong>
+            <span id="mobileDirectiveDesc" class="mobile-directive-desc"></span>
+          </div>
+          <span id="mobileDirectiveProgress" class="mobile-directive-progress">--</span>
+          <button id="mobileDirectiveDecodeBtn" class="hidden" type="button">解码情报</button>
+        </section>
 
         <div id="mobileEndlessBubble" class="mobile-endless-callout" aria-live="polite">
           <img src="img/endfield-toad.png" alt="" aria-hidden="true">
@@ -199,6 +265,7 @@
                 </div>
               </div>
             </div>
+            <div id="intelRail" class="intel-rail hidden" aria-label="已解码情报"></div>
             <div id="rows" class="guess-list"></div>
           </div>
         </section>
