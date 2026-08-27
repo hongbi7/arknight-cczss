@@ -136,6 +136,14 @@
           <span><i class="legend-wrong"></i>不符</span>
           <span><i class="legend-unknown"></i>未知</span>
         </div>
+        <div class="endless-telemetry" aria-hidden="true">
+          <span class="endless-telemetry-code">P.R.T.S. / SEARCH MATRIX</span>
+          <div class="endless-telemetry-stats">
+            <p><strong>12</strong><span>ARCHIVE<br>DIMENSIONS</span></p>
+            <p><strong>04</strong><span>ROTATING<br>INTEL</span></p>
+          </div>
+          <small><i></i>ARCHIVE LINK&nbsp;&nbsp;/&nbsp;&nbsp;ONLINE</small>
+        </div>
         <section id="directivePanel" class="directive-panel" data-status="idle" data-family="" aria-label="战术指令">
           <div class="directive-stage">
             <div id="directiveMainView" class="directive-main-view">
@@ -198,7 +206,10 @@
               <span id="attemptLabel" class="pill"></span>
               <span id="livesPips" class="pips" aria-hidden="true"></span>
             </span>
-            <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
+            <div class="game-meta-buttons">
+              <button id="ingameRestartBtn" class="protocol-switch endless-restart" type="button"><span>重新开始</span><i>RESTART</i></button>
+              <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
+            </div>
           </div>
         </div>
 

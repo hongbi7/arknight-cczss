@@ -60,6 +60,7 @@ const victoryText = document.getElementById("victoryText");
 const victoryEyebrow = document.getElementById("victoryEyebrow");
 const restartBtn = document.getElementById("restartBtn");
 const changeModeBtn = document.getElementById("changeModeBtn");
+const ingameRestartBtn = document.getElementById("ingameRestartBtn");
 const ingameChangeModeBtn = document.getElementById("ingameChangeModeBtn");
 const suggestEl = document.getElementById("suggest");
 const livesPips = document.getElementById("livesPips");
@@ -240,6 +241,7 @@ function resetRoundInterface(mode) {
   resetDirectiveState();
   gameScreen.classList.remove("has-guesses", "is-finished");
   document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  input.value = "";
   quickInput.value = "";
   rowsEl.innerHTML = "";
   boardEmpty.classList.remove("hidden");
@@ -247,6 +249,7 @@ function resetRoundInterface(mode) {
   victoryEl.classList.remove("fail");
   choiceModal.classList.add("hidden");
   hideSuggest();
+  hideQuickSuggest();
   modeLabel.textContent = MODE_LABELS[mode];
   modeLabel.classList.toggle("hot", mode === "sudden");
   suddenGameConfig.classList.toggle("hidden", mode !== "sudden");
@@ -381,9 +384,9 @@ async function startGame(mode, requestedMax) {
     transition = playWipe();
   }
   const params = new URLSearchParams({ mode });
+  params.set("v", SUDDEN_VERSION);
   if (mode === "sudden") {
     params.set("attempts", suddenMax);
-    params.set("v", SUDDEN_VERSION);
     const recentThemes = directiveHistory();
     if (recentThemes.length) params.set("themes", recentThemes.join(","));
   }
@@ -411,7 +414,7 @@ async function startGame(mode, requestedMax) {
   token = data.token;
   totalOperators = data.total || 0;
   updateSidebarModeCopy(mode);
-  currentGameVersion = mode === "sudden" && Number(data.version) === SUDDEN_VERSION ? SUDDEN_VERSION : 1;
+  currentGameVersion = Number(data.version) === SUDDEN_VERSION ? SUDDEN_VERSION : 1;
   if (data.maxAttempts) syncSuddenControls(data.maxAttempts);
   updateEndlessBubble();
   hideEndlessBubble();
@@ -435,6 +438,10 @@ async function startGame(mode, requestedMax) {
 
 function isSuddenV3() {
   return currentMode === "sudden" && currentGameVersion === SUDDEN_VERSION;
+}
+
+function isComparisonV3() {
+  return currentGameVersion === SUDDEN_VERSION;
 }
 
 function resetDirectiveState() {
@@ -813,7 +820,7 @@ async function submitGuess() {
       return;
     }
     if (data.error) {
-      setStatus(isSuddenV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
+      setStatus(isComparisonV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
       setInputEnabled(true);
       return;
     }
@@ -822,7 +829,23 @@ async function submitGuess() {
     token = data.token;
     lastRemaining = data.remaining;
     await mobileViewportReady;
-    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
+    if (isComparisonV3() && Number(data.version) === SUDDEN_VERSION) {
+      if (currentMode === "endless") {
+        input.value = "";
+        if (data.win) {
+          renderComparisonFinalRecord(data);
+          showEndlessBubble(true);
+          finishGame(true, "猜中了！答案是 " + data.answerName + "，共用 " + attempts + " 次");
+          return;
+        }
+        renderSuddenV3Row(data);
+        showEndlessBubble(false);
+        updateAttemptLabel();
+        setStatus("已猜 " + attempts + " 次");
+        setInputEnabled(true);
+        focusGuessEntry();
+        return;
+      }
       const open = await handleSuddenV3Guess(data);
       input.value = "";
       if (open) {
@@ -864,7 +887,7 @@ async function handleSuddenV3Guess(data) {
   updateDirectivePanel(data.theme, themeResult);
   updateAttemptLabel();
   if (data.win) {
-    if (data.archive) renderSuddenV3FinalRecord(data);
+    if (data.archive) renderComparisonFinalRecord(data);
     else renderSuddenV3Row(data);
     finishGame(true, "终局校验通过！答案是 " + data.answerName + "，共用 " + attempts + " 次");
     return false;
@@ -1032,7 +1055,7 @@ async function onPick(name, selectedButton) {
     choiceModal.classList.add("hidden");
     choiceModal.classList.remove("is-resolving");
     if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
-      renderSuddenV3FinalRecord(data);
+      renderComparisonFinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
     }
@@ -1672,7 +1695,7 @@ function renderSuddenV3Row(r) {
 
 /* ---------- sudden V3 结算档案 ---------- */
 
-function renderSuddenV3FinalRecord(r) {
+function renderComparisonFinalRecord(r) {
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
   const card = document.createElement("article");
@@ -2807,8 +2830,8 @@ async function confirmReveal() {
     if (data.error) throw new Error(data.error);
     closeRevealConfirm(false);
     if (source === "choice") choiceModal.classList.add("hidden");
-    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
-      renderSuddenV3FinalRecord(data);
+    if (isComparisonV3() && Number(data.version) === SUDDEN_VERSION) {
+      renderComparisonFinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
     }
@@ -3022,6 +3045,7 @@ quickBtn.addEventListener("click", submitQuickGuess);
 revealBtn.addEventListener("click", giveUp);
 restartBtn.addEventListener("click", () => startGame(currentMode));
 changeModeBtn.addEventListener("click", showModeScreen);
+ingameRestartBtn.addEventListener("click", () => startGame("endless"));
 ingameChangeModeBtn.addEventListener("click", showModeScreen);
 choiceGiveup.addEventListener("click", giveUpChoice);
 revealCancel.addEventListener("click", () => closeRevealConfirm(true));
