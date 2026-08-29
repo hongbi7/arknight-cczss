@@ -1593,8 +1593,8 @@ function renderSuddenV3Row(r) {
   const image = document.createElement("img");
   image.className = "operator-art";
   const themeArtUrl = operator.themeArtUrl || "";
-  const themeArtBrand = operator.themeArtBrand || "";
-  image.alt = r.guessName + (themeArtUrl ? " 主题时装立绘" : " 精英一阶段立绘");
+  const themeArtSkinName = operator.themeArtSkinName || "";
+  image.alt = r.guessName + (themeArtUrl ? ` ${themeArtSkinName || "品牌"}时装立绘` : " 精英一阶段立绘");
   image.loading = firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
   image.decoding = "async";
   image.src = themeArtUrl || artUrl(operator.id, false);
@@ -1604,7 +1604,7 @@ function renderSuddenV3Row(r) {
   visual.setAttribute("role", "button");
   visual.setAttribute("aria-label", "查看" + r.guessName + "立绘大图");
   const showLargeArt = () => {
-    if (!visual.classList.contains("image-missing")) openArtPreview(image, r.guessName, themeArtUrl ? "主题时装立绘" : "精英一阶段立绘", visual);
+    if (!visual.classList.contains("image-missing")) openArtPreview(image, r.guessName, themeArtUrl ? (themeArtSkinName || "时装") + "立绘" : "精英一阶段立绘", visual);
   };
   visual.addEventListener("click", showLargeArt);
   visual.addEventListener("keydown", (e) => {
@@ -1618,9 +1618,7 @@ function renderSuddenV3Row(r) {
   const captionEn = document.createElement("span");
   captionEn.textContent = themeArtUrl ? "THEME COSTUME RECORD" : "ELITE 1 RECORD";
   const captionTitle = document.createElement("strong");
-  captionTitle.textContent = themeArtUrl
-    ? (themeArtBrand ? themeArtBrand + " · 主题时装" : "主题时装")
-    : "精英一阶段";
+  captionTitle.textContent = themeArtUrl ? (themeArtSkinName || "时装") : "精英一阶段";
   artCaption.appendChild(captionEn);
   artCaption.appendChild(captionTitle);
   visual.appendChild(visualScan);
@@ -1719,7 +1717,7 @@ function renderComparisonFinalRecord(r) {
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
   const themeArtUrl = operator.themeArtUrl || "";
-  const themeArtBrand = operator.themeArtBrand || "";
+  const themeArtSkinName = operator.themeArtSkinName || "";
   const card = document.createElement("article");
   card.className = "guess-card is-final-record v2-final-record";
   prepareGuessCardHover(card, false);
@@ -1734,7 +1732,7 @@ function renderComparisonFinalRecord(r) {
   image.className = "operator-art";
   image.src = themeArtUrl || artUrl(operator.id, true);
   const artLabel = themeArtUrl
-    ? " 主题时装立绘"
+    ? ` ${themeArtSkinName || "品牌"}时装立绘`
     : (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘");
   image.alt = r.answerName + artLabel;
   image.loading = "eager";
@@ -1760,7 +1758,7 @@ function renderComparisonFinalRecord(r) {
   captionEn.textContent = themeArtUrl ? "THEME COSTUME RECORD" : "FINAL ARCHIVE";
   const captionTitle = document.createElement("strong");
   captionTitle.textContent = themeArtUrl
-    ? (themeArtBrand ? themeArtBrand + " · 主题时装" : "主题时装")
+    ? (themeArtSkinName || "时装")
     : (artEntry.finalTitle || "最新形象");
   artCaption.appendChild(captionEn);
   artCaption.appendChild(captionTitle);

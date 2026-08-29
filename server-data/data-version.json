@@ -118,12 +118,12 @@
       "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
     },
     "server-data/operator-themes.json": {
-      "bytes": 223119,
-      "sha256": "251bc8e4c94897a58a380912cc3b05a1bf7876c48ec3e7273f80d0651ffc264f"
+      "bytes": 223146,
+      "sha256": "9fed7e7694474a14078c626351094e39b1c62029733ab2c61763cf7d1adeae49"
     },
     "server-data/operator-brand-art.json": {
-      "bytes": 35046,
-      "sha256": "9a27959b9660e1f1a6973dfa36e392a4f760c7eb8515d640cbdd81b47edfd2a5"
+      "bytes": 41995,
+      "sha256": "043b6d4ebd719a7b0955b71ba21b066b9f2f607a4e3c52f10fe9ce212d7e57a4"
     },
     "server-data/anomaly-rules.json": {
       "bytes": 258762,

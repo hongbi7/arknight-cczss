@@ -242,8 +242,8 @@ theme_members["identity_alter_form"].update(
 extra_themes = []
 
 
-def add_theme(theme_id, family, title, description, members, art_brand=None, directive_goal=None):
-    extra_themes.append((theme_id, family, title, description, set(members), art_brand, directive_goal))
+def add_theme(theme_id, family, title, description, members, art_brand=None, directive_goal=None, weight_boost=None):
+    extra_themes.append((theme_id, family, title, description, set(members), art_brand, directive_goal, weight_boost))
 
 
 def rule_or_raise(rule_id):
@@ -294,6 +294,8 @@ add_theme(
 # 形象：服装品牌（皮肤立绘映射见下方 operator-brand-art.json）。
 # 个别品牌按维护判断固定解锁次数：覆盖“成员 ≤25 或冷门品牌降为 1、其余 2 次”的默认规则。
 BRAND_DIRECTIVE_GOALS = {"珊瑚海岸": 3}
+# 个别品牌在全部主题中的出现权重乘数（不是族内权重）。
+BRAND_WEIGHT_BOOSTS = {"珊瑚海岸": 1.5}
 brand_candidates = []
 for rule_id in sorted((key for key in rules if key.startswith("visual.outfit_brand."))):
     rule = rule_or_raise(rule_id)
@@ -314,6 +316,7 @@ for brand, members in brand_candidates:
         members,
         art_brand=brand,
         directive_goal=BRAND_DIRECTIVE_GOALS.get(brand),
+        weight_boost=BRAND_WEIGHT_BOOSTS.get(brand),
     )
 
 # 每个品牌主题成员在该品牌下最新的一套付费皮肤（与异类题库 optionArt 同源同规则，
@@ -335,6 +338,7 @@ for skin in (skin_table.get("charSkins") or {}).values():
             "rank": rank,
             "portraitId": portrait_id,
             "imageUrl": skin_art_url(operator_id, portrait_id),
+            "skinName": display.get("skinName") or "时装",
         }
 
 # 身份：势力大系、所属势力、出身地、种族（玩家可报出成员的头部分组才纳入）。
@@ -396,10 +400,10 @@ for field, prefix, title_prefix, cap, describe in IDENTITY_THEME_SPECS:
 
 theme_definitions = {}
 themes_by_operator = {operator_id: [] for operator_id in sorted(operator_ids)}
-combined_themes = [(theme_id, family, title, description, theme_members[theme_id], None, None)
+combined_themes = [(theme_id, family, title, description, theme_members[theme_id], None, None, None)
                    for theme_id, family, title, description in theme_specs]
 combined_themes.extend(extra_themes)
-for theme_id, family, title, description, raw_members, art_brand, directive_goal in combined_themes:
+for theme_id, family, title, description, raw_members, art_brand, directive_goal, weight_boost in combined_themes:
     if theme_id in theme_definitions:
         raise ValueError(f"Duplicate theme id: {theme_id}")
     members = sorted(raw_members)
@@ -423,6 +427,8 @@ for theme_id, family, title, description, raw_members, art_brand, directive_goal
         definition["artBrand"] = art_brand
     if directive_goal:
         definition["directiveGoal"] = directive_goal
+    if weight_boost:
+        definition["weightBoost"] = weight_boost
     theme_definitions[theme_id] = definition
     for operator_id in members:
         themes_by_operator[operator_id].append(theme_id)
@@ -443,6 +449,7 @@ for brand, members in brand_candidates:
         records[operator_id] = {
             "imageUrl": record["imageUrl"],
             "portraitId": record["portraitId"],
+            "skinName": record["skinName"],
         }
     brand_art[brand] = records
 brand_art_payload = {"schemaVersion": 1, "brands": brand_art}

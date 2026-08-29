@@ -2737,7 +2737,8 @@
         "char_498_inside"
       ],
       "artBrand": "珊瑚海岸",
-      "directiveGoal": 3
+      "directiveGoal": 3,
+      "weightBoost": 1.5
     },
     "visual_brand_dou-zheng-xue-mai": {
       "id": "visual_brand_dou-zheng-xue-mai",
