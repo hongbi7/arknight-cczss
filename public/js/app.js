@@ -1718,6 +1718,8 @@ function renderSuddenV3Row(r) {
 function renderComparisonFinalRecord(r) {
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
+  const themeArtUrl = operator.themeArtUrl || "";
+  const themeArtBrand = operator.themeArtBrand || "";
   const card = document.createElement("article");
   card.className = "guess-card is-final-record v2-final-record";
   prepareGuessCardHover(card, false);
@@ -1730,8 +1732,10 @@ function renderComparisonFinalRecord(r) {
   visualScan.className = "operator-visual-scan";
   const image = document.createElement("img");
   image.className = "operator-art";
-  image.src = artUrl(operator.id, true);
-  const artLabel = artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘";
+  image.src = themeArtUrl || artUrl(operator.id, true);
+  const artLabel = themeArtUrl
+    ? " 主题时装立绘"
+    : (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘");
   image.alt = r.answerName + artLabel;
   image.loading = "eager";
   image.decoding = "async";
@@ -1753,9 +1757,11 @@ function renderComparisonFinalRecord(r) {
   const artCaption = document.createElement("div");
   artCaption.className = "operator-art-caption";
   const captionEn = document.createElement("span");
-  captionEn.textContent = "FINAL ARCHIVE";
+  captionEn.textContent = themeArtUrl ? "THEME COSTUME RECORD" : "FINAL ARCHIVE";
   const captionTitle = document.createElement("strong");
-  captionTitle.textContent = artEntry.finalTitle || "最新形象";
+  captionTitle.textContent = themeArtUrl
+    ? (themeArtBrand ? themeArtBrand + " · 主题时装" : "主题时装")
+    : (artEntry.finalTitle || "最新形象");
   artCaption.appendChild(captionEn);
   artCaption.appendChild(captionTitle);
   visual.appendChild(visualScan);
