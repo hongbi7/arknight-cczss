@@ -844,7 +844,7 @@ theme_members["identity_alter_family"].update(alter_family_ids)
 theme_members["identity_alter_form"].update(alter_ids)
 
 theme_definitions = {}
-themes_by_operator = {operator_id: [] for operator_id in operator_ids}
+themes_by_operator = {operator_id: [] for operator_id in sorted(operator_ids)}
 for theme_id, family, title, description in theme_specs:
     members = sorted(theme_members[theme_id])
     if len(members) < 3:

@@ -21,6 +21,9 @@ REQUIRED_TABLES = (
     "handbook_team_table.json",
     "range_table.json",
     "skill_table.json",
+    "gacha_table.json",
+    "uniequip_table.json",
+    "building_data.json",
     "charword_table.json",
     "skin_table.json",
 )
@@ -136,6 +139,23 @@ def build_structured_data(excel_root):
     ))
 
 
+def build_anomaly_data(excel_root):
+    env = os.environ.copy()
+    env["ARKNIGHTS_GAMEDATA_ROOT"] = str(excel_root)
+    run((sys.executable, PROJECT_ROOT / "scripts" / "build_anomaly_data.py"), env=env)
+
+
+def build_anomaly_skin_art(game_root, force_assets):
+    command = [
+        sys.executable,
+        PROJECT_ROOT / "scripts" / "extract_anomaly_skin_art.py",
+        "--game-root", game_root,
+    ]
+    if force_assets:
+        command.append("--force")
+    run(command)
+
+
 def build_client_assets(game_root, excel_root, force_assets):
     extract_command = [
         sys.executable,
@@ -197,6 +217,7 @@ def run_tests(report, full_update):
     if not node or not npm:
         raise RuntimeError("Node.js and npm are required to validate generated data")
     run((node, "--check", PROJECT_ROOT / "lib" / "game.js"))
+    run((node, "--check", PROJECT_ROOT / "lib" / "anomaly.js"))
     if full_update or report.get("status") == "ready":
         run((npm, "test"))
     else:
@@ -261,11 +282,16 @@ def main():
     build_structured_data(excel_root)
     if not args.skip_public_assets:
         build_public_assets(excel_root)
+    game_root = None
     if not args.data_only:
         game_root = resolve_path(args.game_root)
         if not game_root.is_dir():
             raise FileNotFoundError(f"Arknights game root does not exist: {game_root}")
         build_client_assets(game_root, excel_root, args.force_assets)
+
+    build_anomaly_data(excel_root)
+    if game_root:
+        build_anomaly_skin_art(game_root, args.force_assets)
 
     report = validate(metadata, report_path, strict_assets=not args.data_only)
     run_tests(report, full_update=not args.data_only)

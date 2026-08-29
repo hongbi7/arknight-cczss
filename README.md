@@ -2,12 +2,13 @@
 
 一个网页版猜干员小游戏：系统随机藏一名干员作为"谜底"，你输入任意干员代号（支持拼音/首字母），系统按档案维度反馈对错。终局校验 V3 增加势力层级与 Logo、S1–S3 技能范围逐槽交集、标准部署费用、轮换档案字段，以及完成本局战术指令后解锁的单条情报。
 
-**两种模式：**
+**三种模式：**
 
 - **终局校验（高危）**：默认 6 次猜测，可在 1–20 次间自定义；机会用尽会弹出**终局抉择**，干扰项会优先贴合此前猜出的绿色线索，猜错即失败。
 - **全域检索**：不限猜测次数，靠 12 维线索一路逼近答案。
+- **异类审查**：进入终端后选择综合审查或六个单域主题，每局 10 题，从四名干员中找出唯一不满足共性规则的异类；标准难度起步，三连对升级、两连错降级，基础/标准/危机题基础分为 100/150/220。高难综合审查初始提供 2 次共性扫描，每连续答对 3 题奖励 1 次，单域主题会提前列出当前题库涵盖的大类。服装品牌题会为四名候选切换到实际对应品牌的皮肤。
 
-两种模式都从全部 425 名干员中随机出题。
+三种模式均基于当前 425 名干员数据出题。
 
 - 星级、站位、职业、子职业、Tag —— 来自 `character_table.json`
 - 性别、战斗经验、出身地、生日、种族、身高、矿石病感染情况 —— 来自 `handbook_info_table.json`
@@ -28,15 +29,20 @@ arknight-cczss/
 ├─ server-data/operator-archives.json # 人员档案完整章节（仅终局后下发）
 ├─ server-data/operator-clues.json # 匿名提示素材映射与技能机制（仅服务端使用）
 ├─ server-data/operator-familiarity.json # 熟悉度冷启动分与审计信息
+├─ server-data/anomaly-rules.json # 异类审查规则成员表（仅服务端使用）
+├─ server-data/anomaly-questions.json # 异类审查预生成题库（仅服务端使用）
 ├─ api/                        # Vercel Serverless 接口
 │  ├─ new.js                   #   GET  /api/new?mode=sudden|endless   开新局
 │  ├─ guess.js                 #   POST /api/guess   提交猜测，返回对比+新 token+剩余次数
 │  ├─ choices.js               #   POST /api/choices 终局校验机会用尽后返回终局候选
 │  ├─ pick.js                  #   POST /api/pick    提交四选一选择，判定胜负
 │  ├─ clue.js                  #   POST /api/clue    解码已授权的单条情报
+│  ├─ anomaly/                 #   异类审查 themes / new / scan / answer / next
 │  └─ reveal.js                #   GET  /api/reveal  放弃本局，揭晓答案
 ├─ lib/game.js                 # 核心逻辑（token 加密 / 随机谜底 / 维度对比 / 干扰项生成）
 ├─ scripts/build_data.py       # 数据构建脚本（档案、势力、范围、费用、技能与熟悉度）
+├─ scripts/build_anomaly_data.py # 六域规则提取、歧义审计与静态题库生成
+├─ scripts/extract_anomaly_skin_art.py # 从本体导出服装品牌题引用的具体皮肤立绘
 ├─ scripts/build_gameplay_assets.py # 从本体生成 Logo、匿名技能图标、剪影与立绘碎片
 ├─ server.js                   # 本地运行服务器（零依赖，复用 api 目录的逻辑）
 ├─ vercel.json                 # Vercel 部署配置
@@ -75,7 +81,7 @@ python -m pip install -r scripts/requirements-data.txt
 npm run build:data
 ```
 
-数据脚本读取 `character_table`、`handbook_info_table`、`handbook_team_table`、`range_table`、`skill_table`、`charword_table` 和 `skin_table`。它会生成服务器档案、熟悉度审计数据、情报映射，以及前端只用于搜索的名单。每个技能使用满级 `rangeId`；没有独立范围的技能继承干员最高精英阶段的基础范围。
+数据脚本还读取 `gacha_table`、`uniequip_table` 和 `building_data`。它会生成服务器档案、熟悉度审计数据、情报映射、异类审查六域规则和题库，以及前端只用于搜索的名单。异类审查数据始终保留在 `server-data/`；每个技能使用满级 `rangeId`，没有独立范围的技能继承干员最高精英阶段的基础范围。
 
 从本地 PC 本体生成派生图片：
 
@@ -115,7 +121,9 @@ python scripts/build_gameplay_assets.py --game-root "G:\game\Hypergryph Launcher
 npm test
 ```
 
-测试覆盖 V1/V2/V3 模式隔离、轮换顺序、S1–S3 逐槽范围比较与谜底范围防泄漏、战术指令进度与冷门谜底门槛、V3 全技能奖励与主题去重、情报解码、终局阶段校验，以及全部已生成 Logo、剪影、局部显影和技能图标的存在性。
+测试覆盖 V1/V2/V3 模式隔离、轮换顺序、S1–S3 逐槽范围比较与谜底范围防泄漏、战术指令进度与冷门谜底门槛、V3 全技能奖励与主题去重、情报解码、终局阶段校验，以及异类审查题库容量、出题约束、接口防泄漏、扫描器、动态难度、难度计分和十题评级。
+
+异类审查前端的完整接口契约、视觉约束和 Kimi K3 提示词见 [`docs/anomaly-audit-frontend-handoff.md`](docs/anomaly-audit-frontend-handoff.md)。
 
 ## 部署上线（Vercel，免费）
 

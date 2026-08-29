@@ -2,8 +2,9 @@
   "schemaVersion": 1,
   "status": "ready",
   "source": {
-    "repository": "unknown",
-    "revision": "unknown"
+    "repository": "https://github.com/Kengxxiao/ArknightsGameData.git",
+    "revision": "6844859c664c7b5716b3f6a9feaf2c3606168838",
+    "commitTime": "2026-08-18T16:02:18+08:00"
   },
   "counts": {
     "operators": 425,
@@ -13,6 +14,9 @@
     "familiarityRecords": 425,
     "identityGroups": 37,
     "themes": 17,
+    "anomalyRules": 218,
+    "anomalyQuestions": 10313,
+    "anomalyBuckets": 18,
     "operatorArtRecords": 425,
     "requiredAssetGaps": 0,
     "optionalSkillIconGaps": 14,
@@ -114,7 +118,15 @@
     },
     "server-data/operator-themes.json": {
       "bytes": 100428,
-      "sha256": "13290af6cb98f99911328cec6010e32423645e93454e063385b7e311344656b2"
+      "sha256": "e0a19852ebef7ffb5c41991f8ba2b5b382cc59b495de59ba72875b0e851aa92a"
+    },
+    "server-data/anomaly-rules.json": {
+      "bytes": 270203,
+      "sha256": "ba6d4e30b5915b97b33e2418a1b7a73623108d00c8efe61d2e2cf48370dcae0f"
+    },
+    "server-data/anomaly-questions.json": {
+      "bytes": 10665836,
+      "sha256": "d5a541ebfc4b113de932cb493b96a5d2ad26893509f2d954b9d942524482f761"
     }
   }
 }
