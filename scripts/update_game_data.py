@@ -145,6 +145,12 @@ def build_anomaly_data(excel_root):
     run((sys.executable, PROJECT_ROOT / "scripts" / "build_anomaly_data.py"), env=env)
 
 
+def build_theme_bank(excel_root):
+    env = os.environ.copy()
+    env["ARKNIGHTS_GAMEDATA_ROOT"] = str(excel_root)
+    run((sys.executable, PROJECT_ROOT / "scripts" / "build_themes.py"), env=env)
+
+
 def build_anomaly_skin_art(game_root, force_assets):
     command = [
         sys.executable,
@@ -290,6 +296,7 @@ def main():
         build_client_assets(game_root, excel_root, args.force_assets)
 
     build_anomaly_data(excel_root)
+    build_theme_bank(excel_root)
     if game_root:
         build_anomaly_skin_art(game_root, args.force_assets)
 

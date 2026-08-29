@@ -776,6 +776,8 @@ body[data-mode="sudden"] .directive-panel { display: block; }
 .directive-panel::before { content: ""; position: absolute; top: -1px; left: -1px; width: 44px; height: 2px; background: var(--directive-tint); box-shadow: 0 0 12px rgba(var(--directive-tint-rgb),.5); }
 .directive-panel[data-family="battle"] { --directive-tint: #ffb35c; --directive-tint-rgb: 255,179,92; }
 .directive-panel[data-family="identity"] { --directive-tint: #a8b8ff; --directive-tint-rgb: 168,184,255; }
+.directive-panel[data-family="logistics"] { --directive-tint: #ffd76b; --directive-tint-rgb: 255,215,107; }
+.directive-panel[data-family="visual"] { --directive-tint: #ff9edb; --directive-tint-rgb: 255,158,219; }
 .directive-stage { display: grid; min-width: 0; }
 .directive-main-view, .directive-intel-view { grid-area: 1 / 1; min-width: 0; transition: transform .56s cubic-bezier(.22,.78,.16,1),opacity .34s ease; will-change: transform,opacity; }
 .directive-main-view { opacity: 1; transform: translate3d(0,0,0); }
@@ -807,6 +809,8 @@ body[data-mode="sudden"] .directive-panel { display: block; }
 .directive-panel[data-family="skill"] .directive-sigil::before { transform: rotate(45deg); }
 .directive-panel[data-family="battle"] .directive-sigil::before { inset: 8px; clip-path: polygon(32% 0, 68% 0, 68% 32%, 100% 32%, 100% 68%, 68% 68%, 68% 100%, 32% 100%, 32% 68%, 0 68%, 0 32%, 32% 32%); }
 .directive-panel[data-family="identity"] .directive-sigil::before { inset: 7px 8px; clip-path: polygon(0 0, 68% 0, 100% 28%, 100% 100%, 0 100%); }
+.directive-panel[data-family="logistics"] .directive-sigil::before { inset: 8px 6px; clip-path: polygon(0 0, 100% 0, 100% 20%, 0 20%, 0 40%, 100% 40%, 100% 60%, 0 60%, 0 80%, 100% 80%, 100% 100%, 0 100%); }
+.directive-panel[data-family="visual"] .directive-sigil::before { border-radius: 50%; }
 .directive-brief-text { min-width: 0; }
 .directive-family { display: inline-block; padding: 2px 6px; border: 1px solid rgba(var(--directive-tint-rgb),.4); color: var(--directive-tint); background: rgba(var(--directive-tint-rgb),.07); font-family: var(--sans); font-size: 9px; letter-spacing: 1.5px; }
 .directive-title { margin: 6px 0 0; overflow: hidden; font-family: var(--sans); font-size: 16px; letter-spacing: 1.5px; text-overflow: ellipsis; white-space: nowrap; }

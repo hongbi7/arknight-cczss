@@ -1604,6 +1604,2080 @@
         "char_1051_headb2",
         "char_1052_kalts2"
       ]
+    },
+    "battle_stun": {
+      "id": "battle_stun",
+      "family": "battle",
+      "title": "晕眩干预",
+      "description": "能够使目标晕眩",
+      "memberCount": 74,
+      "informationStrength": 0.5044,
+      "challengeDifficulty": 0.1967,
+      "members": [
+        "char_002_amiya",
+        "char_003_kalts",
+        "char_010_chen",
+        "char_1014_nearl2",
+        "char_1021_kroos2",
+        "char_1028_texas2",
+        "char_102_texas",
+        "char_1034_jesca2",
+        "char_1035_wisdel",
+        "char_1040_blaze2",
+        "char_1048_orchd2",
+        "char_107_liskam",
+        "char_112_siege",
+        "char_113_cqbw",
+        "char_133_mm",
+        "char_143_ghost",
+        "char_144_red",
+        "char_1502_crosly",
+        "char_159_peacok",
+        "char_166_skfire",
+        "char_173_slchan",
+        "char_196_sunbr",
+        "char_2012_typhon",
+        "char_201_moeshd",
+        "char_213_mostma",
+        "char_215_mantic",
+        "char_225_haak",
+        "char_242_otter",
+        "char_249_mlyss",
+        "char_250_phatom",
+        "char_252_bibeak",
+        "char_302_glaze",
+        "char_311_mudrok",
+        "char_322_lmlee",
+        "char_326_glacus",
+        "char_328_cammou",
+        "char_336_folivo",
+        "char_344_beewax",
+        "char_356_broca",
+        "char_391_rosmon",
+        "char_394_hadiya",
+        "char_400_weedy",
+        "char_4015_spuria",
+        "char_4026_vulpis",
+        "char_4036_forcer",
+        "char_4040_rockr",
+        "char_4058_pepe",
+        "char_4063_quartz",
+        "char_4065_judge",
+        "char_4077_palico",
+        "char_4080_lin",
+        "char_4083_chimes",
+        "char_4088_hodrer",
+        "char_4091_ulika",
+        "char_4106_bryota",
+        "char_411_tomimi",
+        "char_4121_zuole",
+        "char_4123_ela",
+        "char_4141_marcil",
+        "char_4145_ulpia",
+        "char_416_zumama",
+        "char_4171_wulfen",
+        "char_4203_kichi",
+        "char_420_flamtl",
+        "char_4215_buddy",
+        "char_422_aurora",
+        "char_437_mizuki",
+        "char_455_nothin",
+        "char_456_ash",
+        "char_457_blitz",
+        "char_458_rfrost",
+        "char_479_sleach",
+        "char_485_pallas",
+        "char_489_serum"
+      ]
+    },
+    "battle_ally_heal": {
+      "id": "battle_ally_heal",
+      "family": "battle",
+      "title": "友方治疗",
+      "description": "能够主动治疗或恢复友方单位生命",
+      "memberCount": 49,
+      "informationStrength": 0.6233,
+      "challengeDifficulty": 0.21,
+      "members": [
+        "char_003_kalts",
+        "char_1016_agoat2",
+        "char_1022_flwr2",
+        "char_1031_slent2",
+        "char_1052_kalts2",
+        "char_108_silent",
+        "char_117_myrrh",
+        "char_120_hibisc",
+        "char_128_plosis",
+        "char_147_shining",
+        "char_148_nearl",
+        "char_171_bldsk",
+        "char_179_cgbird",
+        "char_181_flower",
+        "char_187_ccheal",
+        "char_196_sunbr",
+        "char_2025_shu",
+        "char_202_demkni",
+        "char_212_ansel",
+        "char_226_hmau",
+        "char_258_podego",
+        "char_275_breeze",
+        "char_284_spot",
+        "char_285_medic2",
+        "char_291_aglina",
+        "char_298_susuro",
+        "char_343_tknogi",
+        "char_345_folnic",
+        "char_4019_ncdeer",
+        "char_402_tuye",
+        "char_4041_chnut",
+        "char_4071_peper",
+        "char_4109_baslin",
+        "char_4114_harold",
+        "char_4125_rdoc",
+        "char_4139_papyrs",
+        "char_4141_marcil",
+        "char_4143_sensi",
+        "char_4163_rosesa",
+        "char_4172_xingzh",
+        "char_4179_monstr",
+        "char_4196_reckpr",
+        "char_4202_haruka",
+        "char_4222_taraxa",
+        "char_4224_turdus",
+        "char_423_blemsh",
+        "char_449_glider",
+        "char_473_mberry",
+        "char_492_quercu"
+      ]
+    },
+    "battle_barrier": {
+      "id": "battle_barrier",
+      "family": "battle",
+      "title": "屏障构筑",
+      "description": "能够提供护盾或屏障",
+      "memberCount": 35,
+      "informationStrength": 0.7204,
+      "challengeDifficulty": 0.2367,
+      "members": [
+        "char_1014_nearl2",
+        "char_1016_agoat2",
+        "char_1040_blaze2",
+        "char_1041_angel2",
+        "char_1045_svash2",
+        "char_1052_kalts2",
+        "char_147_shining",
+        "char_154_morgan",
+        "char_179_cgbird",
+        "char_2014_nian",
+        "char_237_gravel",
+        "char_250_phatom",
+        "char_311_mudrok",
+        "char_332_archet",
+        "char_402_tuye",
+        "char_4065_judge",
+        "char_4098_vvana",
+        "char_4109_baslin",
+        "char_4121_zuole",
+        "char_4123_ela",
+        "char_4125_rdoc",
+        "char_4139_papyrs",
+        "char_4148_philae",
+        "char_4162_cathy",
+        "char_4166_varkis",
+        "char_4194_rmixer",
+        "char_4195_radian",
+        "char_4212_nasti",
+        "char_4214_cairn",
+        "char_4228_closur",
+        "char_4230_mcnist",
+        "char_4235_thumpy",
+        "char_475_akafyu",
+        "char_484_robrta",
+        "char_491_humus"
+      ]
+    },
+    "battle_bind": {
+      "id": "battle_bind",
+      "family": "battle",
+      "title": "束缚干预",
+      "description": "能够使目标束缚",
+      "memberCount": 27,
+      "informationStrength": 0.7953,
+      "challengeDifficulty": 0.2533,
+      "members": [
+        "char_1042_phatm2",
+        "char_1051_headb2",
+        "char_193_frostl",
+        "char_197_poca",
+        "char_2013_cerber",
+        "char_2023_ling",
+        "char_248_mgllan",
+        "char_249_mlyss",
+        "char_250_phatom",
+        "char_326_glacus",
+        "char_346_aosta",
+        "char_355_ethan",
+        "char_4048_doroth",
+        "char_4082_qiubai",
+        "char_4087_ines",
+        "char_4088_hodrer",
+        "char_4105_almond",
+        "char_4117_ray",
+        "char_4134_cetsyr",
+        "char_4155_talr",
+        "char_4203_kichi",
+        "char_426_billro",
+        "char_437_mizuki",
+        "char_451_robin",
+        "char_458_rfrost",
+        "char_469_indigo",
+        "char_474_glady"
+      ]
+    },
+    "logistics_base_room_zhi-zao-zhan": {
+      "id": "logistics_base_room_zhi-zao-zhan",
+      "family": "logistics",
+      "title": "基建：制造站",
+      "description": "使用在制造站拥有基建技能的干员推进指令",
+      "memberCount": 92,
+      "informationStrength": 0.4416,
+      "challengeDifficulty": 0.2233,
+      "members": [
+        "char_1031_slent2",
+        "char_1032_excu2",
+        "char_1036_fang2",
+        "char_1039_thorn2",
+        "char_1042_phatm2",
+        "char_1047_halo2",
+        "char_1051_headb2",
+        "char_108_silent",
+        "char_118_yuki",
+        "char_121_lava",
+        "char_122_beagle",
+        "char_123_fang",
+        "char_124_kroos",
+        "char_126_shotst",
+        "char_128_plosis",
+        "char_135_halo",
+        "char_141_nights",
+        "char_149_scave",
+        "char_1502_crosly",
+        "char_150_snakek",
+        "char_159_peacok",
+        "char_163_hpsts",
+        "char_180_amgoat",
+        "char_181_flower",
+        "char_183_skgoat",
+        "char_190_clour",
+        "char_193_frostl",
+        "char_194_leto",
+        "char_2013_cerber",
+        "char_2025_shu",
+        "char_209_ardign",
+        "char_210_stward",
+        "char_235_jesica",
+        "char_237_gravel",
+        "char_240_wyvern",
+        "char_241_panda",
+        "char_242_otter",
+        "char_243_waaifu",
+        "char_281_popka",
+        "char_283_midn",
+        "char_284_spot",
+        "char_286_cast3",
+        "char_290_vigna",
+        "char_328_cammou",
+        "char_336_folivo",
+        "char_348_ceylon",
+        "char_369_bena",
+        "char_378_asbest",
+        "char_381_bubble",
+        "char_385_finlpp",
+        "char_388_mint",
+        "char_391_rosmon",
+        "char_400_weedy",
+        "char_4041_chnut",
+        "char_4048_doroth",
+        "char_4054_malist",
+        "char_4062_totter",
+        "char_4063_quartz",
+        "char_4066_highmo",
+        "char_4077_palico",
+        "char_4078_bdhkgt",
+        "char_4081_warmy",
+        "char_4105_almond",
+        "char_4106_bryota",
+        "char_4126_fuze",
+        "char_4138_narant",
+        "char_4141_marcil",
+        "char_4155_talr",
+        "char_416_zumama",
+        "char_4171_wulfen",
+        "char_4178_alanna",
+        "char_4198_christ",
+        "char_4208_wintim",
+        "char_4211_snhunt",
+        "char_4212_nasti",
+        "char_4225_tanya",
+        "char_4226_veen",
+        "char_4229_aphris",
+        "char_4230_mcnist",
+        "char_430_fartth",
+        "char_431_ashlok",
+        "char_433_windft",
+        "char_437_mizuki",
+        "char_446_aroma",
+        "char_452_bstalk",
+        "char_464_cement",
+        "char_472_pasngr",
+        "char_484_robrta",
+        "char_485_pallas",
+        "char_496_wildmn",
+        "char_500_noirc",
+        "char_502_nblade"
+      ]
+    },
+    "logistics_base_room_hui-ke-shi": {
+      "id": "logistics_base_room_hui-ke-shi",
+      "family": "logistics",
+      "title": "基建：会客室",
+      "description": "使用在会客室拥有基建技能的干员推进指令",
+      "memberCount": 54,
+      "informationStrength": 0.5953,
+      "challengeDifficulty": 0.2233,
+      "members": [
+        "char_009_12fce",
+        "char_010_chen",
+        "char_1015_aglna2",
+        "char_1050_chen3",
+        "char_106_franka",
+        "char_109_fmout",
+        "char_118_yuki",
+        "char_133_mm",
+        "char_144_red",
+        "char_155_tiger",
+        "char_158_milu",
+        "char_195_glassb",
+        "char_198_blackd",
+        "char_2012_typhon",
+        "char_202_demkni",
+        "char_213_mostma",
+        "char_235_jesica",
+        "char_236_rope",
+        "char_264_f12yin",
+        "char_274_astesi",
+        "char_275_breeze",
+        "char_291_aglina",
+        "char_294_ayer",
+        "char_297_hamoni",
+        "char_337_utage",
+        "char_347_jaksel",
+        "char_4013_kjera",
+        "char_4016_kazema",
+        "char_4017_puzzle",
+        "char_401_elysm",
+        "char_4026_vulpis",
+        "char_4027_heyak",
+        "char_4031_liesel",
+        "char_4036_forcer",
+        "char_4052_surfer",
+        "char_405_absin",
+        "char_4087_ines",
+        "char_4091_ulika",
+        "char_4100_caper",
+        "char_4102_threye",
+        "char_4114_harold",
+        "char_4124_iana",
+        "char_4131_odda",
+        "char_4142_laios",
+        "char_4172_xingzh",
+        "char_4194_rmixer",
+        "char_4199_makiri",
+        "char_4214_cairn",
+        "char_4215_buddy",
+        "char_4237_jcinta",
+        "char_427_vigil",
+        "char_445_wscoot",
+        "char_492_quercu",
+        "char_497_ctable"
+      ]
+    },
+    "logistics_base_room_ren-li-ban-gong-shi": {
+      "id": "logistics_base_room_ren-li-ban-gong-shi",
+      "family": "logistics",
+      "title": "基建：人力办公室",
+      "description": "使用在人力办公室拥有基建技能的干员推进指令",
+      "memberCount": 32,
+      "informationStrength": 0.7463,
+      "challengeDifficulty": 0.2133,
+      "members": [
+        "char_1031_slent2",
+        "char_1046_sbell2",
+        "char_1052_kalts2",
+        "char_145_prove",
+        "char_164_nightm",
+        "char_180_amgoat",
+        "char_183_skgoat",
+        "char_197_poca",
+        "char_264_f12yin",
+        "char_278_orchid",
+        "char_337_utage",
+        "char_343_tknogi",
+        "char_355_ethan",
+        "char_366_acdrop",
+        "char_4065_judge",
+        "char_4080_lin",
+        "char_4087_ines",
+        "char_4109_baslin",
+        "char_4110_delphn",
+        "char_4151_tinman",
+        "char_4172_xingzh",
+        "char_4177_brigid",
+        "char_4202_haruka",
+        "char_4224_turdus",
+        "char_4235_thumpy",
+        "char_436_whispr",
+        "char_455_nothin",
+        "char_457_blitz",
+        "char_466_qanik",
+        "char_473_mberry",
+        "char_498_inside",
+        "char_503_rang"
+      ]
+    },
+    "logistics_base_room_kong-zhi-zhong-shu": {
+      "id": "logistics_base_room_kong-zhi-zhong-shu",
+      "family": "logistics",
+      "title": "基建：控制中枢",
+      "description": "使用在控制中枢拥有基建技能的干员推进指令",
+      "memberCount": 65,
+      "informationStrength": 0.5418,
+      "challengeDifficulty": 0.1967,
+      "members": [
+        "char_002_amiya",
+        "char_003_kalts",
+        "char_010_chen",
+        "char_1011_lava2",
+        "char_1020_reed2",
+        "char_1021_kroos2",
+        "char_1024_hbisc2",
+        "char_1029_yato2",
+        "char_1030_noirc2",
+        "char_1034_jesca2",
+        "char_1035_wisdel",
+        "char_1040_blaze2",
+        "char_1044_hsgma2",
+        "char_1045_svash2",
+        "char_1048_orchd2",
+        "char_1051_headb2",
+        "char_130_doberm",
+        "char_144_red",
+        "char_148_nearl",
+        "char_149_scave",
+        "char_197_poca",
+        "char_2015_dusk",
+        "char_2023_ling",
+        "char_2024_chyue",
+        "char_2027_wang",
+        "char_206_gnosis",
+        "char_225_haak",
+        "char_226_hmau",
+        "char_260_durnar",
+        "char_261_sddrag",
+        "char_279_excu",
+        "char_304_zebra",
+        "char_306_leizi",
+        "char_308_swire",
+        "char_322_lmlee",
+        "char_367_swllow",
+        "char_4004_pudd",
+        "char_4023_rfalcn",
+        "char_4045_heidi",
+        "char_4064_mlynar",
+        "char_4071_peper",
+        "char_4098_vvana",
+        "char_4104_coldst",
+        "char_4110_delphn",
+        "char_4123_ela",
+        "char_4132_ascln",
+        "char_4134_cetsyr",
+        "char_4146_nymph",
+        "char_4166_varkis",
+        "char_416_zumama",
+        "char_4179_monstr",
+        "char_4182_oblvns",
+        "char_4183_mortis",
+        "char_4184_dolris",
+        "char_4185_amoris",
+        "char_4186_tmoris",
+        "char_4195_radian",
+        "char_420_flamtl",
+        "char_4228_closur",
+        "char_456_ash",
+        "char_457_blitz",
+        "char_458_rfrost",
+        "char_459_tachak",
+        "char_474_glady",
+        "char_479_sleach"
+      ]
+    },
+    "logistics_base_room_su-she": {
+      "id": "logistics_base_room_su-she",
+      "family": "logistics",
+      "title": "基建：宿舍",
+      "description": "使用在宿舍拥有基建技能的干员推进指令",
+      "memberCount": 78,
+      "informationStrength": 0.4892,
+      "challengeDifficulty": 0.2033,
+      "members": [
+        "char_002_amiya",
+        "char_1016_agoat2",
+        "char_101_sora",
+        "char_1022_flwr2",
+        "char_1041_angel2",
+        "char_112_siege",
+        "char_115_headbr",
+        "char_117_myrrh",
+        "char_120_hibisc",
+        "char_122_beagle",
+        "char_124_kroos",
+        "char_126_shotst",
+        "char_127_estell",
+        "char_143_ghost",
+        "char_147_shining",
+        "char_148_nearl",
+        "char_151_myrtle",
+        "char_154_morgan",
+        "char_159_peacok",
+        "char_173_slchan",
+        "char_174_slbell",
+        "char_179_cgbird",
+        "char_185_frncat",
+        "char_188_helage",
+        "char_193_frostl",
+        "char_196_sunbr",
+        "char_2026_yu",
+        "char_209_ardign",
+        "char_212_ansel",
+        "char_218_cuttle",
+        "char_222_bpipe",
+        "char_230_savage",
+        "char_245_cello",
+        "char_249_mlyss",
+        "char_258_podego",
+        "char_261_sddrag",
+        "char_263_skadi",
+        "char_271_spikes",
+        "char_281_popka",
+        "char_285_medic2",
+        "char_297_hamoni",
+        "char_300_phenxi",
+        "char_302_glaze",
+        "char_338_iris",
+        "char_340_shwaz",
+        "char_341_sntlla",
+        "char_347_jaksel",
+        "char_355_ethan",
+        "char_365_aprl",
+        "char_366_acdrop",
+        "char_367_swllow",
+        "char_4010_etlchi",
+        "char_4014_lunacu",
+        "char_4042_lumen",
+        "char_4047_pianst",
+        "char_4051_akkord",
+        "char_4065_judge",
+        "char_4081_warmy",
+        "char_4104_coldst",
+        "char_411_tomimi",
+        "char_4122_grabds",
+        "char_4125_rdoc",
+        "char_4143_sensi",
+        "char_4146_nymph",
+        "char_4187_graceb",
+        "char_4202_haruka",
+        "char_4214_cairn",
+        "char_4215_buddy",
+        "char_4225_tanya",
+        "char_4235_thumpy",
+        "char_430_fartth",
+        "char_449_glider",
+        "char_469_indigo",
+        "char_479_sleach",
+        "char_487_bobb",
+        "char_494_vendla",
+        "char_498_inside",
+        "char_501_durin"
+      ]
+    },
+    "logistics_base_room_jia-gong-zhan": {
+      "id": "logistics_base_room_jia-gong-zhan",
+      "family": "logistics",
+      "title": "基建：加工站",
+      "description": "使用在加工站拥有基建技能的干员推进指令",
+      "memberCount": 78,
+      "informationStrength": 0.4892,
+      "challengeDifficulty": 0.1967,
+      "members": [
+        "char_003_kalts",
+        "char_009_12fce",
+        "char_017_huang",
+        "char_1043_leizi2",
+        "char_1052_kalts2",
+        "char_110_deepcl",
+        "char_117_myrrh",
+        "char_120_hibisc",
+        "char_127_estell",
+        "char_129_bluep",
+        "char_131_flameb",
+        "char_137_brownb",
+        "char_1502_crosly",
+        "char_181_flower",
+        "char_187_ccheal",
+        "char_188_helage",
+        "char_2014_nian",
+        "char_208_melan",
+        "char_211_adnach",
+        "char_212_ansel",
+        "char_219_meteo",
+        "char_222_bpipe",
+        "char_226_hmau",
+        "char_230_savage",
+        "char_237_gravel",
+        "char_242_otter",
+        "char_248_mgllan",
+        "char_253_greyy",
+        "char_271_spikes",
+        "char_277_sqrrel",
+        "char_282_catap",
+        "char_284_spot",
+        "char_289_gyuki",
+        "char_293_thorns",
+        "char_298_susuro",
+        "char_301_cutter",
+        "char_311_mudrok",
+        "char_345_folnic",
+        "char_346_aosta",
+        "char_348_ceylon",
+        "char_349_chiave",
+        "char_363_toddi",
+        "char_373_lionhd",
+        "char_379_sesa",
+        "char_4011_lessng",
+        "char_4014_lunacu",
+        "char_4019_ncdeer",
+        "char_4039_horn",
+        "char_4040_rockr",
+        "char_4056_titi",
+        "char_4067_lolxh",
+        "char_4072_ironmn",
+        "char_4107_vrdant",
+        "char_4117_ray",
+        "char_4119_wanqin",
+        "char_4130_luton",
+        "char_4162_cathy",
+        "char_4164_tecno",
+        "char_4165_ctrail",
+        "char_4173_nowell",
+        "char_4191_tippi",
+        "char_4207_branch",
+        "char_4213_skybx",
+        "char_421_crow",
+        "char_4221_ju",
+        "char_4223_botany",
+        "char_4229_aphris",
+        "char_4236_tmslot",
+        "char_423_blemsh",
+        "char_433_windft",
+        "char_440_pinecn",
+        "char_449_glider",
+        "char_458_rfrost",
+        "char_484_robrta",
+        "char_488_buildr",
+        "char_489_serum",
+        "char_491_humus",
+        "char_503_rang"
+      ]
+    },
+    "logistics_base_room_fa-dian-zhan": {
+      "id": "logistics_base_room_fa-dian-zhan",
+      "family": "logistics",
+      "title": "基建：发电站",
+      "description": "使用在发电站拥有基建技能的干员推进指令",
+      "memberCount": 31,
+      "informationStrength": 0.7554,
+      "challengeDifficulty": 0.26,
+      "members": [
+        "char_017_huang",
+        "char_1011_lava2",
+        "char_1027_greyy2",
+        "char_1040_blaze2",
+        "char_1043_leizi2",
+        "char_107_liskam",
+        "char_121_lava",
+        "char_134_ifrit",
+        "char_249_mlyss",
+        "char_253_greyy",
+        "char_277_sqrrel",
+        "char_285_medic2",
+        "char_286_cast3",
+        "char_326_glacus",
+        "char_376_therex",
+        "char_377_gdglow",
+        "char_385_finlpp",
+        "char_4000_jnight",
+        "char_4004_pudd",
+        "char_4015_spuria",
+        "char_4051_akkord",
+        "char_4079_haini",
+        "char_4093_frston",
+        "char_4136_phonor",
+        "char_4148_philae",
+        "char_4188_confes",
+        "char_4213_skybx",
+        "char_4227_gallus",
+        "char_4236_tmslot",
+        "char_469_indigo",
+        "char_472_pasngr"
+      ]
+    },
+    "logistics_base_room_mao-yi-zhan": {
+      "id": "logistics_base_room_mao-yi-zhan",
+      "family": "logistics",
+      "title": "基建：贸易站",
+      "description": "使用在贸易站拥有基建技能的干员推进指令",
+      "memberCount": 77,
+      "informationStrength": 0.4929,
+      "challengeDifficulty": 0.1933,
+      "members": [
+        "char_1019_siege2",
+        "char_101_sora",
+        "char_102_texas",
+        "char_1033_swire2",
+        "char_1034_jesca2",
+        "char_103_angel",
+        "char_1041_angel2",
+        "char_1048_orchd2",
+        "char_1049_catap2",
+        "char_109_fmout",
+        "char_110_deepcl",
+        "char_123_fang",
+        "char_140_whitew",
+        "char_141_nights",
+        "char_150_snakek",
+        "char_151_myrtle",
+        "char_154_morgan",
+        "char_172_svrash",
+        "char_173_slchan",
+        "char_185_frncat",
+        "char_192_falco",
+        "char_196_sunbr",
+        "char_198_blackd",
+        "char_199_yak",
+        "char_201_moeshd",
+        "char_208_melan",
+        "char_210_stward",
+        "char_211_adnach",
+        "char_214_kafka",
+        "char_236_rope",
+        "char_240_wyvern",
+        "char_252_bibeak",
+        "char_254_vodfox",
+        "char_272_strong",
+        "char_278_orchid",
+        "char_282_catap",
+        "char_283_midn",
+        "char_289_gyuki",
+        "char_302_glaze",
+        "char_325_bison",
+        "char_332_archet",
+        "char_365_aprl",
+        "char_369_bena",
+        "char_383_snsant",
+        "char_402_tuye",
+        "char_4032_provs",
+        "char_4037_demetr",
+        "char_4045_heidi",
+        "char_4046_ebnhlz",
+        "char_4055_bgsnow",
+        "char_4058_pepe",
+        "char_4063_quartz",
+        "char_4071_peper",
+        "char_4077_palico",
+        "char_4083_chimes",
+        "char_4088_hodrer",
+        "char_4091_ulika",
+        "char_4116_blkkgt",
+        "char_4137_udflow",
+        "char_4140_lasher",
+        "char_4144_chilc",
+        "char_4147_mitm",
+        "char_4163_rosesa",
+        "char_4193_lemuen",
+        "char_4203_kichi",
+        "char_4204_mantra",
+        "char_4222_taraxa",
+        "char_4228_closur",
+        "char_4237_jcinta",
+        "char_427_vigil",
+        "char_455_nothin",
+        "char_478_kirara",
+        "char_486_takila",
+        "char_493_firwhl",
+        "char_499_kaitou",
+        "char_500_noirc",
+        "char_502_nblade"
+      ]
+    },
+    "logistics_base_room_xun-lian-shi": {
+      "id": "logistics_base_room_xun-lian-shi",
+      "family": "logistics",
+      "title": "基建：训练室",
+      "description": "使用在训练室拥有基建技能的干员推进指令",
+      "memberCount": 79,
+      "informationStrength": 0.4855,
+      "challengeDifficulty": 0.2167,
+      "members": [
+        "char_1012_skadi2",
+        "char_1013_chen2",
+        "char_1014_nearl2",
+        "char_1016_agoat2",
+        "char_1020_reed2",
+        "char_1021_kroos2",
+        "char_1023_ghost2",
+        "char_1024_hbisc2",
+        "char_1026_gvial2",
+        "char_1028_texas2",
+        "char_1038_whitw2",
+        "char_1045_svash2",
+        "char_1049_catap2",
+        "char_106_franka",
+        "char_113_cqbw",
+        "char_130_doberm",
+        "char_136_hsguma",
+        "char_137_brownb",
+        "char_157_dagda",
+        "char_164_nightm",
+        "char_166_skfire",
+        "char_171_bldsk",
+        "char_174_slbell",
+        "char_187_ccheal",
+        "char_192_falco",
+        "char_194_leto",
+        "char_195_glassb",
+        "char_199_yak",
+        "char_2012_typhon",
+        "char_2026_yu",
+        "char_2027_wang",
+        "char_204_platnm",
+        "char_215_mantic",
+        "char_220_grani",
+        "char_225_haak",
+        "char_250_phatom",
+        "char_260_durnar",
+        "char_265_sophia",
+        "char_279_excu",
+        "char_290_vigna",
+        "char_298_susuro",
+        "char_304_zebra",
+        "char_308_swire",
+        "char_333_sidero",
+        "char_340_shwaz",
+        "char_341_sntlla",
+        "char_344_beewax",
+        "char_350_surtr",
+        "char_356_broca",
+        "char_358_lisa",
+        "char_362_saga",
+        "char_388_mint",
+        "char_394_hadiya",
+        "char_4006_melnte",
+        "char_4009_irene",
+        "char_4025_aprot2",
+        "char_4043_erato",
+        "char_4082_qiubai",
+        "char_411_tomimi",
+        "char_4121_zuole",
+        "char_4123_ela",
+        "char_4124_iana",
+        "char_4125_rdoc",
+        "char_4126_fuze",
+        "char_4133_logos",
+        "char_4139_papyrs",
+        "char_4145_ulpia",
+        "char_415_flint",
+        "char_4165_ctrail",
+        "char_4187_graceb",
+        "char_4196_reckpr",
+        "char_4226_veen",
+        "char_422_aurora",
+        "char_4234_pedro",
+        "char_426_billro",
+        "char_450_necras",
+        "char_451_robin",
+        "char_475_akafyu",
+        "char_476_blkngt"
+      ]
+    },
+    "logistics_limited": {
+      "id": "logistics_limited",
+      "family": "logistics",
+      "title": "限定寻访",
+      "description": "使用通过限定寻访获得的干员推进指令",
+      "memberCount": 25,
+      "informationStrength": 0.8175,
+      "challengeDifficulty": 0.2833,
+      "members": [
+        "char_1029_yato2",
+        "char_1030_noirc2",
+        "char_1048_orchd2",
+        "char_1049_catap2",
+        "char_4019_ncdeer",
+        "char_4067_lolxh",
+        "char_4077_palico",
+        "char_4123_ela",
+        "char_4124_iana",
+        "char_4125_rdoc",
+        "char_4126_fuze",
+        "char_4141_marcil",
+        "char_4142_laios",
+        "char_4143_sensi",
+        "char_4144_chilc",
+        "char_4182_oblvns",
+        "char_4183_mortis",
+        "char_4184_dolris",
+        "char_4185_amoris",
+        "char_4186_tmoris",
+        "char_4215_buddy",
+        "char_456_ash",
+        "char_457_blitz",
+        "char_458_rfrost",
+        "char_459_tachak"
+      ]
+    },
+    "visual_brand_shi-dai": {
+      "id": "visual_brand_shi-dai",
+      "family": "visual",
+      "title": "时装品牌：时代",
+      "description": "使用拥有“时代”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+      "memberCount": 97,
+      "informationStrength": 0.4263,
+      "challengeDifficulty": 0.2067,
+      "members": [
+        "char_1014_nearl2",
+        "char_1016_agoat2",
+        "char_1019_siege2",
+        "char_101_sora",
+        "char_1020_reed2",
+        "char_1028_texas2",
+        "char_102_texas",
+        "char_1031_slent2",
+        "char_109_fmout",
+        "char_113_cqbw",
+        "char_126_shotst",
+        "char_127_estell",
+        "char_128_plosis",
+        "char_130_doberm",
+        "char_135_halo",
+        "char_151_myrtle",
+        "char_154_morgan",
+        "char_164_nightm",
+        "char_181_flower",
+        "char_183_skgoat",
+        "char_187_ccheal",
+        "char_190_clour",
+        "char_197_poca",
+        "char_208_melan",
+        "char_209_ardign",
+        "char_212_ansel",
+        "char_213_mostma",
+        "char_215_mantic",
+        "char_218_cuttle",
+        "char_220_grani",
+        "char_222_bpipe",
+        "char_253_greyy",
+        "char_258_podego",
+        "char_260_durnar",
+        "char_264_f12yin",
+        "char_265_sophia",
+        "char_274_astesi",
+        "char_289_gyuki",
+        "char_297_hamoni",
+        "char_336_folivo",
+        "char_337_utage",
+        "char_343_tknogi",
+        "char_344_beewax",
+        "char_355_ethan",
+        "char_358_lisa",
+        "char_388_mint",
+        "char_391_rosmon",
+        "char_4006_melnte",
+        "char_4013_kjera",
+        "char_4017_puzzle",
+        "char_4023_rfalcn",
+        "char_4026_vulpis",
+        "char_4027_heyak",
+        "char_402_tuye",
+        "char_4036_forcer",
+        "char_4039_horn",
+        "char_4045_heidi",
+        "char_405_absin",
+        "char_4063_quartz",
+        "char_4064_mlynar",
+        "char_4065_judge",
+        "char_4066_highmo",
+        "char_4079_haini",
+        "char_4082_qiubai",
+        "char_4098_vvana",
+        "char_4102_threye",
+        "char_4106_bryota",
+        "char_4119_wanqin",
+        "char_4134_cetsyr",
+        "char_4137_udflow",
+        "char_4145_ulpia",
+        "char_4146_nymph",
+        "char_4172_xingzh",
+        "char_4177_brigid",
+        "char_4191_tippi",
+        "char_4198_christ",
+        "char_427_vigil",
+        "char_431_ashlok",
+        "char_440_pinecn",
+        "char_445_wscoot",
+        "char_446_aroma",
+        "char_449_glider",
+        "char_451_robin",
+        "char_464_cement",
+        "char_472_pasngr",
+        "char_473_mberry",
+        "char_474_glady",
+        "char_475_akafyu",
+        "char_478_kirara",
+        "char_479_sleach",
+        "char_485_pallas",
+        "char_488_buildr",
+        "char_489_serum",
+        "char_492_quercu",
+        "char_496_wildmn",
+        "char_497_ctable",
+        "char_499_kaitou"
+      ],
+      "artBrand": "时代"
+    },
+    "visual_brand_shan-hu-hai-an": {
+      "id": "visual_brand_shan-hu-hai-an",
+      "family": "visual",
+      "title": "时装品牌：珊瑚海岸",
+      "description": "使用拥有“珊瑚海岸”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+      "memberCount": 62,
+      "informationStrength": 0.5554,
+      "challengeDifficulty": 0.18,
+      "members": [
+        "char_1013_chen2",
+        "char_101_sora",
+        "char_1020_reed2",
+        "char_1026_gvial2",
+        "char_131_flameb",
+        "char_133_mm",
+        "char_134_ifrit",
+        "char_136_hsguma",
+        "char_144_red",
+        "char_145_prove",
+        "char_147_shining",
+        "char_148_nearl",
+        "char_151_myrtle",
+        "char_166_skfire",
+        "char_171_bldsk",
+        "char_172_svrash",
+        "char_180_amgoat",
+        "char_196_sunbr",
+        "char_199_yak",
+        "char_2012_typhon",
+        "char_2013_cerber",
+        "char_201_moeshd",
+        "char_204_platnm",
+        "char_212_ansel",
+        "char_219_meteo",
+        "char_236_rope",
+        "char_263_skadi",
+        "char_272_strong",
+        "char_282_catap",
+        "char_286_cast3",
+        "char_290_vigna",
+        "char_291_aglina",
+        "char_298_susuro",
+        "char_302_glaze",
+        "char_311_mudrok",
+        "char_328_cammou",
+        "char_333_sidero",
+        "char_337_utage",
+        "char_341_sntlla",
+        "char_344_beewax",
+        "char_348_ceylon",
+        "char_350_surtr",
+        "char_366_acdrop",
+        "char_377_gdglow",
+        "char_401_elysm",
+        "char_4032_provs",
+        "char_4041_chnut",
+        "char_4051_akkord",
+        "char_4054_malist",
+        "char_4062_totter",
+        "char_4072_ironmn",
+        "char_4080_lin",
+        "char_4100_caper",
+        "char_4117_ray",
+        "char_411_tomimi",
+        "char_421_crow",
+        "char_426_billro",
+        "char_450_necras",
+        "char_476_blkngt",
+        "char_479_sleach",
+        "char_484_robrta",
+        "char_498_inside"
+      ],
+      "artBrand": "珊瑚海岸"
+    },
+    "visual_brand_dou-zheng-xue-mai": {
+      "id": "visual_brand_dou-zheng-xue-mai",
+      "family": "visual",
+      "title": "时装品牌：斗争血脉",
+      "description": "使用拥有“斗争血脉”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+      "memberCount": 36,
+      "informationStrength": 0.7123,
+      "challengeDifficulty": 0.1933,
+      "members": [
+        "char_003_kalts",
+        "char_1012_skadi2",
+        "char_1013_chen2",
+        "char_1023_ghost2",
+        "char_118_yuki",
+        "char_122_beagle",
+        "char_140_whitew",
+        "char_163_hpsts",
+        "char_188_helage",
+        "char_193_frostl",
+        "char_202_demkni",
+        "char_206_gnosis",
+        "char_230_savage",
+        "char_249_mlyss",
+        "char_264_f12yin",
+        "char_278_orchid",
+        "char_279_excu",
+        "char_283_midn",
+        "char_284_spot",
+        "char_285_medic2",
+        "char_291_aglina",
+        "char_293_thorns",
+        "char_294_ayer",
+        "char_300_phenxi",
+        "char_367_swllow",
+        "char_4000_jnight",
+        "char_4046_ebnhlz",
+        "char_4087_ines",
+        "char_4136_phonor",
+        "char_415_flint",
+        "char_416_zumama",
+        "char_4179_monstr",
+        "char_4187_graceb",
+        "char_4194_rmixer",
+        "char_422_aurora",
+        "char_474_glady"
+      ],
+      "artBrand": "斗争血脉"
+    },
+    "visual_brand_0011-zhi-zao": {
+      "id": "visual_brand_0011-zhi-zao",
+      "family": "visual",
+      "title": "时装品牌：0011制造",
+      "description": "使用拥有“0011制造”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+      "memberCount": 31,
+      "informationStrength": 0.7554,
+      "challengeDifficulty": 0.2533,
+      "members": [
+        "char_010_chen",
+        "char_1011_lava2",
+        "char_1021_kroos2",
+        "char_107_liskam",
+        "char_120_hibisc",
+        "char_2014_nian",
+        "char_2015_dusk",
+        "char_2023_ling",
+        "char_2024_chyue",
+        "char_2025_shu",
+        "char_2026_yu",
+        "char_225_haak",
+        "char_226_hmau",
+        "char_235_jesica",
+        "char_241_panda",
+        "char_308_swire",
+        "char_369_bena",
+        "char_385_finlpp",
+        "char_4052_surfer",
+        "char_4066_highmo",
+        "char_4080_lin",
+        "char_4105_almond",
+        "char_4121_zuole",
+        "char_4148_philae",
+        "char_436_whispr",
+        "char_449_glider",
+        "char_455_nothin",
+        "char_469_indigo",
+        "char_473_mberry",
+        "char_476_blkngt",
+        "char_497_ctable"
+      ],
+      "artBrand": "0011制造"
+    },
+    "visual_brand_te-si-te-shou-cang": {
+      "id": "visual_brand_te-si-te-shou-cang",
+      "family": "visual",
+      "title": "时装品牌：忒斯特收藏",
+      "description": "使用拥有“忒斯特收藏”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+      "memberCount": 24,
+      "informationStrength": 0.8293,
+      "challengeDifficulty": 0.1933,
+      "members": [
+        "char_002_amiya",
+        "char_003_kalts",
+        "char_010_chen",
+        "char_1032_excu2",
+        "char_1035_wisdel",
+        "char_1038_whitw2",
+        "char_103_angel",
+        "char_121_lava",
+        "char_124_kroos",
+        "char_181_flower",
+        "char_202_demkni",
+        "char_210_stward",
+        "char_211_adnach",
+        "char_230_savage",
+        "char_245_cello",
+        "char_250_phatom",
+        "char_281_popka",
+        "char_332_archet",
+        "char_362_saga",
+        "char_391_rosmon",
+        "char_4121_zuole",
+        "char_4151_tinman",
+        "char_4199_makiri",
+        "char_437_mizuki"
+      ],
+      "artBrand": "忒斯特收藏"
+    },
+    "visual_brand_yin-lv-lian-jue": {
+      "id": "visual_brand_yin-lv-lian-jue",
+      "family": "visual",
+      "title": "时装品牌：音律联觉",
+      "description": "使用拥有“音律联觉”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+      "memberCount": 23,
+      "informationStrength": 0.8416,
+      "challengeDifficulty": 0.1867,
+      "members": [
+        "char_017_huang",
+        "char_1033_swire2",
+        "char_1046_sbell2",
+        "char_172_svrash",
+        "char_198_blackd",
+        "char_202_demkni",
+        "char_213_mostma",
+        "char_249_mlyss",
+        "char_261_sddrag",
+        "char_290_vigna",
+        "char_311_mudrok",
+        "char_350_surtr",
+        "char_4009_irene",
+        "char_4027_heyak",
+        "char_4042_lumen",
+        "char_4072_ironmn",
+        "char_4087_ines",
+        "char_4133_logos",
+        "char_4146_nymph",
+        "char_4193_lemuen",
+        "char_450_necras",
+        "char_484_robrta",
+        "char_486_takila"
+      ],
+      "artBrand": "音律联觉"
+    },
+    "identity_power_root_luo-de-dao": {
+      "id": "identity_power_root_luo-de-dao",
+      "family": "identity",
+      "title": "所属大系：罗德岛",
+      "description": "使用上级势力归属“罗德岛”的干员推进指令",
+      "memberCount": 92,
+      "informationStrength": 0.4416,
+      "challengeDifficulty": 0.1767,
+      "members": [
+        "char_002_amiya",
+        "char_003_kalts",
+        "char_009_12fce",
+        "char_017_huang",
+        "char_1011_lava2",
+        "char_1013_chen2",
+        "char_1015_aglna2",
+        "char_1021_kroos2",
+        "char_1022_flwr2",
+        "char_1024_hbisc2",
+        "char_1026_gvial2",
+        "char_1027_greyy2",
+        "char_1029_yato2",
+        "char_1030_noirc2",
+        "char_1036_fang2",
+        "char_1040_blaze2",
+        "char_1048_orchd2",
+        "char_1049_catap2",
+        "char_1052_kalts2",
+        "char_117_myrrh",
+        "char_120_hibisc",
+        "char_121_lava",
+        "char_122_beagle",
+        "char_123_fang",
+        "char_124_kroos",
+        "char_130_doberm",
+        "char_131_flameb",
+        "char_144_red",
+        "char_149_scave",
+        "char_1502_crosly",
+        "char_151_myrtle",
+        "char_158_milu",
+        "char_171_bldsk",
+        "char_181_flower",
+        "char_187_ccheal",
+        "char_193_frostl",
+        "char_2013_cerber",
+        "char_208_melan",
+        "char_209_ardign",
+        "char_210_stward",
+        "char_211_adnach",
+        "char_212_ansel",
+        "char_219_meteo",
+        "char_258_podego",
+        "char_260_durnar",
+        "char_278_orchid",
+        "char_281_popka",
+        "char_282_catap",
+        "char_283_midn",
+        "char_284_spot",
+        "char_285_medic2",
+        "char_286_cast3",
+        "char_298_susuro",
+        "char_304_zebra",
+        "char_311_mudrok",
+        "char_328_cammou",
+        "char_345_folnic",
+        "char_350_surtr",
+        "char_355_ethan",
+        "char_367_swllow",
+        "char_376_therex",
+        "char_391_rosmon",
+        "char_400_weedy",
+        "char_4010_etlchi",
+        "char_401_elysm",
+        "char_4041_chnut",
+        "char_4055_bgsnow",
+        "char_4071_peper",
+        "char_4077_palico",
+        "char_4091_ulika",
+        "char_4093_frston",
+        "char_4131_odda",
+        "char_4132_ascln",
+        "char_4133_logos",
+        "char_4134_cetsyr",
+        "char_4136_phonor",
+        "char_4146_nymph",
+        "char_4147_mitm",
+        "char_4179_monstr",
+        "char_4195_radian",
+        "char_4204_mantra",
+        "char_4215_buddy",
+        "char_4227_gallus",
+        "char_4228_closur",
+        "char_4230_mcnist",
+        "char_491_humus",
+        "char_492_quercu",
+        "char_497_ctable",
+        "char_500_noirc",
+        "char_501_durin",
+        "char_502_nblade",
+        "char_503_rang"
+      ]
+    },
+    "identity_power_root_ge-lun-bi-ya": {
+      "id": "identity_power_root_ge-lun-bi-ya",
+      "family": "identity",
+      "title": "所属大系：哥伦比亚",
+      "description": "使用上级势力归属“哥伦比亚”的干员推进指令",
+      "memberCount": 49,
+      "informationStrength": 0.6233,
+      "challengeDifficulty": 0.2233,
+      "members": [
+        "char_1031_slent2",
+        "char_1034_jesca2",
+        "char_1047_halo2",
+        "char_106_franka",
+        "char_107_liskam",
+        "char_108_silent",
+        "char_128_plosis",
+        "char_134_ifrit",
+        "char_135_halo",
+        "char_150_snakek",
+        "char_202_demkni",
+        "char_214_kafka",
+        "char_235_jesica",
+        "char_240_wyvern",
+        "char_242_otter",
+        "char_248_mgllan",
+        "char_249_mlyss",
+        "char_264_f12yin",
+        "char_274_astesi",
+        "char_290_vigna",
+        "char_301_cutter",
+        "char_340_shwaz",
+        "char_347_jaksel",
+        "char_348_ceylon",
+        "char_366_acdrop",
+        "char_4004_pudd",
+        "char_4006_melnte",
+        "char_4027_heyak",
+        "char_4048_doroth",
+        "char_4052_surfer",
+        "char_4063_quartz",
+        "char_4104_coldst",
+        "char_4105_almond",
+        "char_4106_bryota",
+        "char_4151_tinman",
+        "char_4165_ctrail",
+        "char_4191_tippi",
+        "char_4212_nasti",
+        "char_4213_skybx",
+        "char_4214_cairn",
+        "char_4229_aphris",
+        "char_433_windft",
+        "char_440_pinecn",
+        "char_451_robin",
+        "char_452_bstalk",
+        "char_484_robrta",
+        "char_487_bobb",
+        "char_488_buildr",
+        "char_489_serum"
+      ]
+    },
+    "identity_power_root_wei-duo-li-ya": {
+      "id": "identity_power_root_wei-duo-li-ya",
+      "family": "identity",
+      "title": "所属大系：维多利亚",
+      "description": "使用上级势力归属“维多利亚”的干员推进指令",
+      "memberCount": 39,
+      "informationStrength": 0.6892,
+      "challengeDifficulty": 0.2633,
+      "members": [
+        "char_1019_siege2",
+        "char_1020_reed2",
+        "char_1042_phatm2",
+        "char_112_siege",
+        "char_133_mm",
+        "char_141_nights",
+        "char_154_morgan",
+        "char_155_tiger",
+        "char_157_dagda",
+        "char_164_nightm",
+        "char_166_skfire",
+        "char_185_frncat",
+        "char_220_grani",
+        "char_222_bpipe",
+        "char_250_phatom",
+        "char_261_sddrag",
+        "char_275_breeze",
+        "char_297_hamoni",
+        "char_338_iris",
+        "char_363_toddi",
+        "char_369_bena",
+        "char_377_gdglow",
+        "char_388_mint",
+        "char_4017_puzzle",
+        "char_4025_aprot2",
+        "char_4039_horn",
+        "char_4040_rockr",
+        "char_4045_heidi",
+        "char_4072_ironmn",
+        "char_4107_vrdant",
+        "char_4110_delphn",
+        "char_4114_harold",
+        "char_4162_cathy",
+        "char_4173_nowell",
+        "char_4177_brigid",
+        "char_4198_christ",
+        "char_450_necras",
+        "char_479_sleach",
+        "char_494_vendla"
+      ]
+    },
+    "identity_power_root_yan": {
+      "id": "identity_power_root_yan",
+      "family": "identity",
+      "title": "所属大系：炎",
+      "description": "使用上级势力归属“炎”的干员推进指令",
+      "memberCount": 26,
+      "informationStrength": 0.8062,
+      "challengeDifficulty": 0.2467,
+      "members": [
+        "char_1043_leizi2",
+        "char_1050_chen3",
+        "char_2014_nian",
+        "char_2015_dusk",
+        "char_2023_ling",
+        "char_2024_chyue",
+        "char_2025_shu",
+        "char_2026_yu",
+        "char_2027_wang",
+        "char_306_leizi",
+        "char_385_finlpp",
+        "char_4019_ncdeer",
+        "char_4067_lolxh",
+        "char_4078_bdhkgt",
+        "char_4082_qiubai",
+        "char_4083_chimes",
+        "char_4119_wanqin",
+        "char_4121_zuole",
+        "char_4122_grabds",
+        "char_4172_xingzh",
+        "char_4196_reckpr",
+        "char_4221_ju",
+        "char_4222_taraxa",
+        "char_445_wscoot",
+        "char_455_nothin",
+        "char_473_mberry"
+      ]
+    },
+    "identity_power_luo-de-dao": {
+      "id": "identity_power_luo-de-dao",
+      "family": "identity",
+      "title": "所属势力：罗德岛",
+      "description": "使用所属势力为“罗德岛”的干员推进指令",
+      "memberCount": 59,
+      "informationStrength": 0.5697,
+      "challengeDifficulty": 0.1767,
+      "members": [
+        "char_002_amiya",
+        "char_003_kalts",
+        "char_009_12fce",
+        "char_1011_lava2",
+        "char_1013_chen2",
+        "char_1015_aglna2",
+        "char_1021_kroos2",
+        "char_1022_flwr2",
+        "char_1024_hbisc2",
+        "char_1026_gvial2",
+        "char_1027_greyy2",
+        "char_1036_fang2",
+        "char_1052_kalts2",
+        "char_117_myrrh",
+        "char_130_doberm",
+        "char_131_flameb",
+        "char_1502_crosly",
+        "char_151_myrtle",
+        "char_158_milu",
+        "char_171_bldsk",
+        "char_181_flower",
+        "char_187_ccheal",
+        "char_193_frostl",
+        "char_2013_cerber",
+        "char_219_meteo",
+        "char_258_podego",
+        "char_260_durnar",
+        "char_285_medic2",
+        "char_286_cast3",
+        "char_298_susuro",
+        "char_304_zebra",
+        "char_311_mudrok",
+        "char_328_cammou",
+        "char_345_folnic",
+        "char_350_surtr",
+        "char_355_ethan",
+        "char_367_swllow",
+        "char_376_therex",
+        "char_400_weedy",
+        "char_4010_etlchi",
+        "char_401_elysm",
+        "char_4041_chnut",
+        "char_4055_bgsnow",
+        "char_4071_peper",
+        "char_4077_palico",
+        "char_4091_ulika",
+        "char_4093_frston",
+        "char_4131_odda",
+        "char_4134_cetsyr",
+        "char_4136_phonor",
+        "char_4146_nymph",
+        "char_4147_mitm",
+        "char_4179_monstr",
+        "char_4215_buddy",
+        "char_4227_gallus",
+        "char_4228_closur",
+        "char_491_humus",
+        "char_492_quercu",
+        "char_497_ctable"
+      ]
+    },
+    "identity_power_la-te-lan": {
+      "id": "identity_power_la-te-lan",
+      "family": "identity",
+      "title": "所属势力：拉特兰",
+      "description": "使用所属势力为“拉特兰”的干员推进指令",
+      "memberCount": 15,
+      "informationStrength": 0.9649,
+      "challengeDifficulty": 0.3,
+      "members": [
+        "char_1032_excu2",
+        "char_192_falco",
+        "char_213_mostma",
+        "char_245_cello",
+        "char_271_spikes",
+        "char_279_excu",
+        "char_300_phenxi",
+        "char_302_glaze",
+        "char_332_archet",
+        "char_4015_spuria",
+        "char_4036_forcer",
+        "char_4188_confes",
+        "char_4193_lemuen",
+        "char_4194_rmixer",
+        "char_498_inside"
+      ]
+    },
+    "identity_origin_ge-lun-bi-ya": {
+      "id": "identity_origin_ge-lun-bi-ya",
+      "family": "identity",
+      "title": "出身地：哥伦比亚",
+      "description": "使用出身地为“哥伦比亚”的干员推进指令",
+      "memberCount": 51,
+      "informationStrength": 0.6118,
+      "challengeDifficulty": 0.22,
+      "members": [
+        "char_1028_texas2",
+        "char_102_texas",
+        "char_1031_slent2",
+        "char_1047_halo2",
+        "char_1048_orchd2",
+        "char_106_franka",
+        "char_108_silent",
+        "char_128_plosis",
+        "char_135_halo",
+        "char_193_frostl",
+        "char_202_demkni",
+        "char_214_kafka",
+        "char_242_otter",
+        "char_248_mgllan",
+        "char_260_durnar",
+        "char_264_f12yin",
+        "char_274_astesi",
+        "char_278_orchid",
+        "char_285_medic2",
+        "char_286_cast3",
+        "char_301_cutter",
+        "char_347_jaksel",
+        "char_366_acdrop",
+        "char_376_therex",
+        "char_391_rosmon",
+        "char_394_hadiya",
+        "char_4000_jnight",
+        "char_4004_pudd",
+        "char_4006_melnte",
+        "char_4027_heyak",
+        "char_4048_doroth",
+        "char_4052_surfer",
+        "char_4063_quartz",
+        "char_4071_peper",
+        "char_4104_coldst",
+        "char_4105_almond",
+        "char_4165_ctrail",
+        "char_4191_tippi",
+        "char_4213_skybx",
+        "char_4214_cairn",
+        "char_4229_aphris",
+        "char_4230_mcnist",
+        "char_433_windft",
+        "char_440_pinecn",
+        "char_451_robin",
+        "char_452_bstalk",
+        "char_472_pasngr",
+        "char_484_robrta",
+        "char_487_bobb",
+        "char_489_serum",
+        "char_491_humus"
+      ]
+    },
+    "identity_origin_wei-duo-li-ya": {
+      "id": "identity_origin_wei-duo-li-ya",
+      "family": "identity",
+      "title": "出身地：维多利亚",
+      "description": "使用出身地为“维多利亚”的干员推进指令",
+      "memberCount": 46,
+      "informationStrength": 0.6416,
+      "challengeDifficulty": 0.2433,
+      "members": [
+        "char_017_huang",
+        "char_1011_lava2",
+        "char_1019_siege2",
+        "char_1020_reed2",
+        "char_1024_hbisc2",
+        "char_1034_jesca2",
+        "char_1042_phatm2",
+        "char_112_siege",
+        "char_120_hibisc",
+        "char_121_lava",
+        "char_133_mm",
+        "char_141_nights",
+        "char_154_morgan",
+        "char_157_dagda",
+        "char_164_nightm",
+        "char_166_skfire",
+        "char_185_frncat",
+        "char_208_melan",
+        "char_220_grani",
+        "char_222_bpipe",
+        "char_235_jesica",
+        "char_250_phatom",
+        "char_261_sddrag",
+        "char_275_breeze",
+        "char_297_hamoni",
+        "char_338_iris",
+        "char_363_toddi",
+        "char_369_bena",
+        "char_377_gdglow",
+        "char_388_mint",
+        "char_4017_puzzle",
+        "char_4025_aprot2",
+        "char_4039_horn",
+        "char_4040_rockr",
+        "char_4045_heidi",
+        "char_4072_ironmn",
+        "char_4107_vrdant",
+        "char_4110_delphn",
+        "char_4114_harold",
+        "char_4162_cathy",
+        "char_4173_nowell",
+        "char_4177_brigid",
+        "char_450_necras",
+        "char_479_sleach",
+        "char_492_quercu",
+        "char_494_vendla"
+      ]
+    },
+    "identity_origin_yan": {
+      "id": "identity_origin_yan",
+      "family": "identity",
+      "title": "出身地：炎",
+      "description": "使用出身地为“炎”的干员推进指令",
+      "memberCount": 27,
+      "informationStrength": 0.7953,
+      "challengeDifficulty": 0.2467,
+      "members": [
+        "char_1040_blaze2",
+        "char_1043_leizi2",
+        "char_2014_nian",
+        "char_2015_dusk",
+        "char_2023_ling",
+        "char_2024_chyue",
+        "char_2025_shu",
+        "char_2026_yu",
+        "char_2027_wang",
+        "char_241_panda",
+        "char_243_waaifu",
+        "char_306_leizi",
+        "char_322_lmlee",
+        "char_385_finlpp",
+        "char_4019_ncdeer",
+        "char_4078_bdhkgt",
+        "char_4082_qiubai",
+        "char_4083_chimes",
+        "char_4119_wanqin",
+        "char_4121_zuole",
+        "char_4122_grabds",
+        "char_4172_xingzh",
+        "char_4196_reckpr",
+        "char_4221_ju",
+        "char_445_wscoot",
+        "char_455_nothin",
+        "char_473_mberry"
+      ]
+    },
+    "identity_origin_dong-guo": {
+      "id": "identity_origin_dong-guo",
+      "family": "identity",
+      "title": "出身地：东国",
+      "description": "使用出身地为“东国”的干员推进指令",
+      "memberCount": 20,
+      "informationStrength": 0.8819,
+      "challengeDifficulty": 0.2633,
+      "members": [
+        "char_1029_yato2",
+        "char_1030_noirc2",
+        "char_1044_hsgma2",
+        "char_118_yuki",
+        "char_136_hsguma",
+        "char_283_midn",
+        "char_289_gyuki",
+        "char_337_utage",
+        "char_343_tknogi",
+        "char_358_lisa",
+        "char_362_saga",
+        "char_4016_kazema",
+        "char_4199_makiri",
+        "char_4202_haruka",
+        "char_4203_kichi",
+        "char_437_mizuki",
+        "char_475_akafyu",
+        "char_478_kirara",
+        "char_500_noirc",
+        "char_502_nblade"
+      ]
+    },
+    "identity_origin_ka-zi-dai-er": {
+      "id": "identity_origin_ka-zi-dai-er",
+      "family": "identity",
+      "title": "出身地：卡兹戴尔",
+      "description": "使用出身地为“卡兹戴尔”的干员推进指令",
+      "memberCount": 20,
+      "informationStrength": 0.8819,
+      "challengeDifficulty": 0.2167,
+      "members": [
+        "char_1035_wisdel",
+        "char_113_cqbw",
+        "char_131_flameb",
+        "char_147_shining",
+        "char_171_bldsk",
+        "char_179_cgbird",
+        "char_219_meteo",
+        "char_290_vigna",
+        "char_311_mudrok",
+        "char_4010_etlchi",
+        "char_4087_ines",
+        "char_4088_hodrer",
+        "char_4131_odda",
+        "char_4132_ascln",
+        "char_4133_logos",
+        "char_4134_cetsyr",
+        "char_4146_nymph",
+        "char_4147_mitm",
+        "char_4212_nasti",
+        "char_4228_closur"
+      ]
+    },
+    "identity_origin_la-te-lan": {
+      "id": "identity_origin_la-te-lan",
+      "family": "identity",
+      "title": "出身地：拉特兰",
+      "description": "使用出身地为“拉特兰”的干员推进指令",
+      "memberCount": 18,
+      "informationStrength": 0.9123,
+      "challengeDifficulty": 0.2467,
+      "members": [
+        "char_1032_excu2",
+        "char_103_angel",
+        "char_1041_angel2",
+        "char_192_falco",
+        "char_211_adnach",
+        "char_213_mostma",
+        "char_245_cello",
+        "char_271_spikes",
+        "char_279_excu",
+        "char_300_phenxi",
+        "char_302_glaze",
+        "char_332_archet",
+        "char_4015_spuria",
+        "char_4036_forcer",
+        "char_4188_confes",
+        "char_4193_lemuen",
+        "char_4194_rmixer",
+        "char_498_inside"
+      ]
+    },
+    "identity_race_fei-lin": {
+      "id": "identity_race_fei-lin",
+      "family": "identity",
+      "title": "种族：菲林",
+      "description": "使用种族为“菲林”的干员推进指令",
+      "memberCount": 52,
+      "informationStrength": 0.6062,
+      "challengeDifficulty": 0.1967,
+      "members": [
+        "char_003_kalts",
+        "char_017_huang",
+        "char_1033_swire2",
+        "char_1034_jesca2",
+        "char_1040_blaze2",
+        "char_1042_phatm2",
+        "char_1045_svash2",
+        "char_1046_sbell2",
+        "char_1052_kalts2",
+        "char_141_nights",
+        "char_154_morgan",
+        "char_155_tiger",
+        "char_157_dagda",
+        "char_164_nightm",
+        "char_166_skfire",
+        "char_172_svrash",
+        "char_173_slchan",
+        "char_174_slbell",
+        "char_185_frncat",
+        "char_208_melan",
+        "char_225_haak",
+        "char_235_jesica",
+        "char_243_waaifu",
+        "char_250_phatom",
+        "char_264_f12yin",
+        "char_297_hamoni",
+        "char_308_swire",
+        "char_338_iris",
+        "char_340_shwaz",
+        "char_341_sntlla",
+        "char_345_folnic",
+        "char_356_broca",
+        "char_377_gdglow",
+        "char_388_mint",
+        "char_391_rosmon",
+        "char_4016_kazema",
+        "char_4040_rockr",
+        "char_4045_heidi",
+        "char_4056_titi",
+        "char_4058_pepe",
+        "char_4067_lolxh",
+        "char_4072_ironmn",
+        "char_4110_delphn",
+        "char_4114_harold",
+        "char_4139_papyrs",
+        "char_4162_cathy",
+        "char_4172_xingzh",
+        "char_4214_cairn",
+        "char_4229_aphris",
+        "char_445_wscoot",
+        "char_492_quercu",
+        "char_494_vendla"
+      ]
+    },
+    "identity_race_li-bo-li": {
+      "id": "identity_race_li-bo-li",
+      "family": "identity",
+      "title": "种族：黎博利",
+      "description": "使用种族为“黎博利”的干员推进指令",
+      "memberCount": 43,
+      "informationStrength": 0.661,
+      "challengeDifficulty": 0.29,
+      "members": [
+        "char_1031_slent2",
+        "char_1047_halo2",
+        "char_1048_orchd2",
+        "char_108_silent",
+        "char_128_plosis",
+        "char_133_mm",
+        "char_135_halo",
+        "char_188_helage",
+        "char_192_falco",
+        "char_206_gnosis",
+        "char_214_kafka",
+        "char_248_mgllan",
+        "char_252_bibeak",
+        "char_274_astesi",
+        "char_278_orchid",
+        "char_300_phenxi",
+        "char_332_archet",
+        "char_348_ceylon",
+        "char_366_acdrop",
+        "char_367_swllow",
+        "char_383_snsant",
+        "char_4009_irene",
+        "char_401_elysm",
+        "char_4023_rfalcn",
+        "char_4043_erato",
+        "char_4062_totter",
+        "char_4106_bryota",
+        "char_4122_grabds",
+        "char_4140_lasher",
+        "char_415_flint",
+        "char_4191_tippi",
+        "char_4195_radian",
+        "char_4208_wintim",
+        "char_421_crow",
+        "char_4224_turdus",
+        "char_430_fartth",
+        "char_440_pinecn",
+        "char_455_nothin",
+        "char_472_pasngr",
+        "char_473_mberry",
+        "char_488_buildr",
+        "char_493_firwhl",
+        "char_497_ctable"
+      ]
+    },
+    "identity_race_sa-ka-zi": {
+      "id": "identity_race_sa-ka-zi",
+      "family": "identity",
+      "title": "种族：萨卡兹",
+      "description": "使用种族为“萨卡兹”的干员推进指令",
+      "memberCount": 29,
+      "informationStrength": 0.7747,
+      "challengeDifficulty": 0.1933,
+      "members": [
+        "char_1011_lava2",
+        "char_1024_hbisc2",
+        "char_1035_wisdel",
+        "char_113_cqbw",
+        "char_120_hibisc",
+        "char_121_lava",
+        "char_131_flameb",
+        "char_134_ifrit",
+        "char_147_shining",
+        "char_171_bldsk",
+        "char_179_cgbird",
+        "char_2012_typhon",
+        "char_219_meteo",
+        "char_283_midn",
+        "char_290_vigna",
+        "char_311_mudrok",
+        "char_350_surtr",
+        "char_4010_etlchi",
+        "char_4071_peper",
+        "char_4088_hodrer",
+        "char_4102_threye",
+        "char_4131_odda",
+        "char_4132_ascln",
+        "char_4133_logos",
+        "char_4146_nymph",
+        "char_4147_mitm",
+        "char_4148_philae",
+        "char_4212_nasti",
+        "char_4228_closur"
+      ]
+    },
+    "identity_race_a-ge-er": {
+      "id": "identity_race_a-ge-er",
+      "family": "identity",
+      "title": "种族：阿戈尔",
+      "description": "使用种族为“阿戈尔”的干员推进指令",
+      "memberCount": 17,
+      "informationStrength": 0.9288,
+      "challengeDifficulty": 0.2533,
+      "members": [
+        "char_1023_ghost2",
+        "char_1039_thorn2",
+        "char_218_cuttle",
+        "char_293_thorns",
+        "char_385_finlpp",
+        "char_4004_pudd",
+        "char_400_weedy",
+        "char_4042_lumen",
+        "char_4066_highmo",
+        "char_4079_haini",
+        "char_4137_udflow",
+        "char_4145_ulpia",
+        "char_4202_haruka",
+        "char_436_whispr",
+        "char_437_mizuki",
+        "char_475_akafyu",
+        "char_478_kirara"
+      ]
     }
   },
   "byOperator": {
@@ -1611,14 +3685,33 @@
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_003_kalts": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "battle_ally_heal",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_fei-lin"
     ],
     "char_009_12fce": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_010_chen": [
       "skill_attack_recovery",
@@ -1626,7 +3719,12 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_0011-zhi-zao",
+      "visual_brand_te-si-te-shou-cang"
     ],
     "char_017_huang": [
       "skill_attack_recovery",
@@ -1634,18 +3732,33 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_1011_lava2": [
       "skill_all_manual",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_sa-ka-zi"
     ],
     "char_1012_skadi2": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_1013_chen2": [
       "skill_attack_recovery",
@@ -1656,7 +3769,12 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1014_nearl2": [
       "skill_auto_trigger",
@@ -1665,7 +3783,11 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "battle_barrier",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai"
     ],
     "char_1015_aglna2": [
       "skill_passive",
@@ -1673,14 +3795,22 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1016_agoat2": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "battle_elemental",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai"
     ],
     "char_1019_siege2": [
       "skill_auto_trigger",
@@ -1688,31 +3818,55 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_101_sora": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_1020_reed2": [
       "skill_all_manual",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_1021_kroos2": [
       "skill_attack_recovery",
       "skill_all_manual",
       "battle_concealment",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1022_flwr2": [
       "skill_auto_trigger",
       "skill_passive",
       "skill_chargeable",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1023_ghost2": [
       "skill_all_manual",
@@ -1720,12 +3874,21 @@
       "skill_distinct_ranges",
       "battle_block_control",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_race_a-ge-er"
     ],
     "char_1024_hbisc2": [
       "skill_all_manual",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_sa-ka-zi"
     ],
     "char_1026_gvial2": [
       "skill_all_manual",
@@ -1734,13 +3897,20 @@
       "battle_block_control",
       "battle_forced_movement",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1027_greyy2": [
       "skill_all_manual",
       "skill_chargeable",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1028_texas2": [
       "skill_passive",
@@ -1748,20 +3918,32 @@
       "skill_distinct_ranges",
       "battle_fast_redeploy",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_1029_yato2": [
       "skill_passive",
       "battle_fast_redeploy",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_dong-guo"
     ],
     "char_102_texas": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_1030_noirc2": [
       "skill_attack_recovery",
@@ -1770,12 +3952,23 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_dong-guo"
     ],
     "char_1031_slent2": [
       "skill_all_manual",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_1032_excu2": [
       "skill_attack_recovery",
@@ -1786,7 +3979,11 @@
       "skill_distinct_ranges",
       "battle_block_control",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_1033_swire2": [
       "skill_auto_trigger",
@@ -1795,7 +3992,10 @@
       "battle_fast_redeploy",
       "battle_forced_movement",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_race_fei-lin"
     ],
     "char_1034_jesca2": [
       "skill_auto_trigger",
@@ -1804,7 +4004,13 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_1035_wisdel": [
       "skill_attack_recovery",
@@ -1813,7 +4019,12 @@
       "skill_ammo",
       "battle_concealment",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_1036_fang2": [
       "skill_auto_trigger",
@@ -1821,14 +4032,19 @@
       "skill_chargeable",
       "battle_block_control",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1038_whitw2": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_te-si-te-shou-cang"
     ],
     "char_1039_thorn2": [
       "skill_auto_trigger",
@@ -1837,13 +4053,18 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_race_a-ge-er"
     ],
     "char_103_angel": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_origin_la-te-lan"
     ],
     "char_1040_blaze2": [
       "skill_auto_trigger",
@@ -1853,14 +4074,25 @@
       "skill_distinct_ranges",
       "battle_elemental",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_yan",
+      "identity_race_fei-lin"
     ],
     "char_1041_angel2": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_ammo",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_barrier",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_origin_la-te-lan"
     ],
     "char_1042_phatm2": [
       "skill_attack_recovery",
@@ -1870,7 +4102,12 @@
       "skill_distinct_ranges",
       "battle_elemental",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_1043_leizi2": [
       "skill_all_manual",
@@ -1879,7 +4116,11 @@
       "skill_distinct_ranges",
       "battle_block_control",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_1044_hsgma2": [
       "skill_attack_recovery",
@@ -1888,7 +4129,9 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_origin_dong-guo"
     ],
     "char_1045_svash2": [
       "skill_auto_trigger",
@@ -1897,7 +4140,11 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "identity_race_fei-lin"
     ],
     "char_1046_sbell2": [
       "skill_auto_trigger",
@@ -1907,7 +4154,10 @@
       "skill_distinct_ranges",
       "battle_forced_movement",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_race_fei-lin"
     ],
     "char_1047_halo2": [
       "skill_attack_recovery",
@@ -1917,7 +4167,11 @@
       "skill_distinct_ranges",
       "battle_forced_movement",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_1048_orchd2": [
       "skill_all_manual",
@@ -1926,7 +4180,14 @@
       "skill_distinct_ranges",
       "battle_forced_movement",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_mao-yi-zhan",
+      "logistics_limited",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_1049_catap2": [
       "skill_attack_recovery",
@@ -1934,14 +4195,20 @@
       "skill_chargeable",
       "skill_range_change",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_mao-yi-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "logistics_limited",
+      "identity_power_root_luo-de-dao"
     ],
     "char_1050_chen3": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_yan"
     ],
     "char_1051_headb2": [
       "skill_auto_trigger",
@@ -1949,7 +4216,10 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_kong-zhi-zhong-shu"
     ],
     "char_1052_kalts2": [
       "skill_all_manual",
@@ -1958,29 +4228,54 @@
       "skill_distinct_ranges",
       "battle_block_control",
       "identity_alter_family",
-      "identity_alter_form"
+      "identity_alter_form",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_fei-lin"
     ],
     "char_106_franka": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_107_liskam": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_stun",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_ge-lun-bi-ya"
     ],
     "char_108_silent": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_109_fmout": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_110_deepcl": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_112_siege": [
       "skill_auto_trigger",
@@ -1988,82 +4283,159 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "logistics_base_room_su-she",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_113_cqbw": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_115_headbr": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_su-she"
     ],
     "char_117_myrrh": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_118_yuki": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_origin_dong-guo"
     ],
     "char_120_hibisc": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_sa-ka-zi"
     ],
     "char_121_lava": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_sa-ka-zi"
     ],
     "char_122_beagle": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao"
     ],
     "char_123_fang": [
       "skill_auto_trigger",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao"
     ],
     "char_124_kroos": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao"
     ],
     "char_126_shotst": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai"
     ],
     "char_127_estell": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_128_plosis": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_129_bluep": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_130_doberm": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_131_flameb": [
       "skill_attack_recovery",
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_133_mm": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_li-bo-li"
     ],
     "char_134_ifrit": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_race_sa-ka-zi"
     ],
     "char_135_halo": [
       "skill_auto_trigger",
@@ -2071,51 +4443,90 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_136_hsguma": [
       "skill_passive",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_origin_dong-guo"
     ],
     "char_137_brownb": [
-      "skill_passive"
+      "skill_passive",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_xun-lian-shi"
     ],
     "char_140_whitew": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_141_nights": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_143_ghost": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "logistics_base_room_su-she"
     ],
     "char_144_red": [
       "skill_passive",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao"
     ],
     "char_145_prove": [
-      "skill_passive"
+      "skill_passive",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_147_shining": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_su-she",
+      "visual_brand_shan-hu-hai-an",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_148_nearl": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_ally_heal",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_149_scave": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_power_root_luo-de-dao"
     ],
     "char_1502_crosly": [
       "skill_passive",
@@ -2123,57 +4534,112 @@
       "skill_distinct_ranges",
       "battle_block_control",
       "battle_fast_redeploy",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_150_snakek": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_ge-lun-bi-ya"
     ],
     "char_151_myrtle": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_154_morgan": [
-      "skill_passive"
+      "skill_passive",
+      "battle_barrier",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_155_tiger": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_157_dagda": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_158_milu": [
       "skill_all_manual",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_159_peacok": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she"
     ],
     "char_163_hpsts": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_164_nightm": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_166_skfire": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_171_bldsk": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_ally_heal",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_172_svrash": [
       "skill_attack_recovery",
@@ -2181,25 +4647,41 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_race_fei-lin"
     ],
     "char_173_slchan": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_race_fei-lin"
     ],
     "char_174_slbell": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "identity_race_fei-lin"
     ],
     "char_179_cgbird": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_su-she",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_180_amgoat": [
       "skill_auto_trigger",
@@ -2207,106 +4689,198 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_181_flower": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_183_skgoat": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai"
     ],
     "char_185_frncat": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_187_ccheal": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_ally_heal",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_188_helage": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_race_li-bo-li"
     ],
     "char_190_clour": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_192_falco": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_mao-yi-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan",
+      "identity_race_li-bo-li"
     ],
     "char_193_frostl": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_194_leto": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_xun-lian-shi"
     ],
     "char_195_glassb": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_xun-lian-shi"
     ],
     "char_196_sunbr": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "skill_range_change"
+      "skill_range_change",
+      "battle_stun",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_197_poca": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_bind",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shi-dai"
     ],
     "char_198_blackd": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_yin-lv-lian-jue"
     ],
     "char_199_yak": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_mao-yi-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_2012_typhon": [
       "skill_all_manual",
-      "skill_ammo"
+      "skill_ammo",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_race_sa-ka-zi"
     ],
     "char_2013_cerber": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_2014_nian": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_2015_dusk": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_201_moeshd": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_2023_ling": [
       "skill_all_manual",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_bind",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_2024_chyue": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_2025_shu": [
       "skill_auto_trigger",
@@ -2314,61 +4888,118 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_2026_yu": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_2027_wang": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_ammo",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_202_demkni": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_ally_heal",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "visual_brand_te-si-te-shou-cang",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_204_platnm": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_206_gnosis": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_race_li-bo-li"
     ],
     "char_208_melan": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_209_ardign": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao"
     ],
     "char_210_stward": [
       "skill_attack_recovery",
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao"
     ],
     "char_211_adnach": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_la-te-lan"
     ],
     "char_212_ansel": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao"
     ],
     "char_213_mostma": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_214_kafka": [
       "skill_passive",
@@ -2376,84 +5007,148 @@
       "skill_distinct_ranges",
       "battle_block_control",
       "battle_fast_redeploy",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_215_mantic": [
       "skill_passive",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai"
     ],
     "char_218_cuttle": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "identity_race_a-ge-er"
     ],
     "char_219_meteo": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_220_grani": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_222_bpipe": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_225_haak": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_race_fei-lin"
     ],
     "char_226_hmau": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_range_change"
+      "skill_range_change",
+      "battle_ally_heal",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_0011-zhi-zao"
     ],
     "char_230_savage": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "visual_brand_te-si-te-shou-cang"
     ],
     "char_235_jesica": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_236_rope": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_237_gravel": [
       "skill_passive",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "battle_barrier",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_240_wyvern": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_ge-lun-bi-ya"
     ],
     "char_241_panda": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_origin_yan"
     ],
     "char_242_otter": [
       "skill_passive",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_243_waaifu": [
       "skill_passive",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_origin_yan",
+      "identity_race_fei-lin"
     ],
     "char_245_cello": [
       "skill_auto_trigger",
@@ -2461,14 +5156,30 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_su-she",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_248_mgllan": [
       "skill_all_manual",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_bind",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_249_mlyss": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "battle_bind",
+      "logistics_base_room_su-she",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_ge-lun-bi-ya"
     ],
     "char_250_phatom": [
       "skill_passive",
@@ -2476,7 +5187,15 @@
       "skill_distinct_ranges",
       "battle_fast_redeploy",
       "battle_forced_movement",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_stun",
+      "battle_barrier",
+      "battle_bind",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_252_bibeak": [
       "skill_attack_recovery",
@@ -2484,28 +5203,53 @@
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_race_li-bo-li"
     ],
     "char_253_greyy": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_254_vodfox": [
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_258_podego": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_260_durnar": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_261_sddrag": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_263_skadi": [
       "skill_passive",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_su-she",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_264_f12yin": [
       "skill_attack_recovery",
@@ -2514,71 +5258,151 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_fei-lin"
     ],
     "char_265_sophia": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai"
     ],
     "char_271_spikes": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_272_strong": [
       "skill_auto_trigger",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_274_astesi": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_275_breeze": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_277_sqrrel": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_fa-dian-zhan"
     ],
     "char_278_orchid": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_279_excu": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_281_popka": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao"
     ],
     "char_282_catap": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao"
     ],
     "char_283_midn": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_dong-guo",
+      "identity_race_sa-ka-zi"
     ],
     "char_284_spot": [
       "skill_all_manual",
-      "skill_range_change"
+      "skill_range_change",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao"
     ],
     "char_285_medic2": [
-      "skill_none"
+      "skill_none",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_286_cast3": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_289_gyuki": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_origin_dong-guo"
     ],
     "char_290_vigna": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_291_aglina": [
       "skill_attack_recovery",
@@ -2586,42 +5410,77 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "battle_ally_heal",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_293_thorns": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_race_a-ge-er"
     ],
     "char_294_ayer": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_297_hamoni": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_298_susuro": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_300_phenxi": [
       "skill_attack_recovery",
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_su-she",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan",
+      "identity_race_li-bo-li"
     ],
     "char_301_cutter": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_302_glaze": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_304_zebra": [
       "skill_auto_trigger",
@@ -2629,24 +5488,44 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_306_leizi": [
       "skill_all_manual",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_308_swire": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_race_fei-lin"
     ],
     "char_311_mudrok": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "battle_barrier",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_322_lmlee": [
       "skill_auto_trigger",
@@ -2654,201 +5533,358 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_fast_redeploy",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_origin_yan"
     ],
     "char_325_bison": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_326_glacus": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "battle_bind",
+      "logistics_base_room_fa-dian-zhan"
     ],
     "char_328_cammou": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_332_archet": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_barrier",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan",
+      "identity_race_li-bo-li"
     ],
     "char_333_sidero": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_336_folivo": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_337_utage": [
       "skill_passive",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an",
+      "identity_origin_dong-guo"
     ],
     "char_338_iris": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_su-she",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_340_shwaz": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_race_fei-lin"
     ],
     "char_341_sntlla": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_race_fei-lin"
     ],
     "char_343_tknogi": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "identity_origin_dong-guo"
     ],
     "char_344_beewax": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_345_folnic": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_fei-lin"
     ],
     "char_346_aosta": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_bind",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_347_jaksel": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_su-she",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_348_ceylon": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_349_chiave": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_350_surtr": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_sa-ka-zi"
     ],
     "char_355_ethan": [
-      "skill_passive"
+      "skill_passive",
+      "battle_bind",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_356_broca": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "identity_race_fei-lin"
     ],
     "char_358_lisa": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_origin_dong-guo"
     ],
     "char_362_saga": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_origin_dong-guo"
     ],
     "char_363_toddi": [
       "skill_all_manual",
-      "skill_ammo"
+      "skill_ammo",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_365_aprl": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_passive",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_su-she",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_366_acdrop": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_su-she",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_367_swllow": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_li-bo-li"
     ],
     "char_369_bena": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_373_lionhd": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_376_therex": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_377_gdglow": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_378_asbest": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_379_sesa": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_381_bubble": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_383_snsant": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_race_li-bo-li"
     ],
     "char_385_finlpp": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan",
+      "identity_race_a-ge-er"
     ],
     "char_388_mint": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_391_rosmon": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_fei-lin"
     ],
     "char_394_hadiya": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4000_jnight": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4004_pudd": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_a-ge-er"
     ],
     "char_4006_melnte": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4009_irene": [
       "skill_attack_recovery",
@@ -2856,68 +5892,113 @@
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_race_li-bo-li"
     ],
     "char_400_weedy": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_a-ge-er"
     ],
     "char_4010_etlchi": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_su-she",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4011_lessng": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_passive",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_4013_kjera": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai"
     ],
     "char_4014_lunacu": [
       "skill_all_manual",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_4015_spuria": [
-      "skill_passive"
+      "skill_passive",
+      "battle_stun",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_4016_kazema": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "identity_origin_dong-guo",
+      "identity_race_fei-lin"
     ],
     "char_4017_puzzle": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_4019_ncdeer": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_limited",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_401_elysm": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_li-bo-li"
     ],
     "char_4023_rfalcn": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_range_change"
+      "skill_range_change",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shi-dai",
+      "identity_race_li-bo-li"
     ],
     "char_4025_aprot2": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_4026_vulpis": [
       "skill_auto_trigger",
@@ -2925,98 +6006,160 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai"
     ],
     "char_4027_heyak": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_402_tuye": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_4031_liesel": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_hui-ke-shi"
     ],
     "char_4032_provs": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "skill_range_change"
+      "skill_range_change",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_4036_forcer": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_4037_demetr": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_4039_horn": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_4040_rockr": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_4041_chnut": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4042_lumen": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_su-she",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_race_a-ge-er"
     ],
     "char_4043_erato": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_xun-lian-shi",
+      "identity_race_li-bo-li"
     ],
     "char_4045_heidi": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_4046_ebnhlz": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_4047_pianst": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_su-she"
     ],
     "char_4048_doroth": [
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4051_akkord": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_su-she",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_4052_surfer": [
       "skill_passive",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4054_malist": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_4055_bgsnow": [
       "skill_attack_recovery",
@@ -3024,91 +6167,165 @@
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4056_titi": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_race_fei-lin"
     ],
     "char_4058_pepe": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_race_fei-lin"
     ],
     "char_405_absin": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai"
     ],
     "char_4062_totter": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_race_li-bo-li"
     ],
     "char_4063_quartz": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4064_mlynar": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shi-dai"
     ],
     "char_4065_judge": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "battle_barrier",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai"
     ],
     "char_4066_highmo": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_0011-zhi-zao",
+      "identity_race_a-ge-er"
     ],
     "char_4067_lolxh": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_limited",
+      "identity_power_root_yan",
+      "identity_race_fei-lin"
     ],
     "char_4071_peper": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_sa-ka-zi"
     ],
     "char_4072_ironmn": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_4077_palico": [
-      "skill_none"
+      "skill_none",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "logistics_limited",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4078_bdhkgt": [
       "skill_attack_recovery",
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_4079_haini": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shi-dai",
+      "identity_race_a-ge-er"
     ],
     "char_4080_lin": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_0011-zhi-zao"
     ],
     "char_4081_warmy": [
       "skill_all_manual",
       "skill_chargeable",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she"
     ],
     "char_4082_qiubai": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_bind",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_4083_chimes": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_4087_ines": [
       "skill_attack_recovery",
@@ -3118,70 +6335,127 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_fast_redeploy",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_bind",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_origin_ka-zi-dai-er"
     ],
     "char_4088_hodrer": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "battle_bind",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4091_ulika": [
-      "skill_none"
+      "skill_none",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4093_frston": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4098_vvana": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shi-dai"
     ],
     "char_4100_caper": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_4102_threye": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "identity_race_sa-ka-zi"
     ],
     "char_4104_coldst": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4105_almond": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4106_bryota": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_4107_vrdant": [
       "skill_passive",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_4109_baslin": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "skill_range_change"
+      "skill_range_change",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_ren-li-ban-gong-shi"
     ],
     "char_4110_delphn": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_4114_harold": [
       "skill_all_manual",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_ally_heal",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_4116_blkkgt": [
       "skill_attack_recovery",
@@ -3190,7 +6464,8 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_4117_ray": [
       "skill_attack_recovery",
@@ -3199,16 +6474,27 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_bind",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_4119_wanqin": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_411_tomimi": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_4121_zuole": [
       "skill_auto_trigger",
@@ -3216,36 +6502,63 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "battle_barrier",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_0011-zhi-zao",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_4122_grabds": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "skill_range_change"
+      "skill_range_change",
+      "logistics_base_room_su-she",
+      "identity_power_root_yan",
+      "identity_origin_yan",
+      "identity_race_li-bo-li"
     ],
     "char_4123_ela": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_xun-lian-shi",
+      "logistics_limited"
     ],
     "char_4124_iana": [
       "skill_passive",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_xun-lian-shi",
+      "logistics_limited"
     ],
     "char_4125_rdoc": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "logistics_limited"
     ],
     "char_4126_fuze": [
       "skill_all_manual",
-      "skill_ammo"
+      "skill_ammo",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "logistics_limited"
     ],
     "char_4130_luton": [
       "skill_attack_recovery",
@@ -3253,72 +6566,118 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_4131_odda": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_hui-ke-shi",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4132_ascln": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4133_logos": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4134_cetsyr": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_bind",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er"
     ],
     "char_4136_phonor": [
       "skill_none",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4137_udflow": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_race_a-ge-er"
     ],
     "char_4138_narant": [
       "skill_attack_recovery",
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_4139_papyrs": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_ally_heal",
+      "battle_barrier",
+      "logistics_base_room_xun-lian-shi",
+      "identity_race_fei-lin"
     ],
     "char_4140_lasher": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_race_li-bo-li"
     ],
     "char_4141_marcil": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_stun",
+      "battle_ally_heal",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_limited"
     ],
     "char_4142_laios": [
-      "skill_passive"
+      "skill_passive",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_limited"
     ],
     "char_4143_sensi": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_range_change"
+      "skill_range_change",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_limited"
     ],
     "char_4144_chilc": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "battle_fast_redeploy",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_mao-yi-zhan",
+      "logistics_limited"
     ],
     "char_4145_ulpia": [
       "skill_auto_trigger",
@@ -3326,89 +6685,153 @@
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_race_a-ge-er"
     ],
     "char_4146_nymph": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4147_mitm": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4148_philae": [
       "skill_all_manual",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_barrier",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_race_sa-ka-zi"
     ],
     "char_4151_tinman": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_power_root_ge-lun-bi-ya"
     ],
     "char_4155_talr": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_415_flint": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "battle_block_control",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_race_li-bo-li"
     ],
     "char_4162_cathy": [
-      "skill_passive"
+      "skill_passive",
+      "battle_barrier",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_4163_rosesa": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_ally_heal",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_4164_tecno": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_4165_ctrail": [
       "skill_passive",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4166_varkis": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu"
     ],
     "char_416_zumama": [
       "skill_passive",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_4171_wulfen": [
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_4172_xingzh": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_yan",
+      "identity_origin_yan",
+      "identity_race_fei-lin"
     ],
     "char_4173_nowell": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_4177_brigid": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_4178_alanna": [
-      "skill_passive"
+      "skill_passive",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_4179_monstr": [
       "skill_attack_recovery",
@@ -3416,91 +6839,149 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_ally_heal",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4182_oblvns": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_4183_mortis": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_4184_dolris": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_4185_amoris": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_4186_tmoris": [
       "skill_attack_recovery",
       "skill_all_manual",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_4187_graceb": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_su-she",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_4188_confes": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_4191_tippi": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_4193_lemuen": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo"
+      "skill_ammo",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_4194_rmixer": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_ammo",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_barrier",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_dou-zheng-xue-mai",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_4195_radian": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "identity_power_root_luo-de-dao",
+      "identity_race_li-bo-li"
     ],
     "char_4196_reckpr": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "battle_ally_heal",
+      "logistics_base_room_xun-lian-shi",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_4198_christ": [
       "skill_all_manual",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_wei-duo-li-ya"
     ],
     "char_4199_makiri": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_range_change"
+      "skill_range_change",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_origin_dong-guo"
     ],
     "char_4202_haruka": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_ally_heal",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_su-she",
+      "identity_origin_dong-guo",
+      "identity_race_a-ge-er"
     ],
     "char_4203_kichi": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "battle_bind",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_origin_dong-guo"
     ],
     "char_4204_mantra": [
       "skill_attack_recovery",
@@ -3508,35 +6989,48 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao"
     ],
     "char_4207_branch": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_4208_wintim": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_race_li-bo-li"
     ],
     "char_420_flamtl": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu"
     ],
     "char_4211_snhunt": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_zhi-zao-zhan"
     ],
     "char_4212_nasti": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4213_skybx": [
       "skill_auto_trigger",
@@ -3544,227 +7038,386 @@
       "skill_chargeable",
       "skill_ammo",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4214_cairn": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_barrier",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_su-she",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_fei-lin"
     ],
     "char_4215_buddy": [
-      "skill_none"
+      "skill_none",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_su-she",
+      "logistics_limited",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_421_crow": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "identity_race_li-bo-li"
     ],
     "char_4221_ju": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_yan",
+      "identity_origin_yan"
     ],
     "char_4222_taraxa": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_ally_heal",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_yan"
     ],
     "char_4223_botany": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_4224_turdus": [
       "skill_all_manual",
-      "battle_concealment"
+      "battle_concealment",
+      "battle_ally_heal",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "identity_race_li-bo-li"
     ],
     "char_4225_tanya": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she"
     ],
     "char_4226_veen": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo"
+      "skill_ammo",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_xun-lian-shi"
     ],
     "char_4227_gallus": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_fa-dian-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4228_closur": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ka-zi-dai-er",
+      "identity_race_sa-ka-zi"
     ],
     "char_4229_aphris": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo"
+      "skill_ammo",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_fei-lin"
     ],
     "char_422_aurora": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_4230_mcnist": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo"
+      "skill_ammo",
+      "battle_barrier",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_4234_pedro": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_xun-lian-shi"
     ],
     "char_4235_thumpy": [
       "skill_all_manual",
       "battle_block_control",
       "battle_forced_movement",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_barrier",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_su-she"
     ],
     "char_4236_tmslot": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_base_room_fa-dian-zhan"
     ],
     "char_4237_jcinta": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_mao-yi-zhan"
     ],
     "char_423_blemsh": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_ally_heal",
+      "logistics_base_room_jia-gong-zhan"
     ],
     "char_426_billro": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_bind",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an"
     ],
     "char_427_vigil": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_430_fartth": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_su-she",
+      "identity_race_li-bo-li"
     ],
     "char_431_ashlok": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_433_windft": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_436_whispr": [
       "skill_attack_recovery",
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_0011-zhi-zao",
+      "identity_race_a-ge-er"
     ],
     "char_437_mizuki": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "battle_bind",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_te-si-te-shou-cang",
+      "identity_origin_dong-guo",
+      "identity_race_a-ge-er"
     ],
     "char_440_pinecn": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_445_wscoot": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_yan",
+      "identity_origin_yan",
+      "identity_race_fei-lin"
     ],
     "char_446_aroma": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_449_glider": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_ally_heal",
+      "logistics_base_room_su-she",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "visual_brand_0011-zhi-zao"
     ],
     "char_450_necras": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_451_robin": [
       "skill_auto_trigger",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_bind",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_452_bstalk": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_zhi-zao-zhan",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_455_nothin": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "battle_block_control",
-      "battle_fast_redeploy"
+      "battle_fast_redeploy",
+      "battle_stun",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan",
+      "identity_race_li-bo-li"
     ],
     "char_456_ash": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_457_blitz": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_stun",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_458_rfrost": [
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "battle_stun",
+      "battle_bind",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_jia-gong-zhan",
+      "logistics_limited"
     ],
     "char_459_tachak": [
       "skill_attack_recovery",
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
     ],
     "char_464_cement": [
       "skill_all_manual",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_466_qanik": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_ren-li-ban-gong-shi"
     ],
     "char_469_indigo": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_bind",
+      "logistics_base_room_su-she",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_0011-zhi-zao"
     ],
     "char_472_pasngr": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_fa-dian-zhan",
+      "visual_brand_shi-dai",
+      "identity_origin_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_473_mberry": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "battle_elemental"
+      "battle_elemental",
+      "battle_ally_heal",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_yan",
+      "identity_origin_yan",
+      "identity_race_li-bo-li"
     ],
     "char_474_glady": [
       "skill_auto_trigger",
@@ -3772,107 +7425,200 @@
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "battle_bind",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "visual_brand_shi-dai",
+      "visual_brand_dou-zheng-xue-mai"
     ],
     "char_475_akafyu": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shi-dai",
+      "identity_origin_dong-guo",
+      "identity_race_a-ge-er"
     ],
     "char_476_blkngt": [
       "skill_all_manual",
-      "skill_chargeable"
+      "skill_chargeable",
+      "logistics_base_room_xun-lian-shi",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_0011-zhi-zao"
     ],
     "char_478_kirara": [
       "skill_attack_recovery",
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai",
+      "identity_origin_dong-guo",
+      "identity_race_a-ge-er"
     ],
     "char_479_sleach": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_base_room_su-she",
+      "visual_brand_shi-dai",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya"
     ],
     "char_484_robrta": [
       "skill_all_manual",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shan-hu-hai-an",
+      "visual_brand_yin-lv-lian-jue",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_485_pallas": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_stun",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_486_takila": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_yin-lv-lian-jue"
     ],
     "char_487_bobb": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_su-she",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_488_buildr": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_race_li-bo-li"
     ],
     "char_489_serum": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_jia-gong-zhan",
+      "visual_brand_shi-dai",
+      "identity_power_root_ge-lun-bi-ya",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_491_humus": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_barrier",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_ge-lun-bi-ya"
     ],
     "char_492_quercu": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "battle_ally_heal",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_493_firwhl": [
       "skill_auto_trigger",
-      "skill_manual_auto"
+      "skill_manual_auto",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_race_li-bo-li"
     ],
     "char_494_vendla": [
-      "skill_all_manual"
+      "skill_all_manual",
+      "logistics_base_room_su-she",
+      "identity_power_root_wei-duo-li-ya",
+      "identity_origin_wei-duo-li-ya",
+      "identity_race_fei-lin"
     ],
     "char_496_wildmn": [
       "skill_passive",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_forced_movement",
+      "logistics_base_room_zhi-zao-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_497_ctable": [
       "skill_passive",
       "skill_ammo",
       "battle_fast_redeploy",
-      "battle_concealment"
+      "battle_concealment",
+      "logistics_base_room_hui-ke-shi",
+      "visual_brand_shi-dai",
+      "visual_brand_0011-zhi-zao",
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
+      "identity_race_li-bo-li"
     ],
     "char_498_inside": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo"
+      "skill_ammo",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_su-she",
+      "visual_brand_shan-hu-hai-an",
+      "identity_power_la-te-lan",
+      "identity_origin_la-te-lan"
     ],
     "char_499_kaitou": [
       "skill_all_manual",
-      "battle_elemental"
+      "battle_elemental",
+      "logistics_base_room_mao-yi-zhan",
+      "visual_brand_shi-dai"
     ],
     "char_500_noirc": [
       "skill_none",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_dong-guo"
     ],
     "char_501_durin": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_su-she",
+      "identity_power_root_luo-de-dao"
     ],
     "char_502_nblade": [
       "skill_none",
-      "identity_alter_family"
+      "identity_alter_family",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_mao-yi-zhan",
+      "identity_power_root_luo-de-dao",
+      "identity_origin_dong-guo"
     ],
     "char_503_rang": [
-      "skill_none"
+      "skill_none",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_jia-gong-zhan",
+      "identity_power_root_luo-de-dao"
     ]
   },
   "manualReview": {

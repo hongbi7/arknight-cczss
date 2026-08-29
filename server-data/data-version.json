@@ -13,9 +13,9 @@
     "clues": 425,
     "familiarityRecords": 425,
     "identityGroups": 37,
-    "themes": 17,
-    "anomalyRules": 218,
-    "anomalyQuestions": 10313,
+    "themes": 53,
+    "anomalyRules": 225,
+    "anomalyQuestions": 10521,
     "anomalyBuckets": 18,
     "operatorArtRecords": 425,
     "requiredAssetGaps": 0,
@@ -117,16 +117,20 @@
       "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
     },
     "server-data/operator-themes.json": {
-      "bytes": 100428,
-      "sha256": "e0a19852ebef7ffb5c41991f8ba2b5b382cc59b495de59ba72875b0e851aa92a"
+      "bytes": 223362,
+      "sha256": "766ae1ddcc3f38075deb59d0e4595bd326f4ef731a751f9c98f3c7846fe86aa7"
+    },
+    "server-data/operator-brand-art.json": {
+      "bytes": 7457,
+      "sha256": "a17766d3fae900196f8f74e875808396bace6ca5c121eb71f12f7d44ddfaaac2"
     },
     "server-data/anomaly-rules.json": {
-      "bytes": 270203,
-      "sha256": "ba6d4e30b5915b97b33e2418a1b7a73623108d00c8efe61d2e2cf48370dcae0f"
+      "bytes": 258762,
+      "sha256": "18d6c63367024fb819ef52068bdde93f182ef79b1dda1bc1e33798d8bc403948"
     },
     "server-data/anomaly-questions.json": {
-      "bytes": 10665836,
-      "sha256": "d5a541ebfc4b113de932cb493b96a5d2ad26893509f2d954b9d942524482f761"
+      "bytes": 10815680,
+      "sha256": "2120abb008708c2a3c22016a86df084ebfce2f46bc7c406f52b9a8a6a97ae6d5"
     }
   }
 }

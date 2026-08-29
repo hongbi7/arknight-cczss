@@ -19,6 +19,7 @@ GENERATED_DATA_FILES = (
     "server-data/operator-familiarity.json",
     "server-data/operator-identities.json",
     "server-data/operator-themes.json",
+    "server-data/operator-brand-art.json",
     "server-data/anomaly-rules.json",
     "server-data/anomaly-questions.json",
 )

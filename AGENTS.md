@@ -11,9 +11,11 @@ This repository is an Arknights operator game with three modes: `sudden`, `endle
 - `server.js`: local zero-dependency server that reuses the API handlers.
 - `server-data/operators.json`: full server-only operator archive; never expose it as a static client file.
 - `server-data/anomaly-rules.json` and `server-data/anomaly-questions.json`: generated server-only audit rule and question banks; never copy them into `public/`.
-- `scripts/build_data.py`: base operator, clue, identity, theme, and familiarity generation.
+- `server-data/operator-themes.json` and `server-data/operator-brand-art.json`: generated server-only directive theme bank and brand skin art mapping; never copy them into `public/`.
+- `scripts/build_data.py`: base operator, clue, identity, and familiarity generation.
 - `scripts/build_anomaly_data.py`: six-domain rule extraction, ambiguity audit, and deterministic question generation.
-- `scripts/extract_anomaly_skin_art.py`: extracts the exact skin portraits referenced by outfit-brand questions from the local game client.
+- `scripts/build_themes.py`: directive theme bank (reuses anomaly rule members) plus brand skin art mapping; runs after the anomaly bank.
+- `scripts/extract_anomaly_skin_art.py`: extracts the exact skin portraits referenced by outfit-brand questions, with public-mirror fallback when the client cannot provide them.
 - `scripts/run_data_build.js`: cross-platform data-build launcher that reuses a valid `.venv` and stops on a partial virtual-environment residue.
 - `vercel.json`: static hosting and API routing configuration.
 
@@ -21,7 +23,7 @@ This repository is an Arknights operator game with three modes: `sudden`, `endle
 
 ```bash
 npm start            # Start the local server at http://localhost:3000
-npm run build:data   # Regenerate base data plus anomaly rules/questions
+npm run build:data   # Regenerate base data, anomaly rules/questions, and the theme bank
 npm run validate:data # Validate generated data and required assets
 npm test             # Run original-mode and anomaly automated tests
 npm run update:data:local # Run the full Windows GameData/client update pipeline

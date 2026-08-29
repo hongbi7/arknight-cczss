@@ -1592,17 +1592,19 @@ function renderSuddenV3Row(r) {
   visualScan.className = "operator-visual-scan";
   const image = document.createElement("img");
   image.className = "operator-art";
-  image.alt = r.guessName + " 精英一阶段立绘";
+  const themeArtUrl = operator.themeArtUrl || "";
+  const themeArtBrand = operator.themeArtBrand || "";
+  image.alt = r.guessName + (themeArtUrl ? " 主题时装立绘" : " 精英一阶段立绘");
   image.loading = firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
   image.decoding = "async";
-  image.src = artUrl(operator.id, false);
+  image.src = themeArtUrl || artUrl(operator.id, false);
   image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
   visual.setAttribute("aria-label", "查看" + r.guessName + "立绘大图");
   const showLargeArt = () => {
-    if (!visual.classList.contains("image-missing")) openArtPreview(image, r.guessName, "精英一阶段立绘", visual);
+    if (!visual.classList.contains("image-missing")) openArtPreview(image, r.guessName, themeArtUrl ? "主题时装立绘" : "精英一阶段立绘", visual);
   };
   visual.addEventListener("click", showLargeArt);
   visual.addEventListener("keydown", (e) => {
@@ -1614,9 +1616,11 @@ function renderSuddenV3Row(r) {
   const artCaption = document.createElement("div");
   artCaption.className = "operator-art-caption";
   const captionEn = document.createElement("span");
-  captionEn.textContent = "ELITE 1 RECORD";
+  captionEn.textContent = themeArtUrl ? "THEME COSTUME RECORD" : "ELITE 1 RECORD";
   const captionTitle = document.createElement("strong");
-  captionTitle.textContent = "精英一阶段";
+  captionTitle.textContent = themeArtUrl
+    ? (themeArtBrand ? themeArtBrand + " · 主题时装" : "主题时装")
+    : "精英一阶段";
   artCaption.appendChild(captionEn);
   artCaption.appendChild(captionTitle);
   visual.appendChild(visualScan);
