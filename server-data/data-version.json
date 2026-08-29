@@ -30,6 +30,7 @@
     "themeCandidates": []
   },
   "requiredAssets": {
+    "brandSkinArt": [],
     "operatorArtManifest": [],
     "pendingOperatorArt": [],
     "e1Images": [],
@@ -117,12 +118,12 @@
       "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
     },
     "server-data/operator-themes.json": {
-      "bytes": 223362,
-      "sha256": "766ae1ddcc3f38075deb59d0e4595bd326f4ef731a751f9c98f3c7846fe86aa7"
+      "bytes": 223092,
+      "sha256": "9dad91ea6088b57ea2051eef1cbb3dd8e6254551e03a33e4d5d9a85a0cfea842"
     },
     "server-data/operator-brand-art.json": {
-      "bytes": 7457,
-      "sha256": "a17766d3fae900196f8f74e875808396bace6ca5c121eb71f12f7d44ddfaaac2"
+      "bytes": 35046,
+      "sha256": "d0f26ec51bcf3c730439f0999e879c8503e884eddd74f15375e49d7e8d3f27a0"
     },
     "server-data/anomaly-rules.json": {
       "bytes": 258762,

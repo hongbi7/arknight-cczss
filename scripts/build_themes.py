@@ -48,7 +48,7 @@ def find_excel_root():
         ROOT_PATH / ".gamedata" / "cn" / "gamedata" / "excel",
         ROOT_PATH / ".cache" / "arknights-gamedata" / "zh_CN" / "gamedata" / "excel",
     ])
-    required = ("character_table.json", "skill_table.json")
+    required = ("character_table.json", "skill_table.json", "skin_table.json")
     for candidate in candidates:
         if all((candidate / name).is_file() for name in required):
             return candidate
@@ -123,14 +123,23 @@ def has_force_mechanic(character_record):
     return False
 
 
+def skin_art_url(operator_id, portrait_id):
+    digest = hashlib.sha256(portrait_id.encode("utf-8")).hexdigest()[:12]
+    return f"/img/operators/skins/{operator_id}_{digest}.webp"
+
+
+def normalize_brand(value):
+    return (value or "").split("/")[0].strip()
+
+
 operators = json.loads((ROOT_PATH / "server-data" / "operators.json").read_text(encoding="utf-8"))
 clues = json.loads((ROOT_PATH / "server-data" / "operator-clues.json").read_text(encoding="utf-8"))
 anomaly_rules = json.loads((ROOT_PATH / "server-data" / "anomaly-rules.json").read_text(encoding="utf-8"))
-anomaly_questions = json.loads((ROOT_PATH / "server-data" / "anomaly-questions.json").read_text(encoding="utf-8"))
 identity_bank = json.loads((ROOT_PATH / "server-data" / "operator-identities.json").read_text(encoding="utf-8"))
 theme_overrides = json.loads((ROOT_PATH / "scripts" / "theme-overrides.json").read_text(encoding="utf-8"))
 character = json.load(open(EXCEL_ROOT / "character_table.json", encoding="utf-8"))
 skills = json.load(open(EXCEL_ROOT / "skill_table.json", encoding="utf-8"))
+skin_table = json.load(open(EXCEL_ROOT / "skin_table.json", encoding="utf-8"))
 
 rules = anomaly_rules.get("definitions") or {}
 operator_by_id = {record["id"]: record for record in operators.values()}
@@ -299,11 +308,31 @@ for brand, members in brand_candidates:
         f"visual_brand_{slugify(brand)}",
         "visual",
         f"时装品牌：{brand}",
-        f"使用拥有“{brand}”系列时装的干员推进指令，猜中时立绘会换上对应品牌皮肤",
+        f"使用拥有“{brand}”系列时装的干员推进指令",
         members,
         art_brand=brand,
     )
-themed_brands = {art_brand for _, _, _, _, _, art_brand in extra_themes if art_brand}
+
+# 每个品牌主题成员在该品牌下最新的一套付费皮肤（与异类题库 optionArt 同源同规则，
+# 保证两边 URL 一致），供猜测行换装与皮肤提取使用。
+latest_paid_skin_by_brand = defaultdict(dict)
+for skin in (skin_table.get("charSkins") or {}).values():
+    operator_id = skin.get("charId")
+    if operator_id not in operator_ids or not skin.get("isBuySkin"):
+        continue
+    display = skin.get("displaySkin") or {}
+    portrait_id = skin.get("portraitId") or skin.get("spPortraitId")
+    brand = normalize_brand(display.get("skinGroupName"))
+    if not portrait_id or not brand:
+        continue
+    rank = (display.get("getTime") or 0, display.get("sortId") or 0)
+    previous = latest_paid_skin_by_brand[operator_id].get(brand)
+    if not previous or rank > previous["rank"]:
+        latest_paid_skin_by_brand[operator_id][brand] = {
+            "rank": rank,
+            "portraitId": portrait_id,
+            "imageUrl": skin_art_url(operator_id, portrait_id),
+        }
 
 # 身份：势力大系、所属势力、出身地、种族（玩家可报出成员的头部分组才纳入）。
 IDENTITY_THEME_SPECS = [
@@ -397,36 +426,38 @@ uncovered = sorted(operator_id for operator_id, theme_ids in themes_by_operator.
 if uncovered:
     raise ValueError(f"Theme bank does not cover {len(uncovered)} operators: {uncovered[:8]}")
 
-# 品牌皮肤立绘映射：聚合异类题库 optionArt 中“干员 × 品牌 × 立绘”三元组。
+# 品牌皮肤立绘映射：覆盖品牌主题的全部成员（不止异类题库引用过的那些），
+# 猜测行换装与皮肤提取都以这份映射为准。
 brand_art = {}
-for question in anomaly_questions.get("questions") or []:
-    rule = rules.get(question.get("ruleId") or "")
-    if not rule or not rule["id"].startswith("visual.outfit_brand."):
-        continue
-    for entry in question.get("optionArt") or []:
-        brand = entry.get("brand")
-        operator_id = entry.get("operatorId")
-        image_url = entry.get("imageUrl")
-        if brand not in themed_brands or not operator_id or not image_url:
-            continue
-        if operator_id not in operator_ids:
-            raise ValueError(f"Brand art entry references unknown operator: {operator_id}")
-        previous = brand_art.setdefault(brand, {}).get(operator_id)
-        if previous and previous != image_url:
-            raise ValueError(
-                f"Conflicting brand art for {operator_id} / {brand}: {previous} vs {image_url}"
-            )
-        brand_art[brand][operator_id] = image_url
-for brand, urls in brand_art.items():
-    missing = sorted(url for url in urls.values() if not (ROOT_PATH / "public" / url.lstrip("/")).is_file())
-    if missing:
-        raise ValueError(f"Brand art files are missing for {brand}: {missing[:4]}")
-    members = next(
-        definition["members"] for definition in theme_definitions.values()
-        if definition.get("artBrand") == brand
+for brand, members in brand_candidates:
+    records = {}
+    for operator_id in members:
+        record = latest_paid_skin_by_brand.get(operator_id, {}).get(brand)
+        if not record:
+            raise ValueError(f"Brand theme member {operator_id} has no {brand} skin record")
+        records[operator_id] = {
+            "imageUrl": record["imageUrl"],
+            "portraitId": record["portraitId"],
+        }
+    brand_art[brand] = records
+brand_art_payload = {"schemaVersion": 1, "brands": brand_art}
+missing_art_files = sorted(
+    record["imageUrl"]
+    for records in brand_art.values()
+    for record in records.values()
+    if not (ROOT_PATH / "public" / record["imageUrl"].lstrip("/")).is_file()
+)
+if missing_art_files:
+    print(
+        f"brand art: {len(missing_art_files)} skin portraits not extracted yet "
+        "(run scripts/extract_anomaly_skin_art.py)"
     )
-    covered = sum(1 for operator_id in members if operator_id in urls)
-    print(f"brand art {brand}: {covered}/{len(members)} members covered")
+for brand, records in brand_art.items():
+    covered = sum(
+        1 for record in records.values()
+        if (ROOT_PATH / "public" / record["imageUrl"].lstrip("/")).is_file()
+    )
+    print(f"brand art {brand}: {covered}/{len(records)} members covered")
 
 theme_data = {
     "schemaVersion": 1,
@@ -437,7 +468,7 @@ theme_data = {
 
 os.makedirs(OUT_THEMES.parent, exist_ok=True)
 json.dump(theme_data, open(OUT_THEMES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-json.dump(brand_art, open(OUT_BRAND_ART, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+json.dump(brand_art_payload, open(OUT_BRAND_ART, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 
 families = defaultdict(int)
 for definition in theme_definitions.values():

@@ -45,6 +45,20 @@ def referenced_skins():
             if not all(key) or not art.get("imageUrl"):
                 continue
             result[key] = art
+    # 品牌主题映射覆盖全部成员；题库只引用其中被出题的部分，这里取并集。
+    brand_art_path = PROJECT_ROOT / "server-data" / "operator-brand-art.json"
+    if brand_art_path.is_file():
+        brand_art = json.loads(brand_art_path.read_text(encoding="utf-8"))
+        for records in (brand_art.get("brands") or {}).values():
+            for operator_id, record in records.items():
+                key = (operator_id, record.get("portraitId"))
+                if not all(key) or not record.get("imageUrl"):
+                    continue
+                result.setdefault(key, {
+                    "operatorId": operator_id,
+                    "portraitId": record["portraitId"],
+                    "imageUrl": record["imageUrl"],
+                })
     return [result[key] for key in sorted(result)]
 
 
