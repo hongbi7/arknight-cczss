@@ -47,34 +47,26 @@
 </header>
 
 <main>
-  <section id="modeScreen">
+  <section id="modeScreen" class="is-mode-sequencing is-chessmaster-loading">
     <div class="mode-stage">
-      <div class="mode-side mode-side-sudden" aria-hidden="true">
-        <div class="side-content">
-          <span class="side-index">01</span>
-          <span class="side-kicker">PARADISE&nbsp;FULCRUM</span>
-          <strong>FINAL&nbsp;VERIFICATION</strong>
-          <span class="side-rule"></span>
-          <span class="side-meta">PARADISE&nbsp;FULCRUM&nbsp;//&nbsp;LIMITED&nbsp;AUDIT</span>
-        </div>
-      </div>
-
-      <div class="mode-side mode-side-endless" aria-hidden="true">
-        <img class="side-toad" src="img/endfield-toad.png" alt="">
-        <div class="side-content side-content-endless">
-          <span class="side-index">02</span>
-          <span class="side-kicker">RHODES&nbsp;ISLAND&nbsp;ARCHIVE</span>
-          <strong>ENDLESS&nbsp;ARCHIVE&nbsp;SEARCH</strong>
-          <span class="side-rule"></span>
-          <span class="side-meta">P.R.T.S.&nbsp;//&nbsp;OPEN&nbsp;RETRIEVAL&nbsp;PROTOCOL</span>
-        </div>
-      </div>
-
       <div class="chessmaster-scene" aria-hidden="true">
         <img src="img/chessmaster.png" alt="">
         <span class="scene-scan"></span>
       </div>
-      <span class="mode-seam" aria-hidden="true"></span>
+      <div class="mode-projections" aria-hidden="true">
+        <div class="mode-projection mode-projection-sudden">
+          <img src="img/paradise-fulcrum.jpg" alt="">
+          <span><b>01</b> FINAL VERIFICATION</span>
+        </div>
+        <div class="mode-projection mode-projection-endless">
+          <img src="img/endfield-toad.png" alt="">
+          <span><b>02</b> ENDLESS ARCHIVE SEARCH</span>
+        </div>
+        <div class="mode-projection mode-projection-anomaly">
+          <img src="img/operators/e1/char_249_mlyss.webp" alt="">
+          <span><b>03</b> ANOMALY AUDIT</span>
+        </div>
+      </div>
 
       <div class="section-head mode-heading">
         <h2 class="mode-title">选择游戏模式</h2>
@@ -107,6 +99,15 @@
           <span class="mode-desc">全干员池，不限猜测次数<br>靠 12 维线索一路逼近答案</span>
           <span class="mode-go">进入协议&nbsp;&raquo;</span>
         </button>
+        <article id="modeAnomalyCard" class="mode-card mode-anomaly">
+          <span class="mode-index" aria-hidden="true">03</span>
+          <img class="mode-card-sticker mode-card-sticker-anomaly" src="img/muelsyse-water-clone.png" alt="" aria-hidden="true">
+          <i class="mode-beam" aria-hidden="true"></i>
+          <span class="mode-en">ANOMALY&nbsp;AUDIT</span>
+          <span class="mode-name">异类审查</span>
+          <span class="mode-desc">四份干员档案，三人拥有隐藏共性<br>十轮审查，锁定唯一异类</span>
+          <button id="modeAnomalyGo" class="mode-go anomaly-go" type="button">进入协议&nbsp;&raquo;</button>
+        </article>
       </div>
     </div>
   </section>
@@ -135,6 +136,14 @@
           <span><i class="legend-tip"></i>接近</span>
           <span><i class="legend-wrong"></i>不符</span>
           <span><i class="legend-unknown"></i>未知</span>
+        </div>
+        <div class="endless-telemetry" aria-hidden="true">
+          <span class="endless-telemetry-code">P.R.T.S. / SEARCH MATRIX</span>
+          <div class="endless-telemetry-stats">
+            <p><strong>12</strong><span>ARCHIVE<br>DIMENSIONS</span></p>
+            <p><strong>04</strong><span>ROTATING<br>INTEL</span></p>
+          </div>
+          <small><i></i>ARCHIVE LINK&nbsp;&nbsp;/&nbsp;&nbsp;ONLINE</small>
         </div>
         <section id="directivePanel" class="directive-panel" data-status="idle" data-family="" aria-label="战术指令">
           <div class="directive-stage">
@@ -198,7 +207,10 @@
               <span id="attemptLabel" class="pill"></span>
               <span id="livesPips" class="pips" aria-hidden="true"></span>
             </span>
-            <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
+            <div class="game-meta-buttons">
+              <button id="ingameRestartBtn" class="protocol-switch endless-restart" type="button"><span>重新开始</span><i>RESTART</i></button>
+              <button id="ingameChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
+            </div>
           </div>
         </div>
 
@@ -273,9 +285,126 @@
       </div>
     </div>
   </section>
+
+  <section id="anomalyScreen" class="hidden" aria-label="异类审查">
+    <div class="anomaly-layout">
+      <aside class="anomaly-sidebar">
+        <div class="anomaly-art" aria-hidden="true">
+          <img src="img/operators/e1/char_249_mlyss.webp" alt="">
+          <span class="anomaly-art-grid"></span>
+          <span class="anomaly-art-scan"></span>
+        </div>
+        <div class="anomaly-sidebar-copy">
+          <span class="eyebrow">RHINE LAB // ANOMALY AUDIT</span>
+          <p class="anomaly-sidebar-index">/ 03</p>
+          <h2>四份档案，<br>一个异类。</h2>
+          <p id="anomalySidebarDesc">每题四名干员中，三人满足同一隐藏规则。高难综合审查初始提供两次共性扫描，每连续判定正确三次再奖励一次。</p>
+        </div>
+        <div class="anomaly-side-stats" aria-label="本局审查状态">
+          <p><span>TOTAL SCORE</span><strong id="anomalySideScore">0</strong></p>
+          <p><span>STREAK</span><strong id="anomalySideStreak">×0</strong></p>
+          <p><span>SCANNER</span><strong id="anomalySideScanner">READY</strong></p>
+        </div>
+        <div class="anomaly-rhine" aria-hidden="true">
+          <img src="img/factions/rhine.webp" alt="">
+          <span>RHINE LAB LLC</span>
+        </div>
+      </aside>
+
+      <div class="anomaly-workspace">
+        <div class="anomaly-meta">
+          <div class="anomaly-meta-protocol">
+            <span class="meta-label">CURRENT PROTOCOL</span>
+            <span class="pill">异类审查</span>
+            <span id="anomalyMetaConfig" class="anomaly-meta-config">请选择审查主题</span>
+            <span id="anomalyMetaStats" class="anomaly-meta-stats">总分 0 · 连胜 ×0</span>
+          </div>
+          <div class="anomaly-meta-actions">
+            <span id="anomalyRound" class="anomaly-round">FILE --/10</span>
+            <div class="game-meta-buttons">
+              <button id="anomalyRestartBtn" class="protocol-switch" type="button"><span>重新审查</span><i>RESTART</i></button>
+              <button id="anomalyChangeModeBtn" class="protocol-switch" type="button"><span>切换模式</span><i>SWITCH</i></button>
+            </div>
+          </div>
+        </div>
+
+        <div id="anomalyScope" class="anomaly-scope hidden" aria-label="当前主题涵盖大类">
+          <div class="anomaly-scope-head">
+            <span>TOPIC COVERAGE // 主题大类</span>
+            <strong id="anomalyScopeTheme">--</strong>
+          </div>
+          <div id="anomalyScopeItems" class="anomaly-scope-items"></div>
+        </div>
+
+        <section id="anomalyThemeSelect" class="anomaly-theme-select hidden" aria-labelledby="anomalyThemeTitle">
+          <header class="anomaly-theme-head">
+            <span class="anomaly-theme-kicker">AUDIT ROUTING // 主题路由</span>
+            <h2 id="anomalyThemeTitle">选择本次审查主题</h2>
+            <p>标准审查起步：三连对升级，两连错降级；基础、标准、危机题基础分依次为 100、150、220。综合审查另有两次初始扫描，每三连对奖励一次。</p>
+          </header>
+          <div class="anomaly-theme-layout">
+            <div id="anomalyThemeGrid" class="anomaly-theme-grid" role="listbox" aria-label="审查主题"></div>
+            <aside id="anomalyThemeDetails" class="anomaly-theme-details" aria-live="polite"></aside>
+          </div>
+          <div class="anomaly-theme-actions">
+            <p id="anomalyThemeStatus" class="status" role="status"></p>
+            <button id="anomalyThemeStart" class="anomaly-confirm" type="button" disabled><span>开始审查</span><i aria-hidden="true">↗</i></button>
+          </div>
+        </section>
+
+        <div id="anomalyConsole" class="anomaly-console hidden">
+          <div class="anomaly-question-head">
+            <span id="anomalyRoundIndex" class="console-step">01</span>
+            <div class="anomaly-question-domain">
+              <h2 id="anomalyDomainLabel">档案装载中</h2>
+              <span id="anomalyDomainEn">ARCHIVE LOADING</span>
+            </div>
+            <span id="anomalyDifficultyBadge" class="anomaly-difficulty-badge" data-level="standard">标准审查 // ×1.50</span>
+            <p id="anomalyTimer" class="anomaly-timer" aria-hidden="true">T+00.0s</p>
+            <p class="anomaly-question-tip">四份档案中，有一位干员不满足其余三人共有的规则。选中后需再按「确认异类」才会提交。</p>
+          </div>
+
+          <div id="anomalyHint" class="anomaly-hint hidden" role="status">
+            <span class="anomaly-hint-tag">SCAN<br>OUTPUT</span>
+            <div class="anomaly-hint-text">
+              <strong id="anomalyHintTitle"></strong>
+              <p id="anomalyHintDesc"></p>
+            </div>
+            <span class="anomaly-hint-cost">本题得分 ×0.6</span>
+          </div>
+
+          <div id="anomalyOptions" class="anomaly-options" role="group" aria-label="异类候选干员"></div>
+
+          <div class="anomaly-actionbar">
+            <button id="anomalyScanBtn" class="anomaly-scan" type="button">
+              <span class="anomaly-scan-name">共性扫描器</span>
+              <span id="anomalyScanState" class="anomaly-scan-state">综合审查 · 初始 2 次</span>
+            </button>
+            <p id="anomalyStatus" class="status anomaly-status" aria-live="polite"></p>
+            <button id="anomalyConfirmBtn" class="anomaly-confirm" type="button" disabled>
+              <span>确认异类</span><i aria-hidden="true">↗</i>
+            </button>
+          </div>
+        </div>
+
+        <section id="anomalyReview" class="anomaly-review hidden" aria-label="审查结论" tabindex="-1"></section>
+        <section id="anomalySummary" class="anomaly-summary hidden" aria-label="审查结算" tabindex="-1"></section>
+
+        <div id="anomalyErrorPanel" class="anomaly-error-panel hidden" role="alert">
+          <span class="anomaly-error-tag">SIGNAL LOST // 链路中断</span>
+          <strong id="anomalyErrorText">通讯链路异常</strong>
+          <div class="anomaly-error-actions">
+            <button id="anomalyRetryBtn" type="button"><span>重新建立审查</span><i aria-hidden="true">↗</i></button>
+            <button id="anomalyErrorHomeBtn" class="ghost" type="button">返回协议选择</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span id="anomalyAnnounce" class="sr-only" aria-live="polite"></span>
+  </section>
 </main>
 
-<footer class="foot">DATA FROM IN-GAME ARCHIVES · FAN-MADE PROJECT<br>数据来源：游戏内档案 · 纯粉丝向游戏 · 仅前端展示用</footer>
+<footer class="foot">DATA FROM IN-GAME ARCHIVES · FAN-MADE PROJECT<br>数据来源：游戏内档案 · 纯粉丝向游戏 · 仅用于非商业学习与娱乐</footer>
 
 <div id="choiceModal" class="modal hidden">
   <div class="modal-box">

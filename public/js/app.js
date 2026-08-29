@@ -32,6 +32,9 @@ let gameStartSequence = 0;
 let wipeSequence = 0;
 let directiveIntroTimer = null;
 let roundContentTimer = null;
+let modeFocusTimer = null;
+let modeFocusFrame = null;
+let modeIntroSequence = 0;
 
 /* ---- 战术指令（V3）状态 ---- */
 let directiveSnapshot = null;
@@ -60,6 +63,7 @@ const victoryText = document.getElementById("victoryText");
 const victoryEyebrow = document.getElementById("victoryEyebrow");
 const restartBtn = document.getElementById("restartBtn");
 const changeModeBtn = document.getElementById("changeModeBtn");
+const ingameRestartBtn = document.getElementById("ingameRestartBtn");
 const ingameChangeModeBtn = document.getElementById("ingameChangeModeBtn");
 const suggestEl = document.getElementById("suggest");
 const livesPips = document.getElementById("livesPips");
@@ -69,8 +73,11 @@ const choiceGiveup = document.getElementById("choiceGiveup");
 const hudTagL = document.getElementById("hudTagL");
 const hudTagR = document.getElementById("hudTagR");
 const modeStage = document.querySelector(".mode-stage");
+const modeCards = document.querySelector(".mode-cards");
 const modeSuddenCard = document.getElementById("modeSuddenCard");
 const modeEndlessBtn = document.getElementById("modeEndless");
+const modeAnomalyCard = document.getElementById("modeAnomalyCard");
+const modeAnomalyGo = document.getElementById("modeAnomalyGo");
 const suddenModeDesc = document.getElementById("suddenModeDesc");
 const suddenAttemptsMode = document.getElementById("suddenAttemptsMode");
 const suddenGameConfig = document.getElementById("suddenGameConfig");
@@ -233,6 +240,7 @@ function releaseDirectiveIntro() {
 function setModeLaunching(mode, launching) {
   modeSuddenCard.classList.toggle("is-launching", Boolean(launching && mode === "sudden"));
   modeEndlessBtn.classList.toggle("is-launching", Boolean(launching && mode === "endless"));
+  modeAnomalyCard.classList.toggle("is-launching", Boolean(launching && mode === "anomaly"));
 }
 
 function resetRoundInterface(mode) {
@@ -240,6 +248,7 @@ function resetRoundInterface(mode) {
   resetDirectiveState();
   gameScreen.classList.remove("has-guesses", "is-finished");
   document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  input.value = "";
   quickInput.value = "";
   rowsEl.innerHTML = "";
   boardEmpty.classList.remove("hidden");
@@ -247,6 +256,7 @@ function resetRoundInterface(mode) {
   victoryEl.classList.remove("fail");
   choiceModal.classList.add("hidden");
   hideSuggest();
+  hideQuickSuggest();
   modeLabel.textContent = MODE_LABELS[mode];
   modeLabel.classList.toggle("hot", mode === "sudden");
   suddenGameConfig.classList.toggle("hidden", mode !== "sudden");
@@ -381,9 +391,9 @@ async function startGame(mode, requestedMax) {
     transition = playWipe();
   }
   const params = new URLSearchParams({ mode });
+  params.set("v", SUDDEN_VERSION);
   if (mode === "sudden") {
     params.set("attempts", suddenMax);
-    params.set("v", SUDDEN_VERSION);
     const recentThemes = directiveHistory();
     if (recentThemes.length) params.set("themes", recentThemes.join(","));
   }
@@ -411,7 +421,7 @@ async function startGame(mode, requestedMax) {
   token = data.token;
   totalOperators = data.total || 0;
   updateSidebarModeCopy(mode);
-  currentGameVersion = mode === "sudden" && Number(data.version) === SUDDEN_VERSION ? SUDDEN_VERSION : 1;
+  currentGameVersion = Number(data.version) === SUDDEN_VERSION ? SUDDEN_VERSION : 1;
   if (data.maxAttempts) syncSuddenControls(data.maxAttempts);
   updateEndlessBubble();
   hideEndlessBubble();
@@ -437,6 +447,10 @@ function isSuddenV3() {
   return currentMode === "sudden" && currentGameVersion === SUDDEN_VERSION;
 }
 
+function isComparisonV3() {
+  return currentGameVersion === SUDDEN_VERSION;
+}
+
 function resetDirectiveState() {
   directiveSnapshot = null;
   pendingClue = null;
@@ -460,6 +474,12 @@ function updateSidebarModeCopy(mode) {
     gameSidebarDesc.textContent = "在有限回合内压缩候选；按战术指令完成校验必定解锁一条情报，次数耗尽后进入最终抉择。";
     topbarContextEn.textContent = "FINAL VERIFICATION PROTOCOL";
     topbarSubtitle.textContent = "罗德岛人员档案 · 终局校验终端";
+  } else if (mode === "anomaly") {
+    gameSidebarIndex.textContent = "/ 03";
+    gameSidebarTitle.innerHTML = "四份档案，<br>一个异类。";
+    gameSidebarDesc.textContent = "十题审查协议：高难综合审查初始提供两次共性扫描，每三连对奖励一次；单域审查会公开题库大类。";
+    topbarContextEn.textContent = "RHINE LAB // ANOMALY AUDIT";
+    topbarSubtitle.textContent = "莱茵生命生态科 · 异类审查终端";
   } else {
     topbarContextEn.textContent = "OPERATOR INTELLIGENCE NETWORK";
     topbarSubtitle.textContent = "罗德岛人员档案 · 干员身份识别终端";
@@ -474,6 +494,9 @@ function updateHudTags(mode) {
   } else if (mode === "sudden") {
     hudTagL.textContent = "PARADISE FULCRUM // FINAL VERIFICATION";
     hudTagR.textContent = "P.F.S. — LIMITED AUDIT PROTOCOL";
+  } else if (mode === "anomaly") {
+    hudTagL.textContent = "RHINE LAB // ANOMALY AUDIT";
+    hudTagR.textContent = "M.L.S.S. — AUDIT GUIDE ONLINE";
   } else {
     /* 模式选择页：使用中性标识，不显示任一模式的名称 */
     hudTagL.textContent = "OPERATOR TRACE // IDENTIFICATION PROTOCOL";
@@ -813,7 +836,7 @@ async function submitGuess() {
       return;
     }
     if (data.error) {
-      setStatus(isSuddenV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
+      setStatus(isComparisonV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
       setInputEnabled(true);
       return;
     }
@@ -822,7 +845,23 @@ async function submitGuess() {
     token = data.token;
     lastRemaining = data.remaining;
     await mobileViewportReady;
-    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
+    if (isComparisonV3() && Number(data.version) === SUDDEN_VERSION) {
+      if (currentMode === "endless") {
+        input.value = "";
+        if (data.win) {
+          renderComparisonFinalRecord(data);
+          showEndlessBubble(true);
+          finishGame(true, "猜中了！答案是 " + data.answerName + "，共用 " + attempts + " 次");
+          return;
+        }
+        renderSuddenV3Row(data);
+        showEndlessBubble(false);
+        updateAttemptLabel();
+        setStatus("已猜 " + attempts + " 次");
+        setInputEnabled(true);
+        focusGuessEntry();
+        return;
+      }
       const open = await handleSuddenV3Guess(data);
       input.value = "";
       if (open) {
@@ -864,7 +903,7 @@ async function handleSuddenV3Guess(data) {
   updateDirectivePanel(data.theme, themeResult);
   updateAttemptLabel();
   if (data.win) {
-    if (data.archive) renderSuddenV3FinalRecord(data);
+    if (data.archive) renderComparisonFinalRecord(data);
     else renderSuddenV3Row(data);
     finishGame(true, "终局校验通过！答案是 " + data.answerName + "，共用 " + attempts + " 次");
     return false;
@@ -1032,7 +1071,7 @@ async function onPick(name, selectedButton) {
     choiceModal.classList.add("hidden");
     choiceModal.classList.remove("is-resolving");
     if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
-      renderSuddenV3FinalRecord(data);
+      renderComparisonFinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
     }
@@ -1672,7 +1711,7 @@ function renderSuddenV3Row(r) {
 
 /* ---------- sudden V3 结算档案 ---------- */
 
-function renderSuddenV3FinalRecord(r) {
+function renderComparisonFinalRecord(r) {
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
   const card = document.createElement("article");
@@ -2807,8 +2846,8 @@ async function confirmReveal() {
     if (data.error) throw new Error(data.error);
     closeRevealConfirm(false);
     if (source === "choice") choiceModal.classList.add("hidden");
-    if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
-      renderSuddenV3FinalRecord(data);
+    if (isComparisonV3() && Number(data.version) === SUDDEN_VERSION) {
+      renderComparisonFinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
     }
@@ -2836,29 +2875,114 @@ function showModeScreen() {
   gameStartSequence++;
   releaseDirectiveIntro();
   document.body.dataset.mode = "";
-  document.body.classList.remove("game-scroll-lock");
+  document.body.classList.remove("game-scroll-lock", "anomaly-scroll-lock");
   clearFinalSequence();
   gameScreen.classList.remove("is-finished");
   document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
   victoryEl.classList.add("hidden");
   updateHudTags("");
+  anomalyScreen.classList.add("hidden");
+  anomalyScreen.classList.remove("is-theme-selecting");
+  resetAnomalyState();
+  setModeLaunching("", false);
   setModePreview("");
   syncSuddenControls(suddenMax);
   gameScreen.classList.add("hidden");
   modeScreen.classList.remove("hidden");
   window.scrollTo(0, 0);
+  scheduleModeScreenFocus();
 }
 
 function showGameScreen() {
+  cancelModeScreenFocus();
   modeScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
+  document.body.classList.remove("anomaly-scroll-lock");
   document.body.classList.add("game-scroll-lock");
   window.scrollTo(0, 0);
+}
+
+function cancelModeScreenFocus() {
+  modeIntroSequence++;
+  document.documentElement.classList.remove("mode-scroll-driving");
+  if (modeFocusTimer !== null) {
+    window.clearTimeout(modeFocusTimer);
+    modeFocusTimer = null;
+  }
+  if (modeFocusFrame !== null) {
+    window.cancelAnimationFrame(modeFocusFrame);
+    modeFocusFrame = null;
+  }
+  modeScreen.classList.remove("is-mode-sequencing", "is-chessmaster-loading", "is-mode-cards-revealing");
+}
+
+function scheduleModeScreenFocus() {
+  cancelModeScreenFocus();
+  if (!modeCards) return;
+  const sequence = modeIntroSequence;
+  modeScreen.classList.add("is-mode-sequencing", "is-chessmaster-loading");
+  void modeScreen.offsetWidth;
+  if (!window.matchMedia("(min-width: 1041px)").matches || isReducedMotion()) {
+    modeScreen.classList.remove("is-chessmaster-loading");
+    if (window.matchMedia("(min-width: 1041px)").matches) {
+      const cardsTop = window.scrollY + modeCards.getBoundingClientRect().top;
+      window.scrollTo(0, Math.max(0, cardsTop - window.innerHeight * 0.48));
+    }
+    revealModeCards(sequence);
+    return;
+  }
+  modeFocusTimer = window.setTimeout(() => {
+    modeFocusTimer = null;
+    if (modeScreen.classList.contains("hidden")) return;
+    modeScreen.classList.remove("is-chessmaster-loading");
+    const cardsTop = window.scrollY + modeCards.getBoundingClientRect().top;
+    const targetTop = Math.max(0, cardsTop - window.innerHeight * 0.48);
+    animateModeScreenScroll(targetTop, sequence);
+  }, 1450);
+}
+
+function animateModeScreenScroll(targetTop, sequence) {
+  const startTop = window.scrollY;
+  const distance = targetTop - startTop;
+  const startedAt = performance.now();
+  const duration = 880;
+  document.documentElement.classList.add("mode-scroll-driving");
+  const step = (now) => {
+    if (sequence !== modeIntroSequence || modeScreen.classList.contains("hidden")) {
+      document.documentElement.classList.remove("mode-scroll-driving");
+      modeFocusFrame = null;
+      return;
+    }
+    const progress = Math.min(1, (now - startedAt) / duration);
+    const eased = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    window.scrollTo(0, startTop + distance * eased);
+    if (progress < 1) {
+      modeFocusFrame = window.requestAnimationFrame(step);
+      return;
+    }
+    document.documentElement.classList.remove("mode-scroll-driving");
+    modeFocusFrame = null;
+    revealModeCards(sequence);
+  };
+  modeFocusFrame = window.requestAnimationFrame(step);
+}
+
+function revealModeCards(sequence) {
+  if (sequence !== modeIntroSequence || modeScreen.classList.contains("hidden")) return;
+  modeScreen.classList.remove("is-mode-sequencing");
+  modeScreen.classList.add("is-mode-cards-revealing");
+  modeFocusTimer = window.setTimeout(() => {
+    modeFocusTimer = null;
+    if (sequence === modeIntroSequence) modeScreen.classList.remove("is-mode-cards-revealing");
+  }, 1100);
 }
 
 function setModePreview(mode) {
   modeStage.classList.toggle("preview-sudden", mode === "sudden");
   modeStage.classList.toggle("preview-endless", mode === "endless");
+  modeStage.classList.toggle("preview-anomaly", mode === "anomaly");
 }
 
 function bindFinishedScrollProxy(element) {
@@ -3022,6 +3146,7 @@ quickBtn.addEventListener("click", submitQuickGuess);
 revealBtn.addEventListener("click", giveUp);
 restartBtn.addEventListener("click", () => startGame(currentMode));
 changeModeBtn.addEventListener("click", showModeScreen);
+ingameRestartBtn.addEventListener("click", () => startGame("endless"));
 ingameChangeModeBtn.addEventListener("click", showModeScreen);
 choiceGiveup.addEventListener("click", giveUpChoice);
 revealCancel.addEventListener("click", () => closeRevealConfirm(true));
@@ -3077,13 +3202,35 @@ modeSuddenCard.addEventListener("click", (e) => {
   startSudden();
 });
 
-[modeSuddenCard, modeEndlessBtn].forEach((el) => {
-  const mode = el === modeSuddenCard ? "sudden" : "endless";
+[modeSuddenCard, modeEndlessBtn, modeAnomalyCard].forEach((el) => {
+  const mode = el === modeSuddenCard ? "sudden" : el === modeEndlessBtn ? "endless" : "anomaly";
+  const resetCardMotion = () => {
+    el.style.setProperty("--art-shift-x", "0px");
+    el.style.setProperty("--art-shift-y", "0px");
+    el.style.setProperty("--glow-x", "50%");
+    el.style.setProperty("--glow-y", "38%");
+  };
   el.addEventListener("mouseenter", () => setModePreview(mode));
+  el.addEventListener("pointermove", (e) => {
+    if (isReducedMotion() || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const rect = el.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+    el.style.setProperty("--art-shift-x", ((x - .5) * 12).toFixed(2) + "px");
+    el.style.setProperty("--art-shift-y", ((y - .5) * 8).toFixed(2) + "px");
+    el.style.setProperty("--glow-x", (x * 100).toFixed(1) + "%");
+    el.style.setProperty("--glow-y", (y * 100).toFixed(1) + "%");
+  });
   el.addEventListener("focusin", () => setModePreview(mode));
-  el.addEventListener("mouseleave", () => setModePreview(""));
+  el.addEventListener("mouseleave", () => {
+    setModePreview("");
+    resetCardMotion();
+  });
   el.addEventListener("focusout", (e) => {
-    if (!el.contains(e.relatedTarget)) setModePreview("");
+    if (!el.contains(e.relatedTarget)) {
+      setModePreview("");
+      resetCardMotion();
+    }
   });
 });
 
@@ -3094,6 +3241,1078 @@ async function startSudden() {
 async function startEndless() {
   await startGame("endless");
 }
+
+/* ==================== 异类审查 ANOMALY AUDIT ==================== */
+
+const ANOMALY_DOMAINS = [
+  { id: "mixed", label: "综合审查", labelEn: "FULL AUDIT" },
+  { id: "roster", label: "作战编制", labelEn: "ROSTER REVIEW" },
+  { id: "identity", label: "身份归属", labelEn: "IDENTITY TRACE" },
+  { id: "skill", label: "技能协议", labelEn: "SKILL PROTOCOL" },
+  { id: "battle", label: "战术特性", labelEn: "TACTICAL TRAIT" },
+  { id: "logistics", label: "后勤履历", labelEn: "LOGISTICS RECORD" },
+  { id: "visual", label: "形象档案", labelEn: "VISUAL ARCHIVE" },
+];
+const ANOMALY_OPTION_LETTERS = ["A", "B", "C", "D"];
+const ANOMALY_RATING_TEXT = { S: "完美洞察", A: "精准研判", B: "合格结案", C: "仍需复训" };
+const ANOMALY_DIFFICULTIES = {
+  trainee: { id: "trainee", label: "基础审查", labelEn: "TRAINEE", scoreMultiplier: 1 },
+  standard: { id: "standard", label: "标准审查", labelEn: "STANDARD", scoreMultiplier: 1.5 },
+  hazard: { id: "hazard", label: "危机审查", labelEn: "HAZARD", scoreMultiplier: 2.2 },
+};
+const ANOMALY_ERROR_TEXT = {
+  invalid_domain: "审查域配置无效，请重新选择。",
+  invalid_session: "审查会话已失效。",
+  invalid_phase: "当前状态无法执行该操作。",
+  invalid_pick: "该选项不在本题档案中，请重新标记。",
+  scan_unavailable: "当前题无法使用扫描器；仅综合审查支持，每题至多一次，初始两次且每三连对奖励一次。",
+  question_bank_unavailable: "审查题库暂时不可用，请稍后重试。",
+  question_unavailable: "题目数据不可用，请重试。",
+  bad_request: "请求格式有误，请重试。",
+  request_too_large: "请求体过大，请重试。",
+  method_not_allowed: "请求方式不被允许。",
+  network: "网络错误，请检查连接后重试。",
+};
+
+const anomalyScreen = document.getElementById("anomalyScreen");
+const anomalyThemeSelect = document.getElementById("anomalyThemeSelect");
+const anomalyThemeGrid = document.getElementById("anomalyThemeGrid");
+const anomalyThemeDetails = document.getElementById("anomalyThemeDetails");
+const anomalyThemeStatus = document.getElementById("anomalyThemeStatus");
+const anomalyThemeStart = document.getElementById("anomalyThemeStart");
+const anomalyConsole = document.getElementById("anomalyConsole");
+const anomalyOptions = document.getElementById("anomalyOptions");
+const anomalyReview = document.getElementById("anomalyReview");
+const anomalySummary = document.getElementById("anomalySummary");
+const anomalyHint = document.getElementById("anomalyHint");
+const anomalyHintTitle = document.getElementById("anomalyHintTitle");
+const anomalyHintDesc = document.getElementById("anomalyHintDesc");
+const anomalyStatus = document.getElementById("anomalyStatus");
+const anomalyAnnounce = document.getElementById("anomalyAnnounce");
+const anomalyScanBtn = document.getElementById("anomalyScanBtn");
+const anomalyScanState = document.getElementById("anomalyScanState");
+const anomalyConfirmBtn = document.getElementById("anomalyConfirmBtn");
+const anomalyRestartBtn = document.getElementById("anomalyRestartBtn");
+const anomalyChangeModeBtn = document.getElementById("anomalyChangeModeBtn");
+const anomalyRetryBtn = document.getElementById("anomalyRetryBtn");
+const anomalyErrorHomeBtn = document.getElementById("anomalyErrorHomeBtn");
+const anomalyErrorPanel = document.getElementById("anomalyErrorPanel");
+const anomalyErrorText = document.getElementById("anomalyErrorText");
+const anomalyRound = document.getElementById("anomalyRound");
+const anomalyRoundIndex = document.getElementById("anomalyRoundIndex");
+const anomalyDomainLabel = document.getElementById("anomalyDomainLabel");
+const anomalyDomainEn = document.getElementById("anomalyDomainEn");
+const anomalyTimer = document.getElementById("anomalyTimer");
+const anomalyMetaConfig = document.getElementById("anomalyMetaConfig");
+const anomalyMetaStats = document.getElementById("anomalyMetaStats");
+const anomalyScope = document.getElementById("anomalyScope");
+const anomalyScopeTheme = document.getElementById("anomalyScopeTheme");
+const anomalyScopeItems = document.getElementById("anomalyScopeItems");
+const anomalySideScore = document.getElementById("anomalySideScore");
+const anomalySideStreak = document.getElementById("anomalySideStreak");
+const anomalySideScanner = document.getElementById("anomalySideScanner");
+const anomalyDifficultyBadge = document.getElementById("anomalyDifficultyBadge");
+const anomaly = {
+  token: null,
+  config: { domain: "mixed", totalRounds: 10, scannerLimit: 2, scannerRewardEvery: 3 },
+  themes: [],
+  selectedTheme: "mixed",
+  question: null,
+  score: 0,
+  correctCount: 0,
+  streak: 0,
+  difficulty: ANOMALY_DIFFICULTIES.standard,
+  difficultyProgress: { correct: 0, wrong: 0, correctRequired: 3, wrongRequired: 2 },
+  selectedId: null,
+  phase: "idle", /* idle | loading | question | submitting | answered | finished */
+  busy: false,
+  scannerAvailable: true,
+  scansRemaining: 2,
+  hint: null,
+  result: null,
+  summary: null,
+};
+let anomalyTimerInterval = null;
+let anomalyTimerStart = 0;
+let anomalyWorkspaceIntroTimer = null;
+
+function anomalyErrorMessage(code) {
+  return ANOMALY_ERROR_TEXT[code] || ("出错了：" + code);
+}
+
+function setAnomalyStatus(msg, isError) {
+  anomalyStatus.textContent = msg;
+  anomalyStatus.className = "status anomaly-status" + (isError ? " error" : "");
+}
+
+function announceAnomaly(text) {
+  anomalyAnnounce.textContent = "";
+  window.setTimeout(() => { anomalyAnnounce.textContent = text; }, 30);
+}
+
+function anomalyDomainName(id) {
+  const found = ANOMALY_DOMAINS.find((d) => d.id === id);
+  return found ? found.label : id;
+}
+
+function stageAnomalyWorkspaceEntry() {
+  if (anomalyWorkspaceIntroTimer) window.clearTimeout(anomalyWorkspaceIntroTimer);
+  anomalyWorkspaceIntroTimer = null;
+  anomalyScreen.classList.remove("is-workspace-entering");
+  anomalyScreen.classList.add("is-workspace-staged");
+}
+
+function playAnomalyWorkspaceEntry() {
+  if (anomalyWorkspaceIntroTimer) window.clearTimeout(anomalyWorkspaceIntroTimer);
+  anomalyScreen.classList.remove("is-workspace-entering");
+  void anomalyScreen.offsetWidth;
+  anomalyScreen.classList.remove("is-workspace-staged");
+  anomalyScreen.classList.add("is-workspace-entering");
+  anomalyWorkspaceIntroTimer = window.setTimeout(() => {
+    anomalyScreen.classList.remove("is-workspace-entering");
+    anomalyWorkspaceIntroTimer = null;
+  }, 980);
+}
+
+function updateAnomalyScope() {
+  const theme = anomaly.themes.find((entry) => entry.id === anomaly.config.domain);
+  const groups = theme ? (theme.groups || theme.items || []) : [];
+  const visible = anomaly.phase !== "idle" && groups.length > 0;
+  anomalyScope.classList.toggle("hidden", !visible);
+  if (!visible) {
+    delete anomalyScope.dataset.key;
+    anomalyScopeItems.innerHTML = "";
+    return;
+  }
+
+  anomalyScopeTheme.textContent = theme.label + (theme.tag ? " · " + theme.tag : "") + " · " + groups.length + " 类";
+  const key = theme.id + ":" + groups.map((group) => group.title).join("|");
+  if (anomalyScope.dataset.key === key) return;
+  anomalyScope.dataset.key = key;
+  anomalyScopeItems.innerHTML = "";
+  groups.forEach((group, index) => {
+    const item = document.createElement("span");
+    item.style.setProperty("--d", (index * 45) + "ms");
+    item.textContent = group.title;
+    anomalyScopeItems.appendChild(item);
+  });
+}
+
+function stopAnomalyTimer() {
+  if (anomalyTimerInterval) window.clearInterval(anomalyTimerInterval);
+  anomalyTimerInterval = null;
+}
+
+function resetAnomalyState() {
+  stopAnomalyTimer();
+  anomaly.token = null;
+  anomaly.question = null;
+  anomaly.score = 0;
+  anomaly.correctCount = 0;
+  anomaly.streak = 0;
+  anomaly.difficulty = ANOMALY_DIFFICULTIES.standard;
+  anomaly.difficultyProgress = { correct: 0, wrong: 0, correctRequired: 3, wrongRequired: 2 };
+  anomaly.selectedId = null;
+  anomaly.phase = "idle";
+  anomaly.busy = false;
+  anomaly.scannerAvailable = false;
+  anomaly.scansRemaining = 0;
+  anomaly.hint = null;
+  anomaly.result = null;
+  anomaly.summary = null;
+}
+
+/* 客户端计时仅作展示；计分以服务端 token 内的 startedAt 为准 */
+function startAnomalyTimer() {
+  stopAnomalyTimer();
+  anomalyTimerStart = performance.now();
+  anomalyTimer.textContent = "T+00.0s";
+  anomalyTimerInterval = window.setInterval(() => {
+    const elapsed = Math.min(9999, (performance.now() - anomalyTimerStart) / 1000);
+    anomalyTimer.textContent = "T+" + (elapsed < 10 ? "0" : "") + elapsed.toFixed(1) + "s";
+  }, 100);
+}
+
+/* 同步分数 / 连胜 / 扫描器 / 回合数到侧栏、顶栏与操作按钮 */
+function updateAnomalyChrome() {
+  anomalySideScore.textContent = String(anomaly.score);
+  anomalySideStreak.textContent = "×" + anomaly.streak;
+  const mixed = anomaly.config.domain === "mixed";
+  const scansRemaining = mixed ? Math.max(0, Number(anomaly.scansRemaining) || 0) : 0;
+  anomalySideScanner.textContent = mixed ? "×" + scansRemaining : "N/A";
+  anomalySideScanner.classList.toggle("is-used", !mixed || scansRemaining === 0);
+  anomalyMetaStats.textContent = "总分 " + anomaly.score + " · 连胜 ×" + anomaly.streak;
+  const shownDifficulty = anomaly.question && anomaly.question.difficulty
+    ? anomaly.question.difficulty
+    : anomaly.difficulty;
+  const difficulty = shownDifficulty || ANOMALY_DIFFICULTIES.standard;
+  const progress = anomaly.difficultyProgress || {};
+  const progressText = Number(progress.wrong) > 0
+    ? "↓" + progress.wrong + "/" + (progress.wrongRequired || 2)
+    : "↑" + (progress.correct || 0) + "/" + (progress.correctRequired || 3);
+  anomalyDifficultyBadge.dataset.level = difficulty.id || "standard";
+  anomalyDifficultyBadge.textContent = (difficulty.label || "标准审查") + " // ×" + Number(difficulty.scoreMultiplier || 1.5).toFixed(2) + " · " + progressText;
+  anomalyDifficultyBadge.title = "连续答对 " + (progress.correctRequired || 3) + " 次升级，连续答错 " + (progress.wrongRequired || 2) + " 次降级";
+  const total = anomaly.config.totalRounds || 10;
+  const round = anomaly.question ? anomaly.question.round : 0;
+  anomalyRound.textContent = "FILE " + (round ? String(round).padStart(2, "0") : "--") + "/" + total;
+  anomalyRoundIndex.textContent = String(round || 1).padStart(2, "0");
+  anomalyMetaConfig.textContent = anomaly.phase === "idle"
+    ? "请选择审查主题"
+    : anomalyDomainName(anomaly.config.domain) + (mixed ? " · 高难" : "");
+  anomalyScanBtn.disabled = !(anomaly.scannerAvailable && anomaly.phase === "question" && !anomaly.busy);
+  anomalyScanBtn.classList.toggle("is-used", !mixed || scansRemaining === 0);
+  if (!mixed) anomalyScanState.textContent = "单域审查 · 不支持";
+  else if (anomaly.scannerAvailable) anomalyScanState.textContent = "可用 " + scansRemaining + " 次 · READY";
+  else if (anomaly.phase === "question" && scansRemaining > 0) anomalyScanState.textContent = "本题已用 · 库存 " + scansRemaining + " 次";
+  else anomalyScanState.textContent = "库存 " + scansRemaining + " 次 · 三连对 +1";
+  anomalyConfirmBtn.disabled = !(anomaly.phase === "question" && !anomaly.busy && anomaly.selectedId);
+  updateAnomalyScope();
+}
+
+function setAnomalyOptionsBusy(busy) {
+  anomalyOptions.querySelectorAll(".anomaly-option").forEach((card) => { card.disabled = busy; });
+  anomaly.busy = busy;
+  updateAnomalyChrome();
+}
+
+function renderAnomalyLoading() {
+  anomaly.phase = "loading";
+  anomalyConsole.classList.remove("hidden");
+  anomalyReview.classList.add("hidden");
+  anomalyReview.innerHTML = "";
+  anomalySummary.classList.add("hidden");
+  anomalyErrorPanel.classList.add("hidden");
+  anomalyHint.classList.add("hidden");
+  anomalyDomainLabel.textContent = "档案装载中";
+  anomalyDomainEn.textContent = "ARCHIVE LOADING";
+  anomalyOptions.classList.remove("is-resolving", "is-reviewed");
+  anomalyOptions.innerHTML = "";
+  for (let i = 0; i < 4; i++) {
+    const skeleton = document.createElement("span");
+    skeleton.className = "anomaly-option is-skeleton";
+    skeleton.style.setProperty("--d", (i * 70) + "ms");
+    skeleton.setAttribute("aria-hidden", "true");
+    anomalyOptions.appendChild(skeleton);
+  }
+  setAnomalyStatus("正在装载审查档案……");
+  updateAnomalyChrome();
+}
+
+function showAnomalyError(code) {
+  stopAnomalyTimer();
+  anomaly.phase = "idle";
+  anomaly.busy = false;
+  anomalyConsole.classList.add("hidden");
+  anomalyReview.classList.add("hidden");
+  anomalySummary.classList.add("hidden");
+  anomalyErrorPanel.classList.remove("hidden");
+  anomalyErrorText.textContent = anomalyErrorMessage(code);
+  updateAnomalyChrome();
+  announceAnomaly("审查链路中断：" + anomalyErrorMessage(code));
+  anomalyRetryBtn.focus({ preventScroll: true });
+}
+
+function renderAnomalyThemeDetails(theme) {
+  anomalyThemeDetails.innerHTML = "";
+  if (!theme) return;
+
+  const head = document.createElement("header");
+  const code = document.createElement("span");
+  code.className = "anomaly-theme-detail-code";
+  code.textContent = theme.labelEn;
+  const title = document.createElement("h3");
+  const titleText = document.createElement("span");
+  titleText.textContent = theme.label;
+  title.appendChild(titleText);
+  if (theme.tag) {
+    const riskTag = document.createElement("span");
+    riskTag.className = "anomaly-theme-risk-tag";
+    riskTag.setAttribute("aria-label", theme.tag + "主题");
+    const riskSignal = document.createElement("i");
+    riskSignal.setAttribute("aria-hidden", "true");
+    const riskText = document.createElement("b");
+    riskText.textContent = theme.tag + " // HIGH RISK";
+    riskTag.appendChild(riskSignal);
+    riskTag.appendChild(riskText);
+    title.appendChild(riskTag);
+  }
+  const meta = document.createElement("p");
+  meta.textContent = theme.id === "mixed"
+    ? "六域混合 · 初始扫描 2 次 · 每三连对 +1"
+    : "单域定向题库 · 共性扫描不适用";
+  head.appendChild(code);
+  head.appendChild(title);
+  head.appendChild(meta);
+  anomalyThemeDetails.appendChild(head);
+
+  const caption = document.createElement("p");
+  caption.className = "anomaly-theme-detail-caption";
+  caption.textContent = theme.id === "mixed"
+    ? "本主题将从以下六个审查域混合抽取十份档案"
+    : "本主题当前题库涵盖以下大类";
+  anomalyThemeDetails.appendChild(caption);
+
+  const list = document.createElement("ol");
+  list.className = "anomaly-theme-detail-list";
+  (theme.groups || theme.items || []).forEach((item, index) => {
+    const row = document.createElement("li");
+    const number = document.createElement("span");
+    number.textContent = String(index + 1).padStart(2, "0");
+    const copy = document.createElement("div");
+    const itemTitle = document.createElement("strong");
+    itemTitle.textContent = item.title;
+    const itemDesc = document.createElement("small");
+    itemDesc.textContent = item.description || "已纳入审查题库";
+    copy.appendChild(itemTitle);
+    copy.appendChild(itemDesc);
+    if (item.countLabel) {
+      const itemCount = document.createElement("span");
+      itemCount.className = "anomaly-theme-detail-count";
+      itemCount.textContent = item.countLabel;
+      copy.appendChild(itemCount);
+    }
+    row.appendChild(number);
+    row.appendChild(copy);
+    list.appendChild(row);
+  });
+  anomalyThemeDetails.appendChild(list);
+}
+
+function selectAnomalyTheme(domain) {
+  const theme = anomaly.themes.find((entry) => entry.id === domain);
+  if (!theme) return;
+  anomaly.selectedTheme = theme.id;
+  anomalyThemeGrid.querySelectorAll(".anomaly-theme-card").forEach((card) => {
+    const selected = card.dataset.domain === theme.id;
+    card.classList.toggle("is-selected", selected);
+    card.setAttribute("aria-selected", selected ? "true" : "false");
+  });
+  renderAnomalyThemeDetails(theme);
+  anomalyThemeStatus.textContent = "已选择 " + theme.label + (theme.tag ? " · " + theme.tag : "") + " · 覆盖 " + (theme.groupCount || (theme.groups || []).length) + " 类题库";
+  anomalyThemeStart.disabled = false;
+}
+
+function renderAnomalyThemeCatalog() {
+  anomalyThemeGrid.innerHTML = "";
+  anomaly.themes.forEach((theme, index) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "anomaly-theme-card";
+    card.dataset.domain = theme.id;
+    card.setAttribute("role", "option");
+    card.setAttribute("aria-selected", "false");
+
+    const indexEl = document.createElement("span");
+    indexEl.className = "anomaly-theme-card-index";
+    indexEl.textContent = String(index + 1).padStart(2, "0");
+    const copy = document.createElement("span");
+    copy.className = "anomaly-theme-card-copy";
+    const label = document.createElement("strong");
+    label.textContent = theme.label;
+    const labelEn = document.createElement("small");
+    labelEn.textContent = theme.labelEn;
+    copy.appendChild(label);
+    copy.appendChild(labelEn);
+    const count = document.createElement("span");
+    count.className = "anomaly-theme-card-count";
+    if (theme.tag) {
+      const tag = document.createElement("em");
+      tag.textContent = theme.tag;
+      count.appendChild(tag);
+    }
+    count.appendChild(document.createTextNode(theme.itemCount + " 项"));
+    card.appendChild(indexEl);
+    card.appendChild(copy);
+    card.appendChild(count);
+    card.addEventListener("click", () => selectAnomalyTheme(theme.id));
+    anomalyThemeGrid.appendChild(card);
+  });
+  const preferred = anomaly.themes.some((theme) => theme.id === anomaly.selectedTheme)
+    ? anomaly.selectedTheme
+    : "mixed";
+  selectAnomalyTheme(preferred);
+}
+
+async function openAnomalyThemeSelect(preferredDomain) {
+  cancelModeScreenFocus();
+  const startSequence = ++gameStartSequence;
+  const fromModeScreen = !modeScreen.classList.contains("hidden");
+  if (preferredDomain) anomaly.selectedTheme = preferredDomain;
+  resetAnomalyState();
+  currentMode = "anomaly";
+  anomaly.config = { domain: anomaly.selectedTheme, totalRounds: 10, scannerLimit: anomaly.selectedTheme === "mixed" ? 2 : 0, scannerRewardEvery: anomaly.selectedTheme === "mixed" ? 3 : 0 };
+  anomaly.scansRemaining = anomaly.config.scannerLimit;
+  document.body.dataset.mode = "anomaly";
+  updateHudTags("anomaly");
+  setModeLaunching("anomaly", fromModeScreen);
+  anomalyThemeStart.disabled = true;
+  anomalyThemeStatus.className = "status";
+  anomalyThemeStatus.textContent = "正在读取审查题库目录……";
+  anomalyThemeGrid.innerHTML = "";
+  anomalyThemeDetails.innerHTML = "";
+  const transition = playWipe();
+  const dataRequest = fetchJSON("/api/anomaly/themes").catch(() => ({ error: "network" }));
+  await transition.covered;
+  if (startSequence !== gameStartSequence) return;
+  modeScreen.classList.add("hidden");
+  gameScreen.classList.add("hidden");
+  document.body.classList.remove("game-scroll-lock", "mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  document.body.classList.add("anomaly-scroll-lock");
+  stageAnomalyWorkspaceEntry();
+  anomalyScreen.classList.remove("hidden");
+  anomalyScreen.classList.add("is-theme-selecting");
+  anomalyThemeSelect.classList.remove("hidden");
+  anomalyConsole.classList.add("hidden");
+  anomalyReview.classList.add("hidden");
+  anomalySummary.classList.add("hidden");
+  anomalyErrorPanel.classList.add("hidden");
+  updateAnomalyChrome();
+  window.scrollTo(0, 0);
+  const data = await dataRequest;
+  if (transition) await transition.finished;
+  if (startSequence !== gameStartSequence) return;
+  setModeLaunching("anomaly", false);
+  playAnomalyWorkspaceEntry();
+  if (!data || data.error || !Array.isArray(data.themes) || !data.themes.length) {
+    anomalyThemeStatus.className = "status error";
+    anomalyThemeStatus.textContent = anomalyErrorMessage(data && data.error ? data.error : "question_bank_unavailable");
+    anomalyThemeDetails.textContent = "题库目录读取失败，请返回模式页后重试。";
+    return;
+  }
+  anomaly.themes = data.themes;
+  renderAnomalyThemeCatalog();
+  const selectedCard = anomalyThemeGrid.querySelector(".anomaly-theme-card.is-selected");
+  if (selectedCard) selectedCard.focus({ preventScroll: true });
+}
+
+async function startAnomaly(domain) {
+  cancelModeScreenFocus();
+  const startSequence = ++gameStartSequence;
+  const selectedDomain = domain || anomaly.selectedTheme || "mixed";
+  const theme = anomaly.themes.find((entry) => entry.id === selectedDomain);
+  resetAnomalyState();
+  currentMode = "anomaly";
+  anomaly.selectedTheme = selectedDomain;
+  anomaly.config = {
+    domain: selectedDomain,
+    totalRounds: 10,
+    scannerLimit: theme ? theme.scannerLimit : (selectedDomain === "mixed" ? 2 : 0),
+    scannerRewardEvery: theme ? (theme.scannerRewardEvery || 0) : (selectedDomain === "mixed" ? 3 : 0),
+  };
+  anomaly.scansRemaining = anomaly.config.scannerLimit;
+  anomaly.phase = "loading";
+  document.body.dataset.mode = "anomaly";
+  updateHudTags("anomaly");
+  const transition = playWipe();
+  const dataRequest = fetchJSON("/api/anomaly/new?domain=" + encodeURIComponent(selectedDomain))
+    .catch(() => ({ error: "network" }));
+  await transition.covered;
+  if (startSequence !== gameStartSequence) return;
+  modeScreen.classList.add("hidden");
+  gameScreen.classList.add("hidden");
+  document.body.classList.remove("game-scroll-lock", "mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  document.body.classList.add("anomaly-scroll-lock");
+  stageAnomalyWorkspaceEntry();
+  anomalyScreen.classList.remove("hidden");
+  anomalyScreen.classList.remove("is-theme-selecting");
+  anomalyThemeSelect.classList.add("hidden");
+  window.scrollTo(0, 0);
+  renderAnomalyLoading();
+  const data = await dataRequest;
+  if (startSequence !== gameStartSequence) return;
+  if (transition) await transition.finished;
+  if (startSequence !== gameStartSequence) return;
+  playAnomalyWorkspaceEntry();
+  if (!data || data.error) {
+    showAnomalyError(data && data.error ? data.error : "network");
+    return;
+  }
+  anomaly.token = data.token;
+  anomaly.score = Number(data.score) || 0;
+  anomaly.correctCount = Number(data.correctCount) || 0;
+  anomaly.streak = Number(data.streak) || 0;
+  anomaly.scansRemaining = Number.isFinite(data.scansRemaining) ? data.scansRemaining : anomaly.scansRemaining;
+  if (data.difficulty) anomaly.difficulty = data.difficulty;
+  if (data.difficultyProgress) anomaly.difficultyProgress = data.difficultyProgress;
+  if (data.config) anomaly.config = data.config;
+  applyAnomalyQuestion(data.question);
+}
+
+function renderAnomalyOptions(options) {
+  anomalyOptions.innerHTML = "";
+  anomalyOptions.classList.remove("is-resolving", "is-reviewed");
+  options.forEach((option, index) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "anomaly-option";
+    card.dataset.id = option.id;
+    card.dataset.label = ANOMALY_OPTION_LETTERS[index] + " · " + option.name;
+    card.setAttribute("aria-pressed", "false");
+    card.setAttribute("aria-label", card.dataset.label + "，标记为异类");
+    card.style.setProperty("--d", (index * 55) + "ms");
+
+    const art = document.createElement("span");
+    art.className = "anomaly-option-art";
+    const image = document.createElement("img");
+    image.src = option.imageUrl || artUrl(option.id, false);
+    image.alt = option.name + (option.artKind === "skin" ? " 时装立绘" : " 精英一阶段立绘");
+    image.decoding = "async";
+    image.addEventListener("error", () => art.classList.add("image-missing"));
+    const scan = document.createElement("span");
+    scan.className = "anomaly-option-scan";
+    scan.setAttribute("aria-hidden", "true");
+    art.appendChild(image);
+    art.appendChild(scan);
+
+    const foot = document.createElement("span");
+    foot.className = "anomaly-option-foot";
+    const indexTag = document.createElement("span");
+    indexTag.className = "anomaly-option-index";
+    indexTag.textContent = ANOMALY_OPTION_LETTERS[index];
+    const name = document.createElement("strong");
+    name.className = "anomaly-option-name";
+    name.textContent = option.name;
+    const mark = document.createElement("span");
+    mark.className = "anomaly-option-mark";
+    mark.textContent = "已标记";
+    foot.appendChild(indexTag);
+    foot.appendChild(name);
+    foot.appendChild(mark);
+
+    const verdict = document.createElement("span");
+    verdict.className = "anomaly-option-verdict";
+    const evidence = document.createElement("span");
+    evidence.className = "anomaly-option-evidence";
+
+    card.appendChild(art);
+    card.appendChild(foot);
+    card.appendChild(verdict);
+    card.appendChild(evidence);
+    card.addEventListener("click", () => onAnomalyCardActivate(card));
+    anomalyOptions.appendChild(card);
+  });
+}
+
+function applyAnomalyQuestion(question) {
+  if (!question || !Array.isArray(question.options) || question.options.length !== 4) {
+    showAnomalyError("question_unavailable");
+    return;
+  }
+  anomaly.question = question;
+  anomaly.difficulty = question.difficulty || anomaly.difficulty;
+  anomaly.phase = "question";
+  anomaly.selectedId = null;
+  anomaly.hint = null;
+  anomaly.result = null;
+  anomaly.scannerAvailable = Boolean(question.scannerAvailable);
+  if (Number.isFinite(question.scansRemaining)) anomaly.scansRemaining = question.scansRemaining;
+  anomalyConsole.classList.remove("hidden");
+  anomalyErrorPanel.classList.add("hidden");
+  anomalyReview.classList.add("hidden");
+  anomalyReview.innerHTML = "";
+  anomalySummary.classList.add("hidden");
+  anomalyHint.classList.add("hidden");
+  const domain = question.domain || { label: "综合审查", labelEn: "FULL AUDIT" };
+  anomalyDomainLabel.textContent = domain.label;
+  anomalyDomainEn.textContent = domain.labelEn;
+  renderAnomalyOptions(question.options);
+  setAnomalyStatus("第 " + question.round + " 份档案已装载，标记异类后点击「确认异类」提交。");
+  updateAnomalyChrome();
+  startAnomalyTimer();
+  announceAnomaly("第 " + question.round + " 份档案，共 " + question.totalRounds + " 份，审查域：" + domain.label + "，审查强度：" + (question.difficulty ? question.difficulty.label : "标准审查") + "。候选干员：" + question.options.map((o) => o.name).join("，") + "。");
+  if (!isMobileLayout()) {
+    const first = anomalyOptions.querySelector(".anomaly-option");
+    if (first) first.focus({ preventScroll: true });
+  }
+}
+
+/* 选择只改变标记态；真正的提交走「确认异类」按钮 */
+function toggleAnomalySelection(id) {
+  if (anomaly.phase !== "question" || anomaly.busy) return;
+  anomaly.selectedId = anomaly.selectedId === id ? null : id;
+  anomalyOptions.querySelectorAll(".anomaly-option").forEach((card) => {
+    const selected = card.dataset.id === anomaly.selectedId;
+    card.classList.toggle("is-selected", selected);
+    card.setAttribute("aria-pressed", selected ? "true" : "false");
+    card.setAttribute("aria-label", card.dataset.label + (selected ? "，已标记为异类，再次点击取消" : "，标记为异类"));
+  });
+  const picked = anomaly.selectedId && anomaly.question
+    ? (anomaly.question.options.find((o) => o.id === anomaly.selectedId) || {}).name
+    : null;
+  setAnomalyStatus(picked ? "已标记 " + picked + "，点击「确认异类」提交判定。" : "已取消标记。");
+  updateAnomalyChrome();
+}
+
+/* 揭示态下卡片不再可选，点击改为查看立绘大图 */
+function onAnomalyCardActivate(card) {
+  const id = card.dataset.id;
+  if (anomaly.phase === "question") {
+    toggleAnomalySelection(id);
+    return;
+  }
+  if ((anomaly.phase === "answered" || anomaly.phase === "finished") && anomaly.question) {
+    const art = card.querySelector(".anomaly-option-art");
+    const image = card.querySelector("img");
+    const option = anomaly.question.options.find((o) => o.id === id);
+    if (art && image && option && !art.classList.contains("image-missing")) {
+      openArtPreview(image, option.name, option.artKind === "skin" ? "时装立绘" : "精英一阶段立绘", card);
+    }
+  }
+}
+
+async function useAnomalyScanner() {
+  if (anomaly.phase !== "question" || anomaly.busy || !anomaly.scannerAvailable || !anomaly.token) return;
+  const startSequence = gameStartSequence;
+  anomaly.busy = true;
+  updateAnomalyChrome();
+  setAnomalyStatus("扫描器运行中，正在比对三人共性……");
+  try {
+    const data = await fetchJSON("/api/anomaly/scan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: anomaly.token }),
+    }).catch(() => ({ error: "network" }));
+    if (startSequence !== gameStartSequence) return;
+    if (data.error === "invalid_session") {
+      showAnomalyError("invalid_session");
+      return;
+    }
+    if (data.error) {
+      setAnomalyStatus(anomalyErrorMessage(data.error), true);
+      return;
+    }
+    anomaly.token = data.token;
+    anomaly.scannerAvailable = Boolean(data.scannerAvailable);
+    if (Number.isFinite(data.scansRemaining)) anomaly.scansRemaining = data.scansRemaining;
+    anomaly.hint = data.hint || null;
+    if (Number.isFinite(data.score)) anomaly.score = data.score;
+    if (Number.isFinite(data.streak)) anomaly.streak = data.streak;
+    renderAnomalyHint();
+    setAnomalyStatus("共性规则已公开，本题得分将以 60% 结算。");
+    announceAnomaly("扫描完成。共性规则：" + (anomaly.hint ? anomaly.hint.title : "") + "。本题得分将以 60% 结算。");
+  } finally {
+    if (startSequence === gameStartSequence) {
+      anomaly.busy = false;
+      updateAnomalyChrome();
+    }
+  }
+}
+
+function renderAnomalyHint() {
+  if (!anomaly.hint) return;
+  anomalyHintTitle.textContent = anomaly.hint.title || "共性规则";
+  anomalyHintDesc.textContent = anomaly.hint.description || "";
+  anomalyHint.classList.remove("hidden");
+}
+
+async function confirmAnomaly() {
+  if (anomaly.phase !== "question" || anomaly.busy || !anomaly.selectedId || !anomaly.token) return;
+  const startSequence = gameStartSequence;
+  anomaly.phase = "submitting";
+  anomalyOptions.classList.add("is-resolving");
+  setAnomalyOptionsBusy(true);
+  setAnomalyStatus("正在提交判定……");
+  /* 等待一次横向审查扫描完成后再揭示证据，避免界面瞬跳 */
+  const sweepDone = new Promise((resolve) => window.setTimeout(resolve, isReducedMotion() ? 30 : 700));
+  const request = fetchJSON("/api/anomaly/answer", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: anomaly.token, pickId: anomaly.selectedId }),
+  }).catch(() => ({ error: "network" }));
+  const [data] = await Promise.all([request, sweepDone]);
+  if (startSequence !== gameStartSequence) return;
+  if (data.error === "invalid_session") {
+    showAnomalyError("invalid_session");
+    return;
+  }
+  if (data.error) {
+    anomaly.phase = "question";
+    anomalyOptions.classList.remove("is-resolving");
+    setAnomalyOptionsBusy(false);
+    setAnomalyStatus(anomalyErrorMessage(data.error), true);
+    return;
+  }
+  stopAnomalyTimer();
+  anomaly.token = data.token;
+  anomaly.score = Number(data.score) || 0;
+  anomaly.correctCount = Number(data.correctCount) || 0;
+  anomaly.streak = Number(data.streak) || 0;
+  if (data.difficulty) anomaly.difficulty = data.difficulty;
+  if (data.difficultyProgress) anomaly.difficultyProgress = data.difficultyProgress;
+  if (Number.isFinite(data.scansRemaining)) anomaly.scansRemaining = data.scansRemaining;
+  anomaly.result = data.result;
+  anomaly.summary = data.summary || null;
+  anomaly.phase = "answered";
+  anomaly.busy = false;
+  renderAnomalyReview(data);
+  updateAnomalyChrome();
+}
+
+function anomalyPointChip(label, value, extraClass) {
+  const chip = document.createElement("span");
+  chip.className = "anomaly-point" + (extraClass ? " " + extraClass : "");
+  const labelEl = document.createElement("i");
+  labelEl.textContent = label;
+  const valueEl = document.createElement("b");
+  valueEl.textContent = value;
+  chip.appendChild(labelEl);
+  chip.appendChild(valueEl);
+  return chip;
+}
+
+function renderAnomalyReview(data) {
+  const result = data.result;
+  const evidenceById = {};
+  (result.evidence || []).forEach((item) => { evidenceById[item.id] = item; });
+  anomalyOptions.classList.remove("is-resolving");
+  anomalyOptions.classList.add("is-reviewed");
+  anomalyOptions.querySelectorAll(".anomaly-option").forEach((card, index) => {
+    const id = card.dataset.id;
+    const isOdd = id === result.oddId;
+    const isChosen = id === result.chosenId;
+    card.disabled = false;
+    card.classList.remove("is-selected");
+    card.classList.add(isOdd ? "is-odd" : "is-common");
+    if (isChosen) card.classList.add("is-chosen", result.correct ? "is-hit" : "is-miss");
+    card.setAttribute("aria-pressed", "false");
+    card.style.setProperty("--d", (index * 70) + "ms");
+    const verdict = card.querySelector(".anomaly-option-verdict");
+    const verdictTag = document.createElement("b");
+    verdictTag.textContent = isOdd ? "异类 ANOMALY" : "符合 COMMON";
+    verdict.appendChild(verdictTag);
+    if (isChosen) {
+      const pickTag = document.createElement("i");
+      pickTag.textContent = result.correct ? "你的选择 ✓" : "你的选择 ✗";
+      verdict.appendChild(pickTag);
+    }
+    const item = evidenceById[id];
+    const evidence = card.querySelector(".anomaly-option-evidence");
+    evidence.textContent = item ? item.value : "";
+    card.setAttribute("aria-label", card.dataset.label + (isOdd ? "，本题异类" : "，符合共性") + (item ? "，档案值：" + item.value : "") + "，点击查看立绘大图");
+  });
+
+  anomalyReview.innerHTML = "";
+  anomalyReview.classList.toggle("is-wrong-result", !result.correct);
+
+  const head = document.createElement("header");
+  head.className = "anomaly-review-head";
+  const verdictEl = document.createElement("span");
+  verdictEl.className = "anomaly-verdict " + (result.correct ? "is-correct" : "is-wrong");
+  verdictEl.textContent = result.correct ? "判定正确 // VERDICT PASS" : "判定偏差 // VERDICT MISS";
+  const domainEl = document.createElement("span");
+  domainEl.className = "anomaly-review-domain";
+  const domain = anomaly.question.domain || { label: "综合审查", labelEn: "FULL AUDIT" };
+  domainEl.textContent = domain.label + " · " + domain.labelEn;
+  head.appendChild(verdictEl);
+  head.appendChild(domainEl);
+  anomalyReview.appendChild(head);
+
+  const ruleBox = document.createElement("div");
+  ruleBox.className = "anomaly-review-rule";
+  const ruleTag = document.createElement("span");
+  ruleTag.className = "anomaly-rule-tag";
+  ruleTag.textContent = "共性规则 // COMMON RULE";
+  const ruleTitle = document.createElement("h3");
+  ruleTitle.textContent = result.rule.title;
+  const ruleDesc = document.createElement("p");
+  ruleDesc.textContent = result.rule.description;
+  ruleBox.appendChild(ruleTag);
+  ruleBox.appendChild(ruleTitle);
+  ruleBox.appendChild(ruleDesc);
+  anomalyReview.appendChild(ruleBox);
+
+  if (Array.isArray(result.supportingRules) && result.supportingRules.length) {
+    const supportBox = document.createElement("div");
+    supportBox.className = "anomaly-supporting";
+    const supportTag = document.createElement("span");
+    supportTag.className = "anomaly-rule-tag";
+    supportTag.textContent = "次级符合项 // ALSO SATISFIES";
+    const supportList = document.createElement("ul");
+    result.supportingRules.forEach((rule) => {
+      const li = document.createElement("li");
+      const liTitle = document.createElement("strong");
+      liTitle.textContent = rule.title;
+      const liDesc = document.createElement("span");
+      liDesc.textContent = rule.description;
+      li.appendChild(liTitle);
+      li.appendChild(liDesc);
+      supportList.appendChild(li);
+    });
+    supportBox.appendChild(supportTag);
+    supportBox.appendChild(supportList);
+    anomalyReview.appendChild(supportBox);
+  }
+
+  const points = result.points || { base: 0, timeBonus: 0, streakMultiplier: 1, hintMultiplier: 1, total: 0 };
+  const pointsBox = document.createElement("div");
+  pointsBox.className = "anomaly-points";
+  const roundDifficulty = result.difficulty || ANOMALY_DIFFICULTIES.standard;
+  pointsBox.appendChild(anomalyPointChip("LEVEL 难度", roundDifficulty.label + " ×" + Number(roundDifficulty.scoreMultiplier || 1).toFixed(2)));
+  pointsBox.appendChild(anomalyPointChip("BASE 基础", String(points.base)));
+  pointsBox.appendChild(anomalyPointChip("TIME 时间", "+" + points.timeBonus));
+  pointsBox.appendChild(anomalyPointChip("STREAK 连胜", "×" + Number(points.streakMultiplier).toFixed(2)));
+  if (points.hintMultiplier !== 1) {
+    pointsBox.appendChild(anomalyPointChip("SCAN 扫描", "×" + points.hintMultiplier));
+  }
+  if (Number(result.scannerReward) > 0) {
+    pointsBox.appendChild(anomalyPointChip("STREAK REWARD", "+1 扫描", "is-reward"));
+  }
+  if (result.difficultyChange) {
+    const nextDifficulty = result.nextDifficulty || roundDifficulty;
+    pointsBox.appendChild(anomalyPointChip(
+      result.difficultyChange > 0 ? "LEVEL UP 强度提升" : "LEVEL DOWN 强度回落",
+      nextDifficulty.label + (result.difficultyChange > 0 ? " ↗" : " ↘"),
+      result.difficultyChange > 0 ? "is-reward" : "is-level-down"
+    ));
+  }
+  pointsBox.appendChild(anomalyPointChip("ELAPSED 用时", (Number(result.elapsedMs) / 1000).toFixed(1) + "s"));
+  pointsBox.appendChild(anomalyPointChip("TOTAL 本题得分", "+" + points.total, "is-total"));
+  anomalyReview.appendChild(pointsBox);
+
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "anomaly-next";
+  const nextLabel = document.createElement("span");
+  nextLabel.textContent = data.finished ? "查看审查结论" : "下一份档案";
+  const nextArrow = document.createElement("i");
+  nextArrow.setAttribute("aria-hidden", "true");
+  nextArrow.textContent = "↗";
+  nextBtn.appendChild(nextLabel);
+  nextBtn.appendChild(nextArrow);
+  nextBtn.addEventListener("click", () => {
+    if (data.finished) showAnomalySummary();
+    else nextAnomalyRound();
+  });
+  anomalyReview.appendChild(nextBtn);
+  anomalyReview.classList.remove("hidden");
+
+  const oddEntry = (result.evidence || []).find((item) => item.id === result.oddId) || {};
+  const oddName = oddEntry.name || "";
+  const difficultyNotice = result.difficultyChange > 0
+    ? " 审查强度提升，下题进入" + result.nextDifficulty.label + "。"
+    : result.difficultyChange < 0 ? " 审查强度回落，下题进入" + result.nextDifficulty.label + "。" : "";
+  setAnomalyStatus(result.correct
+    ? "判定正确，本题 +" + points.total + " 分。" + (result.scannerReward ? " 三连判定达成，获得 1 次共性扫描。" : "") + difficultyNotice
+    : "判定偏差，异类是 " + oddName + "，本题不得分，连胜清零。" + difficultyNotice, !result.correct);
+  announceAnomaly((result.correct ? "判定正确。" : "判定偏差，异类是 " + oddName + "。") + "共性规则：" + result.rule.title + "。本题得分 " + points.total + "。" + (result.scannerReward ? "三连判定达成，获得一次共性扫描。" : "") + difficultyNotice);
+  anomalyReview.focus({ preventScroll: true });
+  window.setTimeout(() => {
+    anomalyReview.scrollIntoView({ behavior: isReducedMotion() ? "auto" : "smooth", block: "nearest" });
+  }, 60);
+}
+
+async function nextAnomalyRound() {
+  if (anomaly.phase !== "answered" || anomaly.busy || !anomaly.token) return;
+  const startSequence = gameStartSequence;
+  anomaly.busy = true;
+  updateAnomalyChrome();
+  setAnomalyStatus("正在装载下一份档案……");
+  try {
+    const data = await fetchJSON("/api/anomaly/next", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: anomaly.token }),
+    }).catch(() => ({ error: "network" }));
+    if (startSequence !== gameStartSequence) return;
+    if (data.error === "invalid_session") {
+      showAnomalyError("invalid_session");
+      return;
+    }
+    if (data.error) {
+      setAnomalyStatus(anomalyErrorMessage(data.error), true);
+      return;
+    }
+    anomaly.token = data.token;
+    anomaly.score = Number(data.score) || 0;
+    anomaly.correctCount = Number(data.correctCount) || 0;
+    anomaly.streak = Number(data.streak) || 0;
+    if (data.difficulty) anomaly.difficulty = data.difficulty;
+    if (data.difficultyProgress) anomaly.difficultyProgress = data.difficultyProgress;
+    if (Number.isFinite(data.scansRemaining)) anomaly.scansRemaining = data.scansRemaining;
+    applyAnomalyQuestion(data.question);
+  } finally {
+    if (startSequence === gameStartSequence) {
+      anomaly.busy = false;
+      updateAnomalyChrome();
+    }
+  }
+}
+
+function showAnomalySummary() {
+  const summary = anomaly.summary;
+  if (!summary) return;
+  anomaly.phase = "finished";
+  stopAnomalyTimer();
+  anomalyConsole.classList.add("hidden");
+  anomalyReview.classList.add("hidden");
+  anomalyHint.classList.add("hidden");
+  anomalySummary.innerHTML = "";
+  const totalRounds = anomaly.config.totalRounds || 10;
+
+  const art = document.createElement("div");
+  art.className = "anomaly-summary-art";
+  art.setAttribute("aria-hidden", "true");
+  const mlyss = document.createElement("img");
+  mlyss.className = "anomaly-summary-mlyss";
+  mlyss.src = "img/operators/final/char_249_mlyss.webp";
+  mlyss.alt = "";
+  const rhine = document.createElement("img");
+  rhine.className = "anomaly-summary-rhine";
+  rhine.src = "img/factions/rhine.webp";
+  rhine.alt = "";
+  art.appendChild(mlyss);
+  art.appendChild(rhine);
+  anomalySummary.appendChild(art);
+
+  const inner = document.createElement("div");
+  inner.className = "anomaly-summary-inner";
+
+  const en = document.createElement("span");
+  en.className = "anomaly-summary-en";
+  en.textContent = "AUDIT COMPLETE // RHINE LAB ECOLOGICAL SECTION";
+  inner.appendChild(en);
+
+  const rating = document.createElement("div");
+  rating.className = "anomaly-rating";
+  const letter = document.createElement("span");
+  letter.className = "anomaly-rating-letter";
+  letter.textContent = summary.rating || "C";
+  const ratingText = document.createElement("div");
+  ratingText.className = "anomaly-rating-text";
+  const ratingTitle = document.createElement("strong");
+  ratingTitle.textContent = ANOMALY_RATING_TEXT[summary.rating] || "审查结案";
+  const ratingSub = document.createElement("small");
+  ratingSub.textContent = anomalyDomainName(anomaly.config.domain) + " · 评级指数 " + (summary.ratingIndex || 0) + " · 挑战指数 " + (summary.challengeIndex || 0);
+  ratingText.appendChild(ratingTitle);
+  ratingText.appendChild(ratingSub);
+  rating.appendChild(letter);
+  rating.appendChild(ratingText);
+  inner.appendChild(rating);
+
+  const stats = document.createElement("div");
+  stats.className = "anomaly-summary-stats";
+  [
+    ["总分", String(summary.score)],
+    ["正确", summary.correctCount + "/" + totalRounds],
+    ["准确率", summary.accuracy + "%"],
+    ["评级指数", String(summary.ratingIndex || 0)],
+    ["最高难度", (ANOMALY_DIFFICULTIES[summary.highestDifficulty] || ANOMALY_DIFFICULTIES.standard).label],
+    ["平均用时", (Number(summary.averageElapsedMs) / 1000).toFixed(1) + "s"],
+    ["最高连胜", "×" + summary.maxStreak],
+  ].forEach(([label, value]) => {
+    const cell = document.createElement("p");
+    cell.className = "anomaly-stat";
+    const cellLabel = document.createElement("span");
+    cellLabel.textContent = label;
+    const cellValue = document.createElement("strong");
+    cellValue.textContent = value;
+    cell.appendChild(cellLabel);
+    cell.appendChild(cellValue);
+    stats.appendChild(cell);
+  });
+  inner.appendChild(stats);
+
+  const difficultyEntries = Object.values(summary.difficulties || {}).filter((entry) => entry.answered > 0);
+  if (difficultyEntries.length) {
+    const difficultyBox = document.createElement("div");
+    difficultyBox.className = "anomaly-summary-domains anomaly-summary-difficulties";
+    const difficultyTitle = document.createElement("h3");
+    difficultyTitle.textContent = "难度履历 // DIFFICULTY RECORD · 评级 = 准确率 55% + 挑战指数 45%";
+    difficultyBox.appendChild(difficultyTitle);
+    const list = document.createElement("ul");
+    difficultyEntries.forEach((entry) => {
+      const item = document.createElement("li");
+      const name = document.createElement("span");
+      name.textContent = entry.label;
+      const bar = document.createElement("i");
+      const barFill = document.createElement("b");
+      barFill.style.width = entry.accuracy + "%";
+      bar.appendChild(barFill);
+      const value = document.createElement("strong");
+      value.textContent = entry.correct + "/" + entry.answered + " · ×" + Number(entry.scoreMultiplier).toFixed(2);
+      item.appendChild(name);
+      item.appendChild(bar);
+      item.appendChild(value);
+      list.appendChild(item);
+    });
+    difficultyBox.appendChild(list);
+    inner.appendChild(difficultyBox);
+  }
+
+  const domainEntries = ANOMALY_DOMAINS
+    .filter((d) => d.id !== "mixed" && summary.domains && summary.domains[d.id])
+    .map((d) => [d.label, summary.domains[d.id]]);
+  if (domainEntries.length) {
+    const domainsBox = document.createElement("div");
+    domainsBox.className = "anomaly-summary-domains";
+    const domainsTitle = document.createElement("h3");
+    domainsTitle.textContent = "各域正确率 // DOMAIN ACCURACY";
+    domainsBox.appendChild(domainsTitle);
+    const list = document.createElement("ul");
+    domainEntries.forEach(([label, d]) => {
+      const item = document.createElement("li");
+      const name = document.createElement("span");
+      name.textContent = label;
+      const bar = document.createElement("i");
+      const barFill = document.createElement("b");
+      barFill.style.width = (d.accuracy || 0) + "%";
+      bar.appendChild(barFill);
+      const value = document.createElement("strong");
+      value.textContent = d.correct + "/" + d.answered + " · " + d.accuracy + "%";
+      item.appendChild(name);
+      item.appendChild(bar);
+      item.appendChild(value);
+      list.appendChild(item);
+    });
+    domainsBox.appendChild(list);
+    inner.appendChild(domainsBox);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "anomaly-summary-actions";
+  const again = document.createElement("button");
+  again.type = "button";
+  again.className = "anomaly-again";
+  again.textContent = "重新审查";
+  again.addEventListener("click", () => openAnomalyThemeSelect(anomaly.config.domain));
+  const home = document.createElement("button");
+  home.type = "button";
+  home.className = "ghost";
+  home.textContent = "返回协议选择";
+  home.addEventListener("click", showModeScreen);
+  actions.appendChild(again);
+  actions.appendChild(home);
+  inner.appendChild(actions);
+
+  anomalySummary.appendChild(inner);
+  anomalySummary.classList.remove("hidden");
+  setAnomalyStatus("");
+  updateAnomalyChrome();
+  announceAnomaly("审查完成。评级 " + (summary.rating || "C") + "，总分 " + summary.score + "，正确 " + summary.correctCount + " / " + totalRounds + "，准确率 " + summary.accuracy + "%。");
+  anomalySummary.focus({ preventScroll: true });
+  window.setTimeout(() => {
+    anomalySummary.scrollIntoView({ behavior: isReducedMotion() ? "auto" : "smooth", block: "start" });
+  }, 60);
+}
+
+/* ---------- 异类审查事件绑定 ---------- */
+
+modeAnomalyGo.addEventListener("click", (event) => {
+  event.stopPropagation();
+  openAnomalyThemeSelect();
+});
+modeAnomalyCard.addEventListener("click", (e) => {
+  if (e.target.closest("button")) return;
+  openAnomalyThemeSelect();
+});
+anomalyThemeStart.addEventListener("click", () => startAnomaly(anomaly.selectedTheme));
+anomalyConfirmBtn.addEventListener("click", confirmAnomaly);
+anomalyScanBtn.addEventListener("click", useAnomalyScanner);
+anomalyRestartBtn.addEventListener("click", () => openAnomalyThemeSelect(anomaly.config.domain));
+anomalyChangeModeBtn.addEventListener("click", showModeScreen);
+anomalyRetryBtn.addEventListener("click", () => startAnomaly(anomaly.config.domain));
+anomalyErrorHomeBtn.addEventListener("click", showModeScreen);
 
 /* ---------- 初始化 ---------- */
 

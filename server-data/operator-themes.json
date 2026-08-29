@@ -1607,275 +1607,20 @@
     }
   },
   "byOperator": {
-    "char_4236_tmslot": [
-      "skill_all_manual"
-    ],
-    "char_179_cgbird": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4187_graceb": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental"
-    ],
-    "char_381_bubble": [
-      "skill_all_manual"
-    ],
-    "char_496_wildmn": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_388_mint": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_4208_wintim": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_fast_redeploy"
-    ],
-    "char_4188_confes": [
-      "skill_none"
-    ],
-    "char_107_liskam": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4125_rdoc": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4226_veen": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo"
-    ],
-    "char_137_brownb": [
-      "skill_passive"
-    ],
-    "char_4138_narant": [
-      "skill_attack_recovery",
-      "skill_all_manual"
-    ],
-    "char_4088_hodrer": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_block_control"
-    ],
-    "char_431_ashlok": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_446_aroma": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_277_sqrrel": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_340_shwaz": [
-      "skill_attack_recovery",
+    "char_002_amiya": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges"
     ],
-    "char_4165_ctrail": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4041_chnut": [
+    "char_003_kalts": [
       "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental"
-    ],
-    "char_122_beagle": [
-      "skill_all_manual"
-    ],
-    "char_1046_sbell2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_1021_kroos2": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "battle_concealment",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_1039_thorn2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_4225_tanya": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental"
-    ],
-    "char_4198_christ": [
-      "skill_all_manual",
-      "battle_elemental"
-    ],
-    "char_457_blitz": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_180_amgoat": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
       "identity_alter_family"
-    ],
-    "char_110_deepcl": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_151_myrtle": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_219_meteo": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_376_therex": [
-      "skill_none"
-    ],
-    "char_383_snsant": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "battle_forced_movement"
-    ],
-    "char_2026_yu": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "battle_elemental"
-    ],
-    "char_474_glady": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_196_sunbr": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change"
-    ],
-    "char_149_scave": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4166_varkis": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_166_skfire": [
-      "skill_all_manual"
-    ],
-    "char_355_ethan": [
-      "skill_passive"
-    ],
-    "char_4214_cairn": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental"
-    ],
-    "char_469_indigo": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4091_ulika": [
-      "skill_none"
     ],
     "char_009_12fce": [
       "skill_none"
     ],
-    "char_218_cuttle": [
-      "skill_all_manual"
-    ],
-    "char_379_sesa": [
-      "skill_all_manual"
-    ],
-    "char_278_orchid": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_341_sntlla": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_220_grani": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_4081_warmy": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "battle_elemental"
-    ],
-    "char_363_toddi": [
-      "skill_all_manual",
-      "skill_ammo"
-    ],
-    "char_427_vigil": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_block_control"
-    ],
-    "char_291_aglina": [
+    "char_010_chen": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
@@ -1883,256 +1628,24 @@
       "skill_distinct_ranges",
       "identity_alter_family"
     ],
-    "char_211_adnach": [
-      "skill_all_manual"
-    ],
-    "char_4184_dolris": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_118_yuki": [
-      "skill_all_manual"
-    ],
-    "char_298_susuro": [
-      "skill_all_manual"
-    ],
-    "char_192_falco": [
-      "skill_all_manual"
-    ],
-    "char_478_kirara": [
+    "char_017_huang": [
       "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_385_finlpp": [
-      "skill_all_manual"
-    ],
-    "char_4107_vrdant": [
-      "skill_passive",
-      "battle_block_control"
-    ],
-    "char_106_franka": [
-      "skill_all_manual"
-    ],
-    "char_4106_bryota": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4177_brigid": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_141_nights": [
-      "skill_all_manual"
-    ],
-    "char_121_lava": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_437_mizuki": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_199_yak": [
-      "skill_all_manual"
-    ],
-    "char_1049_catap2": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_1016_agoat2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_elemental",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_4083_chimes": [
-      "skill_all_manual"
-    ],
-    "char_1040_blaze2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_133_mm": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_279_excu": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_1022_flwr2": [
-      "skill_auto_trigger",
-      "skill_passive",
-      "skill_chargeable",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_1020_reed2": [
-      "skill_all_manual",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_4048_doroth": [
-      "skill_auto_trigger"
-    ],
-    "char_4039_horn": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_1027_greyy2": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_489_serum": [
-      "skill_all_manual"
-    ],
-    "char_4046_ebnhlz": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_284_spot": [
-      "skill_all_manual",
-      "skill_range_change"
-    ],
-    "char_115_headbr": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
       "identity_alter_family"
     ],
-    "char_475_akafyu": [
+    "char_1011_lava2": [
       "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_1043_leizi2": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
       "identity_alter_family",
       "identity_alter_form"
-    ],
-    "char_4126_fuze": [
-      "skill_all_manual",
-      "skill_ammo"
-    ],
-    "char_148_nearl": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "identity_alter_family"
-    ],
-    "char_1026_gvial2": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "battle_forced_movement",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_157_dagda": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
     ],
     "char_1012_skadi2": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "identity_alter_family",
       "identity_alter_form"
-    ],
-    "char_274_astesi": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_358_lisa": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4109_baslin": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change"
-    ],
-    "char_4172_xingzh": [
-      "skill_all_manual"
-    ],
-    "char_1033_swire2": [
-      "skill_auto_trigger",
-      "skill_passive",
-      "skill_range_change",
-      "battle_fast_redeploy",
-      "battle_forced_movement",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_4015_spuria": [
-      "skill_passive"
-    ],
-    "char_4017_puzzle": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_fast_redeploy"
-    ],
-    "char_450_necras": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_4105_almond": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "battle_forced_movement"
-    ],
-    "char_4014_lunacu": [
-      "skill_all_manual",
-      "battle_concealment"
-    ],
-    "char_261_sddrag": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_4093_frston": [
-      "skill_none"
-    ],
-    "char_173_slchan": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
     ],
     "char_1013_chen2": [
       "skill_attack_recovery",
@@ -2145,84 +1658,103 @@
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_4032_provs": [
+    "char_1014_nearl2": [
+      "skill_auto_trigger",
+      "skill_passive",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1015_aglna2": [
+      "skill_passive",
+      "skill_ammo",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1016_agoat2": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change"
+      "battle_elemental",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_4025_aprot2": [
+    "char_1019_siege2": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_101_sora": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges"
     ],
-    "char_473_mberry": [
+    "char_1020_reed2": [
+      "skill_all_manual",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1021_kroos2": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "battle_concealment",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1022_flwr2": [
       "skill_auto_trigger",
-      "skill_manual_auto",
+      "skill_passive",
       "skill_chargeable",
-      "battle_elemental"
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_337_utage": [
-      "skill_passive",
-      "battle_block_control"
-    ],
-    "char_4131_odda": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_332_archet": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_366_acdrop": [
-      "skill_all_manual"
-    ],
-    "char_4223_botany": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
+    "char_1023_ghost2": [
+      "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_block_control",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_164_nightm": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
+    "char_1024_hbisc2": [
+      "skill_all_manual",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_4140_lasher": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4082_qiubai": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_416_zumama": [
-      "skill_passive",
-      "battle_block_control"
-    ],
-    "char_183_skgoat": [
-      "skill_all_manual"
-    ],
-    "char_346_aosta": [
-      "skill_all_manual"
-    ],
-    "char_113_cqbw": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "identity_alter_family"
-    ],
-    "char_420_flamtl": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
+    "char_1026_gvial2": [
+      "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_block_control",
+      "battle_forced_movement",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1027_greyy2": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1028_texas2": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1029_yato2": [
+      "skill_passive",
+      "battle_fast_redeploy",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
     "char_102_texas": [
       "skill_auto_trigger",
@@ -2231,113 +1763,104 @@
       "skill_distinct_ranges",
       "identity_alter_family"
     ],
-    "char_2012_typhon": [
-      "skill_all_manual",
-      "skill_ammo"
-    ],
-    "char_369_bena": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_350_surtr": [
+    "char_1030_noirc2": [
       "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_484_robrta": [
       "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_4224_turdus": [
-      "skill_all_manual",
-      "battle_concealment"
-    ],
-    "char_4155_talr": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
+      "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_fast_redeploy"
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_488_buildr": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
+    "char_1031_slent2": [
+      "skill_all_manual",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_144_red": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_fast_redeploy"
-    ],
-    "char_4066_highmo": [
+    "char_1032_excu2": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_elemental"
-    ],
-    "char_242_otter": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_250_phatom": [
-      "skill_passive",
+      "skill_ammo",
       "skill_range_change",
       "skill_distinct_ranges",
+      "battle_block_control",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1033_swire2": [
+      "skill_auto_trigger",
+      "skill_passive",
+      "skill_range_change",
       "battle_fast_redeploy",
-      "battle_forced_movement",
-      "identity_alter_family"
-    ],
-    "char_4196_reckpr": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_4171_wulfen": [
-      "skill_auto_trigger"
-    ],
-    "char_4136_phonor": [
-      "skill_none",
-      "battle_elemental"
-    ],
-    "char_1047_halo2": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
       "battle_forced_movement",
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_302_glaze": [
-      "skill_all_manual"
+    "char_1034_jesca2": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_159_peacok": [
+    "char_1035_wisdel": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo",
+      "battle_concealment",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1036_fang2": [
+      "skill_auto_trigger",
+      "skill_passive",
+      "skill_chargeable",
+      "battle_block_control",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1038_whitw2": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1039_thorn2": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_240_wyvern": [
-      "skill_all_manual"
-    ],
-    "char_445_wscoot": [
-      "skill_all_manual",
-      "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "identity_alter_family",
+      "identity_alter_form"
     ],
-    "char_136_hsguma": [
-      "skill_passive",
+    "char_103_angel": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
       "identity_alter_family"
     ],
-    "char_271_spikes": [
-      "skill_all_manual",
+    "char_1040_blaze2": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_block_control"
+      "battle_elemental",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1041_angel2": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo",
+      "identity_alter_family",
+      "identity_alter_form"
     ],
     "char_1042_phatm2": [
       "skill_attack_recovery",
@@ -2349,797 +1872,14 @@
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_4110_delphn": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4194_rmixer": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_283_midn": [
-      "skill_all_manual"
-    ],
-    "char_154_morgan": [
-      "skill_passive"
-    ],
-    "char_4063_quartz": [
-      "skill_all_manual"
-    ],
-    "char_201_moeshd": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_4071_peper": [
-      "skill_all_manual"
-    ],
-    "char_2023_ling": [
-      "skill_all_manual",
-      "skill_chargeable"
-    ],
-    "char_4237_jcinta": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_497_ctable": [
-      "skill_passive",
-      "skill_ammo",
-      "battle_fast_redeploy",
-      "battle_concealment"
-    ],
-    "char_252_bibeak": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_345_folnic": [
-      "skill_all_manual"
-    ],
-    "char_391_rosmon": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_326_glacus": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_400_weedy": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_212_ansel": [
-      "skill_all_manual"
-    ],
-    "char_4000_jnight": [
-      "skill_none"
-    ],
-    "char_499_kaitou": [
-      "skill_all_manual",
-      "battle_elemental"
-    ],
-    "char_4062_totter": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_208_melan": [
-      "skill_all_manual"
-    ],
-    "char_1019_siege2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_472_pasngr": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4222_taraxa": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_4178_alanna": [
-      "skill_passive"
-    ],
-    "char_254_vodfox": [
-      "skill_auto_trigger"
-    ],
-    "char_4143_sensi": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change"
-    ],
-    "char_1051_headb2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_197_poca": [
-      "skill_all_manual"
-    ],
-    "char_311_mudrok": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4045_heidi": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_4016_kazema": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_block_control"
-    ],
-    "char_4058_pepe": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_451_robin": [
-      "skill_auto_trigger",
-      "battle_forced_movement"
-    ],
-    "char_293_thorns": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family"
-    ],
-    "char_1038_whitw2": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_272_strong": [
-      "skill_auto_trigger",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_fast_redeploy"
-    ],
-    "char_4179_monstr": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_4123_ela": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_190_clour": [
-      "skill_all_manual"
-    ],
-    "char_174_slbell": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_4117_ray": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_4100_caper": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4051_akkord": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_4006_melnte": [
+    "char_1043_leizi2": [
       "skill_all_manual",
       "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4221_ju": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_402_tuye": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4104_coldst": [
-      "skill_all_manual"
-    ],
-    "char_4193_lemuen": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo"
-    ],
-    "char_476_blkngt": [
-      "skill_all_manual",
-      "skill_chargeable"
-    ],
-    "char_459_tachak": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4185_amoris": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_2014_nian": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_206_gnosis": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_202_demkni": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4133_logos": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_325_bison": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4151_tinman": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_306_leizi": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_433_windft": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_248_mgllan": [
-      "skill_all_manual",
-      "battle_concealment"
-    ],
-    "char_4235_thumpy": [
-      "skill_all_manual",
-      "battle_block_control",
-      "battle_forced_movement",
-      "battle_elemental"
-    ],
-    "char_304_zebra": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_concealment"
-    ],
-    "char_479_sleach": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_493_firwhl": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4228_closur": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_block_control"
-    ],
-    "char_1035_wisdel": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo",
-      "battle_concealment",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_195_glassb": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4230_mcnist": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo"
-    ],
-    "char_010_chen": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family"
-    ],
-    "char_4114_harold": [
-      "skill_all_manual",
-      "battle_elemental"
-    ],
-    "char_4077_palico": [
-      "skill_none"
-    ],
-    "char_423_blemsh": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_1029_yato2": [
-      "skill_passive",
-      "battle_fast_redeploy",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_4031_liesel": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_4023_rfalcn": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change"
-    ],
-    "char_328_cammou": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_1024_hbisc2": [
-      "skill_all_manual",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_367_swllow": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_466_qanik": [
-      "skill_all_manual"
-    ],
-    "char_134_ifrit": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_4147_mitm": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_4067_lolxh": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4162_cathy": [
-      "skill_passive"
-    ],
-    "char_1050_chen3": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_4065_judge": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_378_asbest": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4191_tippi": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_458_rfrost": [
-      "skill_auto_trigger"
-    ],
-    "char_4124_iana": [
-      "skill_passive",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
-      "battle_concealment"
-    ],
-    "char_308_swire": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family"
-    ],
-    "char_193_frostl": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_258_podego": [
-      "skill_all_manual"
-    ],
-    "char_275_breeze": [
-      "skill_all_manual"
-    ],
-    "char_4207_branch": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_373_lionhd": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4037_demetr": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4164_tecno": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_129_bluep": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_120_hibisc": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_4064_mlynar": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_171_bldsk": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_348_ceylon": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_237_gravel": [
-      "skill_passive",
-      "battle_fast_redeploy"
-    ],
-    "char_377_gdglow": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4040_rockr": [
-      "skill_all_manual"
-    ],
-    "char_4079_haini": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_411_tomimi": [
-      "skill_all_manual"
-    ],
-    "char_4173_nowell": [
-      "skill_all_manual"
-    ],
-    "char_188_helage": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4013_kjera": [
-      "skill_all_manual"
-    ],
-    "char_365_aprl": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_passive",
-      "battle_concealment"
-    ],
-    "char_301_cutter": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_181_flower": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_294_ayer": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_281_popka": [
-      "skill_all_manual"
-    ],
-    "char_143_ghost": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_4072_ironmn": [
-      "skill_all_manual"
-    ],
-    "char_1030_noirc2": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
       "identity_alter_family",
       "identity_alter_form"
-    ],
-    "char_4144_chilc": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_fast_redeploy",
-      "battle_elemental"
-    ],
-    "char_4011_lessng": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_passive",
-      "skill_manual_auto"
-    ],
-    "char_401_elysm": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_422_aurora": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_128_plosis": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_1502_crosly": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "battle_fast_redeploy",
-      "battle_concealment"
-    ],
-    "char_185_frncat": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_135_halo": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family"
-    ],
-    "char_108_silent": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "identity_alter_family"
-    ],
-    "char_500_noirc": [
-      "skill_none",
-      "identity_alter_family"
-    ],
-    "char_4134_cetsyr": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4148_philae": [
-      "skill_all_manual",
-      "battle_elemental"
-    ],
-    "char_245_cello": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental"
-    ],
-    "char_486_takila": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_243_waaifu": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_fast_redeploy"
-    ],
-    "char_4056_titi": [
-      "skill_all_manual"
-    ],
-    "char_4122_grabds": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change"
-    ],
-    "char_421_crow": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4119_wanqin": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_198_blackd": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4078_bdhkgt": [
-      "skill_attack_recovery",
-      "skill_all_manual"
-    ],
-    "char_4019_ncdeer": [
-      "skill_all_manual"
-    ],
-    "char_333_sidero": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4121_zuole": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_209_ardign": [
-      "skill_all_manual"
-    ],
-    "char_290_vigna": [
-      "skill_all_manual"
-    ],
-    "char_4186_tmoris": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_chargeable"
-    ],
-    "char_172_svrash": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family"
-    ],
-    "char_222_bpipe": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "battle_block_control"
-    ],
-    "char_485_pallas": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_block_control"
-    ],
-    "char_4010_etlchi": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4145_ulpia": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "battle_forced_movement"
     ],
     "char_1044_hsgma2": [
       "skill_attack_recovery",
@@ -3147,6 +1887,35 @@
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1045_svash2": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1046_sbell2": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement",
+      "identity_alter_family",
+      "identity_alter_form"
+    ],
+    "char_1047_halo2": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement",
       "identity_alter_family",
       "identity_alter_form"
     ],
@@ -3159,218 +1928,28 @@
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_4027_heyak": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
+    "char_1049_catap2": [
+      "skill_attack_recovery",
+      "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_230_savage": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_492_quercu": [
-      "skill_all_manual"
-    ],
-    "char_282_catap": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_487_bobb": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_elemental"
-    ],
-    "char_4036_forcer": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_4047_pianst": [
-      "skill_all_manual"
-    ],
-    "char_210_stward": [
-      "skill_attack_recovery",
-      "skill_auto_trigger"
-    ],
-    "char_101_sora": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_2027_wang": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_225_haak": [
-      "skill_all_manual"
-    ],
-    "char_4080_lin": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_455_nothin": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_block_control",
-      "battle_fast_redeploy"
-    ],
-    "char_017_huang": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family"
-    ],
-    "char_130_doberm": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_147_shining": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_1028_texas2": [
-      "skill_passive",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_fast_redeploy",
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_4004_pudd": [
-      "skill_all_manual"
-    ],
-    "char_126_shotst": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_264_f12yin": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "battle_forced_movement"
-    ],
-    "char_187_ccheal": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "identity_alter_family"
-    ],
-    "char_498_inside": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo"
-    ],
-    "char_140_whitew": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "identity_alter_family"
-    ],
-    "char_1034_jesca2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo",
+    "char_1050_chen3": [
+      "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_4227_gallus": [
-      "skill_none"
-    ],
-    "char_109_fmout": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_285_medic2": [
-      "skill_none"
-    ],
-    "char_4142_laios": [
-      "skill_passive"
-    ],
-    "char_2015_dusk": [
+    "char_1051_headb2": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_297_hamoni": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_349_chiave": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_1015_aglna2": [
-      "skill_passive",
-      "skill_ammo",
       "skill_range_change",
       "skill_distinct_ranges",
       "identity_alter_family",
       "identity_alter_form"
-    ],
-    "char_4055_bgsnow": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_235_jesica": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "identity_alter_family"
-    ],
-    "char_4087_ines": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_passive",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_fast_redeploy",
-      "battle_concealment"
-    ],
-    "char_194_leto": [
-      "skill_all_manual"
-    ],
-    "char_4043_erato": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_362_saga": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
     ],
     "char_1052_kalts2": [
       "skill_all_manual",
@@ -3381,8 +1960,315 @@
       "identity_alter_family",
       "identity_alter_form"
     ],
-    "char_4203_kichi": [
+    "char_106_franka": [
       "skill_all_manual"
+    ],
+    "char_107_liskam": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_108_silent": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "identity_alter_family"
+    ],
+    "char_109_fmout": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_110_deepcl": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_112_siege": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_113_cqbw": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "identity_alter_family"
+    ],
+    "char_115_headbr": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "identity_alter_family"
+    ],
+    "char_117_myrrh": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_118_yuki": [
+      "skill_all_manual"
+    ],
+    "char_120_hibisc": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_121_lava": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_122_beagle": [
+      "skill_all_manual"
+    ],
+    "char_123_fang": [
+      "skill_auto_trigger",
+      "identity_alter_family"
+    ],
+    "char_124_kroos": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "identity_alter_family"
+    ],
+    "char_126_shotst": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_127_estell": [
+      "skill_all_manual"
+    ],
+    "char_128_plosis": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_129_bluep": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_130_doberm": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_131_flameb": [
+      "skill_attack_recovery",
+      "skill_auto_trigger"
+    ],
+    "char_133_mm": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_134_ifrit": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_135_halo": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_136_hsguma": [
+      "skill_passive",
+      "identity_alter_family"
+    ],
+    "char_137_brownb": [
+      "skill_passive"
+    ],
+    "char_140_whitew": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "identity_alter_family"
+    ],
+    "char_141_nights": [
+      "skill_all_manual"
+    ],
+    "char_143_ghost": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_144_red": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy"
+    ],
+    "char_145_prove": [
+      "skill_passive"
+    ],
+    "char_147_shining": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_148_nearl": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "identity_alter_family"
+    ],
+    "char_149_scave": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_1502_crosly": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control",
+      "battle_fast_redeploy",
+      "battle_concealment"
+    ],
+    "char_150_snakek": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_151_myrtle": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_154_morgan": [
+      "skill_passive"
+    ],
+    "char_155_tiger": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_157_dagda": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_158_milu": [
+      "skill_all_manual",
+      "battle_concealment"
+    ],
+    "char_159_peacok": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_163_hpsts": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_164_nightm": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_166_skfire": [
+      "skill_all_manual"
+    ],
+    "char_171_bldsk": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_172_svrash": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_173_slchan": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_174_slbell": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_179_cgbird": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_180_amgoat": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_181_flower": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_183_skgoat": [
+      "skill_all_manual"
+    ],
+    "char_185_frncat": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_187_ccheal": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "identity_alter_family"
+    ],
+    "char_188_helage": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_190_clour": [
+      "skill_all_manual"
+    ],
+    "char_192_falco": [
+      "skill_all_manual"
+    ],
+    "char_193_frostl": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_194_leto": [
+      "skill_all_manual"
+    ],
+    "char_195_glassb": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_196_sunbr": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change"
+    ],
+    "char_197_poca": [
+      "skill_all_manual"
+    ],
+    "char_198_blackd": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_199_yak": [
+      "skill_all_manual"
+    ],
+    "char_2012_typhon": [
+      "skill_all_manual",
+      "skill_ammo"
     ],
     "char_2013_cerber": [
       "skill_auto_trigger",
@@ -3391,141 +2277,95 @@
       "skill_range_change",
       "skill_distinct_ranges"
     ],
-    "char_260_durnar": [
-      "skill_all_manual"
-    ],
-    "char_123_fang": [
-      "skill_auto_trigger",
-      "identity_alter_family"
-    ],
-    "char_356_broca": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_440_pinecn": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_236_rope": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_394_hadiya": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_449_glider": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_elemental"
-    ],
-    "char_124_kroos": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "identity_alter_family"
-    ],
-    "char_4146_nymph": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_elemental"
-    ],
-    "char_494_vendla": [
-      "skill_all_manual"
-    ],
-    "char_253_greyy": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_4202_haruka": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_1031_slent2": [
-      "skill_all_manual",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_347_jaksel": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_155_tiger": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4102_threye": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "battle_elemental"
-    ],
-    "char_213_mostma": [
+    "char_2014_nian": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_426_billro": [
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4234_pedro": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_150_snakek": [
-      "skill_all_manual",
       "battle_block_control"
     ],
-    "char_464_cement": [
+    "char_2015_dusk": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_201_moeshd": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_2023_ling": [
       "skill_all_manual",
       "skill_chargeable"
     ],
-    "char_430_fartth": [
-      "skill_all_manual"
-    ],
-    "char_4116_blkkgt": [
+    "char_2024_chyue": [
       "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_2025_shu": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
-      "battle_forced_movement"
+      "battle_block_control"
     ],
-    "char_4183_mortis": [
+    "char_2026_yu": [
       "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_block_control",
       "battle_elemental"
     ],
-    "char_4042_lumen": [
+    "char_2027_wang": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_202_demkni": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_204_platnm": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_206_gnosis": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable"
     ],
-    "char_4130_luton": [
+    "char_208_melan": [
+      "skill_all_manual"
+    ],
+    "char_209_ardign": [
+      "skill_all_manual"
+    ],
+    "char_210_stward": [
       "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
+      "skill_auto_trigger"
+    ],
+    "char_211_adnach": [
+      "skill_all_manual"
+    ],
+    "char_212_ansel": [
+      "skill_all_manual"
+    ],
+    "char_213_mostma": [
+      "skill_all_manual",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_forced_movement"
@@ -3542,198 +2382,271 @@
       "skill_passive",
       "battle_concealment"
     ],
-    "char_2024_chyue": [
-      "skill_attack_recovery",
-      "skill_all_manual",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_204_platnm": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4213_skybx": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_ammo",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_249_mlyss": [
+    "char_218_cuttle": [
       "skill_all_manual"
     ],
-    "char_4137_udflow": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_4215_buddy": [
-      "skill_none"
-    ],
-    "char_2025_shu": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control"
-    ],
-    "char_1014_nearl2": [
-      "skill_auto_trigger",
-      "skill_passive",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_103_angel": [
+    "char_219_meteo": [
       "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "identity_alter_family"
-    ],
-    "char_4212_nasti": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_002_amiya": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_1011_lava2": [
-      "skill_all_manual",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_1036_fang2": [
-      "skill_auto_trigger",
-      "skill_passive",
-      "skill_chargeable",
-      "battle_block_control",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_503_rang": [
-      "skill_none"
-    ],
-    "char_4141_marcil": [
       "skill_auto_trigger",
       "skill_manual_auto"
     ],
-    "char_1041_angel2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_ammo",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_300_phenxi": [
-      "skill_attack_recovery",
-      "skill_all_manual"
-    ],
-    "char_158_milu": [
-      "skill_all_manual",
-      "battle_concealment"
-    ],
-    "char_344_beewax": [
+    "char_220_grani": [
       "skill_all_manual",
       "skill_range_change",
-      "skill_distinct_ranges"
+      "skill_distinct_ranges",
+      "battle_block_control"
     ],
-    "char_452_bstalk": [
-      "skill_all_manual"
-    ],
-    "char_117_myrrh": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_4098_vvana": [
+    "char_222_bpipe": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
-      "skill_range_change",
       "battle_block_control"
     ],
-    "char_163_hpsts": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_1045_svash2": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_003_kalts": [
-      "skill_all_manual",
-      "identity_alter_family"
-    ],
-    "char_338_iris": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges"
-    ],
-    "char_456_ash": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_forced_movement"
-    ],
-    "char_145_prove": [
-      "skill_passive"
-    ],
-    "char_4054_malist": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
+    "char_225_haak": [
+      "skill_all_manual"
     ],
     "char_226_hmau": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change"
     ],
-    "char_4195_radian": [
-      "skill_all_manual"
-    ],
-    "char_343_tknogi": [
-      "skill_all_manual"
-    ],
-    "char_1023_ghost2": [
-      "skill_all_manual",
-      "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "identity_alter_family",
-      "identity_alter_form"
-    ],
-    "char_415_flint": [
+    "char_230_savage": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "battle_block_control",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_235_jesica": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "identity_alter_family"
+    ],
+    "char_236_rope": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
       "battle_forced_movement"
     ],
-    "char_4132_ascln": [
+    "char_237_gravel": [
+      "skill_passive",
+      "battle_fast_redeploy"
+    ],
+    "char_240_wyvern": [
+      "skill_all_manual"
+    ],
+    "char_241_panda": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_242_otter": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_243_waaifu": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy"
+    ],
+    "char_245_cello": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_248_mgllan": [
+      "skill_all_manual",
+      "battle_concealment"
+    ],
+    "char_249_mlyss": [
+      "skill_all_manual"
+    ],
+    "char_250_phatom": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy",
+      "battle_forced_movement",
+      "identity_alter_family"
+    ],
+    "char_252_bibeak": [
+      "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges"
     ],
+    "char_253_greyy": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_254_vodfox": [
+      "skill_auto_trigger"
+    ],
+    "char_258_podego": [
+      "skill_all_manual"
+    ],
+    "char_260_durnar": [
+      "skill_all_manual"
+    ],
+    "char_261_sddrag": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_263_skadi": [
+      "skill_passive",
+      "identity_alter_family"
+    ],
+    "char_264_f12yin": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control",
+      "battle_forced_movement"
+    ],
+    "char_265_sophia": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_271_spikes": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_272_strong": [
+      "skill_auto_trigger",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy"
+    ],
+    "char_274_astesi": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_275_breeze": [
+      "skill_all_manual"
+    ],
+    "char_277_sqrrel": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_278_orchid": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_279_excu": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_281_popka": [
+      "skill_all_manual"
+    ],
+    "char_282_catap": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_283_midn": [
+      "skill_all_manual"
+    ],
+    "char_284_spot": [
+      "skill_all_manual",
+      "skill_range_change"
+    ],
+    "char_285_medic2": [
+      "skill_none"
+    ],
     "char_286_cast3": [
       "skill_none"
+    ],
+    "char_289_gyuki": [
+      "skill_all_manual"
+    ],
+    "char_290_vigna": [
+      "skill_all_manual"
+    ],
+    "char_291_aglina": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_293_thorns": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_294_ayer": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_297_hamoni": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_298_susuro": [
+      "skill_all_manual"
+    ],
+    "char_300_phenxi": [
+      "skill_attack_recovery",
+      "skill_all_manual"
+    ],
+    "char_301_cutter": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_302_glaze": [
+      "skill_all_manual"
+    ],
+    "char_304_zebra": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_concealment"
+    ],
+    "char_306_leizi": [
+      "skill_all_manual",
+      "identity_alter_family"
+    ],
+    "char_308_swire": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "identity_alter_family"
+    ],
+    "char_311_mudrok": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
     ],
     "char_322_lmlee": [
       "skill_auto_trigger",
@@ -3743,33 +2656,195 @@
       "battle_fast_redeploy",
       "battle_forced_movement"
     ],
-    "char_491_humus": [
+    "char_325_bison": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_326_glacus": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_328_cammou": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_332_archet": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_333_sidero": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_336_folivo": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_concealment"
+    ],
+    "char_337_utage": [
+      "skill_passive",
       "battle_block_control"
     ],
-    "char_501_durin": [
-      "skill_none"
+    "char_338_iris": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
     ],
-    "char_405_absin": [
-      "skill_auto_trigger",
-      "skill_manual_auto"
-    ],
-    "char_4204_mantra": [
+    "char_340_shwaz": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_341_sntlla": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_343_tknogi": [
+      "skill_all_manual"
+    ],
+    "char_344_beewax": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_345_folnic": [
+      "skill_all_manual"
+    ],
+    "char_346_aosta": [
+      "skill_all_manual"
+    ],
+    "char_347_jaksel": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_348_ceylon": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_349_chiave": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_350_surtr": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_355_ethan": [
+      "skill_passive"
+    ],
+    "char_356_broca": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_358_lisa": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_362_saga": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_363_toddi": [
+      "skill_all_manual",
+      "skill_ammo"
+    ],
+    "char_365_aprl": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_passive",
+      "battle_concealment"
+    ],
+    "char_366_acdrop": [
+      "skill_all_manual"
+    ],
+    "char_367_swllow": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_369_bena": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_373_lionhd": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_376_therex": [
+      "skill_none"
+    ],
+    "char_377_gdglow": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_378_asbest": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_379_sesa": [
+      "skill_all_manual"
+    ],
+    "char_381_bubble": [
+      "skill_all_manual"
+    ],
+    "char_383_snsant": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "battle_forced_movement"
+    ],
+    "char_385_finlpp": [
+      "skill_all_manual"
+    ],
+    "char_388_mint": [
+      "skill_all_manual",
+      "skill_range_change",
       "skill_distinct_ranges",
-      "battle_elemental"
+      "battle_forced_movement"
     ],
-    "char_131_flameb": [
+    "char_391_rosmon": [
       "skill_attack_recovery",
-      "skill_auto_trigger"
+      "skill_auto_trigger",
+      "skill_manual_auto"
     ],
-    "char_4182_oblvns": [
-      "skill_attack_recovery",
+    "char_394_hadiya": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4000_jnight": [
+      "skill_none"
+    ],
+    "char_4004_pudd": [
+      "skill_all_manual"
+    ],
+    "char_4006_melnte": [
       "skill_all_manual",
       "skill_chargeable",
       "skill_range_change",
@@ -3783,43 +2858,66 @@
       "skill_range_change",
       "skill_distinct_ranges"
     ],
-    "char_265_sophia": [
-      "skill_all_manual",
-      "battle_block_control"
-    ],
-    "char_289_gyuki": [
-      "skill_all_manual"
-    ],
-    "char_336_folivo": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "battle_concealment"
-    ],
-    "char_502_nblade": [
-      "skill_none",
-      "identity_alter_family"
-    ],
-    "char_4211_snhunt": [
-      "skill_attack_recovery",
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_4163_rosesa": [
-      "skill_auto_trigger",
-      "skill_manual_auto",
-      "skill_chargeable"
-    ],
-    "char_263_skadi": [
-      "skill_passive",
-      "identity_alter_family"
-    ],
-    "char_241_panda": [
+    "char_400_weedy": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_range_change",
       "skill_distinct_ranges",
       "battle_forced_movement"
+    ],
+    "char_4010_etlchi": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4011_lessng": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_passive",
+      "skill_manual_auto"
+    ],
+    "char_4013_kjera": [
+      "skill_all_manual"
+    ],
+    "char_4014_lunacu": [
+      "skill_all_manual",
+      "battle_concealment"
+    ],
+    "char_4015_spuria": [
+      "skill_passive"
+    ],
+    "char_4016_kazema": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control"
+    ],
+    "char_4017_puzzle": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_fast_redeploy"
+    ],
+    "char_4019_ncdeer": [
+      "skill_all_manual"
+    ],
+    "char_401_elysm": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4023_rfalcn": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change"
+    ],
+    "char_4025_aprot2": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
     ],
     "char_4026_vulpis": [
       "skill_auto_trigger",
@@ -3829,50 +2927,952 @@
       "skill_distinct_ranges",
       "battle_concealment"
     ],
-    "char_1032_excu2": [
+    "char_4027_heyak": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_402_tuye": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4031_liesel": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4032_provs": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change"
+    ],
+    "char_4036_forcer": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_4037_demetr": [
       "skill_attack_recovery",
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo",
       "skill_range_change",
-      "skill_distinct_ranges",
-      "battle_block_control",
-      "identity_alter_family",
-      "identity_alter_form"
+      "skill_distinct_ranges"
     ],
-    "char_4199_makiri": [
+    "char_4039_horn": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_range_change"
+      "skill_chargeable"
     ],
-    "char_127_estell": [
+    "char_4040_rockr": [
       "skill_all_manual"
     ],
-    "char_4229_aphris": [
+    "char_4041_chnut": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4042_lumen": [
       "skill_auto_trigger",
       "skill_manual_auto",
-      "skill_ammo"
+      "skill_chargeable"
+    ],
+    "char_4043_erato": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4045_heidi": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_4046_ebnhlz": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_4047_pianst": [
+      "skill_all_manual"
+    ],
+    "char_4048_doroth": [
+      "skill_auto_trigger"
+    ],
+    "char_4051_akkord": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
     ],
     "char_4052_surfer": [
       "skill_passive",
       "battle_fast_redeploy"
+    ],
+    "char_4054_malist": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4055_bgsnow": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4056_titi": [
+      "skill_all_manual"
+    ],
+    "char_4058_pepe": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_405_absin": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4062_totter": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4063_quartz": [
+      "skill_all_manual"
+    ],
+    "char_4064_mlynar": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4065_judge": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4066_highmo": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_elemental"
+    ],
+    "char_4067_lolxh": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4071_peper": [
+      "skill_all_manual"
+    ],
+    "char_4072_ironmn": [
+      "skill_all_manual"
+    ],
+    "char_4077_palico": [
+      "skill_none"
+    ],
+    "char_4078_bdhkgt": [
+      "skill_attack_recovery",
+      "skill_all_manual"
+    ],
+    "char_4079_haini": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4080_lin": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4081_warmy": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "battle_elemental"
+    ],
+    "char_4082_qiubai": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4083_chimes": [
+      "skill_all_manual"
+    ],
+    "char_4087_ines": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_passive",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy",
+      "battle_concealment"
+    ],
+    "char_4088_hodrer": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control"
+    ],
+    "char_4091_ulika": [
+      "skill_none"
+    ],
+    "char_4093_frston": [
+      "skill_none"
+    ],
+    "char_4098_vvana": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "battle_block_control"
+    ],
+    "char_4100_caper": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4102_threye": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "battle_elemental"
+    ],
+    "char_4104_coldst": [
+      "skill_all_manual"
+    ],
+    "char_4105_almond": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "battle_forced_movement"
+    ],
+    "char_4106_bryota": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4107_vrdant": [
+      "skill_passive",
+      "battle_block_control"
+    ],
+    "char_4109_baslin": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change"
+    ],
+    "char_4110_delphn": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4114_harold": [
+      "skill_all_manual",
+      "battle_elemental"
+    ],
+    "char_4116_blkkgt": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_4117_ray": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_4119_wanqin": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_411_tomimi": [
+      "skill_all_manual"
+    ],
+    "char_4121_zuole": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4122_grabds": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change"
+    ],
+    "char_4123_ela": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4124_iana": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control",
+      "battle_concealment"
+    ],
+    "char_4125_rdoc": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4126_fuze": [
+      "skill_all_manual",
+      "skill_ammo"
+    ],
+    "char_4130_luton": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_4131_odda": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4132_ascln": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4133_logos": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4134_cetsyr": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4136_phonor": [
+      "skill_none",
+      "battle_elemental"
+    ],
+    "char_4137_udflow": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4138_narant": [
+      "skill_attack_recovery",
+      "skill_all_manual"
     ],
     "char_4139_papyrs": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable"
     ],
+    "char_4140_lasher": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4141_marcil": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4142_laios": [
+      "skill_passive"
+    ],
+    "char_4143_sensi": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change"
+    ],
+    "char_4144_chilc": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_fast_redeploy",
+      "battle_elemental"
+    ],
+    "char_4145_ulpia": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control",
+      "battle_forced_movement"
+    ],
+    "char_4146_nymph": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4147_mitm": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4148_philae": [
+      "skill_all_manual",
+      "battle_elemental"
+    ],
+    "char_4151_tinman": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4155_talr": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_fast_redeploy"
+    ],
+    "char_415_flint": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control",
+      "battle_forced_movement"
+    ],
+    "char_4162_cathy": [
+      "skill_passive"
+    ],
+    "char_4163_rosesa": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4164_tecno": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4165_ctrail": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4166_varkis": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_416_zumama": [
+      "skill_passive",
+      "battle_block_control"
+    ],
+    "char_4171_wulfen": [
+      "skill_auto_trigger"
+    ],
+    "char_4172_xingzh": [
+      "skill_all_manual"
+    ],
+    "char_4173_nowell": [
+      "skill_all_manual"
+    ],
+    "char_4177_brigid": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4178_alanna": [
+      "skill_passive"
+    ],
+    "char_4179_monstr": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4182_oblvns": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4183_mortis": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control",
+      "battle_elemental"
+    ],
+    "char_4184_dolris": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4185_amoris": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4186_tmoris": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_chargeable"
+    ],
+    "char_4187_graceb": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4188_confes": [
+      "skill_none"
+    ],
+    "char_4191_tippi": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4193_lemuen": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo"
+    ],
+    "char_4194_rmixer": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4195_radian": [
+      "skill_all_manual"
+    ],
+    "char_4196_reckpr": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4198_christ": [
+      "skill_all_manual",
+      "battle_elemental"
+    ],
+    "char_4199_makiri": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change"
+    ],
+    "char_4202_haruka": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4203_kichi": [
+      "skill_all_manual"
+    ],
+    "char_4204_mantra": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4207_branch": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4208_wintim": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_fast_redeploy"
+    ],
+    "char_420_flamtl": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_4211_snhunt": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4212_nasti": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_4213_skybx": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_ammo",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_4214_cairn": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4215_buddy": [
+      "skill_none"
+    ],
+    "char_421_crow": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_4221_ju": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4222_taraxa": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_4223_botany": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4224_turdus": [
+      "skill_all_manual",
+      "battle_concealment"
+    ],
+    "char_4225_tanya": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_elemental"
+    ],
+    "char_4226_veen": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo"
+    ],
+    "char_4227_gallus": [
+      "skill_none"
+    ],
+    "char_4228_closur": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control"
+    ],
+    "char_4229_aphris": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo"
+    ],
+    "char_422_aurora": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_4230_mcnist": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo"
+    ],
+    "char_4234_pedro": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_4235_thumpy": [
+      "skill_all_manual",
+      "battle_block_control",
+      "battle_forced_movement",
+      "battle_elemental"
+    ],
+    "char_4236_tmslot": [
+      "skill_all_manual"
+    ],
+    "char_4237_jcinta": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_423_blemsh": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_426_billro": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_427_vigil": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control"
+    ],
+    "char_430_fartth": [
+      "skill_all_manual"
+    ],
+    "char_431_ashlok": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_433_windft": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
     "char_436_whispr": [
       "skill_attack_recovery",
       "skill_auto_trigger"
     ],
-    "char_112_siege": [
+    "char_437_mizuki": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_440_pinecn": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_445_wscoot": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_446_aroma": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable"
+    ],
+    "char_449_glider": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_elemental"
+    ],
+    "char_450_necras": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_451_robin": [
+      "skill_auto_trigger",
+      "battle_forced_movement"
+    ],
+    "char_452_bstalk": [
+      "skill_all_manual"
+    ],
+    "char_455_nothin": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control",
+      "battle_fast_redeploy"
+    ],
+    "char_456_ash": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_457_blitz": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_458_rfrost": [
+      "skill_auto_trigger"
+    ],
+    "char_459_tachak": [
+      "skill_attack_recovery",
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_464_cement": [
+      "skill_all_manual",
+      "skill_chargeable"
+    ],
+    "char_466_qanik": [
+      "skill_all_manual"
+    ],
+    "char_469_indigo": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_472_pasngr": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges"
+    ],
+    "char_473_mberry": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_chargeable",
+      "battle_elemental"
+    ],
+    "char_474_glady": [
       "skill_auto_trigger",
       "skill_manual_auto",
       "skill_chargeable",
       "skill_range_change",
       "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_475_akafyu": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_476_blkngt": [
+      "skill_all_manual",
+      "skill_chargeable"
+    ],
+    "char_478_kirara": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_479_sleach": [
+      "skill_all_manual",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_484_robrta": [
+      "skill_all_manual",
+      "battle_block_control"
+    ],
+    "char_485_pallas": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control"
+    ],
+    "char_486_takila": [
+      "skill_all_manual",
+      "skill_chargeable",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_block_control"
+    ],
+    "char_487_bobb": [
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_elemental"
+    ],
+    "char_488_buildr": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_489_serum": [
+      "skill_all_manual"
+    ],
+    "char_491_humus": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "battle_block_control"
+    ],
+    "char_492_quercu": [
+      "skill_all_manual"
+    ],
+    "char_493_firwhl": [
+      "skill_auto_trigger",
+      "skill_manual_auto"
+    ],
+    "char_494_vendla": [
+      "skill_all_manual"
+    ],
+    "char_496_wildmn": [
+      "skill_passive",
+      "skill_range_change",
+      "skill_distinct_ranges",
+      "battle_forced_movement"
+    ],
+    "char_497_ctable": [
+      "skill_passive",
+      "skill_ammo",
+      "battle_fast_redeploy",
+      "battle_concealment"
+    ],
+    "char_498_inside": [
+      "skill_attack_recovery",
+      "skill_auto_trigger",
+      "skill_manual_auto",
+      "skill_ammo"
+    ],
+    "char_499_kaitou": [
+      "skill_all_manual",
+      "battle_elemental"
+    ],
+    "char_500_noirc": [
+      "skill_none",
       "identity_alter_family"
+    ],
+    "char_501_durin": [
+      "skill_none"
+    ],
+    "char_502_nblade": [
+      "skill_none",
+      "identity_alter_family"
+    ],
+    "char_503_rang": [
+      "skill_none"
     ]
   },
   "manualReview": {

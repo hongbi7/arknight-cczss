@@ -7,6 +7,11 @@ const apiReveal = require("./api/reveal.js");
 const apiChoices = require("./api/choices.js");
 const apiPick = require("./api/pick.js");
 const apiClue = require("./api/clue.js");
+const apiAnomalyNew = require("./api/anomaly/new.js");
+const apiAnomalyThemes = require("./api/anomaly/themes.js");
+const apiAnomalyScan = require("./api/anomaly/scan.js");
+const apiAnomalyAnswer = require("./api/anomaly/answer.js");
+const apiAnomalyNext = require("./api/anomaly/next.js");
 
 function cliArg(name) {
   const prefix = "--" + name;
@@ -61,6 +66,11 @@ const server = http.createServer((req, res) => {
   if (url.pathname === "/api/choices") return apiChoices(req, res);
   if (url.pathname === "/api/pick") return apiPick(req, res);
   if (url.pathname === "/api/clue") return apiClue(req, res);
+  if (url.pathname === "/api/anomaly/new") return apiAnomalyNew(req, res);
+  if (url.pathname === "/api/anomaly/themes") return apiAnomalyThemes(req, res);
+  if (url.pathname === "/api/anomaly/scan") return apiAnomalyScan(req, res);
+  if (url.pathname === "/api/anomaly/answer") return apiAnomalyAnswer(req, res);
+  if (url.pathname === "/api/anomaly/next") return apiAnomalyNext(req, res);
   serveStatic(url.pathname, req, res);
 });
 

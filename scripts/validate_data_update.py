@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 
 
@@ -18,7 +19,13 @@ GENERATED_DATA_FILES = (
     "server-data/operator-familiarity.json",
     "server-data/operator-identities.json",
     "server-data/operator-themes.json",
+    "server-data/anomaly-rules.json",
+    "server-data/anomaly-questions.json",
 )
+
+EXPECTED_ANOMALY_DOMAINS = {"roster", "identity", "skill", "battle", "logistics", "visual"}
+EXPECTED_ANOMALY_DIFFICULTIES = {"trainee", "standard", "hazard"}
+MIN_ANOMALY_BUCKET_SIZE = 60
 
 
 def load_json(relative_path):
@@ -53,6 +60,8 @@ def validate(source):
     familiarity = load_json("server-data/operator-familiarity.json")
     identities = load_json("server-data/operator-identities.json")
     themes = load_json("server-data/operator-themes.json")
+    anomaly_rules = load_json("server-data/anomaly-rules.json")
+    anomaly_questions = load_json("server-data/anomaly-questions.json")
     names = load_json("public/data/names.json")
     operator_art = load_json("public/data/operator-art.json")
     attention_path = PROJECT_ROOT / "scripts" / "operator-attention-signals.json"
@@ -65,10 +74,168 @@ def validate(source):
     )
 
     operator_ids = {record.get("id") for record in operators.values() if record.get("id")}
+    operator_by_id = {
+        record.get("id"): record for record in operators.values() if record.get("id")
+    }
     operator_names = set(operators)
     name_index = {record.get("n") for record in names if record.get("n")}
 
     structural_errors = []
+
+    anomaly_definitions = anomaly_rules.get("definitions") or {}
+    anomaly_question_list = anomaly_questions.get("questions") or []
+    anomaly_domains = set((anomaly_rules.get("domains") or {}).keys())
+    anomaly_difficulties = set((anomaly_rules.get("difficulties") or {}).keys())
+    if anomaly_rules.get("schemaVersion") != 1 or anomaly_questions.get("schemaVersion") != 1:
+        structural_errors.append("anomaly data schemaVersion must be 1")
+    if anomaly_rules.get("sourceFingerprint") != anomaly_questions.get("sourceFingerprint"):
+        structural_errors.append("anomaly rule and question source fingerprints differ")
+    if anomaly_domains != EXPECTED_ANOMALY_DOMAINS:
+        structural_errors.append(
+            f"anomaly domains differ (actual={sorted(anomaly_domains)})"
+        )
+    if anomaly_difficulties != EXPECTED_ANOMALY_DIFFICULTIES:
+        structural_errors.append(
+            f"anomaly difficulties differ (actual={sorted(anomaly_difficulties)})"
+        )
+
+    forbidden_rule_parts = {
+        "rarity", "tag", "tags", "cv", "voice", "charword",
+        "birthday", "height", "combat_experience", "battle_experience",
+    }
+    rule_members = {}
+    for rule_id, rule in anomaly_definitions.items():
+        members = set(rule.get("members") or [])
+        rule_members[rule_id] = members
+        if rule.get("id") != rule_id:
+            structural_errors.append(f"anomaly rule key/id mismatch: {rule_id}")
+        if rule.get("domain") not in EXPECTED_ANOMALY_DOMAINS:
+            structural_errors.append(f"anomaly rule {rule_id} has invalid domain")
+        if len(members) < 3:
+            structural_errors.append(f"anomaly rule {rule_id} has fewer than three members")
+        if rule.get("memberCount") != len(members):
+            structural_errors.append(f"anomaly rule {rule_id} memberCount is inconsistent")
+        unknown = sorted(members - operator_ids)
+        if unknown:
+            structural_errors.append(f"anomaly rule {rule_id} has unknown operators: {unknown[:8]}")
+        source_head = str(rule.get("source") or "").lower().split(":", 1)[0]
+        id_parts = set(rule_id.lower().replace("-", "_").split("."))
+        source_parts = set(source_head.replace("-", "_").split("."))
+        if id_parts & forbidden_rule_parts or source_parts & forbidden_rule_parts:
+            structural_errors.append(f"anomaly rule {rule_id} uses a forbidden dimension")
+        if rule.get("domain") == "roster" and ({"rarity", "tag", "tags"} & (id_parts | source_parts)):
+            structural_errors.append(f"roster rule {rule_id} uses rarity or tags")
+        if rule.get("domain") == "visual" and ({"cv", "voice", "charword"} & (id_parts | source_parts)):
+            structural_errors.append(f"visual rule {rule_id} uses CV data")
+        if "module_count" in rule_id or "uniequip.charequip" in source_head:
+            structural_errors.append(f"anomaly rule {rule_id} uses the removed module-count type")
+
+    question_ids = set()
+    anomaly_buckets = {
+        f"{domain}:{difficulty}": 0
+        for domain in EXPECTED_ANOMALY_DOMAINS
+        for difficulty in EXPECTED_ANOMALY_DIFFICULTIES
+    }
+    for question in anomaly_question_list:
+        question_id = question.get("id")
+        if not question_id or question_id in question_ids:
+            structural_errors.append(f"anomaly question id is missing or duplicated: {question_id}")
+        question_ids.add(question_id)
+        domain = question.get("domain")
+        difficulty = question.get("difficulty")
+        bucket_key = f"{domain}:{difficulty}"
+        if bucket_key not in anomaly_buckets:
+            structural_errors.append(f"anomaly question {question_id} has an invalid bucket")
+        else:
+            anomaly_buckets[bucket_key] += 1
+        rule_id = question.get("ruleId")
+        rule = anomaly_definitions.get(rule_id)
+        if not rule:
+            structural_errors.append(f"anomaly question {question_id} references unknown rule {rule_id}")
+            continue
+        if rule.get("domain") != domain:
+            structural_errors.append(f"anomaly question {question_id} crosses rule domains")
+        majority = question.get("majorityIds") or []
+        odd_id = question.get("oddId")
+        option_ids = set(majority + ([odd_id] if odd_id else []))
+        if len(majority) != 3 or len(set(majority)) != 3 or len(option_ids) != 4:
+            structural_errors.append(f"anomaly question {question_id} must contain four unique options")
+            continue
+        unknown = sorted(option_ids - operator_ids)
+        if unknown:
+            structural_errors.append(f"anomaly question {question_id} has unknown operators: {unknown}")
+        else:
+            rarity_counts = Counter(operator_by_id[operator_id].get("rarity") for operator_id in option_ids)
+            if sorted(rarity_counts.values()) == [1, 3]:
+                structural_errors.append(
+                    f"anomaly question {question_id} has a protected rarity 3:1 shortcut"
+                )
+            for competing_id, competing_members in rule_members.items():
+                matching = option_ids & competing_members
+                if len(matching) != 3:
+                    continue
+                competing_odd = next(iter(option_ids - matching))
+                if competing_odd != odd_id:
+                    structural_errors.append(
+                        f"anomaly question {question_id} has conflicting rule {competing_id}"
+                    )
+                    break
+        members = rule_members[rule_id]
+        if not set(majority).issubset(members) or odd_id in members:
+            structural_errors.append(f"anomaly question {question_id} does not match its target rule")
+        if str(rule.get("source") or "").startswith("skin.displaySkin.skinGroupName"):
+            art = question.get("optionArt") or []
+            art_by_id = {entry.get("operatorId"): entry for entry in art}
+            if set(art_by_id) != option_ids or len(art) != 4:
+                structural_errors.append(
+                    f"outfit-brand question {question_id} must provide four skin illustrations"
+                )
+            else:
+                target_brand = str(rule.get("matchLabel") or "")
+                for operator_id in option_ids:
+                    entry = art_by_id[operator_id]
+                    brand = str(entry.get("brand") or "")
+                    should_match = operator_id in members
+                    if (brand == target_brand) != should_match:
+                        structural_errors.append(
+                            f"outfit-brand question {question_id} has mismatched art for {operator_id}"
+                        )
+                        break
+                    if not public_asset_exists(entry.get("imageUrl")):
+                        structural_errors.append(
+                            f"outfit-brand question {question_id} is missing skin art for {operator_id}"
+                        )
+                        break
+        evidence = question.get("evidence") or []
+        evidence_by_id = {entry.get("operatorId"): entry for entry in evidence}
+        if set(evidence_by_id) != option_ids or len(evidence) != 4:
+            structural_errors.append(f"anomaly question {question_id} has incomplete evidence")
+        else:
+            for operator_id in option_ids:
+                if bool(evidence_by_id[operator_id].get("match")) != (operator_id in members):
+                    structural_errors.append(
+                        f"anomaly question {question_id} has inconsistent evidence for {operator_id}"
+                    )
+                    break
+        for supporting_id in question.get("supportingRuleIds") or []:
+            supporting = anomaly_definitions.get(supporting_id)
+            supporting_members = rule_members.get(supporting_id, set())
+            if not supporting or supporting.get("domain") != domain:
+                structural_errors.append(
+                    f"anomaly question {question_id} has invalid supporting rule {supporting_id}"
+                )
+                continue
+            if not set(majority).issubset(supporting_members) or odd_id in supporting_members:
+                structural_errors.append(
+                    f"anomaly question {question_id} supporting rule {supporting_id} is ambiguous"
+                )
+
+    for bucket_key, count in sorted(anomaly_buckets.items()):
+        if count < MIN_ANOMALY_BUCKET_SIZE:
+            structural_errors.append(
+                f"anomaly bucket {bucket_key} has {count} questions; "
+                f"minimum is {MIN_ANOMALY_BUCKET_SIZE}"
+            )
     for label, actual in (
         ("operator-clues", set(clues)),
         ("operator-familiarity", set(familiarity)),
@@ -270,6 +437,9 @@ def validate(source):
             "familiarityRecords": len(familiarity),
             "identityGroups": len(identities.get("groups") or []),
             "themes": len(theme_definitions),
+            "anomalyRules": len(anomaly_definitions),
+            "anomalyQuestions": len(anomaly_question_list),
+            "anomalyBuckets": len(anomaly_buckets),
             "operatorArtRecords": len(operator_art),
             "requiredAssetGaps": required_asset_count,
             "optionalSkillIconGaps": len(missing_skill_icons),
