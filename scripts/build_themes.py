@@ -295,7 +295,7 @@ add_theme(
 # 个别品牌按维护判断固定解锁次数：覆盖“成员 ≤25 或冷门品牌降为 1、其余 2 次”的默认规则。
 BRAND_DIRECTIVE_GOALS = {"珊瑚海岸": 3}
 # 个别品牌在全部主题中的出现权重乘数（不是族内权重）。
-BRAND_WEIGHT_BOOSTS = {"珊瑚海岸": 1.5}
+BRAND_WEIGHT_BOOSTS = {"珊瑚海岸": 3.5}
 brand_candidates = []
 for rule_id in sorted((key for key in rules if key.startswith("visual.outfit_brand."))):
     rule = rule_or_raise(rule_id)

@@ -183,8 +183,26 @@ ACTIVATION = {
     "PASSIVE": "passive",
 }
 
-QUOTE_TITLE_HINTS = ("交谈", "信赖", "行动开始", "作战中", "完成高难", "3星结束")
+QUOTE_TITLE_HINTS = (
+    "交谈", "信赖", "任命助理", "闲置", "观看作战记录", "精英化晋升",
+    "编入队伍", "任命队长", "行动出发", "行动开始", "选中干员", "部署",
+    "作战中", "结束行动", "完成高难", "行动失败", "进驻设施", "戳一下",
+)
 QUOTE_TITLE_EXCLUDES = ("干员报到", "标题", "问候", "生日", "周年")
+QUOTE_HIGH_TITLE_HINTS = ("信赖提升后交谈", "晋升后交谈", "精英化晋升")
+QUOTE_LOW_TITLE_HINTS = (
+    "编入队伍", "任命队长", "行动出发", "行动开始", "选中干员", "部署",
+    "作战中", "结束行动", "行动失败", "进驻设施", "戳一下",
+)
+QUOTE_DISTINCTIVE_TERMS = (
+    "父亲", "母亲", "家人", "家族", "故乡", "过去", "以前", "小时候", "同事",
+    "小队", "族裔", "职责", "代号", "武器", "法杖", "铳", "剑", "盾", "实验",
+    "研究", "骑士", "感染者", "矿石病", "源石", "深海", "罗德岛", "龙门",
+    "乌萨斯", "维多利亚", "拉特兰", "卡兹戴尔", "莱塔尼亚", "哥伦比亚",
+    "炎国", "叙拉古", "谢拉格", "萨米", "玻利瓦尔", "伊比利亚", "米诺斯",
+)
+QUOTE_LIBRARY_LIMIT = 16
+QUOTE_TIER_LIMIT = QUOTE_LIBRARY_LIMIT // 2
 
 
 def clamp(value, low, high):
@@ -304,6 +322,8 @@ def opaque_asset_url(kind, identity, suffix=""):
 
 def strip_markup(value):
     value = value or ""
+    value = re.sub(r"\{@nickname\}", "博士", value, flags=re.IGNORECASE)
+    value = re.sub(r"\{@[^}]+\}", "", value)
     value = value.replace("\\n", " ").replace("\r", " ").replace("\n", " ")
     value = re.sub(r"<[^>]+>", "", value)
     value = re.sub(r"\s+", " ", value)
@@ -323,10 +343,43 @@ def mask_quote(text, operator_name, power_names):
     return text
 
 
-def quote_candidates(operator_id, operator_name, power_names):
-    result = []
+def quote_information_score(title, text, operator_name, known_operator_names):
+    length = len(text)
+    score = 0.0
+    if length >= 90:
+        score += 1.5
+    elif length >= 64:
+        score += 1.1
+    elif length >= 42:
+        score += 0.7
+    elif length >= 26:
+        score += 0.25
+    elif length < 18:
+        score -= 1.1
+
+    if any(hint in title for hint in QUOTE_HIGH_TITLE_HINTS):
+        score += 0.9
+    if any(hint in title for hint in QUOTE_LOW_TITLE_HINTS):
+        score -= 1.25
+
+    distinctive_hits = sum(1 for term in QUOTE_DISTINCTIVE_TERMS if term in text)
+    score += min(1.5, distinctive_hits * 0.38)
+    if any(
+        name != operator_name and len(name) >= 2 and name in text
+        for name in known_operator_names
+    ):
+        score += 1.45
+    if re.search(r"我的|我曾|我们当时|来自|出生|遗物|真正的|记忆|故乡|家乡", text):
+        score += 0.55
+    if re.search(r"准备|出发|听从命令|敌人|任务开始|行动开始|作战开始", text):
+        score -= 0.35
+    return round(score, 2)
+
+
+def quote_candidates(operator_id, operator_name, power_names, known_operator_names):
+    candidates = []
     seen = set()
-    for word in words_by_operator.get(operator_id, []):
+    for source_index, word in enumerate(words_by_operator.get(operator_id, [])):
         title = word.get("voiceTitle") or ""
         if not any(hint in title for hint in QUOTE_TITLE_HINTS):
             continue
@@ -338,10 +391,43 @@ def quote_candidates(operator_id, operator_name, power_names):
         if len(text) > 120:
             text = text[:117].rstrip() + "……"
         seen.add(text)
-        result.append({"title": title, "text": text})
-        if len(result) >= 8:
-            break
-    return result
+        score = quote_information_score(title, text, operator_name, known_operator_names)
+        candidates.append({
+            "title": title,
+            "text": text,
+            "informationScore": score,
+            "informationTier": "high" if score >= 2.15 else "low",
+            "_sourceIndex": source_index,
+        })
+
+    if len(candidates) >= 2:
+        if not any(item["informationTier"] == "high" for item in candidates):
+            max(candidates, key=lambda item: (item["informationScore"], -item["_sourceIndex"]))[
+                "informationTier"
+            ] = "high"
+        if not any(item["informationTier"] == "low" for item in candidates):
+            min(candidates, key=lambda item: (item["informationScore"], item["_sourceIndex"]))[
+                "informationTier"
+            ] = "low"
+
+    high = sorted(
+        (item for item in candidates if item["informationTier"] == "high"),
+        key=lambda item: (-item["informationScore"], item["_sourceIndex"]),
+    )[:QUOTE_TIER_LIMIT]
+    low = sorted(
+        (item for item in candidates if item["informationTier"] == "low"),
+        key=lambda item: (item["informationScore"], item["_sourceIndex"]),
+    )[:QUOTE_TIER_LIMIT]
+    selected = high + low
+    if len(selected) < min(QUOTE_LIBRARY_LIMIT, len(candidates)):
+        selected_ids = {id(item) for item in selected}
+        remainder = sorted(
+            (item for item in candidates if id(item) not in selected_ids),
+            key=lambda item: (-item["informationScore"], item["_sourceIndex"]),
+        )
+        selected.extend(remainder[:QUOTE_LIBRARY_LIMIT - len(selected)])
+    selected.sort(key=lambda item: item["_sourceIndex"])
+    return [{key: value for key, value in item.items() if key != "_sourceIndex"} for item in selected]
 
 
 def highest_phase_data(character_record):
@@ -504,6 +590,10 @@ eligible_operator_ids = {
     and operator_id in handbook
     and record.get("name")
 }
+eligible_operator_names = tuple(
+    character[operator_id]["name"]
+    for operator_id in eligible_operator_ids
+)
 attention_provider_coverage = {}
 active_attention_providers = set()
 for provider in attention_provider_weights:
@@ -603,7 +693,7 @@ for cid, cv in character.items():
         "rangeOverridden": skill["rangeOverridden"],
     } for skill in operator_skills]
     power_names = [power.get("name"), power.get("parentName"), power.get("rootName")]
-    quotes = quote_candidates(cid, name, power_names)
+    quotes = quote_candidates(cid, name, power_names, eligible_operator_names)
 
     record = {
         "id": cid,

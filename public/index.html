@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260901-mobile-record-bottom-14">
 </head>
 <body data-mode="">
 
@@ -452,8 +452,22 @@
   </div>
 </div>
 
+<div id="mobileDataSheet" class="mobile-data-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="mobileDataSheetTitle">
+  <button id="mobileDataSheetBackdrop" class="mobile-data-sheet-backdrop" type="button" aria-label="关闭详情"></button>
+  <section class="mobile-data-sheet-panel">
+    <header class="mobile-data-sheet-head">
+      <div>
+        <span>TACTICAL DATA // 移动档案详情</span>
+        <h2 id="mobileDataSheetTitle">档案详情</h2>
+      </div>
+      <button id="mobileDataSheetClose" type="button" aria-label="关闭详情"><i aria-hidden="true"></i>关闭</button>
+    </header>
+    <div id="mobileDataSheetBody" class="mobile-data-sheet-body"></div>
+  </section>
+</div>
+
 <div class="wipe" aria-hidden="true"><span></span></div>
 
-<script src="js/app.js"></script>
+  <script src="js/app.js?v=20260901-mobile-record-bottom-14"></script>
 </body>
 </html>

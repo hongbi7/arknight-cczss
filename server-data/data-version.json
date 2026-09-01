@@ -106,8 +106,8 @@
       "sha256": "a1595adca354bfb67851e38d25e65752efdde0ecf731af403ce108b56b1be23e"
     },
     "server-data/operator-clues.json": {
-      "bytes": 1367586,
-      "sha256": "9d273f42fc726bd0616425c00f905fee38fd27b52d7433ca579ca4773ad1794e"
+      "bytes": 1933605,
+      "sha256": "ee89b0ae949c5a4bf945d2b063ea7382156eb13efe86d46ecdbd2b3408187e2e"
     },
     "server-data/operator-familiarity.json": {
       "bytes": 210767,
@@ -119,7 +119,7 @@
     },
     "server-data/operator-themes.json": {
       "bytes": 223146,
-      "sha256": "9fed7e7694474a14078c626351094e39b1c62029733ab2c61763cf7d1adeae49"
+      "sha256": "0ffd5c351eeff26e92d5aed2df0be4de2dc5428db989f5abcd9dd73e1d1fb08d"
     },
     "server-data/operator-brand-art.json": {
       "bytes": 41995,
