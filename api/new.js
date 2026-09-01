@@ -16,7 +16,8 @@ module.exports = function handler(req, res) {
     .split(",")
     .map((themeId) => themeId.trim())
     .filter(Boolean)
-    .slice(0, 40);
+    // 40 条轮换历史外，允许携带三次珊瑚海岸计数和一个首轮五族完成标记；首项为珊瑚海岸时表示上一局刚出现。
+    .slice(0, 44);
   const out = game.newGame(mode, url.searchParams.get("attempts"), url.searchParams.get("v"), recentThemes);
   out.mode = mode;
   res.setHeader("Content-Type", "application/json; charset=utf-8");

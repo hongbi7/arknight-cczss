@@ -77,3 +77,5 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, HOST, () => {
   console.log("Arknights guess game running at http://" + HOST + ":" + PORT);
 });
+
+module.exports = server;

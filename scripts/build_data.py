@@ -51,7 +51,6 @@ OUT_NAMES = os.path.join(ROOT, "public", "data", "names.json")
 OUT_CLUES = os.path.join(ROOT, "server-data", "operator-clues.json")
 OUT_FAMILIARITY = os.path.join(ROOT, "server-data", "operator-familiarity.json")
 OUT_IDENTITIES = os.path.join(ROOT, "server-data", "operator-identities.json")
-OUT_THEMES = os.path.join(ROOT, "server-data", "operator-themes.json")
 
 EXP_KEYS = [
     "战斗经验", "格斗经验", "表演经验", "保镖经验", "偷窃经验", "向导经验",
@@ -184,8 +183,26 @@ ACTIVATION = {
     "PASSIVE": "passive",
 }
 
-QUOTE_TITLE_HINTS = ("交谈", "信赖", "行动开始", "作战中", "完成高难", "3星结束")
+QUOTE_TITLE_HINTS = (
+    "交谈", "信赖", "任命助理", "闲置", "观看作战记录", "精英化晋升",
+    "编入队伍", "任命队长", "行动出发", "行动开始", "选中干员", "部署",
+    "作战中", "结束行动", "完成高难", "行动失败", "进驻设施", "戳一下",
+)
 QUOTE_TITLE_EXCLUDES = ("干员报到", "标题", "问候", "生日", "周年")
+QUOTE_HIGH_TITLE_HINTS = ("信赖提升后交谈", "晋升后交谈", "精英化晋升")
+QUOTE_LOW_TITLE_HINTS = (
+    "编入队伍", "任命队长", "行动出发", "行动开始", "选中干员", "部署",
+    "作战中", "结束行动", "行动失败", "进驻设施", "戳一下",
+)
+QUOTE_DISTINCTIVE_TERMS = (
+    "父亲", "母亲", "家人", "家族", "故乡", "过去", "以前", "小时候", "同事",
+    "小队", "族裔", "职责", "代号", "武器", "法杖", "铳", "剑", "盾", "实验",
+    "研究", "骑士", "感染者", "矿石病", "源石", "深海", "罗德岛", "龙门",
+    "乌萨斯", "维多利亚", "拉特兰", "卡兹戴尔", "莱塔尼亚", "哥伦比亚",
+    "炎国", "叙拉古", "谢拉格", "萨米", "玻利瓦尔", "伊比利亚", "米诺斯",
+)
+QUOTE_LIBRARY_LIMIT = 16
+QUOTE_TIER_LIMIT = QUOTE_LIBRARY_LIMIT // 2
 
 
 def clamp(value, low, high):
@@ -305,6 +322,8 @@ def opaque_asset_url(kind, identity, suffix=""):
 
 def strip_markup(value):
     value = value or ""
+    value = re.sub(r"\{@nickname\}", "博士", value, flags=re.IGNORECASE)
+    value = re.sub(r"\{@[^}]+\}", "", value)
     value = value.replace("\\n", " ").replace("\r", " ").replace("\n", " ")
     value = re.sub(r"<[^>]+>", "", value)
     value = re.sub(r"\s+", " ", value)
@@ -324,10 +343,43 @@ def mask_quote(text, operator_name, power_names):
     return text
 
 
-def quote_candidates(operator_id, operator_name, power_names):
-    result = []
+def quote_information_score(title, text, operator_name, known_operator_names):
+    length = len(text)
+    score = 0.0
+    if length >= 90:
+        score += 1.5
+    elif length >= 64:
+        score += 1.1
+    elif length >= 42:
+        score += 0.7
+    elif length >= 26:
+        score += 0.25
+    elif length < 18:
+        score -= 1.1
+
+    if any(hint in title for hint in QUOTE_HIGH_TITLE_HINTS):
+        score += 0.9
+    if any(hint in title for hint in QUOTE_LOW_TITLE_HINTS):
+        score -= 1.25
+
+    distinctive_hits = sum(1 for term in QUOTE_DISTINCTIVE_TERMS if term in text)
+    score += min(1.5, distinctive_hits * 0.38)
+    if any(
+        name != operator_name and len(name) >= 2 and name in text
+        for name in known_operator_names
+    ):
+        score += 1.45
+    if re.search(r"我的|我曾|我们当时|来自|出生|遗物|真正的|记忆|故乡|家乡", text):
+        score += 0.55
+    if re.search(r"准备|出发|听从命令|敌人|任务开始|行动开始|作战开始", text):
+        score -= 0.35
+    return round(score, 2)
+
+
+def quote_candidates(operator_id, operator_name, power_names, known_operator_names):
+    candidates = []
     seen = set()
-    for word in words_by_operator.get(operator_id, []):
+    for source_index, word in enumerate(words_by_operator.get(operator_id, [])):
         title = word.get("voiceTitle") or ""
         if not any(hint in title for hint in QUOTE_TITLE_HINTS):
             continue
@@ -339,10 +391,43 @@ def quote_candidates(operator_id, operator_name, power_names):
         if len(text) > 120:
             text = text[:117].rstrip() + "……"
         seen.add(text)
-        result.append({"title": title, "text": text})
-        if len(result) >= 8:
-            break
-    return result
+        score = quote_information_score(title, text, operator_name, known_operator_names)
+        candidates.append({
+            "title": title,
+            "text": text,
+            "informationScore": score,
+            "informationTier": "high" if score >= 2.15 else "low",
+            "_sourceIndex": source_index,
+        })
+
+    if len(candidates) >= 2:
+        if not any(item["informationTier"] == "high" for item in candidates):
+            max(candidates, key=lambda item: (item["informationScore"], -item["_sourceIndex"]))[
+                "informationTier"
+            ] = "high"
+        if not any(item["informationTier"] == "low" for item in candidates):
+            min(candidates, key=lambda item: (item["informationScore"], item["_sourceIndex"]))[
+                "informationTier"
+            ] = "low"
+
+    high = sorted(
+        (item for item in candidates if item["informationTier"] == "high"),
+        key=lambda item: (-item["informationScore"], item["_sourceIndex"]),
+    )[:QUOTE_TIER_LIMIT]
+    low = sorted(
+        (item for item in candidates if item["informationTier"] == "low"),
+        key=lambda item: (item["informationScore"], item["_sourceIndex"]),
+    )[:QUOTE_TIER_LIMIT]
+    selected = high + low
+    if len(selected) < min(QUOTE_LIBRARY_LIMIT, len(candidates)):
+        selected_ids = {id(item) for item in selected}
+        remainder = sorted(
+            (item for item in candidates if id(item) not in selected_ids),
+            key=lambda item: (-item["informationScore"], item["_sourceIndex"]),
+        )
+        selected.extend(remainder[:QUOTE_LIBRARY_LIMIT - len(selected)])
+    selected.sort(key=lambda item: item["_sourceIndex"])
+    return [{key: value for key, value in item.items() if key != "_sourceIndex"} for item in selected]
 
 
 def highest_phase_data(character_record):
@@ -417,44 +502,6 @@ def skill_candidates(character_record, base_range_id):
     return result
 
 
-def character_gameplay_text(character_record):
-    values = [character_record.get("description")]
-    for talent in character_record.get("talents") or []:
-        for candidate in talent.get("candidates") or []:
-            values.extend((candidate.get("name"), candidate.get("description")))
-    for candidate in (character_record.get("trait") or {}).get("candidates") or []:
-        values.append(candidate.get("overrideDescripton"))
-    for skill_ref in character_record.get("skills") or []:
-        skill = skills.get(skill_ref.get("skillId")) or {}
-        levels = skill.get("levels") or []
-        if levels:
-            values.extend((levels[-1].get("name"), levels[-1].get("description")))
-    return "\n".join(str(value) for value in values if value)
-
-
-def highest_respawn_time(character_record):
-    phases = character_record.get("phases") or []
-    if not phases:
-        return None
-    frames = phases[-1].get("attributesKeyFrames") or []
-    if not frames:
-        return None
-    value = (frames[-1].get("data") or {}).get("respawnTime")
-    return int(value) if value is not None else None
-
-
-def has_force_mechanic(character_record):
-    force_keys = {"force", "p_force", "attack@force", "base_force_level"}
-    for skill_ref in character_record.get("skills") or []:
-        skill = skills.get(skill_ref.get("skillId")) or {}
-        levels = skill.get("levels") or []
-        if not levels:
-            continue
-        if any(str(item.get("key")) in force_keys for item in levels[-1].get("blackboard") or []):
-            return True
-    return False
-
-
 def power_record(character_record):
     main_power = character_record.get("mainPower") or {}
     nation_id = main_power.get("nationId") or character_record.get("nationId")
@@ -515,7 +562,6 @@ skills = json.load(open(EXCEL_ROOT / "skill_table.json", encoding="utf-8"))
 charwords = json.load(open(EXCEL_ROOT / "charword_table.json", encoding="utf-8"))
 skin_table = json.load(open(EXCEL_ROOT / "skin_table.json", encoding="utf-8"))
 identity_source = json.loads((ROOT_PATH / "scripts" / "operator-identities.json").read_text(encoding="utf-8"))
-theme_overrides = json.loads((ROOT_PATH / "scripts" / "theme-overrides.json").read_text(encoding="utf-8"))
 
 override_path = ROOT_PATH / "scripts" / "familiarity-overrides.json"
 familiarity_overrides = json.loads(override_path.read_text(encoding="utf-8")) if override_path.is_file() else {}
@@ -544,6 +590,10 @@ eligible_operator_ids = {
     and operator_id in handbook
     and record.get("name")
 }
+eligible_operator_names = tuple(
+    character[operator_id]["name"]
+    for operator_id in eligible_operator_ids
+)
 attention_provider_coverage = {}
 active_attention_providers = set()
 for provider in attention_provider_weights:
@@ -643,7 +693,7 @@ for cid, cv in character.items():
         "rangeOverridden": skill["rangeOverridden"],
     } for skill in operator_skills]
     power_names = [power.get("name"), power.get("parentName"), power.get("rootName")]
-    quotes = quote_candidates(cid, name, power_names)
+    quotes = quote_candidates(cid, name, power_names, eligible_operator_names)
 
     record = {
         "id": cid,
@@ -753,137 +803,12 @@ identity_data = {
     "byOperator": identity_by_operator,
 }
 
-theme_specs = [
-    ("skill_attack_recovery", "skill", "攻势蓄能", "至少一个技能采用攻击回复"),
-    ("skill_auto_trigger", "skill", "自律响应", "至少一个技能会自动触发"),
-    ("skill_passive", "skill", "被动响应", "至少拥有一个被动技能"),
-    ("skill_all_manual", "skill", "指令响应", "所有技能均需手动触发"),
-    ("skill_manual_auto", "skill", "双轨触发", "同时拥有手动与自动触发技能"),
-    ("skill_chargeable", "skill", "多重蓄能", "至少一个技能可以充能"),
-    ("skill_ammo", "skill", "弹药协议", "至少一个技能使用弹药机制"),
-    ("skill_range_change", "skill", "火力域重构", "至少一个技能会改变攻击范围"),
-    ("skill_distinct_ranges", "skill", "复合火力域", "不同技能使用不同攻击范围"),
-    ("skill_none", "skill", "简式作战协议", "没有常规战斗技能"),
-    ("battle_block_control", "battle", "阵线重构", "可以主动改变自身、友方或召唤物的阻挡数"),
-    ("battle_fast_redeploy", "battle", "快速再投", "自身基础再部署时间不高于35秒"),
-    ("battle_forced_movement", "battle", "位移干预", "能够推动、拖拽或强制移动目标"),
-    ("battle_concealment", "battle", "光学遮蔽", "自身、友方或召唤物能够获得隐匿或迷彩"),
-    ("battle_elemental", "battle", "元素干涉", "能够造成、治疗、减免或改变元素损伤机制"),
-    ("identity_alter_family", "identity", "平行履历", "属于拥有异格形态的身份组"),
-    ("identity_alter_form", "identity", "异格档案", "当前档案是一名异格干员"),
-]
-
-theme_members = {theme_id: set() for theme_id, _, _, _ in theme_specs}
-for operator_id, operator in operator_by_id.items():
-    operator_skills = (clue_data.get(operator_id) or {}).get("skills") or []
-    mechanics = [skill.get("mechanic") or {} for skill in operator_skills]
-    if any(mechanic.get("spRecovery") == "attack" for mechanic in mechanics):
-        theme_members["skill_attack_recovery"].add(operator_id)
-    if any(mechanic.get("activation") == "auto" for mechanic in mechanics):
-        theme_members["skill_auto_trigger"].add(operator_id)
-    if any(mechanic.get("activation") == "passive" for mechanic in mechanics):
-        theme_members["skill_passive"].add(operator_id)
-    if mechanics and all(mechanic.get("activation") == "manual" for mechanic in mechanics):
-        theme_members["skill_all_manual"].add(operator_id)
-    if (
-        any(mechanic.get("activation") == "manual" for mechanic in mechanics)
-        and any(mechanic.get("activation") == "auto" for mechanic in mechanics)
-    ):
-        theme_members["skill_manual_auto"].add(operator_id)
-    if any(mechanic.get("chargeable") for mechanic in mechanics):
-        theme_members["skill_chargeable"].add(operator_id)
-    if any(mechanic.get("ammo") for mechanic in mechanics):
-        theme_members["skill_ammo"].add(operator_id)
-    if any(skill.get("rangeOverridden") for skill in operator_skills):
-        theme_members["skill_range_change"].add(operator_id)
-    if len({skill.get("rangeId") for skill in operator_skills}) >= 2:
-        theme_members["skill_distinct_ranges"].add(operator_id)
-    if not operator_skills:
-        theme_members["skill_none"].add(operator_id)
-
-    character_record = character[operator_id]
-    if highest_respawn_time(character_record) is not None and highest_respawn_time(character_record) <= 35:
-        theme_members["battle_fast_redeploy"].add(operator_id)
-    if has_force_mechanic(character_record):
-        theme_members["battle_forced_movement"].add(operator_id)
-    if re.search(r"元素损伤|神经损伤|侵蚀损伤|灼燃损伤|凋亡损伤", character_gameplay_text(character_record)):
-        theme_members["battle_elemental"].add(operator_id)
-
-for theme_id in ("battle_block_control", "battle_concealment"):
-    override = theme_overrides.get(theme_id) or {}
-    included = set(override.get("include") or [])
-    excluded = set(override.get("exclude") or [])
-    unknown = sorted((included | excluded) - operator_ids)
-    if unknown:
-        raise ValueError(f"Theme override {theme_id} contains unknown operators: {unknown}")
-    theme_members[theme_id].update(included)
-
-block_candidates = {
-    operator_id for operator_id in operator_ids
-    if "阻挡数" in character_gameplay_text(character[operator_id])
-}
-concealment_candidates = {
-    operator_id for operator_id in operator_ids
-    if re.search(r"隐匿|迷彩", character_gameplay_text(character[operator_id]))
-}
-review_candidates = {}
-for theme_id, candidates in (
-    ("battle_block_control", block_candidates),
-    ("battle_concealment", concealment_candidates),
-):
-    override = theme_overrides.get(theme_id) or {}
-    reviewed = set(override.get("include") or []) | set(override.get("exclude") or [])
-    review_candidates[theme_id] = sorted(candidates - reviewed)
-
-alter_family_ids = set(identity_by_operator)
-alter_ids = {
-    operator_id for operator_id, identity in identity_by_operator.items()
-    if identity["role"] == "alter"
-}
-theme_members["identity_alter_family"].update(alter_family_ids)
-theme_members["identity_alter_form"].update(alter_ids)
-
-theme_definitions = {}
-themes_by_operator = {operator_id: [] for operator_id in sorted(operator_ids)}
-for theme_id, family, title, description in theme_specs:
-    members = sorted(theme_members[theme_id])
-    if len(members) < 3:
-        raise ValueError(f"Theme {theme_id} has fewer than three matching operators")
-    scores = sorted((operator_by_id[operator_id]["familiarityScore"] for operator_id in members), reverse=True)
-    anchor_familiarity = sum(scores[:3]) / min(3, len(scores))
-    information = clamp(math.log2(len(operator_ids) / len(members)) / 5, 0, 1)
-    challenge = clamp(1 - anchor_familiarity / 100, 0, 1)
-    theme_definitions[theme_id] = {
-        "id": theme_id,
-        "family": family,
-        "title": title,
-        "description": description,
-        "memberCount": len(members),
-        "informationStrength": round(information, 4),
-        "challengeDifficulty": round(challenge, 4),
-        "members": members,
-    }
-    for operator_id in members:
-        themes_by_operator[operator_id].append(theme_id)
-
-uncovered = sorted(operator_id for operator_id, theme_ids in themes_by_operator.items() if not theme_ids)
-if uncovered:
-    raise ValueError(f"Theme bank does not cover {len(uncovered)} operators: {uncovered[:8]}")
-
-theme_data = {
-    "schemaVersion": 1,
-    "definitions": theme_definitions,
-    "byOperator": themes_by_operator,
-    "manualReview": review_candidates,
-}
-
 os.makedirs(os.path.dirname(OUT_SERVER), exist_ok=True)
 os.makedirs(os.path.dirname(OUT_NAMES), exist_ok=True)
 json.dump(result, open(OUT_SERVER, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 json.dump(names, open(OUT_NAMES, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 json.dump(clue_data, open(OUT_CLUES, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 json.dump(identity_data, open(OUT_IDENTITIES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-json.dump(theme_data, open(OUT_THEMES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 json.dump(
     familiarity_data,
     open(OUT_FAMILIARITY, "w", encoding="utf-8"),
@@ -900,7 +825,6 @@ print("range coverage:", sum(1 for r in result.values() if r["rangeCells"]))
 print("skill coverage:", sum(1 for r in result.values() if clue_data[r["id"]]["skills"]))
 print("quote coverage:", sum(1 for r in result.values() if clue_data[r["id"]]["quotes"]))
 print("identity groups:", len(identity_groups))
-print("themes:", {theme_id: definition["memberCount"] for theme_id, definition in theme_definitions.items()})
 print("exp special:", sum(1 for r in result.values() if r.get("expSpecial")))
 print("origin special:", sum(1 for r in result.values() if r.get("originSpecial")))
 print("race special:", sum(1 for r in result.values() if r.get("raceSpecial")))

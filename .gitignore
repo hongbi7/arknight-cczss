@@ -12,3 +12,6 @@ __pycache__/
 .art-sample/
 .skin-table.json
 .handbook-info-table.json
+/arknight-cczss-e2e/
+/output/
+/debug.log

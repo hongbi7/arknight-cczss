@@ -19,6 +19,7 @@ GENERATED_DATA_FILES = (
     "server-data/operator-familiarity.json",
     "server-data/operator-identities.json",
     "server-data/operator-themes.json",
+    "server-data/operator-brand-art.json",
     "server-data/anomaly-rules.json",
     "server-data/anomaly-questions.json",
 )
@@ -391,7 +392,38 @@ def validate(source):
             if target_url and not public_asset_exists(target_url):
                 missing_skill_icons.add(target_url)
 
+    # 品牌主题皮肤立绘：映射必须与品牌主题一一对应，缺失文件记入必需素材缺口。
+    brand_art = load_json("server-data/operator-brand-art.json")
+    if brand_art.get("schemaVersion") != 1:
+        structural_errors.append("operator brand art schemaVersion must be 1")
+    themes_by_art_brand = {
+        definition.get("artBrand"): set(definition.get("members") or [])
+        for definition in theme_definitions.values()
+        if definition.get("artBrand")
+    }
+    missing_brand_skin_art = set()
+    if set((brand_art.get("brands") or {}).keys()) != set(themes_by_art_brand):
+        structural_errors.append(
+            "operator brand art brands differ from outfit-brand themes "
+            f"(actual={sorted((brand_art.get('brands') or {}).keys())})"
+        )
+    for brand, records in (brand_art.get("brands") or {}).items():
+        members = themes_by_art_brand.get(brand)
+        if members is None:
+            continue
+        if set(records.keys()) != members:
+            structural_errors.append(f"brand art {brand} does not cover exactly its theme members")
+        for operator_id, record in records.items():
+            portrait_id = record.get("portraitId")
+            image_url = record.get("imageUrl")
+            expected_digest = hashlib.sha256((portrait_id or "").encode("utf-8")).hexdigest()[:12]
+            if not portrait_id or not image_url or f"_{expected_digest}.webp" not in image_url:
+                structural_errors.append(f"brand art {brand}/{operator_id} has an inconsistent record")
+            if image_url and not public_asset_exists(image_url):
+                missing_brand_skin_art.add(image_url)
+
     required_assets = {
+        "brandSkinArt": sorted(missing_brand_skin_art),
         "operatorArtManifest": sorted(missing_art_manifest),
         "pendingOperatorArt": sorted(
             pending_operator_art,

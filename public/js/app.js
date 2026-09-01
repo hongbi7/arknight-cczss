@@ -3,8 +3,12 @@ const DEFAULT_SUDDEN_ATTEMPTS = 6;
 const SUDDEN_MIN = 1;
 const SUDDEN_LIMIT = 20;
 const SUDDEN_VERSION = 3;
-const DIRECTIVE_HISTORY_KEY = "operator-trace-directive-history-v1";
+const DIRECTIVE_HISTORY_KEY = "operator-trace-directive-history-v2";
 const DIRECTIVE_HISTORY_LIMIT = 40;
+const FIRST_VISUAL_THEME_ID = "visual_brand_shan-hu-hai-an";
+const CORAL_HISTORY_LIMIT = 3;
+const DIRECTIVE_FIRST_CYCLE_MARKER = "__directive_first_family_cycle_complete__";
+const DIRECTIVE_FAMILIES = ["skill", "battle", "identity", "logistics", "visual"];
 
 let token = null;
 let namesIndex = [];
@@ -27,6 +31,7 @@ let mobileBubbleDelayTimer = null;
 let mobileBubbleHideTimer = null;
 let finalFocusTimer = null;
 let finalArchiveTimer = null;
+let pendingVisualIntelReveal = null;
 let operatorArt = {};
 let gameStartSequence = 0;
 let wipeSequence = 0;
@@ -106,6 +111,11 @@ const artPreviewTitle = document.getElementById("artPreviewTitle");
 const artPreviewMeta = document.getElementById("artPreviewMeta");
 const artPreviewClose = document.getElementById("artPreviewClose");
 const artPreviewCanvas = document.querySelector(".art-preview-canvas");
+const mobileDataSheet = document.getElementById("mobileDataSheet");
+const mobileDataSheetBackdrop = document.getElementById("mobileDataSheetBackdrop");
+const mobileDataSheetClose = document.getElementById("mobileDataSheetClose");
+const mobileDataSheetTitle = document.getElementById("mobileDataSheetTitle");
+const mobileDataSheetBody = document.getElementById("mobileDataSheetBody");
 const boardEl = document.getElementById("board");
 const gameMeta = document.querySelector(".game-meta");
 const dossierHead = document.querySelector(".dossier-head");
@@ -138,6 +148,10 @@ let artPreviewMetaBase = "";
 let artPreviewScale = 1;
 let artPreviewOriginX = 50;
 let artPreviewOriginY = 50;
+let mobileDataSheetReturnFocus = null;
+let mobileGameViewportFrame = null;
+let mobileGameViewportTimer = null;
+let mobileGuessDockFrame = null;
 
 function setStatus(msg, isError) {
   statusEl.textContent = msg;
@@ -145,11 +159,18 @@ function setStatus(msg, isError) {
 }
 
 function updateArtPreviewZoom() {
+  if (isMobileLayout()) {
+    artPreviewScale = 1;
+    artPreviewOriginX = 50;
+    artPreviewOriginY = 50;
+  }
   artPreviewImage.style.setProperty("--preview-scale", artPreviewScale.toFixed(3));
   artPreviewImage.style.setProperty("--preview-origin-x", artPreviewOriginX.toFixed(2) + "%");
   artPreviewImage.style.setProperty("--preview-origin-y", artPreviewOriginY.toFixed(2) + "%");
   artPreview.dataset.zoomed = artPreviewScale > 1.001 ? "true" : "false";
-  artPreviewMeta.textContent = artPreviewMetaBase + " // " + Math.round(artPreviewScale * 100) + "% · 滚轮缩放";
+  artPreviewMeta.textContent = artPreviewMetaBase + " // " + (isMobileLayout()
+    ? "再次点击图像返回"
+    : Math.round(artPreviewScale * 100) + "% · 滚轮缩放");
 }
 
 function resetArtPreviewZoom() {
@@ -157,6 +178,19 @@ function resetArtPreviewZoom() {
   artPreviewOriginX = 50;
   artPreviewOriginY = 50;
   updateArtPreviewZoom();
+}
+
+function syncArtPreviewViewport() {
+  if (!artPreview || artPreview.classList.contains("hidden")) return;
+  if (!isMobileLayout()) {
+    artPreview.removeAttribute("style");
+    return;
+  }
+  const viewport = window.visualViewport;
+  artPreview.style.left = (viewport ? viewport.offsetLeft : 0) + "px";
+  artPreview.style.top = (viewport ? viewport.offsetTop : 0) + "px";
+  artPreview.style.width = (viewport ? viewport.width : window.innerWidth) + "px";
+  artPreview.style.height = (viewport ? viewport.height : window.innerHeight) + "px";
 }
 
 function openArtPreview(image, operatorName, artLabel, returnFocus, imageKind) {
@@ -172,6 +206,7 @@ function openArtPreview(image, operatorName, artLabel, returnFocus, imageKind) {
   resetArtPreviewZoom();
   artPreview.classList.remove("hidden");
   document.body.classList.add("art-preview-open");
+  syncArtPreviewViewport();
   artPreviewClose.focus({ preventScroll: true });
 }
 
@@ -184,11 +219,57 @@ function closeArtPreview(restoreFocus) {
   artPreviewImage.style.removeProperty("--preview-scale");
   artPreviewImage.style.removeProperty("--preview-origin-x");
   artPreviewImage.style.removeProperty("--preview-origin-y");
+  artPreview.removeAttribute("style");
   artPreviewMetaBase = "";
   if (restoreFocus && artPreviewReturnFocus && typeof artPreviewReturnFocus.focus === "function") {
     artPreviewReturnFocus.focus({ preventScroll: true });
   }
   artPreviewReturnFocus = null;
+}
+
+function closeMobileArtPreviewFromCanvas() {
+  if (!isMobileLayout() || artPreview.classList.contains("hidden")) return;
+  const imageKind = artPreview.dataset.imageKind || "";
+  const closeIntelSheet = imageKind === "silhouette" || imageKind === "artFragment";
+  closeArtPreview(!closeIntelSheet);
+  if (closeIntelSheet && mobileDataSheet && !mobileDataSheet.classList.contains("hidden")) {
+    closeMobileDataSheet(false);
+  }
+}
+
+function syncMobileDataSheetViewport() {
+  if (!mobileDataSheet || mobileDataSheet.classList.contains("hidden")) return;
+  const viewport = window.visualViewport;
+  mobileDataSheet.style.left = (viewport ? viewport.offsetLeft : 0) + "px";
+  mobileDataSheet.style.top = (viewport ? viewport.offsetTop : 0) + "px";
+  mobileDataSheet.style.width = (viewport ? viewport.width : window.innerWidth) + "px";
+  mobileDataSheet.style.height = (viewport ? viewport.height : window.innerHeight) + "px";
+}
+
+function openMobileDataSheet(title, kind, content, returnFocus) {
+  if (!isMobileLayout() || !mobileDataSheet || !mobileDataSheetBody || !content) return;
+  mobileDataSheetReturnFocus = returnFocus || document.activeElement;
+  mobileDataSheetTitle.textContent = title || "档案详情";
+  mobileDataSheet.dataset.kind = kind || "detail";
+  mobileDataSheetBody.innerHTML = "";
+  mobileDataSheetBody.appendChild(content);
+  mobileDataSheet.classList.remove("hidden");
+  document.body.classList.add("mobile-data-sheet-open");
+  syncMobileDataSheetViewport();
+  mobileDataSheetClose.focus({ preventScroll: true });
+}
+
+function closeMobileDataSheet(restoreFocus) {
+  if (!mobileDataSheet) return;
+  mobileDataSheet.classList.add("hidden");
+  document.body.classList.remove("mobile-data-sheet-open");
+  delete mobileDataSheet.dataset.kind;
+  mobileDataSheet.removeAttribute("style");
+  if (mobileDataSheetBody) mobileDataSheetBody.innerHTML = "";
+  if (restoreFocus && mobileDataSheetReturnFocus && typeof mobileDataSheetReturnFocus.focus === "function") {
+    mobileDataSheetReturnFocus.focus({ preventScroll: true });
+  }
+  mobileDataSheetReturnFocus = null;
 }
 
 async function fetchJSON(url, options) {
@@ -246,10 +327,16 @@ function setModeLaunching(mode, launching) {
 function resetRoundInterface(mode) {
   clearFinalSequence();
   resetDirectiveState();
-  gameScreen.classList.remove("has-guesses", "is-finished");
+  gameScreen.classList.remove("has-guesses", "has-single-record", "is-finished");
   document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  clearMobileGameViewport();
   input.value = "";
   quickInput.value = "";
+  rowsEl.classList.remove("mobile-new-record-positioned");
+  if (dossierHead && dossierHead.parentElement) {
+    dossierHead.parentElement.style.removeProperty("translate");
+    delete dossierHead.parentElement.dataset.mobileRecordShift;
+  }
   rowsEl.innerHTML = "";
   boardEmpty.classList.remove("hidden");
   victoryEl.classList.add("hidden");
@@ -305,24 +392,77 @@ function syncSuddenControls(value) {
 function directiveHistory() {
   try {
     const value = JSON.parse(localStorage.getItem(DIRECTIVE_HISTORY_KEY) || "[]");
-    return Array.isArray(value) ? value.filter((themeId) => typeof themeId === "string").slice(0, DIRECTIVE_HISTORY_LIMIT) : [];
+    if (!Array.isArray(value)) return [];
+    const valid = value.filter((themeId) => typeof themeId === "string");
+    const firstCycleCompleted = valid.includes(DIRECTIVE_FIRST_CYCLE_MARKER);
+    const coralCount = Math.min(
+      CORAL_HISTORY_LIMIT,
+      valid.filter((themeId) => themeId === FIRST_VISUAL_THEME_ID).length
+    );
+    const lastWasCoral = valid[0] === FIRST_VISUAL_THEME_ID;
+    const rotationHistory = valid
+      .filter((themeId) =>
+        themeId !== FIRST_VISUAL_THEME_ID && themeId !== DIRECTIVE_FIRST_CYCLE_MARKER
+      )
+      .slice(0, DIRECTIVE_HISTORY_LIMIT);
+    const normalized = lastWasCoral
+      ? [FIRST_VISUAL_THEME_ID, ...rotationHistory]
+      : rotationHistory;
+    normalized.push(...Array(coralCount - (lastWasCoral ? 1 : 0)).fill(FIRST_VISUAL_THEME_ID));
+    if (firstCycleCompleted) normalized.push(DIRECTIVE_FIRST_CYCLE_MARKER);
+    return normalized;
   } catch (error) {
     return [];
+  }
+}
+
+function clearDirectiveHistory() {
+  try {
+    localStorage.removeItem(DIRECTIVE_HISTORY_KEY);
+  } catch (error) {
+    /* 隐私模式或存储受限时无需额外处理。 */
   }
 }
 
 function rememberDirective(theme) {
   if (!theme || !theme.id) return;
   try {
-    const next = [theme.id].concat(directiveHistory().filter((themeId) => themeId !== theme.id));
-    localStorage.setItem(DIRECTIVE_HISTORY_KEY, JSON.stringify(next.slice(0, DIRECTIVE_HISTORY_LIMIT)));
+    // 其他主题保留真实重复序列；珊瑚海岸累计前三次，并仅用首位记录“上一局是珊瑚海岸”。
+    const recent = directiveHistory();
+    const firstCycleCompleted = recent.includes(DIRECTIVE_FIRST_CYCLE_MARKER);
+    const coralCount = Math.min(
+      CORAL_HISTORY_LIMIT,
+      recent.filter((themeId) => themeId === FIRST_VISUAL_THEME_ID).length
+        + (theme.id === FIRST_VISUAL_THEME_ID ? 1 : 0)
+    );
+    const rotationHistory = recent.filter((themeId) =>
+      themeId !== FIRST_VISUAL_THEME_ID && themeId !== DIRECTIVE_FIRST_CYCLE_MARKER
+    );
+    if (theme.id !== FIRST_VISUAL_THEME_ID) rotationHistory.unshift(theme.id);
+    const next = theme.id === FIRST_VISUAL_THEME_ID
+      ? [FIRST_VISUAL_THEME_ID, ...rotationHistory.slice(0, DIRECTIVE_HISTORY_LIMIT)]
+      : rotationHistory.slice(0, DIRECTIVE_HISTORY_LIMIT);
+    next.push(...Array(coralCount - (theme.id === FIRST_VISUAL_THEME_ID ? 1 : 0))
+      .fill(FIRST_VISUAL_THEME_ID));
+    const seenFamilies = new Set(next.map((themeId) => themeId.split("_", 1)[0]));
+    if (firstCycleCompleted || DIRECTIVE_FAMILIES.every((family) => seenFamilies.has(family))) {
+      next.push(DIRECTIVE_FIRST_CYCLE_MARKER);
+    }
+    localStorage.setItem(DIRECTIVE_HISTORY_KEY, JSON.stringify(next));
   } catch (error) {
     /* 隐私模式或存储受限时退化为无历史的服务端随机。 */
   }
 }
 
 function updateAttemptConfigState() {
-  applySuddenAttempts.textContent = attempts > 0 ? "应用并重开" : "应用本局";
+  const configChanged = normalizeAttempts(suddenAttemptsGame.value) !== suddenMax;
+  applySuddenAttempts.textContent = attempts > 0 || configChanged ? "应用并重开" : "应用本局";
+}
+
+function applySuddenAttemptConfig() {
+  const requestedMax = normalizeAttempts(suddenAttemptsGame.value);
+  const preserveDirectiveHistory = requestedMax === suddenMax;
+  startGame("sudden", requestedMax, { preserveDirectiveHistory });
 }
 
 function clearFinalSequence() {
@@ -330,14 +470,148 @@ function clearFinalSequence() {
   if (finalArchiveTimer) window.clearTimeout(finalArchiveTimer);
   finalFocusTimer = null;
   finalArchiveTimer = null;
+  pendingVisualIntelReveal = null;
 }
 
 function isMobileLayout() {
   return window.matchMedia("(max-width: 760px)").matches;
 }
 
+function clearMobileGuessDock() {
+  if (mobileGuessDockFrame != null) window.cancelAnimationFrame(mobileGuessDockFrame);
+  mobileGuessDockFrame = null;
+  document.body.classList.remove("mobile-guess-docked");
+  guessConsole.style.removeProperty("left");
+  guessConsole.style.removeProperty("top");
+  guessConsole.style.removeProperty("width");
+}
+
+function shouldDockMobileGuessConsole() {
+  return isMobileLayout()
+    && gameScreen.classList.contains("has-guesses")
+    && !gameScreen.classList.contains("hidden")
+    && !gameScreen.classList.contains("is-finished");
+}
+
+function positionMobileGuessDock() {
+  if (!shouldDockMobileGuessConsole()) return;
+  const viewport = window.visualViewport;
+  const viewportLeft = viewport ? viewport.offsetLeft : 0;
+  const viewportTop = viewport ? viewport.offsetTop : 0;
+  const viewportWidth = viewport ? viewport.width : window.innerWidth;
+  const viewportHeight = viewport ? viewport.height : window.innerHeight;
+  const workspaceWidth = gameWorkspace.getBoundingClientRect().width;
+  const width = Math.max(0, Math.min(workspaceWidth, viewportWidth - 16));
+  const height = guessConsole.getBoundingClientRect().height;
+  guessConsole.style.left = Math.round(viewportLeft + (viewportWidth - width) / 2) + "px";
+  guessConsole.style.top = Math.round(viewportTop + viewportHeight - height) + "px";
+  guessConsole.style.width = Math.round(width) + "px";
+  const newestCard = rowsEl.firstElementChild;
+  if (
+    newestCard
+    && newestCard.classList.contains("mobile-new-record-anchor")
+    && newestCard.classList.contains("card-entering")
+  ) positionMobileNewRecordAnchor(newestCard);
+}
+
+function syncMobileGuessDock() {
+  if (!shouldDockMobileGuessConsole()) {
+    clearMobileGuessDock();
+    return;
+  }
+  const firstDockFrame = !document.body.classList.contains("mobile-guess-docked");
+  gameScreen.classList.add("mobile-fixed-viewport-root");
+  document.body.classList.add("mobile-guess-docked");
+  if (firstDockFrame) positionMobileGuessDock();
+  if (mobileGuessDockFrame != null) window.cancelAnimationFrame(mobileGuessDockFrame);
+  mobileGuessDockFrame = window.requestAnimationFrame(() => {
+    mobileGuessDockFrame = null;
+    if (!shouldDockMobileGuessConsole()) {
+      clearMobileGuessDock();
+      return;
+    }
+    positionMobileGuessDock();
+  });
+}
+
+function clearMobileGameViewport() {
+  if (mobileGameViewportFrame != null) window.cancelAnimationFrame(mobileGameViewportFrame);
+  if (mobileGameViewportTimer != null) window.clearTimeout(mobileGameViewportTimer);
+  mobileGameViewportFrame = null;
+  mobileGameViewportTimer = null;
+  document.documentElement.classList.remove("mobile-game-scroll-driving");
+  document.documentElement.style.removeProperty("--mobile-game-viewport-height");
+  clearMobileGuessDock();
+}
+
+function syncMobileGameViewportHeight() {
+  if (!isMobileLayout() || !document.body.classList.contains("mobile-record-active")) return;
+  const viewport = window.visualViewport;
+  const height = Math.max(320, Math.round(viewport ? viewport.height : window.innerHeight));
+  document.documentElement.style.setProperty("--mobile-game-viewport-height", height + "px");
+}
+
+function alignMobileGameViewport() {
+  if (!isMobileLayout() || !document.body.classList.contains("mobile-record-active")) return;
+  if (mobileGameViewportFrame != null) window.cancelAnimationFrame(mobileGameViewportFrame);
+  mobileGameViewportFrame = window.requestAnimationFrame(() => {
+    mobileGameViewportFrame = window.requestAnimationFrame(() => {
+      mobileGameViewportFrame = null;
+      const layout = gameScreen.querySelector(".game-layout");
+      if (!layout || gameScreen.classList.contains("hidden")) return;
+      const viewport = window.visualViewport;
+      const viewportTop = viewport ? viewport.offsetTop : 0;
+      const viewportHeight = viewport ? viewport.height : window.innerHeight;
+      const layoutRect = layout.getBoundingClientRect();
+      const newestCard = rowsEl.firstElementChild;
+      const shouldAlignNewest = newestCard
+        && newestCard.classList.contains("mobile-new-record-anchor")
+        && shouldDockMobileGuessConsole();
+      const target = window.scrollY + layoutRect.bottom - (viewportTop + viewportHeight);
+      document.documentElement.classList.add("mobile-game-scroll-driving");
+      if (shouldAlignNewest) rowsEl.scrollTop = 0;
+      else layout.scrollIntoView({ behavior: "auto", block: "end", inline: "nearest" });
+      window.scrollTo({ top: Math.max(0, target), left: 0, behavior: "auto" });
+      window.requestAnimationFrame(() => {
+        document.documentElement.classList.remove("mobile-game-scroll-driving");
+        if (shouldAlignNewest) positionMobileNewRecordAnchor(newestCard);
+      });
+    });
+  });
+}
+
+function activateMobileRecordLayout() {
+  document.body.classList.add("mobile-record-active");
+  if (!isMobileLayout()) return;
+  syncMobileGuessDock();
+  syncMobileGameViewportHeight();
+  alignMobileGameViewport();
+  if (mobileGameViewportTimer != null) window.clearTimeout(mobileGameViewportTimer);
+  mobileGameViewportTimer = window.setTimeout(() => {
+    mobileGameViewportTimer = null;
+    alignMobileGameViewport();
+  }, 260);
+}
+
+function handleMobileGameViewportResize() {
+  if (!isMobileLayout()) {
+    clearMobileGameViewport();
+    return;
+  }
+  syncMobileGameViewportHeight();
+  syncMobileGuessDock();
+  if (!document.body.classList.contains("mobile-record-active") || document.activeElement === input) return;
+  if (mobileGameViewportTimer != null) window.clearTimeout(mobileGameViewportTimer);
+  mobileGameViewportTimer = window.setTimeout(() => {
+    mobileGameViewportTimer = null;
+    alignMobileGameViewport();
+  }, 120);
+}
+
 function settleMobileKeyboard() {
   if (!isMobileLayout()) return Promise.resolve();
+  const activeElement = document.activeElement;
+  if (activeElement instanceof HTMLElement && gameScreen.contains(activeElement)) activeElement.blur();
   input.blur();
   const viewport = window.visualViewport;
   const started = performance.now();
@@ -350,10 +624,9 @@ function settleMobileKeyboard() {
       else stableChecks = 0;
       lastHeight = height;
       const elapsed = performance.now() - started;
-      if ((elapsed >= 280 && stableChecks >= 2) || elapsed >= 520) {
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+      if ((elapsed >= 180 && stableChecks >= 2) || elapsed >= 380) {
+        syncMobileGameViewportHeight();
+        alignMobileGameViewport();
         resolve();
         return;
       }
@@ -363,9 +636,10 @@ function settleMobileKeyboard() {
   });
 }
 
-async function startGame(mode, requestedMax) {
+async function startGame(mode, requestedMax, options = {}) {
   const startSequence = ++gameStartSequence;
   const firstEntry = gameScreen.classList.contains("hidden");
+  if (mode === "sudden" && !options.preserveDirectiveHistory) clearDirectiveHistory();
   currentMode = mode;
   currentGameVersion = 1;
   if (mode === "sudden") syncSuddenControls(requestedMax == null ? suddenMax : requestedMax);
@@ -452,6 +726,7 @@ function isComparisonV3() {
 }
 
 function resetDirectiveState() {
+  closeMobileDataSheet(false);
   directiveSnapshot = null;
   pendingClue = null;
   decodedIntel = [];
@@ -931,9 +1206,55 @@ async function continueToFinalChoices() {
   await showChoiceModal();
 }
 
+function waitForFinalFocusSettle(finalCard, reducedMotion) {
+  if (!finalCard) return Promise.resolve();
+  return new Promise((resolve) => {
+    const started = performance.now();
+    const minimumSettleTime = reducedMotion ? 0 : 700;
+    const requiredStableFrames = reducedMotion ? 2 : 10;
+    let stableFrames = 0;
+    let previous = null;
+    const check = () => {
+      if (!finalCard.isConnected || !gameScreen.classList.contains("is-finished")) {
+        resolve();
+        return;
+      }
+      const current = [
+        window.scrollX,
+        window.scrollY,
+        rowsEl.scrollTop,
+        finalCard.getBoundingClientRect().top,
+      ];
+      const stable = previous && current.every((value, index) => Math.abs(value - previous[index]) < 0.5);
+      stableFrames = stable ? stableFrames + 1 : 0;
+      previous = current;
+      const elapsed = performance.now() - started;
+      if ((stableFrames >= requiredStableFrames && elapsed >= minimumSettleTime) || elapsed >= 2000) {
+        resolve();
+        return;
+      }
+      window.requestAnimationFrame(check);
+    };
+    window.requestAnimationFrame(check);
+  });
+}
+
+async function focusFinalRecordAndReveal(finalCard, reducedMotion) {
+  const pending = pendingVisualIntelReveal;
+  if (pending && pending.finalRecord === finalCard) await pending.finalReady;
+  if (!finalCard.isConnected || !gameScreen.classList.contains("is-finished")) return;
+  finalCard.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+  await waitForFinalFocusSettle(finalCard, reducedMotion);
+  if (!finalCard.isConnected || !gameScreen.classList.contains("is-finished")) return;
+  if (!pending || pending !== pendingVisualIntelReveal || pending.finalRecord !== finalCard) return;
+  pendingVisualIntelReveal = null;
+  revealVisualIntel(pending.operator, pending.answerName, pending.finalRecord);
+}
+
 function finishGame(won, text) {
   finished = true;
   gameScreen.classList.add("is-finished");
+  clearMobileGuessDock();
   document.body.classList.add("mobile-game-finished");
   document.body.classList.remove("quick-guess-active");
   victoryEl.classList.remove("hidden");
@@ -952,16 +1273,18 @@ function finishGame(won, text) {
       finalFocusTimer = window.setTimeout(() => {
         const finalCard = rowsEl.querySelector(".is-final-record");
         if (!finalCard || !gameScreen.classList.contains("is-finished")) return;
-        finalCard.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
         finalFocusTimer = null;
-      }, 1350);
+        focusFinalRecordAndReveal(finalCard, reduced);
+      // Let the final dossier finish its entrance before moving focus, while
+      // keeping the compact mobile result prompt from lingering too long.
+      }, reduced ? 80 : 900);
     } else {
       victoryEl.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
       finalFocusTimer = window.setTimeout(() => {
         const finalCard = rowsEl.querySelector(".is-final-record");
         if (!finalCard || !gameScreen.classList.contains("is-finished")) return;
-        finalCard.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
         finalFocusTimer = null;
+        focusFinalRecordAndReveal(finalCard, reduced);
       }, reduced ? 80 : 1050);
     }
     restartBtn.focus({ preventScroll: true });
@@ -1071,6 +1394,10 @@ async function onPick(name, selectedButton) {
     choiceModal.classList.add("hidden");
     choiceModal.classList.remove("is-resolving");
     if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
+      if (!data.win && data.pickRecord) {
+        setStatus("终局抉择未通过，正在读取谜底终局档案……");
+        renderWrongChoiceRecord(data.pickRecord);
+      }
       renderComparisonFinalRecord(data);
     } else if (data.dims) {
       renderRow({ guessName: data.answerName, dims: data.dims, operator: data.operator, archive: data.archive, final: true });
@@ -1386,6 +1713,9 @@ function renderRangeOverlap(template) {
     }];
   const list = document.createElement("span");
   list.className = "skill-range-list";
+  const mobileSummary = document.createElement("span");
+  mobileSummary.className = "mobile-range-summary";
+  const slotLabel = slots.map((slot) => slot.slot || "技能").join(" / ");
   slots.forEach((slot) => {
     const slotVisual = v2VisualState(slot.state, false);
     const item = document.createElement("span");
@@ -1419,6 +1749,9 @@ function renderRangeOverlap(template) {
       }
     }
     list.appendChild(item);
+    const summaryItem = document.createElement("span");
+    summaryItem.textContent = (slot.slot || "技能") + " " + (slot.overlapCount || 0) + "/" + (slot.guessCellCount || 0);
+    mobileSummary.appendChild(summaryItem);
   });
   wrap.appendChild(list);
   if (safe.state === "unknown") {
@@ -1430,6 +1763,19 @@ function renderRangeOverlap(template) {
   valueEl.appendChild(wrap);
   clue.appendChild(labelEl);
   clue.appendChild(valueEl);
+  clue.appendChild(mobileSummary);
+  const mobileOpen = document.createElement("button");
+  mobileOpen.type = "button";
+  mobileOpen.className = "mobile-range-open";
+  mobileOpen.textContent = "展开完整范围";
+  mobileOpen.setAttribute("aria-label", "展开全部技能范围详情");
+  mobileOpen.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const detail = wrap.cloneNode(true);
+    detail.classList.add("mobile-range-detail");
+    openMobileDataSheet("技能范围 · " + slotLabel, "range", detail, mobileOpen);
+  });
+  clue.appendChild(mobileOpen);
   return { clue, visual };
 }
 
@@ -1519,14 +1865,59 @@ function prepareGuessCardHover(card, entering) {
 function finishGuessCardEntry(card) {
   if (!card || !card.isConnected) return;
   card.classList.remove("card-entering");
+  if (card.classList.contains("mobile-new-record-anchor")) positionMobileNewRecordAnchor(card);
   if (!card.matches(":hover")) card.classList.add("hover-armed");
 }
 
-/* 提交猜测后：首张档案等待立绘完成加载，其余卡片沿用折叠展开节奏。 */
+function positionMobileNewRecordAnchor(card) {
+  if (
+    !card
+    || !card.isConnected
+    || rowsEl.firstElementChild !== card
+    || !shouldDockMobileGuessConsole()
+  ) return;
+  const dossierSection = dossierHead && dossierHead.parentElement;
+  if (!dossierSection) return;
+  const consoleRect = guessConsole.getBoundingClientRect();
+  rowsEl.classList.add("mobile-new-record-positioned");
+  // Keep the card content-driven.  Shifting the whole dossier (including its
+  // heading) avoids manufacturing a blank strip above the newest record.
+  // Older records remain directly below it in the existing scroll container.
+  const currentShift = Number.parseFloat(dossierSection.dataset.mobileRecordShift || "0") || 0;
+  const nextShift = currentShift + consoleRect.top - card.getBoundingClientRect().bottom;
+  dossierSection.dataset.mobileRecordShift = String(nextShift);
+  dossierSection.style.translate = "0 " + Math.round(nextShift) + "px";
+  delete card.dataset.mobileRecordShift;
+  card.style.removeProperty("translate");
+  card.style.marginTop = "0px";
+  rowsEl.scrollTop = 0;
+}
+
+function alignMobileNewRecordToGuessConsole(card) {
+  if (!card || !card.isConnected || !isMobileLayout()) return;
+  rowsEl.querySelectorAll(":scope > .mobile-new-record-anchor").forEach((item) => {
+    if (item === card) return;
+    item.classList.remove("mobile-new-record-anchor");
+    item.style.removeProperty("margin-top");
+    item.style.removeProperty("translate");
+    delete item.dataset.mobileRecordShift;
+  });
+  card.classList.add("mobile-new-record-anchor");
+  card.style.marginTop = "0px";
+  card.style.translate = "0 0";
+  card.dataset.mobileRecordShift = "0";
+  rowsEl.scrollTop = 0;
+  alignMobileGameViewport();
+  window.requestAnimationFrame(() => window.requestAnimationFrame(() => positionMobileNewRecordAnchor(card)));
+  window.setTimeout(() => positionMobileNewRecordAnchor(card), 320);
+  window.setTimeout(() => positionMobileNewRecordAnchor(card), 1320);
+}
+
+/* 提交猜测后：移动端让最新档案下沿贴住固定输入框；桌面端保持顶部聚焦。 */
 function focusNewRecord(card, delay, image) {
   if (!card) return;
   if (isMobileLayout()) {
-    rowsEl.scrollTop = 0;
+    alignMobileNewRecordToGuessConsole(card);
     return;
   }
   const reduced = isReducedMotion();
@@ -1544,11 +1935,33 @@ function focusNewRecord(card, delay, image) {
   else startFocus();
 }
 
+function syncGuessRecordCountState() {
+  const cards = rowsEl.querySelectorAll(":scope > .guess-card");
+  const singleRegularRecord = cards.length === 1 && !cards[0].classList.contains("is-final-record");
+  const dossierSection = dossierHead && dossierHead.parentElement;
+  gameScreen.classList.toggle("has-single-record", singleRegularRecord);
+  if (!cards[0] || !cards[0].classList.contains("mobile-new-record-anchor")) {
+    if (dossierSection) {
+      dossierSection.style.removeProperty("translate");
+      delete dossierSection.dataset.mobileRecordShift;
+    }
+    rowsEl.classList.remove("mobile-new-record-positioned");
+    cards.forEach((card) => {
+      card.classList.remove("mobile-new-record-anchor");
+      card.style.removeProperty("margin-top");
+      card.style.removeProperty("translate");
+      delete card.dataset.mobileRecordShift;
+    });
+  }
+  if (isMobileLayout()) alignMobileGameViewport();
+}
+
 /* 已有档案的下移与新卡 0.94 → 1 的缩放收尾共用同一时间轴，避免末段二次下抖。 */
 function prependGuessCard(card, animateExisting) {
   const existingCards = Array.from(rowsEl.querySelectorAll(":scope > .guess-card"));
   const previousTops = new Map(existingCards.map((item) => [item, item.getBoundingClientRect().top]));
   rowsEl.prepend(card);
+  syncGuessRecordCountState();
   const canAnimate = animateExisting && !isMobileLayout() && !isReducedMotion()
     && existingCards.length && typeof existingCards[0].animate === "function";
   if (!canAnimate) return 0;
@@ -1574,15 +1987,69 @@ function prependGuessCard(card, animateExisting) {
   return duration;
 }
 
+function bindMobileScrollBoundaryHandoff(scroller) {
+  if (!scroller || scroller.dataset.mobileBoundaryHandoff === "true") return;
+  scroller.dataset.mobileBoundaryHandoff = "true";
+  let lastTouchY = null;
+  let handoffOuter = null;
+  let handoffSnapTimer = null;
+  const enabled = () => isMobileLayout() && gameScreen.classList.contains("has-guesses");
+  const outerScroller = () => document.body.classList.contains("mobile-game-finished") ? boardEl : rowsEl;
+  scroller.addEventListener("touchstart", (event) => {
+    if (!enabled() || event.touches.length !== 1) return;
+    lastTouchY = event.touches[0].clientY;
+  }, { passive: true });
+  scroller.addEventListener("touchmove", (event) => {
+    if (lastTouchY == null || !enabled() || event.touches.length !== 1) return;
+    const currentY = event.touches[0].clientY;
+    const deltaY = lastTouchY - currentY;
+    lastTouchY = currentY;
+    if (Math.abs(deltaY) < 1) return;
+    const atTop = scroller.scrollTop <= 1;
+    const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+    if (!(deltaY < 0 && atTop) && !(deltaY > 0 && atBottom)) return;
+    const candidates = [outerScroller(), document.scrollingElement];
+    for (const outer of candidates) {
+      if (!outer || outer === scroller) continue;
+      const maxScroll = Math.max(0, outer.scrollHeight - outer.clientHeight);
+      const previous = outer.scrollTop;
+      const next = Math.max(0, Math.min(maxScroll, previous + deltaY));
+      if (Math.abs(next - previous) <= .5) continue;
+      if (handoffSnapTimer != null) window.clearTimeout(handoffSnapTimer);
+      if (handoffOuter && handoffOuter !== outer) handoffOuter.classList.remove("mobile-boundary-handoff-active");
+      handoffOuter = outer;
+      handoffOuter.classList.add("mobile-boundary-handoff-active");
+      outer.scrollTop = next;
+      event.preventDefault();
+      event.stopPropagation();
+      break;
+    }
+  }, { passive: false });
+  const resetTouch = () => {
+    lastTouchY = null;
+    if (!handoffOuter) return;
+    if (handoffSnapTimer != null) window.clearTimeout(handoffSnapTimer);
+    handoffSnapTimer = window.setTimeout(() => {
+      if (handoffOuter) handoffOuter.classList.remove("mobile-boundary-handoff-active");
+      handoffOuter = null;
+      handoffSnapTimer = null;
+    }, 900);
+  };
+  scroller.addEventListener("touchend", resetTouch, { passive: true });
+  scroller.addEventListener("touchcancel", resetTouch, { passive: true });
+}
+
 function renderSuddenV3Row(r) {
   const d = r.dims || {};
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
   const firstRecord = !rowsEl.querySelector(".guess-card");
+  const animateEntry = !r.suppressEntryAnimation;
   const card = document.createElement("article");
-  card.className = "guess-card v2-guess-card card-entering";
-  prepareGuessCardHover(card, true);
-  window.setTimeout(() => finishGuessCardEntry(card), 1280);
+  card.className = "guess-card v2-guess-card" + (animateEntry ? " card-entering" : "");
+  if (firstRecord && animateEntry) card.classList.add("is-first-record");
+  prepareGuessCardHover(card, animateEntry);
+  if (animateEntry) window.setTimeout(() => finishGuessCardEntry(card), 1280);
 
   const layout = document.createElement("div");
   layout.className = "operator-record-layout";
@@ -1592,17 +2059,19 @@ function renderSuddenV3Row(r) {
   visualScan.className = "operator-visual-scan";
   const image = document.createElement("img");
   image.className = "operator-art";
-  image.alt = r.guessName + " 精英一阶段立绘";
+  const themeArtUrl = operator.themeArtUrl || "";
+  const themeArtSkinName = operator.themeArtSkinName || "";
+  image.alt = r.guessName + (themeArtUrl ? ` ${themeArtSkinName || "品牌"}时装立绘` : " 精英一阶段立绘");
   image.loading = firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
   image.decoding = "async";
-  image.src = artUrl(operator.id, false);
+  image.src = themeArtUrl || artUrl(operator.id, false);
   image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
   visual.setAttribute("aria-label", "查看" + r.guessName + "立绘大图");
   const showLargeArt = () => {
-    if (!visual.classList.contains("image-missing")) openArtPreview(image, r.guessName, "精英一阶段立绘", visual);
+    if (!visual.classList.contains("image-missing")) openArtPreview(image, r.guessName, themeArtUrl ? (themeArtSkinName || "时装") + "立绘" : "精英一阶段立绘", visual);
   };
   visual.addEventListener("click", showLargeArt);
   visual.addEventListener("keydown", (e) => {
@@ -1614,9 +2083,9 @@ function renderSuddenV3Row(r) {
   const artCaption = document.createElement("div");
   artCaption.className = "operator-art-caption";
   const captionEn = document.createElement("span");
-  captionEn.textContent = "ELITE 1 RECORD";
+  captionEn.textContent = themeArtUrl ? "THEME COSTUME RECORD" : "ELITE 1 RECORD";
   const captionTitle = document.createElement("strong");
-  captionTitle.textContent = "精英一阶段";
+  captionTitle.textContent = themeArtUrl ? (themeArtSkinName || "时装") : "精英一阶段";
   artCaption.appendChild(captionEn);
   artCaption.appendChild(captionTitle);
   visual.appendChild(visualScan);
@@ -1701,12 +2170,23 @@ function renderSuddenV3Row(r) {
   card.appendChild(layout);
   attachMobileRecordPager(card, layout, image, false);
   gameScreen.classList.add("has-guesses");
-  document.body.classList.add("mobile-record-active");
+  activateMobileRecordLayout();
   boardEmpty.classList.add("hidden");
-  const shiftDuration = prependGuessCard(card, true);
+  const shiftDuration = prependGuessCard(card, animateEntry);
   rowsEl.scrollTop = 0;
-  focusNewRecord(card, firstRecord ? 480 : shiftDuration, firstRecord ? image : null);
+  if (!r.suppressFocus) {
+    focusNewRecord(card, firstRecord ? 480 : shiftDuration, firstRecord ? image : null);
+  }
   requestQuickGuessVisibilitySync();
+  return { card, image };
+}
+
+function renderWrongChoiceRecord(record) {
+  return renderSuddenV3Row({
+    ...record,
+    suppressFocus: true,
+    suppressEntryAnimation: true,
+  });
 }
 
 /* ---------- sudden V3 结算档案 ---------- */
@@ -1714,6 +2194,8 @@ function renderSuddenV3Row(r) {
 function renderComparisonFinalRecord(r) {
   const operator = r.operator || {};
   const artEntry = operatorArt[operator.id] || {};
+  const themeArtUrl = operator.themeArtUrl || "";
+  const themeArtSkinName = operator.themeArtSkinName || "";
   const card = document.createElement("article");
   card.className = "guess-card is-final-record v2-final-record";
   prepareGuessCardHover(card, false);
@@ -1726,8 +2208,10 @@ function renderComparisonFinalRecord(r) {
   visualScan.className = "operator-visual-scan";
   const image = document.createElement("img");
   image.className = "operator-art";
-  image.src = artUrl(operator.id, true);
-  const artLabel = artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘";
+  image.src = themeArtUrl || artUrl(operator.id, true);
+  const artLabel = themeArtUrl
+    ? ` ${themeArtSkinName || "品牌"}时装立绘`
+    : (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘");
   image.alt = r.answerName + artLabel;
   image.loading = "eager";
   image.decoding = "async";
@@ -1749,9 +2233,11 @@ function renderComparisonFinalRecord(r) {
   const artCaption = document.createElement("div");
   artCaption.className = "operator-art-caption";
   const captionEn = document.createElement("span");
-  captionEn.textContent = "FINAL ARCHIVE";
+  captionEn.textContent = themeArtUrl ? "THEME COSTUME RECORD" : "FINAL ARCHIVE";
   const captionTitle = document.createElement("strong");
-  captionTitle.textContent = artEntry.finalTitle || "最新形象";
+  captionTitle.textContent = themeArtUrl
+    ? (themeArtSkinName || "时装")
+    : (artEntry.finalTitle || "最新形象");
   artCaption.appendChild(captionEn);
   artCaption.appendChild(captionTitle);
   visual.appendChild(visualScan);
@@ -1790,11 +2276,21 @@ function renderComparisonFinalRecord(r) {
   layout.appendChild(visual);
   layout.appendChild(record);
   card.appendChild(layout);
+  attachMobileRecordPager(card, layout, image, true);
   gameScreen.classList.add("has-guesses");
-  document.body.classList.add("mobile-record-active");
+  activateMobileRecordLayout();
   boardEmpty.classList.add("hidden");
   prependGuessCard(card, false);
   rowsEl.scrollTop = 0;
+  pendingVisualIntelReveal = {
+    operator,
+    answerName: r.answerName,
+    finalRecord: card,
+    finalReady: Promise.all([
+      waitForImageDecode(image),
+      waitForNamedAnimation(card, "final-archive-in", 1050),
+    ]),
+  };
 }
 
 function renderFinalArchiveSheet(operator, archiveData) {
@@ -1915,6 +2411,7 @@ function renderFinalArchiveSheet(operator, archiveData) {
   seal.className = "archive-verified-seal";
   seal.textContent = "12 / 12 VERIFIED";
   sheet.appendChild(seal);
+  bindMobileScrollBoundaryHandoff(sheet);
   return sheet;
 }
 
@@ -2007,6 +2504,7 @@ function updateDirectivePanel(theme, themeResult) {
     mobileDirectiveTitle.textContent = "等待指令下发";
     mobileDirectiveDesc.textContent = "";
     mobileDirectiveProgress.textContent = "--";
+    mobileDirectiveDecodeBtn.textContent = "解码情报";
     mobileDirectiveDecodeBtn.classList.add("hidden");
     return;
   }
@@ -2044,6 +2542,10 @@ function updateDirectivePanel(theme, themeResult) {
   else directiveNote.textContent = "";
   directiveDecodeBtn.classList.add("hidden");
   mobileDirectiveDecodeBtn.classList.add("hidden");
+  if (status === "revealed" && decodedIntel.length && isMobileLayout()) {
+    mobileDirectiveDecodeBtn.textContent = "查看情报";
+    mobileDirectiveDecodeBtn.classList.remove("hidden");
+  }
   if (themeResult && themeResult.newlyCompleted && !directiveCompletionPlayed) playDirectiveCompletion();
 }
 
@@ -2094,6 +2596,11 @@ function showDirectiveIntel(clue) {
   mobileDirectiveTitle.textContent = clue.title || "已解码情报";
   mobileDirectiveDesc.textContent = "情报已解码 · 图像情报支持点击放大";
   mobileDirectiveProgress.textContent = "DECODED";
+  if (isMobileLayout()) {
+    mobileDirectiveDecodeBtn.textContent = "查看情报";
+    mobileDirectiveDecodeBtn.classList.remove("hidden");
+    openMobileDataSheet(clue.title || "已解码情报", "intel", buildIntelCard(clue, false), mobileDirectiveDecodeBtn);
+  }
   requestAnimationFrame(() => directivePanel.classList.add("show-intel"));
 }
 
@@ -2159,6 +2666,10 @@ function renderIntelRail() {
   if (!intelRail) return;
   intelRail.classList.toggle("v3-inline-intel", isSuddenV3());
   intelRail.innerHTML = "";
+  if (isSuddenV3() && isMobileLayout()) {
+    intelRail.classList.add("hidden");
+    return;
+  }
   if (!decodedIntel.length) {
     intelRail.classList.add("hidden");
     return;
@@ -2167,15 +2678,50 @@ function renderIntelRail() {
   intelRail.classList.remove("hidden");
 }
 
+function appendIntelMechanicChips(chips, mechanic) {
+  const mech = mechanic || {};
+  const items = [
+    ["触发", V2_MECHANIC_TEXT.activation[mech.activation] || "未知"],
+    ["技力", V2_MECHANIC_TEXT.spRecovery[mech.spRecovery] || "未知"],
+  ];
+  items.forEach(([key, value]) => {
+    const chip = document.createElement("span");
+    chip.className = "intel-mech-chip";
+    const label = document.createElement("b");
+    label.textContent = key + " ";
+    chip.appendChild(label);
+    chip.appendChild(document.createTextNode(value));
+    chips.appendChild(chip);
+  });
+  if (mech.chargeable) {
+    const chip = document.createElement("span");
+    chip.className = "intel-mech-chip charge";
+    chip.textContent = "可储存 " + (mech.maxChargeTime || 1) + " 次";
+    chips.appendChild(chip);
+  }
+  if (mech.ammo) {
+    const chip = document.createElement("span");
+    chip.className = "intel-mech-chip charge";
+    chip.textContent = "弹药技能";
+    chips.appendChild(chip);
+  }
+}
+
 function buildIntelCard(clue, inModal) {
   const kind = clue.kind || "quote";
   const card = document.createElement("article");
   card.className = "intel-card intel-" + kind;
   const mediaKinds = { silhouette: 1, artFragment: 1, skillIcon: 1 };
-  const skillIconItems = kind === "skillIcon" && Array.isArray(clue.skills) ? clue.skills : [];
+  const skillBundleItems = kind === "skillBundle" && Array.isArray(clue.skills) ? clue.skills : [];
+  const skillBundleFields = kind === "skillBundle" && Array.isArray(clue.skillFields) ? clue.skillFields : [];
+  const skillIconItems = kind === "skillIcon" && Array.isArray(clue.skills)
+    ? clue.skills
+    : skillBundleFields.includes("icon") ? skillBundleItems : [];
   const mechanicSkillItems = kind === "skillMechanic" && Array.isArray(clue.skills) ? clue.skills : [];
   const hasImage = mediaKinds[kind] && clue.imageUrl;
-  if (skillIconItems.length || mechanicSkillItems.length) card.classList.add("intel-multi-skill");
+  if (skillBundleItems.length || skillIconItems.length || mechanicSkillItems.length) {
+    card.classList.add("intel-multi-skill");
+  }
 
   if (skillIconItems.length) {
     const media = document.createElement("div");
@@ -2194,9 +2740,21 @@ function buildIntelCard(clue, inModal) {
       slot.textContent = skill.slot || "SKILL";
       iconButton.appendChild(img);
       iconButton.appendChild(slot);
+      if (skillBundleFields.includes("name") && skill.name) {
+        const name = document.createElement("span");
+        name.className = "intel-skill-icon-name";
+        name.textContent = skill.name;
+        iconButton.appendChild(name);
+      }
       iconButton.addEventListener("click", () => {
         if (!iconButton.classList.contains("image-missing")) {
-          openArtPreview(img, (clue.title || "全技能图标") + " " + (skill.slot || ""), "SKILL ICON", iconButton, kind);
+          openArtPreview(
+            img,
+            (skill.name || clue.title || "全技能图标") + " " + (skill.slot || ""),
+            "SKILL ICON",
+            iconButton,
+            kind
+          );
         }
       });
       media.appendChild(iconButton);
@@ -2217,13 +2775,22 @@ function buildIntelCard(clue, inModal) {
       artFragment: "PARTIAL REVEAL",
       skillIcon: "SKILL ICON",
     }[kind] || "AUX INTEL";
+    media.dataset.previewTitle = clue.title || "战术情报";
+    media.dataset.previewLabel = artLabel;
+    media.dataset.previewKind = kind;
     media.classList.add("intel-media-zoom");
     media.tabIndex = 0;
     media.setAttribute("role", "button");
     media.setAttribute("aria-label", "查看" + (clue.title || "战术情报") + "大图");
     const showLarge = () => {
       if (!media.classList.contains("intel-media-missing")) {
-        openArtPreview(img, clue.title || "战术情报", artLabel, media, kind);
+        openArtPreview(
+          img,
+          media.dataset.previewTitle || clue.title || "战术情报",
+          media.dataset.previewLabel || artLabel,
+          media,
+          media.dataset.previewKind || null
+        );
       }
     };
     media.addEventListener("click", showLarge);
@@ -2249,6 +2816,7 @@ function buildIntelCard(clue, inModal) {
   const kindRow = document.createElement("div");
   kindRow.className = "intel-kind";
   const kindText = document.createElement("span");
+  kindText.className = "intel-kind-label";
   kindText.textContent = {
     silhouette: "TARGET SILHOUETTE",
     artFragment: "PARTIAL REVEAL",
@@ -2256,6 +2824,7 @@ function buildIntelCard(clue, inModal) {
     skillName: "SKILL CODENAME",
     quote: "COMMS RECORD",
     skillMechanic: "MECHANIC CHIP",
+    skillBundle: "SKILL DATA LINK",
   }[kind] || "AUX INTEL";
   const kindEn = document.createElement("i");
   kindEn.textContent = "DECODED";
@@ -2278,6 +2847,42 @@ function buildIntelCard(clue, inModal) {
     note.className = "intel-silhouette-note";
     note.textContent = "局部显影完成：结合完整轮廓、配色与材质继续推理。";
     body.appendChild(note);
+  } else if (kind === "skillBundle") {
+    const fieldLabels = { icon: "图标", name: "名称", mechanic: "机制" };
+    const summary = document.createElement("p");
+    summary.className = "intel-skill-summary";
+    summary.textContent = "已同步全部 " + skillBundleItems.length + " 项技能 · "
+      + skillBundleFields.map((field) => fieldLabels[field] || field).join(" + ");
+    body.appendChild(summary);
+    if (skillBundleFields.includes("mechanic") || !skillBundleFields.includes("icon")) {
+      const list = document.createElement("div");
+      list.className = "intel-mech-list intel-skill-bundle-list";
+      skillBundleItems.forEach((skill) => {
+        const row = document.createElement("section");
+        row.className = "intel-mech-skill";
+        const slot = document.createElement("strong");
+        slot.className = "intel-mech-slot";
+        slot.textContent = skill.slot || "技能";
+        const details = document.createElement("div");
+        details.className = "intel-skill-details";
+        if (skillBundleFields.includes("name")) {
+          const name = document.createElement("p");
+          name.className = "intel-skill-name";
+          name.textContent = skill.name || "未知技能";
+          details.appendChild(name);
+        }
+        if (skillBundleFields.includes("mechanic")) {
+          const chips = document.createElement("div");
+          chips.className = "intel-mech";
+          appendIntelMechanicChips(chips, skill.mechanic);
+          details.appendChild(chips);
+        }
+        row.appendChild(slot);
+        row.appendChild(details);
+        list.appendChild(row);
+      });
+      body.appendChild(list);
+    }
   } else if (kind === "skillIcon" && skillIconItems.length) {
     const note = document.createElement("p");
     note.className = "intel-skill-summary";
@@ -2315,32 +2920,7 @@ function buildIntelCard(clue, inModal) {
       slot.textContent = skill.slot || "技能";
       const chips = document.createElement("div");
       chips.className = "intel-mech";
-      const mech = skill.mechanic || {};
-      const items = [
-        ["触发", V2_MECHANIC_TEXT.activation[mech.activation] || "未知"],
-        ["技力", V2_MECHANIC_TEXT.spRecovery[mech.spRecovery] || "未知"],
-      ];
-      items.forEach(([k, v]) => {
-        const chip = document.createElement("span");
-        chip.className = "intel-mech-chip";
-        const b = document.createElement("b");
-        b.textContent = k + " ";
-        chip.appendChild(b);
-        chip.appendChild(document.createTextNode(v));
-        chips.appendChild(chip);
-      });
-      if (mech.chargeable) {
-        const chip = document.createElement("span");
-        chip.className = "intel-mech-chip charge";
-        chip.textContent = "可储存 " + (mech.maxChargeTime || 1) + " 次";
-        chips.appendChild(chip);
-      }
-      if (mech.ammo) {
-        const chip = document.createElement("span");
-        chip.className = "intel-mech-chip charge";
-        chip.textContent = "弹药技能";
-        chips.appendChild(chip);
-      }
+      appendIntelMechanicChips(chips, skill.mechanic);
       row.appendChild(slot);
       row.appendChild(chips);
       list.appendChild(row);
@@ -2349,6 +2929,99 @@ function buildIntelCard(clue, inModal) {
   }
   card.appendChild(body);
   return card;
+}
+
+async function waitForImageDecode(image) {
+  if (!image) return;
+  try {
+    if (typeof image.decode === "function") {
+      await image.decode();
+    } else if (!image.complete) {
+      await new Promise((resolve) => {
+        image.addEventListener("load", resolve, { once: true });
+        image.addEventListener("error", resolve, { once: true });
+      });
+    }
+  } catch (error) {
+    /* 图片错误状态由所属卡片处理，不阻塞后续界面。 */
+  }
+}
+
+function waitForNamedAnimation(element, animationName, fallbackDuration) {
+  if (!element || isReducedMotion()) return Promise.resolve();
+  const names = window.getComputedStyle(element).animationName.split(",").map((name) => name.trim());
+  if (!names.includes(animationName)) return Promise.resolve();
+  return new Promise((resolve) => {
+    let timer = null;
+    const finish = () => {
+      element.removeEventListener("animationend", onAnimationEnd);
+      if (timer !== null) window.clearTimeout(timer);
+      resolve();
+    };
+    const onAnimationEnd = (event) => {
+      if (event.target === element && event.animationName === animationName) finish();
+    };
+    element.addEventListener("animationend", onAnimationEnd);
+    timer = window.setTimeout(finish, fallbackDuration);
+  });
+}
+
+async function revealVisualIntel(operator, answerName, finalRecord) {
+  const visualKinds = new Set(["silhouette", "artFragment"]);
+  if (!operator || !operator.id || !decodedIntel.some((clue) => visualKinds.has(clue.kind))) return;
+  if (finalRecord && !finalRecord.isConnected) return;
+  if (!decodedIntel.some((clue) => visualKinds.has(clue.kind))) return;
+
+  const imageUrl = artUrl(operator.id, false);
+  const artLabel = "剪影原始立绘";
+  const cards = [...document.querySelectorAll(".intel-card:is(.intel-silhouette,.intel-artFragment)")];
+  if (!cards.length) return;
+
+  /* 终局档案完成加载、入场与滚动聚焦后，才读取剪影原始立绘并在屏幕外解码。 */
+  const preloadedImage = new Image();
+  preloadedImage.decoding = "async";
+  preloadedImage.src = imageUrl;
+  await waitForImageDecode(preloadedImage);
+
+  let revealedCount = 0;
+  const revealTargets = [];
+  cards.forEach((card) => {
+    if (!card.isConnected) return;
+    const media = card.querySelector(".intel-media");
+    const image = media && media.querySelector("img");
+    if (!media || !image) return;
+    card.classList.remove("intel-answer-revealing");
+    media.classList.remove("intel-media-missing");
+    media.classList.add("intel-answer-revealed");
+    media.dataset.previewTitle = answerName || "目标干员";
+    media.dataset.previewLabel = artLabel;
+    media.dataset.previewKind = "";
+    image.loading = "eager";
+    image.decoding = "async";
+    image.src = imageUrl;
+    image.alt = (answerName || "目标干员") + " " + artLabel;
+    const kindLabel = card.querySelector(".intel-kind-label");
+    const title = card.querySelector(".intel-title");
+    const note = card.querySelector(".intel-silhouette-note");
+    if (kindLabel) kindLabel.textContent = "TARGET IDENTIFIED";
+    if (title) title.textContent = "身份确认 · " + (answerName || "目标干员");
+    if (note) note.textContent = "轮廓比对完成，生成该剪影的原始立绘已同步至战术终端。";
+    image.style.animation = "none";
+    revealTargets.push({ card, image });
+    revealedCount += 1;
+  });
+  if (revealTargets.length) {
+    void revealTargets[0].image.offsetWidth;
+    revealTargets.forEach(({ card, image }) => {
+      if (!card.isConnected) return;
+      image.style.animation = "";
+      card.classList.add("intel-answer-revealing");
+    });
+  }
+  if (revealedCount) {
+    mobileDirectiveTitle.textContent = "身份确认 · " + (answerName || "目标干员");
+    mobileDirectiveDesc.textContent = "剪影原始立绘已同步 · 图像支持点击放大";
+  }
 }
 
 /* ---------- 渲染档案卡 ---------- */
@@ -2604,26 +3277,29 @@ function createFinalArchive(operator, dims, archiveData) {
   seal.className = "archive-verified-seal";
   seal.textContent = "12 / 12 VERIFIED";
   sheet.appendChild(seal);
+  bindMobileScrollBoundaryHandoff(sheet);
   return sheet;
 }
 
 function attachMobileRecordPager(card, layout, image, finalRecord) {
-  const pager = document.createElement("nav");
-  pager.className = "mobile-record-pager";
-  pager.setAttribute("aria-label", "切换立绘和档案信息");
-  const labels = [finalRecord ? "完整立绘" : "立绘", finalRecord ? "完整档案" : "档案"];
-  const buttons = labels.map((label, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = index === 0 ? "active" : "";
-    button.setAttribute("aria-label", "显示" + label);
-    button.innerHTML = "<i aria-hidden=\"true\"></i><span>" + label + "</span>";
-    pager.appendChild(button);
-    return button;
-  });
-  const swipe = document.createElement("em");
-  swipe.textContent = "SWIPE ↔";
-  pager.appendChild(swipe);
+  const pager = finalRecord ? null : document.createElement("nav");
+  const buttons = [];
+  if (pager) {
+    pager.className = "mobile-record-pager";
+    pager.setAttribute("aria-label", "切换立绘和档案信息");
+    ["立绘", "档案"].forEach((label, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = index === 0 ? "active" : "";
+      button.setAttribute("aria-label", "显示" + label);
+      button.innerHTML = "<i aria-hidden=\"true\"></i><span>" + label + "</span>";
+      pager.appendChild(button);
+      buttons.push(button);
+    });
+    const swipe = document.createElement("em");
+    swipe.textContent = "SWIPE ↔";
+    pager.appendChild(swipe);
+  }
 
   let userNavigated = false;
   let gestureStart = null;
@@ -2631,6 +3307,7 @@ function attachMobileRecordPager(card, layout, image, finalRecord) {
   const setPage = (index) => {
     layout.classList.toggle("mobile-show-record", index === 1);
     buttons.forEach((button, buttonIndex) => button.classList.toggle("active", buttonIndex === index));
+    if (index === 1 && isMobileLayout()) alignMobileGameViewport();
   };
   buttons.forEach((button, index) => button.addEventListener("click", () => {
     userNavigated = true;
@@ -2657,7 +3334,7 @@ function attachMobileRecordPager(card, layout, image, finalRecord) {
     event.stopPropagation();
   }, true);
 
-  card.appendChild(pager);
+  if (pager) card.appendChild(pager);
   const imageReady = image.complete
     ? Promise.resolve()
     : new Promise((resolve) => {
@@ -2670,11 +3347,16 @@ function attachMobileRecordPager(card, layout, image, finalRecord) {
       setPage(1);
     });
   });
-  if (!finalRecord) imageReady.then(() => {
+  if (!finalRecord) Promise.all([
+    imageReady,
+    !isMobileLayout() && card.classList.contains("is-first-record")
+      ? new Promise((resolve) => window.setTimeout(resolve, 1320))
+      : Promise.resolve(),
+  ]).then(() => {
     window.setTimeout(() => {
       if (!window.matchMedia("(max-width: 760px)").matches || userNavigated || !card.isConnected) return;
       setPage(1);
-    }, 1100);
+    }, isMobileLayout() ? 1100 : (card.classList.contains("is-first-record") ? 80 : 1100));
   });
 }
 
@@ -2689,6 +3371,7 @@ function renderRow(r) {
   prepareGuessCardHover(card, !finalRecord);
   if (!finalRecord) {
     card.classList.add("card-entering");
+    if (firstRecord) card.classList.add("is-first-record");
     window.setTimeout(() => finishGuessCardEntry(card), 1280);
   }
 
@@ -2797,9 +3480,9 @@ function renderRow(r) {
   layout.appendChild(visual);
   layout.appendChild(record);
   card.appendChild(layout);
-  if (!finalRecord) attachMobileRecordPager(card, layout, image, false);
+  attachMobileRecordPager(card, layout, image, finalRecord);
   gameScreen.classList.add("has-guesses");
-  document.body.classList.add("mobile-record-active");
+  activateMobileRecordLayout();
   boardEmpty.classList.add("hidden");
   const shiftDuration = prependGuessCard(card, !finalRecord);
   rowsEl.scrollTop = 0;
@@ -2872,6 +3555,7 @@ function giveUpChoice() {
 /* ---------- 模式切换 ---------- */
 
 function showModeScreen() {
+  closeMobileDataSheet(false);
   gameStartSequence++;
   releaseDirectiveIntro();
   document.body.dataset.mode = "";
@@ -2879,6 +3563,7 @@ function showModeScreen() {
   clearFinalSequence();
   gameScreen.classList.remove("is-finished");
   document.body.classList.remove("mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  clearMobileGameViewport();
   victoryEl.classList.add("hidden");
   updateHudTags("");
   anomalyScreen.classList.add("hidden");
@@ -2888,6 +3573,7 @@ function showModeScreen() {
   setModePreview("");
   syncSuddenControls(suddenMax);
   gameScreen.classList.add("hidden");
+  gameScreen.classList.remove("mobile-fixed-viewport-root");
   modeScreen.classList.remove("hidden");
   window.scrollTo(0, 0);
   scheduleModeScreenFocus();
@@ -2896,6 +3582,7 @@ function showModeScreen() {
 function showGameScreen() {
   cancelModeScreenFocus();
   modeScreen.classList.add("hidden");
+  gameScreen.classList.remove("mobile-fixed-viewport-root");
   gameScreen.classList.remove("hidden");
   document.body.classList.remove("anomaly-scroll-lock");
   document.body.classList.add("game-scroll-lock");
@@ -2914,6 +3601,7 @@ function cancelModeScreenFocus() {
     modeFocusFrame = null;
   }
   modeScreen.classList.remove("is-mode-sequencing", "is-chessmaster-loading", "is-mode-cards-revealing");
+  modeCards.querySelectorAll(".mode-card").forEach((card) => card.classList.remove("mode-hover-armed"));
 }
 
 function scheduleModeScreenFocus() {
@@ -2973,10 +3661,16 @@ function revealModeCards(sequence) {
   if (sequence !== modeIntroSequence || modeScreen.classList.contains("hidden")) return;
   modeScreen.classList.remove("is-mode-sequencing");
   modeScreen.classList.add("is-mode-cards-revealing");
+  modeCards.querySelectorAll(".mode-card").forEach((card) => card.classList.remove("mode-hover-armed"));
   modeFocusTimer = window.setTimeout(() => {
     modeFocusTimer = null;
-    if (sequence === modeIntroSequence) modeScreen.classList.remove("is-mode-cards-revealing");
-  }, 1100);
+    if (sequence !== modeIntroSequence) return;
+    modeScreen.classList.remove("is-mode-cards-revealing");
+    modeCards.querySelectorAll(".mode-card").forEach((card) => {
+      // 入场期间已经停在卡片上的指针必须先移出再进入，避免动画终态瞬间跳成 hover 放大态。
+      if (!card.matches(":hover")) card.classList.add("mode-hover-armed");
+    });
+  }, 650);
 }
 
 function setModePreview(mode) {
@@ -3088,6 +3782,20 @@ function proxyDesktopWorkspaceWheel(event) {
 document.addEventListener("wheel", proxyDesktopWorkspaceWheel, { passive: false });
 gameWorkspace.addEventListener("scroll", requestQuickGuessVisibilitySync, { passive: true });
 window.addEventListener("resize", requestQuickGuessVisibilitySync, { passive: true });
+window.addEventListener("resize", syncMobileDataSheetViewport, { passive: true });
+window.addEventListener("resize", syncArtPreviewViewport, { passive: true });
+window.addEventListener("resize", handleMobileGameViewportResize, { passive: true });
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", syncMobileDataSheetViewport, { passive: true });
+  window.visualViewport.addEventListener("scroll", syncMobileDataSheetViewport, { passive: true });
+  window.visualViewport.addEventListener("resize", syncArtPreviewViewport, { passive: true });
+  window.visualViewport.addEventListener("scroll", syncArtPreviewViewport, { passive: true });
+  window.visualViewport.addEventListener("resize", handleMobileGameViewportResize, { passive: true });
+  window.visualViewport.addEventListener("scroll", syncMobileGuessDock, { passive: true });
+}
+window.addEventListener("scroll", syncMobileGuessDock, { passive: true });
+
+input.addEventListener("focus", syncMobileGuessDock);
 
 input.addEventListener("input", () => {
   quickInput.value = input.value;
@@ -3144,7 +3852,7 @@ document.addEventListener("click", (e) => {
 btn.addEventListener("click", submitGuess);
 quickBtn.addEventListener("click", submitQuickGuess);
 revealBtn.addEventListener("click", giveUp);
-restartBtn.addEventListener("click", () => startGame(currentMode));
+restartBtn.addEventListener("click", () => startGame(currentMode, undefined, { preserveDirectiveHistory: true }));
 changeModeBtn.addEventListener("click", showModeScreen);
 ingameRestartBtn.addEventListener("click", () => startGame("endless"));
 ingameChangeModeBtn.addEventListener("click", showModeScreen);
@@ -3155,10 +3863,19 @@ revealModal.addEventListener("click", (e) => {
   if (e.target === revealModal && !revealModal.classList.contains("is-resolving")) closeRevealConfirm(true);
 });
 directiveDecodeBtn.addEventListener("click", requestClueReveal);
-mobileDirectiveDecodeBtn.addEventListener("click", requestClueReveal);
+mobileDirectiveDecodeBtn.addEventListener("click", () => {
+  if (decodedIntel.length && isMobileLayout()) {
+    const clue = decodedIntel[0];
+    openMobileDataSheet(clue.title || "已解码情报", "intel", buildIntelCard(clue, false), mobileDirectiveDecodeBtn);
+    return;
+  }
+  requestClueReveal();
+});
+mobileDataSheetClose.addEventListener("click", () => closeMobileDataSheet(true));
+mobileDataSheetBackdrop.addEventListener("click", () => closeMobileDataSheet(true));
 artPreviewClose.addEventListener("click", () => closeArtPreview(true));
 artPreviewCanvas.addEventListener("wheel", (e) => {
-  if (artPreview.classList.contains("hidden") || e.deltaY === 0) return;
+  if (isMobileLayout() || artPreview.classList.contains("hidden") || e.deltaY === 0) return;
   e.preventDefault();
   const bounds = artPreviewCanvas.getBoundingClientRect();
   const cursorX = bounds.width ? ((e.clientX - bounds.left) / bounds.width) * 100 : 50;
@@ -3174,11 +3891,18 @@ artPreviewCanvas.addEventListener("wheel", (e) => {
   }
   updateArtPreviewZoom();
 }, { passive: false });
-artPreviewCanvas.addEventListener("dblclick", resetArtPreviewZoom);
+artPreviewCanvas.addEventListener("click", closeMobileArtPreviewFromCanvas);
+artPreviewCanvas.addEventListener("dblclick", () => {
+  if (!isMobileLayout()) resetArtPreviewZoom();
+});
 artPreview.addEventListener("click", (e) => {
   if (e.target === artPreview) closeArtPreview(true);
 });
 document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && mobileDataSheet && !mobileDataSheet.classList.contains("hidden")) {
+    closeMobileDataSheet(true);
+    return;
+  }
   if (e.key === "Escape" && !artPreview.classList.contains("hidden")) {
     closeArtPreview(true);
     return;
@@ -3188,14 +3912,15 @@ document.addEventListener("keydown", (e) => {
   }
 });
 modeEndlessBtn.addEventListener("click", () => startEndless());
-applySuddenAttempts.addEventListener("click", () => startGame("sudden", suddenAttemptsGame.value));
+applySuddenAttempts.addEventListener("click", applySuddenAttemptConfig);
 suddenAttemptsMode.addEventListener("change", () => syncSuddenControls(suddenAttemptsMode.value));
 suddenAttemptsMode.addEventListener("keydown", (e) => {
   if (e.key === "Enter") startSudden();
 });
 suddenAttemptsGame.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") startGame("sudden", suddenAttemptsGame.value);
+  if (e.key === "Enter") applySuddenAttemptConfig();
 });
+suddenAttemptsGame.addEventListener("input", updateAttemptConfigState);
 
 modeSuddenCard.addEventListener("click", (e) => {
   if (e.target.closest(".attempt-control")) return;
@@ -3204,15 +3929,30 @@ modeSuddenCard.addEventListener("click", (e) => {
 
 [modeSuddenCard, modeEndlessBtn, modeAnomalyCard].forEach((el) => {
   const mode = el === modeSuddenCard ? "sudden" : el === modeEndlessBtn ? "endless" : "anomaly";
+  const modeHoverReady = () => !modeScreen.classList.contains("is-mode-sequencing")
+    && !modeScreen.classList.contains("is-mode-cards-revealing");
   const resetCardMotion = () => {
     el.style.setProperty("--art-shift-x", "0px");
     el.style.setProperty("--art-shift-y", "0px");
     el.style.setProperty("--glow-x", "50%");
     el.style.setProperty("--glow-y", "38%");
   };
-  el.addEventListener("mouseenter", () => setModePreview(mode));
+  el.addEventListener("mouseenter", () => {
+    if (!modeHoverReady()) return;
+    el.classList.add("mode-hover-armed");
+    setModePreview(mode);
+  });
   el.addEventListener("pointermove", (e) => {
-    if (isReducedMotion() || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (modeHoverReady() && !el.classList.contains("mode-hover-armed")) {
+      // 入场期间停在卡片上的指针，在动画结束后发生真实移动时即可激活；静止时仍不会瞬间放大。
+      el.classList.add("mode-hover-armed");
+      setModePreview(mode);
+    }
+    if (
+      !el.classList.contains("mode-hover-armed")
+      || isReducedMotion()
+      || !window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    ) return;
     const rect = el.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
@@ -3221,10 +3961,13 @@ modeSuddenCard.addEventListener("click", (e) => {
     el.style.setProperty("--glow-x", (x * 100).toFixed(1) + "%");
     el.style.setProperty("--glow-y", (y * 100).toFixed(1) + "%");
   });
-  el.addEventListener("focusin", () => setModePreview(mode));
+  el.addEventListener("focusin", () => {
+    if (modeHoverReady()) setModePreview(mode);
+  });
   el.addEventListener("mouseleave", () => {
     setModePreview("");
     resetCardMotion();
+    el.classList.remove("mode-hover-armed");
   });
   el.addEventListener("focusout", (e) => {
     if (!el.contains(e.relatedTarget)) {
@@ -3657,7 +4400,9 @@ async function openAnomalyThemeSelect(preferredDomain) {
   if (startSequence !== gameStartSequence) return;
   modeScreen.classList.add("hidden");
   gameScreen.classList.add("hidden");
+  gameScreen.classList.remove("mobile-fixed-viewport-root");
   document.body.classList.remove("game-scroll-lock", "mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  clearMobileGameViewport();
   document.body.classList.add("anomaly-scroll-lock");
   stageAnomalyWorkspaceEntry();
   anomalyScreen.classList.remove("hidden");
@@ -3711,7 +4456,9 @@ async function startAnomaly(domain) {
   if (startSequence !== gameStartSequence) return;
   modeScreen.classList.add("hidden");
   gameScreen.classList.add("hidden");
+  gameScreen.classList.remove("mobile-fixed-viewport-root");
   document.body.classList.remove("game-scroll-lock", "mobile-record-active", "mobile-game-finished", "quick-guess-active");
+  clearMobileGameViewport();
   document.body.classList.add("anomaly-scroll-lock");
   stageAnomalyWorkspaceEntry();
   anomalyScreen.classList.remove("hidden");
@@ -3904,6 +4651,13 @@ function renderAnomalyHint() {
   anomalyHintTitle.textContent = anomaly.hint.title || "共性规则";
   anomalyHintDesc.textContent = anomaly.hint.description || "";
   anomalyHint.classList.remove("hidden");
+  if (isMobileLayout()) {
+    window.requestAnimationFrame(() => {
+      if (!anomalyHint.classList.contains("hidden")) {
+        anomalyHint.scrollIntoView({ behavior: isReducedMotion() ? "auto" : "smooth", block: "nearest" });
+      }
+    });
+  }
 }
 
 async function confirmAnomaly() {
@@ -4317,6 +5071,7 @@ anomalyErrorHomeBtn.addEventListener("click", showModeScreen);
 /* ---------- 初始化 ---------- */
 
 async function init() {
+  clearDirectiveHistory();
   const [names, art] = await Promise.all([
     fetchJSON("data/names.json"),
     fetchJSON("data/operator-art.json").catch(() => ({})),
