@@ -10,6 +10,17 @@ const {
 
 const SAFE_GUESSES = ["阿米娅", "能天使", "陈", "银灰", "推进之王", "德克萨斯", "蓝毒", "夜莺"];
 
+async function expectMobileFinalCardBottomFocus(page) {
+  await expect.poll(() => page.evaluate(() => {
+    const viewport = window.visualViewport;
+    const viewportBottom = (viewport ? viewport.offsetTop : 0)
+      + (viewport ? viewport.height : window.innerHeight);
+    const finalCard = document.querySelector("#rows > .guess-card.is-final-record").getBoundingClientRect();
+    const bottomGap = viewportBottom - finalCard.bottom;
+    return bottomGap >= 0 && bottomGap <= 10;
+  }), { timeout: 5_000 }).toBe(true);
+}
+
 test.beforeEach(async ({ page }) => {
   await openHome(page);
 });
@@ -26,12 +37,19 @@ test("终局校验：六次猜测、错误四选一、错项档案与终局档�
     const choicesResponse = isLast
       ? page.waitForResponse((response) => new URL(response.url()).pathname === "/api/choices")
       : null;
-    await submitGuess(page, guesses[index], index + 1);
+    const guessData = await submitGuess(page, guesses[index], index + 1);
     // Directive rewards may finish their delayed presentation between two
     // submissions. Close the optional mobile sheet before the next iteration
     // so it cannot intercept the submit button mid-click.
-    await page.waitForTimeout(450);
     const mobileDataSheet = page.locator("#mobileDataSheet:not(.hidden)");
+    const unlockedIntel = Boolean(
+      guessData.themeResult
+      && guessData.themeResult.newlyCompleted
+      && Array.isArray(guessData.pendingClues)
+      && guessData.pendingClues.length
+    );
+    if (unlockedIntel) await expect(mobileDataSheet).toBeVisible();
+    else await page.waitForTimeout(450);
     if (await mobileDataSheet.count() && await mobileDataSheet.isVisible()) {
       await page.locator("#mobileDataSheetClose").click();
       await expect(mobileDataSheet).toHaveCount(0);
@@ -94,6 +112,7 @@ test("终局校验：六次猜测、错误四选一、错项档案与终局档�
     // leaving the result prompt on screen for the previous 1.35 s interval.
     await page.waitForTimeout(1_150);
     await expect.poll(() => page.locator("#board").evaluate((element) => element.scrollTop)).toBeGreaterThan(12);
+    await expectMobileFinalCardBottomFocus(page);
   }
 });
 
@@ -189,6 +208,7 @@ test("无尽模式：连续猜测、移动端档案翻页、纵向档案滑动�
     expect(Math.abs(initialPages.recordWidth - initialPages.layoutWidth)).toBeLessThanOrEqual(2);
     expect(Math.abs(initialPages.pageOffset - initialPages.layoutWidth)).toBeLessThanOrEqual(2);
     await expect.poll(() => archive.evaluate((element) => getComputedStyle(element).overscrollBehaviorY)).toBe("auto");
+    await expectMobileFinalCardBottomFocus(page);
     await page.waitForTimeout(2_800);
     await finalRecord.evaluate((element) => element.scrollIntoView({ block: "center" }));
     const finalLayoutBox = await finalLayout.boundingBox();

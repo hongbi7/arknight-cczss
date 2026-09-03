@@ -159,17 +159,12 @@ function setStatus(msg, isError) {
 }
 
 function updateArtPreviewZoom() {
-  if (isMobileLayout()) {
-    artPreviewScale = 1;
-    artPreviewOriginX = 50;
-    artPreviewOriginY = 50;
-  }
   artPreviewImage.style.setProperty("--preview-scale", artPreviewScale.toFixed(3));
   artPreviewImage.style.setProperty("--preview-origin-x", artPreviewOriginX.toFixed(2) + "%");
   artPreviewImage.style.setProperty("--preview-origin-y", artPreviewOriginY.toFixed(2) + "%");
   artPreview.dataset.zoomed = artPreviewScale > 1.001 ? "true" : "false";
   artPreviewMeta.textContent = artPreviewMetaBase + " // " + (isMobileLayout()
-    ? "再次点击图像返回"
+    ? "双指缩放 · 点击图像返回"
     : Math.round(artPreviewScale * 100) + "% · 滚轮缩放");
 }
 
@@ -229,6 +224,8 @@ function closeArtPreview(restoreFocus) {
 
 function closeMobileArtPreviewFromCanvas() {
   if (!isMobileLayout() || artPreview.classList.contains("hidden")) return;
+  /* 双指捏合刚结束时的残余点击不触发关闭，避免缩放后被误退出 */
+  if (performance.now() - artPreviewPinchedAt < 320) return;
   const imageKind = artPreview.dataset.imageKind || "";
   const closeIntelSheet = imageKind === "silhouette" || imageKind === "artFragment";
   closeArtPreview(!closeIntelSheet);
@@ -493,7 +490,8 @@ function shouldDockMobileGuessConsole() {
     && !gameScreen.classList.contains("is-finished");
 }
 
-function positionMobileGuessDock() {
+/* 纯定位：仅按 visual viewport 当前几何写入固定控制台位置，不触碰档案锚点；锚点校正等同步路径复用它，避免与 positionMobileGuessDock 互相回调。 */
+function applyMobileGuessDockPosition() {
   if (!shouldDockMobileGuessConsole()) return;
   const viewport = window.visualViewport;
   const viewportLeft = viewport ? viewport.offsetLeft : 0;
@@ -506,23 +504,30 @@ function positionMobileGuessDock() {
   guessConsole.style.left = Math.round(viewportLeft + (viewportWidth - width) / 2) + "px";
   guessConsole.style.top = Math.round(viewportTop + viewportHeight - height) + "px";
   guessConsole.style.width = Math.round(width) + "px";
+}
+
+function positionMobileGuessDock(realignAnchor) {
+  if (!shouldDockMobileGuessConsole()) return;
+  applyMobileGuessDockPosition();
+  /* 纯视口平移（visualViewport scroll）时档案应随页面自然滚动，不重新贴合 */
+  if (realignAnchor === false) return;
   const newestCard = rowsEl.firstElementChild;
   if (
     newestCard
     && newestCard.classList.contains("mobile-new-record-anchor")
-    && newestCard.classList.contains("card-entering")
   ) positionMobileNewRecordAnchor(newestCard);
 }
 
-function syncMobileGuessDock() {
+function syncMobileGuessDock(options) {
   if (!shouldDockMobileGuessConsole()) {
     clearMobileGuessDock();
     return;
   }
+  const realignAnchor = !options || options.realignAnchor !== false;
   const firstDockFrame = !document.body.classList.contains("mobile-guess-docked");
   gameScreen.classList.add("mobile-fixed-viewport-root");
   document.body.classList.add("mobile-guess-docked");
-  if (firstDockFrame) positionMobileGuessDock();
+  if (firstDockFrame) positionMobileGuessDock(true);
   if (mobileGuessDockFrame != null) window.cancelAnimationFrame(mobileGuessDockFrame);
   mobileGuessDockFrame = window.requestAnimationFrame(() => {
     mobileGuessDockFrame = null;
@@ -530,7 +535,7 @@ function syncMobileGuessDock() {
       clearMobileGuessDock();
       return;
     }
-    positionMobileGuessDock();
+    positionMobileGuessDock(realignAnchor);
   });
 }
 
@@ -541,6 +546,7 @@ function clearMobileGameViewport() {
   mobileGameViewportTimer = null;
   document.documentElement.classList.remove("mobile-game-scroll-driving");
   document.documentElement.style.removeProperty("--mobile-game-viewport-height");
+  document.body.classList.remove("mobile-compact-viewport");
   clearMobileGuessDock();
 }
 
@@ -549,6 +555,9 @@ function syncMobileGameViewportHeight() {
   const viewport = window.visualViewport;
   const height = Math.max(320, Math.round(viewport ? viewport.height : window.innerHeight));
   document.documentElement.style.setProperty("--mobile-game-viewport-height", height + "px");
+  /* 软键盘等紧凑视口下，单档案也回到视口约束布局，由 .guess-list 承担内部滚动。
+     阈值 620 覆盖"档案卡+页头+固定控制台"的最小可行高度，避免卡片下沿被控制台永久遮挡。 */
+  document.body.classList.toggle("mobile-compact-viewport", height < 620);
 }
 
 function alignMobileGameViewport() {
@@ -567,11 +576,29 @@ function alignMobileGameViewport() {
       const shouldAlignNewest = newestCard
         && newestCard.classList.contains("mobile-new-record-anchor")
         && shouldDockMobileGuessConsole();
-      const target = window.scrollY + layoutRect.bottom - (viewportTop + viewportHeight);
+      /* 底部对齐保证档案区吃满可视区、固定控制台有容身余量。档案列表溢出（多条记录）时
+         锚点位移为 0、档案区在自然槽位，此时若继续按底部对齐会把"档案比对"标题推出视口
+         上沿，故改为不越过档案头顶部；列表未溢出时锚点位移负责让档案贴合控制台，保持
+         底部对齐不变。 */
+      const bottomTarget = window.scrollY + layoutRect.bottom - (viewportTop + viewportHeight);
+      const rowsOverflowing = rowsEl.scrollHeight > rowsEl.clientHeight + 1;
+      const dossierHeadEl = gameScreen.querySelector(".dossier-head");
+      const headTarget = rowsOverflowing && dossierHeadEl
+        ? window.scrollY + dossierHeadEl.getBoundingClientRect().top - viewportTop
+        : bottomTarget;
+      const target = Math.max(0, Math.min(bottomTarget, headTarget));
       document.documentElement.classList.add("mobile-game-scroll-driving");
-      if (shouldAlignNewest) rowsEl.scrollTop = 0;
-      else layout.scrollIntoView({ behavior: "auto", block: "end", inline: "nearest" });
-      window.scrollTo({ top: Math.max(0, target), left: 0, behavior: "auto" });
+      if (shouldAlignNewest) {
+        rowsEl.scrollTop = 0;
+        /* 提交猜测后外层页面尽量保持在顶部（仅移动端，桌面端由 focusNewRecord 走 scrollIntoView）：
+           顶栏、元信息与指令条不被滚出视口，最新档案仍出现在档案列表顶部。
+           紧凑视口（软键盘/小窗）下档案卡已无法完整落在固定控制台之上，仍按底部/档案头对齐下滚。 */
+        const compact = document.body.classList.contains("mobile-compact-viewport");
+        window.scrollTo({ top: compact ? Math.max(0, target) : 0, left: 0, behavior: "auto" });
+      } else {
+        layout.scrollIntoView({ behavior: "auto", block: "end", inline: "nearest" });
+        window.scrollTo({ top: Math.max(0, target), left: 0, behavior: "auto" });
+      }
       window.requestAnimationFrame(() => {
         document.documentElement.classList.remove("mobile-game-scroll-driving");
         if (shouldAlignNewest) positionMobileNewRecordAnchor(newestCard);
@@ -599,13 +626,10 @@ function handleMobileGameViewportResize() {
     return;
   }
   syncMobileGameViewportHeight();
+  /* 只同步视口高度变量与固定控制台/档案锚点位置，不重置滚动：
+     URL 栏收放等 resize 期间用户可能正在下滑查看旧档案，
+     重新对齐会把外层 scrollY 与内层 scrollTop 拽回顶部（跳顶）。 */
   syncMobileGuessDock();
-  if (!document.body.classList.contains("mobile-record-active") || document.activeElement === input) return;
-  if (mobileGameViewportTimer != null) window.clearTimeout(mobileGameViewportTimer);
-  mobileGameViewportTimer = window.setTimeout(() => {
-    mobileGameViewportTimer = null;
-    alignMobileGameViewport();
-  }, 120);
 }
 
 function settleMobileKeyboard() {
@@ -626,6 +650,7 @@ function settleMobileKeyboard() {
       const elapsed = performance.now() - started;
       if ((elapsed >= 180 && stableChecks >= 2) || elapsed >= 380) {
         syncMobileGameViewportHeight();
+        syncMobileGuessDock();
         alignMobileGameViewport();
         resolve();
         return;
@@ -1175,7 +1200,7 @@ async function handleSuddenV3Guess(data) {
   const themeResult = data.themeResult || null;
   const clue = Array.isArray(data.pendingClues) && data.pendingClues.length ? data.pendingClues[0] : null;
   if (clue) pendingClue = clue;
-  updateDirectivePanel(data.theme, themeResult);
+  updateDirectivePanel(data.theme, themeResult, { deferCompletionFlash: true });
   updateAttemptLabel();
   if (data.win) {
     if (data.archive) renderComparisonFinalRecord(data);
@@ -1183,12 +1208,20 @@ async function handleSuddenV3Guess(data) {
     finishGame(true, "终局校验通过！答案是 " + data.answerName + "，共用 " + attempts + " 次");
     return false;
   }
-  renderSuddenV3Row(data);
-  if (themeResult && themeResult.newlyCompleted && clue) {
-    setStatus("战术指令条件达成，正在确认情报权限……");
-    await waitForDirectiveConfirmation();
-    setStatus("情报权限已开放，正在读取情报……");
-    await requestClueReveal();
+  const renderedRecord = renderSuddenV3Row(data);
+  if (themeResult && themeResult.newlyCompleted) {
+    /* 指令校验完成动效与情报解锁都等档案卡片完全加载完再开始（移动端）：
+       先等新卡立绘解码 + 入场动画落定，再播指令完成动效、再读情报。 */
+    if (isMobileLayout() && renderedRecord) {
+      await waitForRecordReady(renderedRecord.card, renderedRecord.image);
+    }
+    playDirectiveCompletion();
+    if (clue) {
+      setStatus("战术指令条件达成，正在确认情报权限……");
+      await waitForDirectiveConfirmation();
+      setStatus("情报权限已开放，正在读取情报……");
+      await requestClueReveal();
+    }
   }
   if (data.remaining === 0) {
     await continueToFinalChoices(data);
@@ -1243,7 +1276,12 @@ async function focusFinalRecordAndReveal(finalCard, reducedMotion) {
   const pending = pendingVisualIntelReveal;
   if (pending && pending.finalRecord === finalCard) await pending.finalReady;
   if (!finalCard.isConnected || !gameScreen.classList.contains("is-finished")) return;
-  finalCard.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+  const mobile = isMobileLayout();
+  /* 移动端按整张卡片的下沿对齐，确保立绘下方的卡片边框也完整露出。 */
+  finalCard.scrollIntoView({
+    behavior: reducedMotion ? "auto" : "smooth",
+    block: mobile ? "end" : "start",
+  });
   await waitForFinalFocusSettle(finalCard, reducedMotion);
   if (!finalCard.isConnected || !gameScreen.classList.contains("is-finished")) return;
   if (!pending || pending !== pendingVisualIntelReveal || pending.finalRecord !== finalCard) return;
@@ -1862,6 +1900,23 @@ function prepareGuessCardHover(card, entering) {
   if (!entering) card.classList.add("hover-armed");
 }
 
+/* 等档案卡片加载完：入场动画结束（card-entering 移除）+ 立绘解码完成。
+   用于情报解锁动效的前置等待，避免新卡还在进场/立绘未出就弹出情报层。 */
+function waitForRecordReady(card, image) {
+  const waits = [waitForRecordImage(image)];
+  if (card && !isReducedMotion()) {
+    waits.push(new Promise((resolve) => {
+      const started = performance.now();
+      const tick = () => {
+        if (!card.isConnected || !card.classList.contains("card-entering") || performance.now() - started > 1800) resolve();
+        else window.setTimeout(tick, 50);
+      };
+      tick();
+    }));
+  }
+  return Promise.all(waits);
+}
+
 function finishGuessCardEntry(card) {
   if (!card || !card.isConnected) return;
   card.classList.remove("card-entering");
@@ -1878,22 +1933,35 @@ function positionMobileNewRecordAnchor(card) {
   ) return;
   const dossierSection = dossierHead && dossierHead.parentElement;
   if (!dossierSection) return;
-  const consoleRect = guessConsole.getBoundingClientRect();
   rowsEl.classList.add("mobile-new-record-positioned");
   // Keep the card content-driven.  Shifting the whole dossier (including its
   // heading) avoids manufacturing a blank strip above the newest record.
   // Older records remain directly below it in the existing scroll container.
-  const currentShift = Number.parseFloat(dossierSection.dataset.mobileRecordShift || "0") || 0;
-  const nextShift = currentShift + consoleRect.top - card.getBoundingClientRect().bottom;
+  // Refresh the dock synchronously so the anchor never targets a stale
+  // console position (e.g. one measured while the soft keyboard was closing).
+  applyMobileGuessDockPosition();
+  // Measure with any previously applied shift neutralized.  The correction is
+  // absolute rather than feedback-based, so repeated calls (entry animation,
+  // image load, viewport timers) converge to the same value and never drift.
+  const appliedShift = dossierSection.style.translate;
+  if (appliedShift) dossierSection.style.translate = "0px 0px";
+  /* shift 只允许 >= 0（向下贴合）；空间不足时保持档案区在自然槽位，由 .guess-list 内部滚动，避免负向平移盖住上方指令面板。 */
+  /* 记录列表已溢出可滚动区域（多条记录/紧凑视口）时同样不得贴合：此时向下平移会把档案头推离视口顶部，在档案上方留出大片空白。 */
+  const listOverflows = rowsEl.scrollHeight > rowsEl.clientHeight + 1;
+  const nextShift = listOverflows ? 0 : Math.max(0, Math.round(guessConsole.getBoundingClientRect().top - card.getBoundingClientRect().bottom));
+  const prevShift = Number.parseFloat(dossierSection.dataset.mobileRecordShift || "0") || 0;
   dossierSection.dataset.mobileRecordShift = String(nextShift);
-  dossierSection.style.translate = "0 " + Math.round(nextShift) + "px";
+  dossierSection.style.translate = "0 " + nextShift + "px";
   delete card.dataset.mobileRecordShift;
   card.style.removeProperty("translate");
   card.style.marginTop = "0px";
-  rowsEl.scrollTop = 0;
+  /* 位移值未变化时不动滚动位置：320ms/1320ms/立绘加载后的延迟校正若重复重置 scrollTop，
+     会把用户正在进行的列表滑动强行拽回顶部（真机与 e2e 中均表现为滑动偶发失效）。
+     新档案入列时的回顶由 alignMobileNewRecordToGuessConsole 负责，这里不重复承担。 */
+  if (nextShift !== prevShift) rowsEl.scrollTop = 0;
 }
 
-function alignMobileNewRecordToGuessConsole(card) {
+function alignMobileNewRecordToGuessConsole(card, image) {
   if (!card || !card.isConnected || !isMobileLayout()) return;
   rowsEl.querySelectorAll(":scope > .mobile-new-record-anchor").forEach((item) => {
     if (item === card) return;
@@ -1911,13 +1979,15 @@ function alignMobileNewRecordToGuessConsole(card) {
   window.requestAnimationFrame(() => window.requestAnimationFrame(() => positionMobileNewRecordAnchor(card)));
   window.setTimeout(() => positionMobileNewRecordAnchor(card), 320);
   window.setTimeout(() => positionMobileNewRecordAnchor(card), 1320);
+  // 立绘慢加载可能晚于入场定时器；校正本身幂等，图片落定后再次对齐是安全的。
+  if (image) waitForRecordImage(image).then(() => positionMobileNewRecordAnchor(card));
 }
 
 /* 提交猜测后：移动端让最新档案下沿贴住固定输入框；桌面端保持顶部聚焦。 */
 function focusNewRecord(card, delay, image) {
   if (!card) return;
   if (isMobileLayout()) {
-    alignMobileNewRecordToGuessConsole(card);
+    alignMobileNewRecordToGuessConsole(card, image);
     return;
   }
   const reduced = isReducedMotion();
@@ -1962,7 +2032,8 @@ function prependGuessCard(card, animateExisting) {
   const previousTops = new Map(existingCards.map((item) => [item, item.getBoundingClientRect().top]));
   rowsEl.prepend(card);
   syncGuessRecordCountState();
-  const canAnimate = animateExisting && !isMobileLayout() && !isReducedMotion()
+  /* 原有卡片的下滑让位动效与 web 端一致：移动端同样执行 FLIP 位移（delay 仅桌面端用于聚焦，移动端忽略）。 */
+  const canAnimate = animateExisting && !isReducedMotion()
     && existingCards.length && typeof existingCards[0].animate === "function";
   if (!canAnimate) return 0;
   const cardHeight = card.offsetHeight;
@@ -1999,6 +2070,7 @@ function bindMobileScrollBoundaryHandoff(scroller) {
     if (!enabled() || event.touches.length !== 1) return;
     lastTouchY = event.touches[0].clientY;
   }, { passive: true });
+  /* 边界转交需 preventDefault 拦截内层原生滚动，此 touchmove 必须保持 passive:false（passive listener 中 preventDefault 无效且触发 Chrome intervention）。 */
   scroller.addEventListener("touchmove", (event) => {
     if (lastTouchY == null || !enabled() || event.touches.length !== 1) return;
     const currentY = event.touches[0].clientY;
@@ -2483,7 +2555,7 @@ function waitForDirectiveConfirmation() {
 }
 
 /* 以服务端 theme 为唯一事实来源更新面板；themeResult.newlyCompleted 触发一次完成反馈 */
-function updateDirectivePanel(theme, themeResult) {
+function updateDirectivePanel(theme, themeResult, options) {
   if (!directivePanel) return;
   const prev = directiveSnapshot;
   directiveSnapshot = theme || null;
@@ -2546,7 +2618,9 @@ function updateDirectivePanel(theme, themeResult) {
     mobileDirectiveDecodeBtn.textContent = "查看情报";
     mobileDirectiveDecodeBtn.classList.remove("hidden");
   }
-  if (themeResult && themeResult.newlyCompleted && !directiveCompletionPlayed) playDirectiveCompletion();
+  /* deferCompletionFlash：指令完成动效由调用方在档案卡片加载完后手动触发（handleSuddenV3Guess），此处不自动播放 */
+  const deferFlash = Boolean(options && options.deferCompletionFlash);
+  if (themeResult && themeResult.newlyCompleted && !directiveCompletionPlayed && !deferFlash) playDirectiveCompletion();
 }
 
 /* 每条猜测记录上的指令吻合标记：不是第 13 个比较维度，仅反映 themeResult.matched */
@@ -3282,6 +3356,7 @@ function createFinalArchive(operator, dims, archiveData) {
 }
 
 function attachMobileRecordPager(card, layout, image, finalRecord) {
+  /* finalRecord=true 的语义：终局档案刻意不渲染分页器、不自动翻页（终局揭晓有独立编排，且 e2e 固定了最终卡无 .mobile-record-pager 的约定）；第二面档案通过下方与普通卡完全一致的横滑手势（pointer 滑动切换 mobile-show-record）访问。 */
   const pager = finalRecord ? null : document.createElement("nav");
   const buttons = [];
   if (pager) {
@@ -3791,9 +3866,9 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", syncArtPreviewViewport, { passive: true });
   window.visualViewport.addEventListener("scroll", syncArtPreviewViewport, { passive: true });
   window.visualViewport.addEventListener("resize", handleMobileGameViewportResize, { passive: true });
-  window.visualViewport.addEventListener("scroll", syncMobileGuessDock, { passive: true });
+  window.visualViewport.addEventListener("scroll", () => syncMobileGuessDock({ realignAnchor: false }), { passive: true });
 }
-window.addEventListener("scroll", syncMobileGuessDock, { passive: true });
+window.addEventListener("scroll", () => syncMobileGuessDock({ realignAnchor: false }), { passive: true });
 
 input.addEventListener("focus", syncMobileGuessDock);
 
@@ -3892,6 +3967,41 @@ artPreviewCanvas.addEventListener("wheel", (e) => {
   updateArtPreviewZoom();
 }, { passive: false });
 artPreviewCanvas.addEventListener("click", closeMobileArtPreviewFromCanvas);
+/* 移动端立绘/剪影预览：双指捏合缩放（touch-action:none 已阻止整页缩放，这里手动驱动图像变换）。
+   捏合中心作为缩放原点，松手后一次点击仍可关闭预览。 */
+let artPreviewPinch = null;
+let artPreviewPinchedAt = 0;
+artPreviewCanvas.addEventListener("touchstart", (e) => {
+  if (!isMobileLayout() || artPreview.classList.contains("hidden")) return;
+  if (e.touches.length === 2) {
+    const [a, b] = [e.touches[0], e.touches[1]];
+    artPreviewPinch = { startDist: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), startScale: artPreviewScale };
+  }
+}, { passive: true });
+artPreviewCanvas.addEventListener("touchmove", (e) => {
+  if (!isMobileLayout() || artPreview.classList.contains("hidden")) return;
+  if (e.touches.length === 2 && artPreviewPinch && artPreviewPinch.startDist > 0) {
+    e.preventDefault();
+    const [a, b] = [e.touches[0], e.touches[1]];
+    const dist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    artPreviewScale = Math.max(1, Math.min(5, artPreviewPinch.startScale * (dist / artPreviewPinch.startDist)));
+    if (artPreviewScale > 1.001) {
+      const bounds = artPreviewCanvas.getBoundingClientRect();
+      const cx = (a.clientX + b.clientX) / 2;
+      const cy = (a.clientY + b.clientY) / 2;
+      artPreviewOriginX = Math.max(0, Math.min(100, bounds.width ? ((cx - bounds.left) / bounds.width) * 100 : 50));
+      artPreviewOriginY = Math.max(0, Math.min(100, bounds.height ? ((cy - bounds.top) / bounds.height) * 100 : 50));
+    } else {
+      artPreviewOriginX = 50;
+      artPreviewOriginY = 50;
+    }
+    artPreviewPinchedAt = performance.now();
+    updateArtPreviewZoom();
+  }
+}, { passive: false });
+const endArtPreviewPinch = (e) => { if (e.touches.length < 2) artPreviewPinch = null; };
+artPreviewCanvas.addEventListener("touchend", endArtPreviewPinch, { passive: true });
+artPreviewCanvas.addEventListener("touchcancel", endArtPreviewPinch, { passive: true });
 artPreviewCanvas.addEventListener("dblclick", () => {
   if (!isMobileLayout()) resetArtPreviewZoom();
 });
@@ -4654,7 +4764,7 @@ function renderAnomalyHint() {
   if (isMobileLayout()) {
     window.requestAnimationFrame(() => {
       if (!anomalyHint.classList.contains("hidden")) {
-        anomalyHint.scrollIntoView({ behavior: isReducedMotion() ? "auto" : "smooth", block: "nearest" });
+        anomalyHint.scrollIntoView({ behavior: isReducedMotion() ? "auto" : "smooth", block: "center" });
       }
     });
   }
@@ -5079,6 +5189,8 @@ async function init() {
   namesIndex = names;
   operatorArt = art;
   validNames = new Set(names.map((x) => x.n));
+  /* 搜索候选列表也接入滚动边界转交：候选滑到顶/底后继续滑动可带动外层档案卡片与最外层页面（移动端） */
+  bindMobileScrollBoundaryHandoff(suggestEl);
   showModeScreen();
 }
 

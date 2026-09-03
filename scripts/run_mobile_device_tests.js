@@ -57,6 +57,30 @@ async function visualGeometry(page, selector) {
   });
 }
 
+async function touchSwipe(page, start, end, steps = 8) {
+  const client = await page.context().newCDPSession(page);
+  try {
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [{ x: start.x, y: start.y, id: 1 }],
+    });
+    for (let index = 1; index <= steps; index += 1) {
+      const ratio = index / steps;
+      await client.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{
+          x: start.x + (end.x - start.x) * ratio,
+          y: start.y + (end.y - start.y) * ratio,
+          id: 1,
+        }],
+      });
+    }
+    await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  } finally {
+    await client.detach();
+  }
+}
+
 async function main() {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   adb("forward", "tcp:" + CDP_PORT, "localabstract:chrome_devtools_remote");
@@ -123,6 +147,35 @@ async function main() {
     await page.locator("#guessBtn").click();
     await page.locator("#rows > .guess-card").first().waitFor({ state: "visible" });
 
+    const keyboardStillOpen = await page.evaluate(() => {
+      const viewport = window.visualViewport;
+      return Boolean(viewport && viewport.height < 600);
+    });
+    if (keyboardStillOpen) {
+      adb("shell", "input", "keyevent", "4");
+      await page.waitForTimeout(500);
+    }
+    const firstRecordSpacing = await page.evaluate(() => {
+      const heading = document.querySelector(".dossier-head").getBoundingClientRect();
+      const card = document.querySelector("#rows > .guess-card:first-child").getBoundingClientRect();
+      const consoleRect = document.querySelector(".guess-console").getBoundingClientRect();
+      return {
+        headingBottom: heading.bottom,
+        cardTop: card.top,
+        gapAboveCard: card.top - heading.bottom,
+        cardBottom: card.bottom,
+        consoleTop: consoleRect.top,
+        gapBelowCard: consoleRect.top - card.bottom,
+      };
+    });
+    record(
+      "首次提交后档案标题与档案卡之间无大片空隙",
+      firstRecordSpacing.gapAboveCard >= -2 && firstRecordSpacing.gapAboveCard <= 24,
+      "high",
+      firstRecordSpacing
+    );
+    await page.screenshot({ path: path.join(OUTPUT_DIR, "first-record-gap.png") });
+
     await page.locator("#guessInput").click();
     await page.waitForTimeout(700);
     await page.waitForFunction(() => document.body.classList.contains("mobile-guess-docked"));
@@ -184,6 +237,27 @@ async function main() {
         && dockAfter.cardBottom > dockAfter.consoleTop,
       "high",
       { before: dockBefore, after: dockAfter }
+    );
+    const guessButtonHitTarget = await page.locator("#guessBtn").evaluate((button) => {
+      const rect = button.getBoundingClientRect();
+      const point = {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      };
+      const hit = document.elementFromPoint(point.x, point.y);
+      return {
+        point,
+        hitTag: hit ? hit.tagName : null,
+        hitId: hit ? hit.id : null,
+        hitClass: hit ? hit.className : null,
+        buttonOwnsHit: Boolean(hit && button.contains(hit)),
+      };
+    });
+    record(
+      "固定输入栏的提交按钮不被档案层拦截",
+      guessButtonHitTarget.buttonOwnsHit,
+      "high",
+      guessButtonHitTarget
     );
     await page.screenshot({ path: path.join(OUTPUT_DIR, "input-docked.png") });
     await page.locator("#guessInput").evaluate((element) => element.blur());
@@ -249,6 +323,62 @@ async function main() {
     );
     await page.screenshot({ path: path.join(OUTPUT_DIR, "intel-sheet.png") });
     await page.locator("#mobileDataSheetClose").evaluate((element) => element.click());
+
+    await page.locator("#revealBtn").click();
+    await page.locator("#revealModal").waitFor({ state: "visible" });
+    await page.locator("#revealConfirm").click();
+    const finalRecord = page.locator("#rows > .guess-card.is-final-record").first();
+    await finalRecord.waitFor({ state: "visible" });
+    await page.waitForTimeout(1_500);
+    const finalCardBottom = await finalRecord.evaluate((card) => {
+      const viewport = window.visualViewport;
+      const viewportBottom = (viewport ? viewport.offsetTop : 0)
+        + (viewport ? viewport.height : window.innerHeight);
+      return viewportBottom - card.getBoundingClientRect().bottom;
+    });
+    record(
+      "最终档案聚焦后完整露出卡片下边框",
+      finalCardBottom >= 0 && finalCardBottom <= 10,
+      "high",
+      { bottomGap: finalCardBottom }
+    );
+    const finalLayout = finalRecord.locator(".operator-record-layout");
+    const finalLayoutBox = await finalLayout.boundingBox();
+    if (!finalLayoutBox) throw new Error("无法读取最终档案布局尺寸");
+    await touchSwipe(page, {
+      x: finalLayoutBox.x + finalLayoutBox.width * 0.78,
+      y: finalLayoutBox.y + finalLayoutBox.height * 0.5,
+    }, {
+      x: finalLayoutBox.x + finalLayoutBox.width * 0.22,
+      y: finalLayoutBox.y + finalLayoutBox.height * 0.5,
+    });
+    await page.waitForFunction(() => document.querySelector(
+      "#rows > .guess-card.is-final-record .operator-record-layout"
+    ).classList.contains("mobile-show-record"));
+    const finalArchiveAccess = await finalRecord.evaluate((card) => {
+      const layout = card.querySelector(".operator-record-layout");
+      const archive = card.querySelector(".operator-record-data");
+      const rect = archive ? archive.getBoundingClientRect() : null;
+      const viewport = window.visualViewport;
+      const viewportLeft = viewport ? viewport.offsetLeft : 0;
+      const viewportRight = viewportLeft + (viewport ? viewport.width : window.innerWidth);
+      return {
+        pagerButtons: card.querySelectorAll(":scope > .mobile-record-pager button").length,
+        showingRecord: Boolean(layout && layout.classList.contains("mobile-show-record")),
+        archiveIntersectsViewport: Boolean(rect && rect.right > viewportLeft && rect.left < viewportRight),
+        archiveLeft: rect ? rect.left : null,
+        archiveRight: rect ? rect.right : null,
+      };
+    });
+    record(
+      "最终档案在移动端可横滑到人员档案页",
+      finalArchiveAccess.pagerButtons === 0
+        && finalArchiveAccess.showingRecord
+        && finalArchiveAccess.archiveIntersectsViewport,
+      "high",
+      finalArchiveAccess
+    );
+    await page.screenshot({ path: path.join(OUTPUT_DIR, "final-record.png") });
 
     await page.locator("#ingameChangeModeBtn").evaluate((element) => element.click());
     await page.locator("#modeScreen").waitFor({ state: "visible" });

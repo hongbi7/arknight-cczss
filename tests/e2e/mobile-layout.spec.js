@@ -104,7 +104,7 @@ test("移动端恢复原提交动效，并在原动效结束后横滑到档案",
   expect(secondEntryStyle.artAnimationName).toContain("mobile-art-reveal");
 });
 
-test("移动端每次新猜测档案下沿紧贴固定输入框，而不是吸附档案区顶部", async ({ page }) => {
+test("移动端单条档案下沿紧贴固定输入框；多条档案溢出时不再平移档案区、档案头留在视口顶部", async ({ page }) => {
   const opened = await startOriginalMode(page, "sudden");
   const session = game._test.decrypt(opened.token);
   const guesses = MOBILE_GUESSES.filter((name) => name !== session.name).slice(0, 2);
@@ -112,6 +112,10 @@ test("移动端每次新猜测档案下沿紧贴固定输入框，而不是吸�
     const rows = document.getElementById("rows").getBoundingClientRect();
     const card = document.querySelector("#rows > .guess-card:first-child").getBoundingClientRect();
     const consoleRect = document.querySelector(".guess-console").getBoundingClientRect();
+    const section = document.querySelector(".dossier-section");
+    const head = document.querySelector(".dossier-head").getBoundingClientRect();
+    const rowsEl = document.getElementById("rows");
+    const viewport = window.visualViewport;
     return {
       consoleGap: consoleRect.top - card.bottom,
       cardTopGap: card.top - rows.top,
@@ -122,7 +126,10 @@ test("移动端每次新猜测档案下沿紧贴固定输入框，而不是吸�
       cardBottom: card.bottom,
       consoleTop: consoleRect.top,
       cardOffsetHeight: document.querySelector("#rows > .guess-card:first-child").offsetHeight,
-      rowsScrollTop: document.getElementById("rows").scrollTop,
+      rowsScrollTop: rowsEl.scrollTop,
+      rowsOverflow: rowsEl.scrollHeight > rowsEl.clientHeight + 1,
+      sectionShift: section.style.translate || "",
+      headTop: head.top - (viewport ? viewport.offsetTop : 0),
       boardBottom: document.getElementById("board").getBoundingClientRect().bottom,
       dossierBottom: document.querySelector(".dossier-section").getBoundingClientRect().bottom,
       workspaceBottom: document.querySelector(".game-workspace").getBoundingClientRect().bottom,
@@ -134,14 +141,23 @@ test("移动端每次新猜测档案下沿紧贴固定输入框，而不是吸�
   for (let index = 0; index < guesses.length; index += 1) {
     await submitGuess(page, guesses[index], index + 1);
     await expect(page.locator("#rows > .guess-card").first()).not.toHaveClass(/card-entering/);
-    await expect.poll(async () => Math.abs((await readNewestGeometry()).consoleGap)).toBeLessThanOrEqual(4);
+    // 锚点校正另有 320ms/1320ms 的延迟帧（等待立绘加载），等待其全部落定后再读几何
+    await page.waitForTimeout(1_500);
     const geometry = await readNewestGeometry();
-    expect(Math.abs(geometry.consoleGap), "guess " + (index + 1) + ": " + JSON.stringify(geometry)).toBeLessThanOrEqual(4);
-    // The dossier heading and newest record travel together.  The record must
-    // remain content-sized instead of leaving a manufactured blank band inside
-    // the archive viewport above it.
     expect(geometry.cardTopGap, "guess " + (index + 1) + ": " + JSON.stringify(geometry)).toBeLessThanOrEqual(16);
     expect(geometry.cardFlexBasis, "guess " + (index + 1) + ": " + JSON.stringify(geometry)).toBe("auto");
+    if (geometry.rowsOverflow) {
+      // 多条档案已溢出、由列表内部滚动：档案区保持自然槽位（零位移），
+      // 档案头不被推出视口上沿，档案上方不出现大片空白。
+      // 注：浏览器会把 style.translate="0 0px" 规范序列化为 "0px"，故按数值解析 Y 分量。
+      const shiftParts = geometry.sectionShift.split(/\s+/).filter(Boolean);
+      const shiftY = Number.parseFloat(shiftParts[1] || "0") || 0;
+      expect(shiftY, "guess " + (index + 1) + ": " + JSON.stringify(geometry)).toBe(0);
+      expect(geometry.headTop, "guess " + (index + 1) + ": " + JSON.stringify(geometry)).toBeGreaterThanOrEqual(-2);
+    } else {
+      // 单条短档案未溢出：下沿贴合固定控制台，避免档案与输入框之间出现空洞。
+      expect(Math.abs(geometry.consoleGap), "guess " + (index + 1) + ": " + JSON.stringify(geometry)).toBeLessThanOrEqual(4);
+    }
   }
 });
 
@@ -382,7 +398,7 @@ test("第一次提交后主输入框在档案内层和页面外层滚动时始�
   await expect(page.locator("body")).toHaveClass(/mobile-guess-docked/);
 });
 
-test("移动端普通立绘放大后不可缩放，再点图像直接返回", async ({ page }) => {
+test("移动端立绘预览支持双指缩放，再点图像直接返回", async ({ page }) => {
   const opened = await startOriginalMode(page, "sudden");
   const session = game._test.decrypt(opened.token);
   const guess = MOBILE_GUESSES.find((name) => name !== session.name);
@@ -391,23 +407,35 @@ test("移动端普通立绘放大后不可缩放，再点图像直接返回", as
   await firstRecord.locator('.mobile-record-pager button[aria-label="显示立绘"]').click();
   await firstRecord.locator(".operator-visual.art-preview-trigger").click();
   await expect(page.locator("#artPreview")).toBeVisible();
-  await expect(page.locator("#artPreviewMeta")).toContainText("再次点击图像返回");
-  await expect(page.locator("#artPreviewImage")).toHaveCSS("transform", "none");
+  await expect(page.locator("#artPreviewMeta")).toContainText("双指缩放");
+  // 初始未放大
+  expect(await page.locator("#artPreview").evaluate((el) => el.dataset.zoomed)).toBe("false");
   const canvasBox = await page.locator(".art-preview-canvas").boundingBox();
   expect(canvasBox).toBeTruthy();
-  await page.touchscreen.tap(canvasBox.x + canvasBox.width / 2, canvasBox.y + canvasBox.height / 2);
+  const cx = canvasBox.x + canvasBox.width / 2, cy = canvasBox.y + canvasBox.height / 2;
+  // 双指捏合张开 → 放大
+  const client = await page.context().newCDPSession(page);
+  const mk = (d) => [{ x: cx - d / 2, y: cy, id: 1 }, { x: cx + d / 2, y: cy, id: 2 }];
+  await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: mk(70) });
+  for (let i = 1; i <= 6; i += 1) {
+    await client.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: mk(70 + 150 * i / 6) });
+  }
+  await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await client.detach();
+  await expect.poll(() => page.locator("#artPreview").evaluate((el) => el.dataset.zoomed)).toBe("true");
+  // 捏合结束稍等后，点击图像仍可关闭
+  await page.waitForTimeout(420);
+  await page.touchscreen.tap(cx, cy);
   await expect(page.locator("#artPreview")).toBeHidden();
 });
 
 test("终局校验首次进入时主要猜测输入位于首屏", async ({ page }) => {
-  test.fail(true, "已知移动端缺陷：战术指令和控制区过高，猜测输入在首屏以下");
   await startOriginalMode(page, "sudden");
   expect(await fullyInsideVisualViewport(page.locator("#guessInput"))).toBe(true);
   expect(await fullyInsideVisualViewport(page.locator("#guessBtn"))).toBe(true);
 });
 
 test("异类审查题目装载后至少一张候选卡位于首屏", async ({ page }) => {
-  test.fail(true, "已知移动端缺陷：题头和范围信息过高，候选卡全部落在首屏以下");
   await openAnomalyThemePage(page);
   await startAnomaly(page, "mixed");
   expect(await fullyInsideVisualViewport(page.locator(".anomaly-option").first())).toBe(true);
@@ -532,8 +560,9 @@ test("剪影情报使用独立详情层，放大预览位于最前并可直接�
   expect(previewGeometry.width).toBeCloseTo(previewGeometry.viewportWidth, 0);
   expect(previewGeometry.height).toBeCloseTo(previewGeometry.viewportHeight, 0);
   expect(await fullyInsideVisualViewport(page.locator("#artPreviewClose"))).toBe(true);
-  await expect(page.locator("#artPreviewMeta")).toContainText("再次点击图像返回");
-  await expect(page.locator("#artPreviewImage")).toHaveCSS("transform", "none");
+  await expect(page.locator("#artPreviewMeta")).toContainText("双指缩放");
+  // 移动端预览已支持双指缩放：图像变换由 --preview-scale 驱动（初始为矩阵恒等）
+  expect(await page.locator("#artPreview").evaluate((el) => el.dataset.zoomed)).toBe("false");
   const canvasBox = await page.locator(".art-preview-canvas").boundingBox();
   expect(canvasBox).toBeTruthy();
   await page.touchscreen.tap(canvasBox.x + canvasBox.width / 2, canvasBox.y + canvasBox.height / 2);
