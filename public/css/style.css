@@ -568,10 +568,16 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   .game-meta { align-items: center; margin-bottom: 20px; }
   .lives { flex-direction: column; align-items: flex-end; gap: 7px; }
   .input-wrap { grid-template-columns: minmax(0,1fr) auto; }
+  /* 应用本局/切换模式等按钮：文字单行不折行，避免两字一行的难看换行；保持一致高度 */
+  .protocol-switch { flex-wrap: nowrap; white-space: nowrap; }
+  .protocol-switch span { white-space: nowrap; }
+  .protocol-switch i { white-space: nowrap; }
+  .game-attempt-config button { white-space: nowrap; }
   .input-wrap .ghost { grid-column: 1 / -1; }
   #guessBtn { min-width: 112px; }
   #guessBtn i { display: none; }
-  .suggest { top: auto; bottom: calc(100% + 7px); width: 100%; max-height: min(258px,38svh); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; box-shadow: 0 -18px 40px rgba(0,0,0,.56); }
+  /* 搜索候选滑动到边界时链式带动外层档案卡片与最外层页面（不再用 contain 截断） */
+  .suggest { top: auto; bottom: calc(100% + 7px); width: 100%; max-height: min(258px,38svh); overflow-x: hidden; overflow-y: auto; overscroll-behavior: auto; box-shadow: 0 -18px 40px rgba(0,0,0,.56); }
   .clue-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .operator-record-layout { grid-template-columns: 190px minmax(0,1fr); min-height: 560px; }
   .is-final-record .operator-record-layout { display: block; height: auto; min-height: 0; }
@@ -585,6 +591,31 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   .clue-tags { grid-column: auto; }
   .victory { align-items: flex-start; flex-direction: column; gap: 18px; }
   .victory-actions { width: 100%; }
+
+  /* 开局（未提交）首屏紧凑化：把猜测输入与提交按钮收进首屏，同时保留战术指令的可读性 */
+  #gameScreen:not(.has-guesses) .game-art { height: 98px; }
+  #gameScreen:not(.has-guesses) .game-sidebar-copy { margin-top: -24px; padding: 9px 13px; }
+  #gameScreen:not(.has-guesses) .game-sidebar-copy h2 { margin: 7px 0 0; font-size: 18px; }
+  #gameScreen:not(.has-guesses) .clue-legend { padding: 5px 0 7px; }
+  #gameScreen:not(.has-guesses) .clue-legend span { min-height: 22px; }
+  #gameScreen:not(.has-guesses) .directive-panel { margin-bottom: 10px; padding: 8px 12px; }
+  #gameScreen:not(.has-guesses) .directive-brief { margin-top: 6px; }
+  #gameScreen:not(.has-guesses) .directive-rule { margin-top: 6px; padding: 5px 9px 6px; }
+  #gameScreen:not(.has-guesses) .directive-track { margin-top: 6px; padding-top: 6px; }
+  #gameScreen:not(.has-guesses) .game-meta { margin-bottom: 10px; }
+  #gameScreen:not(.has-guesses) .game-attempt-config { align-items: center; flex-direction: row; gap: 8px; }
+  #gameScreen:not(.has-guesses) .game-attempt-config button { min-height: 36px; }
+  #gameScreen:not(.has-guesses) .guess-console { padding: 12px 14px 10px; }
+  #gameScreen:not(.has-guesses) .console-heading { margin-bottom: 10px; }
+  #gameScreen:not(.has-guesses) .input-wrap { grid-template-columns: minmax(0,1fr) auto; }
+  #gameScreen:not(.has-guesses) .input-wrap .ghost { grid-column: 1 / -1; min-height: 40px; }
+  #gameScreen:not(.has-guesses) .input-wrap input { height: 44px; }
+  #gameScreen:not(.has-guesses) #guessBtn { min-height: 44px; }
+  #gameScreen:not(.has-guesses) .status { min-height: 12px; margin-top: 2px; }
+  #gameScreen:not(.has-guesses) #boardEmpty { min-height: 148px; }
+  /* 刚进入（未提交）时不显示底部"档案比对"空态区，首屏聚焦输入；首次提交后由 has-guesses 恢复。
+     终局校验与全域检索共用此规则（优化同步）。 */
+  #gameScreen:not(.has-guesses) .dossier-section { display: none; }
 
   .game-sidebar { max-height: 430px; opacity: 1; transform: none; transition: max-height .48s cubic-bezier(.2,.8,.2,1),opacity .28s ease,transform .48s cubic-bezier(.2,.8,.2,1),border-color .28s ease; }
   #gameScreen.has-guesses .game-layout { display: flex; height: calc(var(--mobile-game-viewport-height,100dvh) + clamp(112px,20dvh,144px)); min-height: 0; flex-direction: column; overflow: hidden; }
@@ -617,25 +648,39 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   .mobile-endless-callout i { display: block; height: 2px; margin-top: 7px; overflow: hidden; background: rgba(var(--accent-rgb),.14); }
   .mobile-endless-callout b { display: block; width: 100%; height: 100%; background: var(--accent); box-shadow: 0 0 8px rgba(var(--accent-rgb),.7); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
 
-  #gameScreen.has-guesses .dossier-section { display: flex; min-height: 0; flex: 1; flex-direction: column; order: 1; margin-top: 0; }
+  /* 档案区层级显式垫底：位移中的档案内容永不可压住固定输入台（文档流内 z-index:18 / 固定态 z-index:86）。 */
+  #gameScreen.has-guesses .dossier-section { z-index: 0; display: flex; min-height: 0; flex: 1; flex-direction: column; order: 1; margin-top: 0; }
   #gameScreen.has-guesses .dossier-head { min-height: 30px; flex: none; margin-bottom: 4px; }
   #gameScreen.has-guesses .dossier-head .console-step { width: 26px; height: 26px; font-size: 9px; }
   #gameScreen.has-guesses .dossier-head h2 { font-size: 15px; }
   #gameScreen.has-guesses .dossier-head p { display: none; }
   #gameScreen.has-guesses .board { display: flex; min-height: 0; flex: 1; flex-direction: column; overflow: hidden; }
   #gameScreen.has-guesses .result-overlay { flex: none; }
-  #gameScreen.has-guesses .guess-list { display: flex; min-height: 0; flex: 1; flex-direction: column; overflow-x: hidden; overflow-y: auto; overscroll-behavior-x: contain; overscroll-behavior-y: auto; scroll-snap-type: y proximity; scrollbar-width: none; }
+  #gameScreen.has-guesses .guess-list { display: flex; min-height: 0; flex: 1; flex-direction: column; overflow-x: hidden; overflow-y: auto; overscroll-behavior-x: contain; overscroll-behavior-y: auto; scroll-snap-type: none; scrollbar-width: none; }
   #gameScreen.has-guesses .guess-list.mobile-new-record-positioned { scroll-snap-type: none; }
   #gameScreen.has-guesses .guess-list::-webkit-scrollbar { display: none; }
   #gameScreen.has-guesses .guess-card + .guess-card { margin-top: 8px; }
-  #gameScreen.has-guesses .guess-card { display: flex; height: 100%; min-height: 100%; flex-direction: column; overflow: clip; scroll-snap-align: start; }
+  /* 移动端档案列表不做卡片吸附：自由惯性滑动更顺畅（桌面端本就不吸附） */
+  #gameScreen.has-guesses .guess-card { display: flex; height: 100%; min-height: 100%; flex-direction: column; overflow: clip; scroll-snap-align: none; }
   #gameScreen.has-guesses .guess-card:not(.is-final-record) { height: auto; min-height: 0; flex: 0 0 auto; }
   #gameScreen.has-guesses .guess-card.card-entering { transform-origin: center bottom; }
-  #gameScreen.has-guesses.has-single-record .game-layout { height: auto; }
+  /* 单档案（首猜）：档案卡吃满"头部↔固定控制台"之间的可用高度，消除上下大空隙、信息完整。
+     布局改为视口约束的固定高度，卡片拉伸填满，线索网格行随之拉伸；底部为固定控制台预留空间。 */
+  #gameScreen.has-guesses.has-single-record .game-layout { height: calc(var(--mobile-game-viewport-height,100dvh) - 50px); }
   #gameScreen.has-guesses.has-single-record .game-workspace,
   #gameScreen.has-guesses.has-single-record .dossier-section,
   #gameScreen.has-guesses.has-single-record .board,
-  #gameScreen.has-guesses.has-single-record .guess-list { flex: none; }
+  #gameScreen.has-guesses.has-single-record .guess-list { min-height: 0; flex: 1 1 auto; }
+  #gameScreen.has-guesses.has-single-record .guess-list { overflow: hidden; padding-bottom: 78px; }
+  #gameScreen.has-guesses.has-single-record .guess-card:not(.is-final-record) { height: 100%; }
+  #gameScreen.has-guesses.has-single-record .guess-card:not(.is-final-record) .operator-record-layout { flex: 1 1 auto; }
+  #gameScreen.has-guesses.has-single-record .guess-card:not(.is-final-record) .v2-clue-grid { flex: 1 1 auto; min-height: 0; align-content: stretch; grid-auto-rows: 1fr; grid-template-rows: none; }
+  /* 紧凑视口（软键盘打开）：单档案恢复视口约束布局，卡片余量由 .guess-list 内部滚动承担，避免档案下半截被固定控制台永久遮挡 */
+  body.mobile-compact-viewport #gameScreen.has-guesses.has-single-record .game-layout { height: calc(var(--mobile-game-viewport-height,100dvh) + clamp(112px,20dvh,144px)); }
+  body.mobile-compact-viewport #gameScreen.has-guesses.has-single-record .game-workspace,
+  body.mobile-compact-viewport #gameScreen.has-guesses.has-single-record .dossier-section,
+  body.mobile-compact-viewport #gameScreen.has-guesses.has-single-record .board,
+  body.mobile-compact-viewport #gameScreen.has-guesses.has-single-record .guess-list { min-height: 0; flex: 1 1 auto; }
   #gameScreen.has-guesses .guess-card .operator-record-layout { display: flex; height: auto; min-height: 0; flex: 1; overflow: clip; touch-action: pan-y; }
   #gameScreen.has-guesses .guess-card:not(.is-final-record) .operator-record-layout { flex: none; }
   #gameScreen.has-guesses .guess-card .operator-visual,
@@ -695,17 +740,17 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   .mobile-record-active .foot { display: none; }
 
   #gameScreen.has-guesses.is-finished .guess-console { max-height: 0; min-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; overflow: hidden; border-width: 0; box-shadow: none; opacity: 0; pointer-events: none; transform: translateY(20px); }
-  #gameScreen.has-guesses.is-finished .board { overflow-y: auto; overscroll-behavior-x: contain; overscroll-behavior-y: auto; scroll-snap-type: y proximity; scrollbar-width: none; }
+  #gameScreen.has-guesses.is-finished .board { overflow-y: auto; overscroll-behavior-x: contain; overscroll-behavior-y: auto; scroll-snap-type: none; scrollbar-width: none; }
   #gameScreen.has-guesses .mobile-boundary-handoff-active { scroll-snap-type: none !important; }
   #gameScreen.has-guesses.is-finished .board::-webkit-scrollbar { display: none; }
-  #gameScreen.has-guesses.is-finished .result-overlay { display: flex; min-height: 0; flex: 0 0 auto; align-items: stretch; margin: 2px 0 6px; scroll-snap-align: start; scroll-snap-stop: always; }
+  #gameScreen.has-guesses.is-finished .result-overlay { display: flex; min-height: 0; flex: 0 0 auto; align-items: stretch; margin: 2px 0 6px; }
   #gameScreen.has-guesses.is-finished .result-overlay .victory { width: 100%; min-height: 0; gap: 9px; padding: 13px 14px 12px; }
   #gameScreen.has-guesses.is-finished .result-overlay .victory h2 { margin: 5px 0 3px; font-size: 18px; line-height: 1.32; }
   #gameScreen.has-guesses.is-finished .result-overlay .victory-sub { font-size: 9px; line-height: 1.35; }
   #gameScreen.has-guesses.is-finished .result-overlay .victory-actions { gap: 6px; }
   #gameScreen.has-guesses.is-finished .result-overlay .victory-actions button { min-height: 38px; }
   #gameScreen.has-guesses.is-finished .guess-list { display: contents; }
-  #gameScreen.has-guesses.is-finished .guess-card { height: auto; min-height: 0; flex: 0 0 auto; scroll-snap-align: start; scroll-snap-stop: always; }
+  #gameScreen.has-guesses.is-finished .guess-card { height: auto; min-height: 0; flex: 0 0 auto; }
   #gameScreen.has-guesses.is-finished .is-final-record.mobile-final-revealing .operator-art { animation: mobile-art-reveal .56s cubic-bezier(.18,.8,.2,1) both; }
   #gameScreen.has-guesses.is-finished .is-final-record.mobile-final-revealing .operator-visual-scan { animation: operator-scan .88s .08s cubic-bezier(.32,0,.18,1) both; }
   .mobile-game-finished .topbar, .mobile-game-finished .game-meta, .mobile-game-finished .dossier-head { touch-action: none; }
@@ -716,7 +761,8 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   .art-preview-head button { width: 100%; min-width: 0; min-height: 52px; border-left: 0; font-size: 10px; touch-action: manipulation; }
   .art-preview-canvas { cursor: pointer; touch-action: none; }
   .art-preview[data-zoomed="true"] .art-preview-canvas { cursor: pointer; }
-  .art-preview-canvas img { transform: none; transform-origin: center; transition: none; will-change: auto; }
+  /* 移动端立绘预览启用双指缩放：沿用 --preview-scale/--preview-origin 变量，transition 置零避免捏合滞后 */
+  .art-preview-canvas img { transform: scale(var(--preview-scale,1)); transform-origin: var(--preview-origin-x,50%) var(--preview-origin-y,50%); transition: none; will-change: transform; }
   .art-preview-caption { min-width: 0; padding: 0 13px; }
   .art-preview-caption strong, .art-preview-caption span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   body.art-preview-open .mobile-data-sheet { pointer-events: none; }
@@ -1106,10 +1152,35 @@ body[data-mode="sudden"] .directive-panel { display: block; }
   .mobile-data-sheet[data-kind="range"] .skill-range-mechanic { grid-column: 1 / -1; grid-row: 2; font-size: 8px; text-align: left; white-space: normal; }
   @keyframes mobile-sheet-in { from { opacity: 0; transform: translate3d(0,44px,0); } to { opacity: 1; transform: none; } }
 
+  /* 情报解锁弹层入场更明显：大幅上滑回弹 + 亮度/饱和脉冲 + 扫描线自上而下扫过 */
+  .mobile-data-sheet[data-kind="intel"] .mobile-data-sheet-panel { animation: mobile-intel-sheet-in .56s cubic-bezier(.16,.78,.18,1) both; }
+  .mobile-data-sheet[data-kind="intel"] .mobile-data-sheet-panel::after { content: ""; position: absolute; z-index: 4; top: -36%; right: 0; left: 0; height: 36%; pointer-events: none; background: linear-gradient(to bottom,transparent,rgba(var(--accent-rgb),.26) 42%,rgba(255,255,255,.5) 55%,rgba(var(--accent-rgb),.26) 68%,transparent); animation: mobile-intel-sheet-scan .66s .08s cubic-bezier(.3,.02,.2,1) both; }
+  @keyframes mobile-intel-sheet-in {
+    0% { opacity: 0; transform: translate3d(0,130px,0) scale(.93); filter: brightness(.5) saturate(.6); }
+    52% { opacity: 1; transform: translate3d(0,-9px,0) scale(1.018); filter: brightness(1.4) saturate(1.12); }
+    76% { transform: translate3d(0,3px,0) scale(.999); filter: brightness(1.08); }
+    100% { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes mobile-intel-sheet-scan { from { top: -36%; opacity: 0; } 16% { opacity: 1; } to { top: 116%; opacity: 0; } }
+
   .directive-panel { margin-top: 0; margin-bottom: 18px; }
   body[data-mode="sudden"] .game-sidebar { max-height: 540px; }
   body[data-mode="sudden"] #gameScreen.has-guesses .mobile-directive-dock { position: relative; display: grid; min-height: 39px; flex: none; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 8px; margin-bottom: 6px; padding: 6px 7px 6px 10px; overflow: hidden; border: 1px solid var(--line-strong); border-left: 2px solid var(--accent); background: linear-gradient(105deg,rgba(var(--accent-rgb),.1),transparent 55%),#0c1219; }
   body[data-mode="sudden"] #gameScreen.has-guesses .mobile-directive-dock.directive-flash::after { content: "◆  指令校验完成  //  ACCESS GRANTED"; position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; padding-left: 13px; border-right: 2px solid var(--accent); color: #eff7fa; background: linear-gradient(98deg,#080e13 0 58%,rgba(var(--accent-rgb),.18)); font-size: 8px; font-weight: 800; letter-spacing: 1.4px; opacity: 0; transform: translate3d(105%,0,0); animation: directive-confirmation-slice 1.02s .06s cubic-bezier(.22,.78,.16,1) both; }
+  /* 指令校验完成反馈更明显：整条指令栏亮度脉冲 + 主题色光晕扩散，进度数字放大定格 */
+  body[data-mode="sudden"] #gameScreen.has-guesses .mobile-directive-dock.directive-flash { animation: mobile-directive-flash-pulse 1.12s cubic-bezier(.24,.6,.24,1) both; }
+  body[data-mode="sudden"] #gameScreen.has-guesses .mobile-directive-dock.directive-flash .mobile-directive-progress { animation: mobile-directive-progress-pop 1.04s cubic-bezier(.2,.78,.2,1) both; }
+  @keyframes mobile-directive-flash-pulse {
+    0% { border-color: var(--line-strong); filter: brightness(1); box-shadow: 0 0 0 rgba(var(--accent-rgb),0), inset 0 0 0 rgba(var(--accent-rgb),0); }
+    20% { border-color: var(--accent); filter: brightness(1.62); box-shadow: 0 0 30px rgba(var(--accent-rgb),.55), inset 0 0 20px rgba(var(--accent-rgb),.18); }
+    48% { border-color: var(--accent); filter: brightness(1.24); box-shadow: 0 0 16px rgba(var(--accent-rgb),.34), inset 0 0 10px rgba(var(--accent-rgb),.1); }
+    100% { border-color: var(--exact); filter: brightness(1); box-shadow: 0 0 0 rgba(var(--accent-rgb),0), inset 0 0 0 rgba(var(--accent-rgb),0); }
+  }
+  @keyframes mobile-directive-progress-pop {
+    0%,18% { transform: scale(1); color: var(--accent); filter: brightness(1); }
+    42% { transform: scale(1.55); color: var(--exact); filter: brightness(1.45); }
+    100% { transform: scale(1); color: var(--exact); filter: brightness(1); }
+  }
   .mobile-directive-code { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .mobile-directive-text { display: flex; min-width: 0; flex-direction: column; gap: 1px; }
   .mobile-directive-dock strong { min-width: 0; overflow: hidden; color: #d6dde4; font-family: var(--sans); font-size: 10.5px; letter-spacing: .6px; text-overflow: ellipsis; white-space: nowrap; }
@@ -1422,14 +1493,14 @@ body[data-mode="anomaly"] .bg-layer { background: radial-gradient(circle at 82% 
 .anomaly-option-art.image-missing::before { content: ""; position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; border: 1px solid var(--muted); transform: translate(-50%,-50%) rotate(45deg); }
 .anomaly-option-scan { position: absolute; top: -30%; bottom: -30%; left: -70%; width: 34%; pointer-events: none; opacity: 0; background: linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.16),rgba(255,255,255,.42),transparent); transform: skewX(-12deg); }
 .anomaly-option.is-selected .anomaly-option-scan { animation: operator-scan .6s ease both; }
-.anomaly-option-foot { display: flex; align-items: center; gap: 10px; padding: 11px 12px; }
+.anomaly-option-foot { position: relative; display: flex; align-items: center; gap: 10px; padding: 11px 12px; }
 .anomaly-option-index { display: inline-flex; width: 26px; height: 26px; flex: none; align-items: center; justify-content: center; border: 1px solid rgba(var(--accent-rgb),.4); color: var(--accent); font-size: 11px; font-weight: 700; transition: color .2s ease, background .2s ease, box-shadow .2s ease; }
-.anomaly-option-name { overflow: hidden; font-family: var(--sans); font-size: 15px; letter-spacing: 1px; text-overflow: ellipsis; white-space: nowrap; }
-.anomaly-option-mark { margin-left: auto; flex: none; padding: 2px 7px; color: var(--accent-ink); background: var(--accent); font-family: var(--sans); font-size: 9px; font-weight: 700; letter-spacing: 1px; opacity: 0; transform: translateX(6px); transition: opacity .2s ease, transform .2s ease; }
+.anomaly-option-name { min-width: 0; overflow: hidden; font-family: var(--sans); font-size: 15px; letter-spacing: 1px; text-overflow: ellipsis; white-space: nowrap; }
+.anomaly-option-mark { position: absolute; top: 50%; right: 12px; margin-left: 0; padding: 2px 7px; color: var(--accent-ink); background: var(--accent); font-family: var(--sans); font-size: 9px; font-weight: 700; letter-spacing: 1px; opacity: 0; transform: translateY(-50%) translateX(6px); transition: opacity .2s ease, transform .2s ease; }
 .anomaly-option.is-selected { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), 0 0 22px rgba(var(--accent-rgb),.18); }
 .anomaly-option.is-selected::after { opacity: 1; }
 .anomaly-option.is-selected .anomaly-option-index { color: var(--accent-ink); background: var(--accent); box-shadow: 0 0 10px rgba(var(--accent-rgb),.6); }
-.anomaly-option.is-selected .anomaly-option-mark { opacity: 1; transform: none; }
+.anomaly-option.is-selected .anomaly-option-mark { opacity: 1; transform: translateY(-50%); }
 .anomaly-option-verdict:empty, .anomaly-option-evidence:empty { display: none; }
 .anomaly-option-verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 9px 12px 0; }
 .anomaly-option-verdict b { padding: 2px 7px; font-family: var(--sans); font-size: 9px; font-weight: 700; letter-spacing: 1px; }
@@ -1582,16 +1653,27 @@ body[data-mode="anomaly"] .bg-layer { background: radial-gradient(circle at 82% 
   .anomaly-side-stats { margin: 12px 14px 0; }
   .anomaly-side-stats strong { font-size: 16px; }
   .anomaly-rhine { margin-top: 0; padding: 12px 0; }
-  #anomalyScreen.is-theme-selecting .anomaly-sidebar { display: grid; min-height: 0; grid-template-columns: 118px minmax(0,1fr); align-items: center; overflow: hidden; }
-  #anomalyScreen.is-theme-selecting .anomaly-art { height: 158px; }
-  #anomalyScreen.is-theme-selecting .anomaly-art img { top: 0; right: -40%; bottom: auto; left: -40%; width: 180%; height: 142%; object-position: center top; }
-  #anomalyScreen.is-theme-selecting .anomaly-sidebar-copy { align-self: center; margin: 12px 12px 12px -16px; padding: 12px 13px; }
-  #anomalyScreen.is-theme-selecting .anomaly-sidebar-copy .eyebrow { font-size: 6px; letter-spacing: 1.7px; }
-  #anomalyScreen.is-theme-selecting .anomaly-sidebar-copy h2 { margin: 8px 0 0; font-size: 19px; }
-  #anomalyScreen.is-theme-selecting .anomaly-sidebar-index { display: none; }
-  #anomalyScreen.is-theme-selecting .anomaly-side-stats, #anomalyScreen.is-theme-selecting .anomaly-rhine { display: none; }
+  /* 移动端侧栏始终紧凑：主题选择如此，开战后亦如此——否则完整侧栏会把题目与选项压到首屏之外。 */
+  #anomalyScreen .anomaly-sidebar { display: grid; min-height: 0; grid-template-columns: 118px minmax(0,1fr); align-items: center; overflow: hidden; }
+  #anomalyScreen .anomaly-art { height: 146px; }
+  #anomalyScreen .anomaly-art img { top: 0; right: -40%; bottom: auto; left: -40%; width: 180%; height: 142%; object-position: center top; }
+  #anomalyScreen .anomaly-sidebar-copy { align-self: center; margin: 12px 12px 12px -16px; padding: 12px 13px; }
+  #anomalyScreen .anomaly-sidebar-copy .eyebrow { font-size: 6px; letter-spacing: 1.7px; }
+  #anomalyScreen .anomaly-sidebar-copy h2 { margin: 8px 0 0; font-size: 19px; }
+  #anomalyScreen .anomaly-sidebar-copy h2 br { display: none; }
+  #anomalyScreen .anomaly-sidebar-index { display: none; }
+  #anomalyScreen .anomaly-side-stats, #anomalyScreen .anomaly-rhine { display: none; }
   .anomaly-workspace { padding: 22px; }
-  .anomaly-meta { align-items: center; margin-bottom: 20px; }
+  .anomaly-meta { align-items: center; margin-bottom: 12px; }
+  /* 移动端操作按钮去英文副标、收窄，避免两行文字撑高元信息行 */
+  .anomaly-meta .protocol-switch { min-height: 32px; padding: 0 10px; }
+  .anomaly-meta .protocol-switch i { display: none; }
+  .anomaly-meta .protocol-switch span { white-space: nowrap; }
+  /* 首屏紧凑化：让第一个候选干员完整落入首屏 */
+  .anomaly-scope { margin-bottom: 12px; padding: 8px 11px; gap: 8px 12px; }
+  .anomaly-scope-head { padding-bottom: 5px; }
+  .anomaly-options { margin-top: 14px; }
+  .anomaly-question-head { gap: 3px 12px; }
   .anomaly-scope { grid-template-columns: 1fr; margin-top: -4px; }
   .anomaly-scope-head { min-width: 0; padding: 0 0 8px; border-right: 0; border-bottom: 1px solid rgba(var(--accent-rgb),.2); }
   .anomaly-theme-layout { grid-template-columns: 1fr; }

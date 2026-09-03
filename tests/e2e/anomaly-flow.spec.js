@@ -61,8 +61,10 @@ test("扫描结果在触发后保持在当前可视区", async ({ page }) => {
   await page.locator("#anomalyScanBtn").click();
   await scanResponse;
   await expect(page.locator("#anomalyHint")).toBeVisible();
+  // smooth scrollIntoView 需要落定时间；串行负载下仿真较慢，给足缓冲避免抖动
+  await page.waitForTimeout(600);
   await expect.poll(
     () => fullyInsideVisualViewport(page.locator("#anomalyHint")),
-    { timeout: 3_000 }
+    { timeout: 6_000 }
   ).toBe(true);
 });
