@@ -162,8 +162,14 @@ body[data-mode="endless"] .game-art-endless { display: block; inset: 10px 7% 0; 
 .game-sidebar-index { position: absolute; top: 11px; right: 15px; margin: 0; color: rgba(var(--accent-rgb),.27); font-size: 32px; font-weight: 700; line-height: 1; }
 .game-sidebar-copy h2 { margin: 12px 0 10px; font-family: var(--sans); font-size: 25px; line-height: 1.27; letter-spacing: 1.5px; }
 .game-sidebar-copy > #gameSidebarDesc { margin: 0; color: #8e9aa5; font-family: var(--sans); font-size: 11.5px; line-height: 1.68; }
-.sidebar-callout { --callout-gap: 18px; --callout-side: var(--sidebar-gutter); position: relative; max-height: 0; margin: 0 var(--callout-side); padding: 0 15px; overflow: hidden; visibility: hidden; border: 0 solid rgba(var(--accent-rgb),.58); border-width: 0 1px; color: var(--accent); background: linear-gradient(110deg,rgba(var(--accent-rgb),.16),rgba(var(--accent-rgb),.04)); box-shadow: inset 0 0 24px rgba(var(--accent-rgb),.06),0 0 20px rgba(var(--accent-rgb),.08); font-family: var(--sans); opacity: 0; transform: translateX(-112%) skewX(-4deg); }
+.sidebar-callout { --callout-gap: 18px; --callout-open-height: 130px; --callout-side: var(--sidebar-gutter); position: relative; max-height: 0; margin: 0 var(--callout-side); padding: 0 15px; overflow: hidden; visibility: hidden; border: 0 solid rgba(var(--accent-rgb),.58); border-width: 0 1px; color: var(--accent); background: linear-gradient(110deg,rgba(var(--accent-rgb),.16),rgba(var(--accent-rgb),.04)); box-shadow: inset 0 0 24px rgba(var(--accent-rgb),.06),0 0 20px rgba(var(--accent-rgb),.08); font-family: var(--sans); opacity: 0; transform: translateX(-112%) skewX(-4deg); }
 body[data-mode="sudden"] .sidebar-callout { display: none; }
+.sidebar-callout > .endless-bubble-media { display: none; width: 100%; height: 180px; object-fit: contain; object-position: center; background: #080b0d; }
+.sidebar-callout.is-media { --callout-gap: 12px; --callout-open-height: 210px; padding-right: 6px; padding-left: 6px; background: #080b0d; }
+.sidebar-callout.is-media > .endless-bubble-media { display: block; }
+.sidebar-callout.is-media > span,
+.sidebar-callout.is-media > strong,
+.sidebar-callout.is-media > i { display: none; }
 .sidebar-callout > span { display: block; color: rgba(var(--accent-rgb),.65); font-family: var(--font); font-size: 8px; font-weight: 700; letter-spacing: 2px; }
 .sidebar-callout > strong { display: block; margin-top: 7px; color: var(--accent); font-size: 12px; line-height: 1.4; }
 .sidebar-callout > i { display: block; height: 3px; margin-top: 12px; overflow: hidden; background: rgba(var(--accent-rgb),.13); }
@@ -222,7 +228,7 @@ button { border: 1px solid transparent; border-radius: 0; cursor: pointer; }
 .ghost { min-height: 44px; padding: 0 18px; border-color: var(--line-strong); color: #aab3bd; background: transparent; font-family: var(--sans); font-size: 11px; transition: border-color .2s, color .2s; }
 .ghost:hover { border-color: var(--wrong); color: #fff; }
 button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
-.suggest { position: absolute; top: calc(100% + 8px); left: 0; z-index: 15; width: min(100%,560px); overflow: hidden; border: 1px solid var(--line-strong); background: #11171e; box-shadow: 0 18px 40px rgba(0,0,0,.48); }
+.suggest { position: absolute; top: calc(100% + 8px); left: 0; z-index: 15; width: min(100%,560px); max-height: min(430px,55vh); overflow-x: hidden; overflow-y: auto; border: 1px solid var(--line-strong); background: #11171e; box-shadow: 0 18px 40px rgba(0,0,0,.48); }
 .suggest-item { display: flex; align-items: center; justify-content: space-between; min-height: 43px; padding: 0 14px; border-bottom: 1px solid var(--line); color: #dfe5ea; font-family: var(--sans); font-size: 12px; cursor: pointer; }
 .suggest-item:last-child { border-bottom: 0; }
 .suggest-item.active { color: #fff; background: rgba(var(--accent-rgb),.12); }
@@ -486,7 +492,7 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
 @keyframes scan-pass { 0% { left: -42%; } 100% { left: 122%; } }
 @keyframes result-in { from { opacity: 0; transform: translateY(-10px) scale(.99); } to { opacity: 1; transform: none; } }
 @keyframes final-archive-in { 0% { opacity: 0; clip-path: inset(0 0 0 100%); transform: translateX(70px); } 45% { opacity: 1; } 100% { clip-path: inset(0); transform: none; } }
-@keyframes callout-slide { 0% { max-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; opacity: 0; transform: translateX(-112%) skewX(-4deg); } 12%,82% { max-height: 120px; margin-top: var(--callout-gap); padding-top: 15px; padding-bottom: 14px; border-width: 1px; opacity: 1; transform: none; } 100% { max-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; opacity: 0; transform: translateX(-32px); } }
+@keyframes callout-slide { 0% { max-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; opacity: 0; transform: translateX(-112%) skewX(-4deg); } 12%,82% { max-height: var(--callout-open-height); margin-top: var(--callout-gap); padding-top: 15px; padding-bottom: 14px; border-width: 1px; opacity: 1; transform: none; } 100% { max-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; opacity: 0; transform: translateX(-32px); } }
 @keyframes callout-mini-scan { 0% { left: -42%; opacity: 0; } 20% { opacity: .7; } 100% { left: 122%; opacity: 0; } }
 @keyframes operator-scan { 0% { left: -70%; opacity: 0; } 18% { opacity: .75; } 100% { left: 138%; opacity: 0; } }
 @keyframes choice-out-left { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateX(-65vw) skewX(-7deg); } }
@@ -523,6 +529,7 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
 }
 
 @media (max-width: 760px) {
+  .sidebar-callout { display: none; }
   html, body { width: 100%; max-width: 100%; overflow-x: hidden; overscroll-behavior-x: none; }
   body { touch-action: pan-y pinch-zoom; }
   main, #modeScreen, #gameScreen, #anomalyScreen { min-width: 0; max-width: 100%; }
@@ -602,9 +609,15 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   #gameScreen:not(.has-guesses) .directive-brief { margin-top: 6px; }
   #gameScreen:not(.has-guesses) .directive-rule { margin-top: 6px; padding: 5px 9px 6px; }
   #gameScreen:not(.has-guesses) .directive-track { margin-top: 6px; padding-top: 6px; }
-  #gameScreen:not(.has-guesses) .game-meta { margin-bottom: 10px; }
-  #gameScreen:not(.has-guesses) .game-attempt-config { align-items: center; flex-direction: row; gap: 8px; }
-  #gameScreen:not(.has-guesses) .game-attempt-config button { min-height: 36px; }
+  #gameScreen:not(.has-guesses) .game-meta { margin-bottom: 10px; align-items: flex-end; }
+  /* 开局操作按钮统一：同高、垂直居中对齐、边框风格一致，避免"应用本局/切换模式"宽窄错位难看 */
+  #gameScreen:not(.has-guesses) .game-meta-actions { align-items: center; }
+  #gameScreen:not(.has-guesses) .game-meta-buttons { align-items: center; }
+  #gameScreen:not(.has-guesses) .game-attempt-config { align-items: center; flex-direction: row; gap: 8px; margin-top: 0; }
+  #gameScreen:not(.has-guesses) .game-attempt-config button { display: inline-flex; align-items: center; justify-content: center; }
+  /* 注意不给 .protocol-switch 强制 display：.endless-restart(重新开始)在终局校验本就 display:none，不能被顶出来 */
+  #gameScreen:not(.has-guesses) .game-attempt-config button,
+  #gameScreen:not(.has-guesses) .game-meta-buttons .protocol-switch { min-height: 36px; height: 36px; box-sizing: border-box; }
   #gameScreen:not(.has-guesses) .guess-console { padding: 12px 14px 10px; }
   #gameScreen:not(.has-guesses) .console-heading { margin-bottom: 10px; }
   #gameScreen:not(.has-guesses) .input-wrap { grid-template-columns: minmax(0,1fr) auto; }
@@ -639,14 +652,21 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
   #gameScreen.has-guesses .game-attempt-config .attempt-control span { display: none; }
   #gameScreen.has-guesses .game-attempt-config .attempt-control input { width: 30px; height: 28px; font-size: 16px; }
   #gameScreen.has-guesses .game-attempt-config button { min-height: 30px; padding: 0 7px; font-size: 8px; }
-  body[data-mode="endless"] #gameScreen.has-guesses .mobile-endless-callout { position: absolute; top: 0; right: 12px; z-index: 30; display: grid; width: min(230px,calc(100% - 24px)); height: 58px; min-height: 0; grid-template-columns: 58px minmax(0,1fr); align-items: center; overflow: hidden; visibility: hidden; border: 1px solid rgba(var(--accent-rgb),.48); color: var(--accent); background: linear-gradient(110deg,rgba(15,18,12,.96),rgba(26,31,16,.94)); box-shadow: 0 16px 36px rgba(0,0,0,.55),inset 0 0 22px rgba(var(--accent-rgb),.05); opacity: 0; pointer-events: none; }
-  body[data-mode="endless"] #gameScreen.has-guesses .mobile-endless-callout.show { visibility: visible; animation: mobile-endless-callout 4s cubic-bezier(.2,.78,.2,1) both; }
+  body[data-mode="endless"] #gameScreen.has-guesses .mobile-endless-callout,
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.input-triggered { position: absolute; top: 0; right: 12px; z-index: 30; display: grid; width: min(230px,calc(100% - 24px)); height: 58px; min-height: 0; grid-template-columns: 58px minmax(0,1fr); align-items: center; overflow: hidden; visibility: hidden; border: 1px solid rgba(var(--accent-rgb),.48); color: var(--accent); background: linear-gradient(110deg,rgba(15,18,12,.96),rgba(26,31,16,.94)); box-shadow: 0 16px 36px rgba(0,0,0,.55),inset 0 0 22px rgba(var(--accent-rgb),.05); opacity: 0; pointer-events: none; }
+  body[data-mode="endless"] #gameScreen.has-guesses .mobile-endless-callout.show,
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.input-triggered.show { visibility: visible; animation: mobile-endless-callout 4s cubic-bezier(.2,.78,.2,1) both; }
   .mobile-endless-callout > img { position: absolute; top: -5px; left: -13px; width: 80px; height: 68px; object-fit: cover; object-position: 50% center; opacity: .86; filter: saturate(.8) contrast(1.12) brightness(.9); transform: rotate(-3deg) scale(1.04); -webkit-mask-image: radial-gradient(ellipse 72% 66% at 46% 50%,#000 0 48%,rgba(0,0,0,.7) 68%,transparent 100%); mask-image: radial-gradient(ellipse 72% 66% at 46% 50%,#000 0 48%,rgba(0,0,0,.7) 68%,transparent 100%); }
   .mobile-endless-callout > div { min-width: 0; grid-column: 2; padding: 6px 9px 6px 2px; }
   .mobile-endless-callout span { display: block; color: rgba(var(--accent-rgb),.62); font-size: 7px; font-weight: 700; letter-spacing: 1.4px; }
   .mobile-endless-callout strong { display: block; margin-top: 4px; overflow: hidden; font-family: var(--sans); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
   .mobile-endless-callout i { display: block; height: 2px; margin-top: 7px; overflow: hidden; background: rgba(var(--accent-rgb),.14); }
   .mobile-endless-callout b { display: block; width: 100%; height: 100%; background: var(--accent); box-shadow: 0 0 8px rgba(var(--accent-rgb),.7); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.is-media { width: min(260px,calc(100% - 24px)); height: 126px; grid-template-columns: 1fr; background: #080b0d; }
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.is-media > img { inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 1; filter: none; transform: none; -webkit-mask-image: none; mask-image: none; }
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.is-media > div { display: none; }
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.is-special-text { width: min(270px,calc(100% - 24px)); height: 76px; }
+  body[data-mode="endless"] #gameScreen .mobile-endless-callout.is-special-text strong { line-height: 1.32; text-overflow: clip; white-space: normal; }
 
   /* 档案区层级显式垫底：位移中的档案内容永不可压住固定输入台（文档流内 z-index:18 / 固定态 z-index:86）。 */
   #gameScreen.has-guesses .dossier-section { z-index: 0; display: flex; min-height: 0; flex: 1; flex-direction: column; order: 1; margin-top: 0; }
@@ -1240,6 +1260,13 @@ body[data-mode="sudden"] .directive-panel { display: block; }
   body.game-scroll-lock .game-sidebar-copy { flex: none; margin-top: -34px; padding-top: 16px; }
   body.game-scroll-lock[data-mode="endless"] .game-art { height: 264px; min-height: 264px; flex: 0 0 264px; }
   body.game-scroll-lock[data-mode="endless"] .game-sidebar-copy { margin-top: -44px; }
+  body.game-scroll-lock[data-mode="endless"] .game-art,
+  body.game-scroll-lock[data-mode="endless"] .game-sidebar-copy { transition: height .28s ease,min-height .28s ease,flex-basis .28s ease,margin-top .28s ease,padding .28s ease; }
+  body.game-scroll-lock[data-mode="endless"].endless-bubble-media-active .game-art { height: clamp(170px,25vh,210px); min-height: clamp(170px,25vh,210px); flex-basis: clamp(170px,25vh,210px); }
+  body.game-scroll-lock[data-mode="endless"].endless-bubble-media-active .game-sidebar-copy { margin-top: -56px; padding: 12px 13px 10px; }
+  body.game-scroll-lock[data-mode="endless"].endless-bubble-media-active .game-sidebar-copy h2 { margin: 8px 0 6px; font-size: 21px; }
+  body.game-scroll-lock[data-mode="endless"].endless-bubble-media-active .game-sidebar-copy > #gameSidebarDesc { display: none; }
+  body.game-scroll-lock[data-mode="endless"].endless-bubble-media-active .endless-telemetry { display: none; }
   body.game-scroll-lock[data-mode="endless"] .sidebar-callout { flex: none; }
   body.game-scroll-lock .game-sidebar-copy h2 { margin: 12px 0 10px; }
   body.game-scroll-lock .clue-legend { flex: none; margin-top: 14px; margin-bottom: 0; padding-top: 7px; gap: 2px; }
