@@ -1,56 +1,112 @@
 {
   "schemaVersion": 1,
-  "status": "ready",
+  "status": "manual_review_required",
   "source": {
     "repository": "https://github.com/Kengxxiao/ArknightsGameData.git",
-    "revision": "6844859c664c7b5716b3f6a9feaf2c3606168838",
-    "commitTime": "2026-08-18T16:02:18+08:00"
+    "revision": "cc5bf84b0e6d552d9c13619e2683ff25c5bbeecb",
+    "commitTime": "2026-09-04T13:03:17+08:00",
+    "assetRepository": "https://github.com/fexli/ArknightsResource.git",
+    "assetRevision": "6d02b532c2380abd11c467daf706bf4761fae919"
   },
   "counts": {
-    "operators": 425,
-    "publicNames": 425,
-    "archives": 435,
-    "clues": 425,
-    "familiarityRecords": 425,
+    "operators": 429,
+    "publicNames": 429,
+    "archives": 439,
+    "clues": 429,
+    "familiarityRecords": 429,
     "identityGroups": 37,
     "themes": 53,
-    "anomalyRules": 229,
-    "anomalyQuestions": 10731,
+    "anomalyRules": 235,
+    "anomalyQuestions": 10776,
     "anomalyBuckets": 18,
     "operatorArtRecords": 425,
-    "requiredAssetGaps": 0,
-    "optionalSkillIconGaps": 14,
-    "manualReviewItems": 0,
+    "requiredAssetGaps": 16,
+    "optionalSkillIconGaps": 21,
+    "manualReviewItems": 2,
     "attentionProviders": 5
   },
   "manualReview": {
     "unknownProfessions": [],
     "unknownSubprofessions": [],
-    "powersWithoutLogo": [],
-    "themeCandidates": []
+    "powersWithoutLogo": [
+      "sees"
+    ],
+    "themeCandidates": [
+      "battle_block_control:char_4217_makoto"
+    ]
   },
   "requiredAssets": {
     "brandSkinArt": [],
-    "operatorArtManifest": [],
+    "operatorArtManifest": [
+      "char_4217_makoto",
+      "char_4218_aigis",
+      "char_4219_yukari",
+      "char_4220_kormr"
+    ],
     "pendingOperatorArt": [],
     "e1Images": [],
     "finalImages": [],
-    "silhouettes": [],
-    "fragments": [],
+    "silhouettes": [
+      "char_4217_makoto",
+      "char_4218_aigis",
+      "char_4219_yukari",
+      "char_4220_kormr"
+    ],
+    "fragments": [
+      {
+        "id": "char_4217_makoto",
+        "url": "/img/clues/art/a94a3a60ec7edee138ea.webp"
+      },
+      {
+        "id": "char_4217_makoto",
+        "url": "/img/clues/art/f6ff59a6034f8d8e1401.webp"
+      },
+      {
+        "id": "char_4218_aigis",
+        "url": "/img/clues/art/476d60465659258cd405.webp"
+      },
+      {
+        "id": "char_4218_aigis",
+        "url": "/img/clues/art/e603ca8257c69328c614.webp"
+      },
+      {
+        "id": "char_4219_yukari",
+        "url": "/img/clues/art/6f267a9bc291eba8453d.webp"
+      },
+      {
+        "id": "char_4219_yukari",
+        "url": "/img/clues/art/9a08e936c47087c55d8a.webp"
+      },
+      {
+        "id": "char_4220_kormr",
+        "url": "/img/clues/art/28b2dc7bda349a4a3b4a.webp"
+      },
+      {
+        "id": "char_4220_kormr",
+        "url": "/img/clues/art/b55e84acde1bb0823494.webp"
+      }
+    ],
     "factionLogos": []
   },
   "optionalSkillIcons": [
     "/img/clues/skill/01abcb7af6c0c7f7359e.webp",
+    "/img/clues/skill/1c191cf2080dd528f14b.webp",
     "/img/clues/skill/220bb7dd5d9808ebf27e.webp",
     "/img/clues/skill/26b2f3963628f65fc40b.webp",
+    "/img/clues/skill/2aaca00de15bf9dc643c.webp",
     "/img/clues/skill/39417d2e9af29814bee0.webp",
+    "/img/clues/skill/3b17fcdb1448cce60457.webp",
     "/img/clues/skill/536320ab0145ee1ea8b1.webp",
     "/img/clues/skill/5afee644b3ee630a1e6d.webp",
+    "/img/clues/skill/62b89273d85debc446ac.webp",
+    "/img/clues/skill/6ed810ea94fecb51adbe.webp",
     "/img/clues/skill/72fa86fa1ec1bce8ffef.webp",
     "/img/clues/skill/7340934814de5ead6c9d.webp",
+    "/img/clues/skill/7ca8531bbeb84a575c66.webp",
     "/img/clues/skill/8efaf3bc957dde1e109e.webp",
     "/img/clues/skill/90d2c051ed14159f367b.webp",
     "/img/clues/skill/bdb0f59231c019fda862.webp",
+    "/img/clues/skill/c7c85df3e04ceb336b69.webp",
     "/img/clues/skill/e20111956e40ec9518d7.webp",
     "/img/clues/skill/fc91e94766ad76f3580b.webp",
     "/img/clues/skill/ffbdcbc5d0f6e3629ce5.webp"
@@ -58,35 +114,35 @@
   "attentionCoverage": {
     "baiduIndex": {
       "valid": 0,
-      "expected": 425,
+      "expected": 429,
       "coverage": 0.0,
       "enabled": false,
       "familiarityRecordsUsingProvider": 0
     },
     "bilibiliVideo": {
       "valid": 144,
-      "expected": 425,
-      "coverage": 0.3388,
+      "expected": 429,
+      "coverage": 0.3357,
       "enabled": false,
       "familiarityRecordsUsingProvider": 0
     },
     "bingWeb": {
       "valid": 0,
-      "expected": 425,
+      "expected": 429,
       "coverage": 0.0,
       "enabled": false,
       "familiarityRecordsUsingProvider": 0
     },
     "prtsWiki": {
       "valid": 0,
-      "expected": 425,
+      "expected": 429,
       "coverage": 0.0,
       "enabled": false,
       "familiarityRecordsUsingProvider": 0
     },
     "youtubeVideo": {
       "valid": 0,
-      "expected": 425,
+      "expected": 429,
       "coverage": 0.0,
       "enabled": false,
       "familiarityRecordsUsingProvider": 0
@@ -98,8 +154,8 @@
       "sha256": "0e8b53f7edc0965806e78e9b46cd52675575a3b3ec3b8316a8a31d0112522893"
     },
     "public/data/names.json": {
-      "bytes": 29964,
-      "sha256": "18f4974a2a770454970a4ec838bdefb84d926522dd13f5ab3d287dd3a4567518"
+      "bytes": 30271,
+      "sha256": "55dc8f2ce933667d9908ac3d80de2e5726decf381c80f93bce77cb5d3e790cd9"
     },
     "public/data/operator-art.json": {
       "bytes": 136604,
@@ -110,40 +166,40 @@
       "sha256": "b99f0e04b9fecda15ac7d69735d59c7c873fa8e6c82efe8ccb6d8afa93458e98"
     },
     "server-data/operators.json": {
-      "bytes": 603767,
-      "sha256": "d28a7a23792ba1cd0d5725fe605c05cbc04625cd36c244ed2c97c9302e6acfa3"
+      "bytes": 609271,
+      "sha256": "02e242d276aed7fc40a16701bb8bae16a3d9d91c0e06fab022d50c12537c3e3e"
     },
     "server-data/operator-archives.json": {
-      "bytes": 3564639,
-      "sha256": "a1595adca354bfb67851e38d25e65752efdde0ecf731af403ce108b56b1be23e"
+      "bytes": 3602518,
+      "sha256": "c413abde212389e807fc2b80c1a73e32488d0a79a2b7edbff2de1c4ba4a41e5e"
     },
     "server-data/operator-clues.json": {
-      "bytes": 1933605,
-      "sha256": "ee89b0ae949c5a4bf945d2b063ea7382156eb13efe86d46ecdbd2b3408187e2e"
+      "bytes": 1953753,
+      "sha256": "f59dc92744b505f454e7de015b903b710e9785cf9c8625ae0f59a39c54b2ba11"
     },
     "server-data/operator-familiarity.json": {
-      "bytes": 210767,
-      "sha256": "90a5b5066b94843cd0cbb027941db612c51d60e1d046a31cfc0cc0a56ba9e66c"
+      "bytes": 212759,
+      "sha256": "b7610952b7aee067105582c444b8f16b20c44206e37d399a7a3b49ec943f8559"
     },
     "server-data/operator-identities.json": {
       "bytes": 18457,
       "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
     },
     "server-data/operator-themes.json": {
-      "bytes": 223172,
-      "sha256": "25e2f42d41f5a45cb9772d766b71142a975be8d1ee4d0b7f6e443ebabdfb414f"
+      "bytes": 224456,
+      "sha256": "850d1b6c9aa1b9b228cc06dd0bbaf3132e4510535eb649ac8e832802281256d4"
     },
     "server-data/operator-brand-art.json": {
       "bytes": 41997,
       "sha256": "3dabff30194f2f08f6eec62af12144fc25e8cbb3d264ef2055a7a3146ab40237"
     },
     "server-data/anomaly-rules.json": {
-      "bytes": 262938,
-      "sha256": "c2f941b3b7d5b9215ce32a3359991da2a09cddfc771c49deee7ebbd234c08c8c"
+      "bytes": 269627,
+      "sha256": "ce639a7607c1d40b626aff459ef860eb42d79d7c2ec86ca7ccb70287be2197e0"
     },
     "server-data/anomaly-questions.json": {
-      "bytes": 11070197,
-      "sha256": "8776075ca3a98daa01780ca17632b1dc1683b9531c1867d5be2d0e9c4fbe0a38"
+      "bytes": 11158346,
+      "sha256": "9753e0a6690ffd970ccd52a7aaa80b9de67f51fe386dfc3b4880d9790b8efabe"
     }
   }
 }

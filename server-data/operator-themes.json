@@ -8,7 +8,7 @@
       "title": "攻势蓄能",
       "description": "至少一个技能采用攻击回复",
       "memberCount": 88,
-      "informationStrength": 0.4544,
+      "informationStrength": 0.4571,
       "challengeDifficulty": 0.1867,
       "members": [
         "char_010_chen",
@@ -107,7 +107,7 @@
       "title": "自律响应",
       "description": "至少一个技能会自动触发",
       "memberCount": 201,
-      "informationStrength": 0.2161,
+      "informationStrength": 0.2188,
       "challengeDifficulty": 0.1867,
       "members": [
         "char_002_amiya",
@@ -319,7 +319,7 @@
       "title": "被动响应",
       "description": "至少拥有一个被动技能",
       "memberCount": 36,
-      "informationStrength": 0.7123,
+      "informationStrength": 0.715,
       "challengeDifficulty": 0.2533,
       "members": [
         "char_1014_nearl2",
@@ -365,8 +365,8 @@
       "family": "skill",
       "title": "指令响应",
       "description": "所有技能均需手动触发",
-      "memberCount": 179,
-      "informationStrength": 0.2495,
+      "memberCount": 182,
+      "informationStrength": 0.2474,
       "challengeDifficulty": 0.1867,
       "members": [
         "char_003_kalts",
@@ -521,6 +521,9 @@
         "char_4207_branch",
         "char_4212_nasti",
         "char_4214_cairn",
+        "char_4217_makoto",
+        "char_4218_aigis",
+        "char_4219_yukari",
         "char_4222_taraxa",
         "char_4224_turdus",
         "char_4225_tanya",
@@ -556,7 +559,7 @@
       "title": "双轨触发",
       "description": "同时拥有手动与自动触发技能",
       "memberCount": 185,
-      "informationStrength": 0.24,
+      "informationStrength": 0.2427,
       "challengeDifficulty": 0.1867,
       "members": [
         "char_002_amiya",
@@ -752,7 +755,7 @@
       "title": "多重蓄能",
       "description": "至少一个技能可以充能",
       "memberCount": 87,
-      "informationStrength": 0.4577,
+      "informationStrength": 0.4604,
       "challengeDifficulty": 0.2067,
       "members": [
         "char_1013_chen2",
@@ -850,7 +853,7 @@
       "title": "弹药协议",
       "description": "至少一个技能使用弹药机制",
       "memberCount": 20,
-      "informationStrength": 0.8819,
+      "informationStrength": 0.8846,
       "challengeDifficulty": 0.23,
       "members": [
         "char_1013_chen2",
@@ -880,8 +883,8 @@
       "family": "skill",
       "title": "火力域重构",
       "description": "至少一个技能会改变攻击范围",
-      "memberCount": 179,
-      "informationStrength": 0.2495,
+      "memberCount": 180,
+      "informationStrength": 0.2506,
       "challengeDifficulty": 0.19,
       "members": [
         "char_002_amiya",
@@ -1044,6 +1047,7 @@
         "char_420_flamtl",
         "char_4213_skybx",
         "char_4214_cairn",
+        "char_4217_makoto",
         "char_4223_botany",
         "char_4225_tanya",
         "char_4237_jcinta",
@@ -1071,7 +1075,7 @@
       "title": "复合火力域",
       "description": "不同技能使用不同攻击范围",
       "memberCount": 165,
-      "informationStrength": 0.273,
+      "informationStrength": 0.2757,
       "challengeDifficulty": 0.19,
       "members": [
         "char_002_amiya",
@@ -1246,8 +1250,8 @@
       "family": "skill",
       "title": "简式作战协议",
       "description": "没有常规战斗技能",
-      "memberCount": 16,
-      "informationStrength": 0.9463,
+      "memberCount": 17,
+      "informationStrength": 0.9315,
       "challengeDifficulty": 0.28,
       "members": [
         "char_009_12fce",
@@ -1261,6 +1265,7 @@
         "char_4136_phonor",
         "char_4188_confes",
         "char_4215_buddy",
+        "char_4220_kormr",
         "char_4227_gallus",
         "char_500_noirc",
         "char_501_durin",
@@ -1274,7 +1279,7 @@
       "title": "阵线重构",
       "description": "可以主动改变自身、友方或召唤物的阻挡数",
       "memberCount": 57,
-      "informationStrength": 0.5797,
+      "informationStrength": 0.5824,
       "challengeDifficulty": 0.2133,
       "members": [
         "char_1023_ghost2",
@@ -1342,7 +1347,7 @@
       "title": "快速再投",
       "description": "自身基础再部署时间不高于35秒",
       "memberCount": 19,
-      "informationStrength": 0.8967,
+      "informationStrength": 0.8994,
       "challengeDifficulty": 0.2567,
       "members": [
         "char_1028_texas2",
@@ -1372,7 +1377,7 @@
       "title": "位移干预",
       "description": "能够推动、拖拽或强制移动目标",
       "memberCount": 30,
-      "informationStrength": 0.7649,
+      "informationStrength": 0.7676,
       "challengeDifficulty": 0.24,
       "members": [
         "char_1026_gvial2",
@@ -1413,7 +1418,7 @@
       "title": "光学遮蔽",
       "description": "自身、友方或召唤物能够获得隐匿或迷彩",
       "memberCount": 16,
-      "informationStrength": 0.9463,
+      "informationStrength": 0.949,
       "challengeDifficulty": 0.31,
       "members": [
         "char_1021_kroos2",
@@ -1440,7 +1445,7 @@
       "title": "元素干涉",
       "description": "能够造成、治疗、减免或改变元素损伤机制",
       "memberCount": 26,
-      "informationStrength": 0.8062,
+      "informationStrength": 0.8089,
       "challengeDifficulty": 0.2733,
       "members": [
         "char_1016_agoat2",
@@ -1477,7 +1482,7 @@
       "title": "平行履历",
       "description": "属于拥有异格形态的身份组",
       "memberCount": 75,
-      "informationStrength": 0.5005,
+      "informationStrength": 0.5032,
       "challengeDifficulty": 0.19,
       "members": [
         "char_003_kalts",
@@ -1563,7 +1568,7 @@
       "title": "异格档案",
       "description": "当前档案是一名异格干员",
       "memberCount": 38,
-      "informationStrength": 0.6967,
+      "informationStrength": 0.6994,
       "challengeDifficulty": 0.22,
       "members": [
         "char_1011_lava2",
@@ -1611,8 +1616,8 @@
       "family": "battle",
       "title": "晕眩干预",
       "description": "能够使目标晕眩",
-      "memberCount": 74,
-      "informationStrength": 0.5044,
+      "memberCount": 75,
+      "informationStrength": 0.5032,
       "challengeDifficulty": 0.1967,
       "members": [
         "char_002_amiya",
@@ -1680,6 +1685,7 @@
         "char_4203_kichi",
         "char_420_flamtl",
         "char_4215_buddy",
+        "char_4218_aigis",
         "char_422_aurora",
         "char_437_mizuki",
         "char_455_nothin",
@@ -1697,7 +1703,7 @@
       "title": "友方治疗",
       "description": "能够主动治疗或恢复友方单位生命",
       "memberCount": 49,
-      "informationStrength": 0.6233,
+      "informationStrength": 0.626,
       "challengeDifficulty": 0.21,
       "members": [
         "char_003_kalts",
@@ -1757,7 +1763,7 @@
       "title": "屏障构筑",
       "description": "能够提供护盾或屏障",
       "memberCount": 35,
-      "informationStrength": 0.7204,
+      "informationStrength": 0.7231,
       "challengeDifficulty": 0.2367,
       "members": [
         "char_1014_nearl2",
@@ -1803,7 +1809,7 @@
       "title": "束缚干预",
       "description": "能够使目标束缚",
       "memberCount": 27,
-      "informationStrength": 0.7953,
+      "informationStrength": 0.798,
       "challengeDifficulty": 0.2533,
       "members": [
         "char_1042_phatm2",
@@ -1840,8 +1846,8 @@
       "family": "logistics",
       "title": "基建：制造站",
       "description": "使用在制造站拥有基建技能的干员推进指令",
-      "memberCount": 92,
-      "informationStrength": 0.4416,
+      "memberCount": 93,
+      "informationStrength": 0.4411,
       "challengeDifficulty": 0.2233,
       "members": [
         "char_1031_slent2",
@@ -1919,6 +1925,7 @@
         "char_4208_wintim",
         "char_4211_snhunt",
         "char_4212_nasti",
+        "char_4217_makoto",
         "char_4225_tanya",
         "char_4226_veen",
         "char_4229_aphris",
@@ -1943,8 +1950,8 @@
       "family": "logistics",
       "title": "基建：会客室",
       "description": "使用在会客室拥有基建技能的干员推进指令",
-      "memberCount": 54,
-      "informationStrength": 0.5953,
+      "memberCount": 56,
+      "informationStrength": 0.5875,
       "challengeDifficulty": 0.2233,
       "members": [
         "char_009_12fce",
@@ -1996,6 +2003,8 @@
         "char_4199_makiri",
         "char_4214_cairn",
         "char_4215_buddy",
+        "char_4218_aigis",
+        "char_4220_kormr",
         "char_4237_jcinta",
         "char_427_vigil",
         "char_445_wscoot",
@@ -2008,8 +2017,8 @@
       "family": "logistics",
       "title": "基建：人力办公室",
       "description": "使用在人力办公室拥有基建技能的干员推进指令",
-      "memberCount": 32,
-      "informationStrength": 0.7463,
+      "memberCount": 33,
+      "informationStrength": 0.7401,
       "challengeDifficulty": 0.2133,
       "members": [
         "char_1031_slent2",
@@ -2035,6 +2044,7 @@
         "char_4172_xingzh",
         "char_4177_brigid",
         "char_4202_haruka",
+        "char_4219_yukari",
         "char_4224_turdus",
         "char_4235_thumpy",
         "char_436_whispr",
@@ -2051,8 +2061,8 @@
       "family": "logistics",
       "title": "基建：控制中枢",
       "description": "使用在控制中枢拥有基建技能的干员推进指令",
-      "memberCount": 65,
-      "informationStrength": 0.5418,
+      "memberCount": 66,
+      "informationStrength": 0.5401,
       "challengeDifficulty": 0.1967,
       "members": [
         "char_002_amiya",
@@ -2113,6 +2123,7 @@
         "char_4186_tmoris",
         "char_4195_radian",
         "char_420_flamtl",
+        "char_4217_makoto",
         "char_4228_closur",
         "char_456_ash",
         "char_457_blitz",
@@ -2127,8 +2138,8 @@
       "family": "logistics",
       "title": "基建：宿舍",
       "description": "使用在宿舍拥有基建技能的干员推进指令",
-      "memberCount": 78,
-      "informationStrength": 0.4892,
+      "memberCount": 79,
+      "informationStrength": 0.4882,
       "challengeDifficulty": 0.2033,
       "members": [
         "char_002_amiya",
@@ -2199,6 +2210,7 @@
         "char_4202_haruka",
         "char_4214_cairn",
         "char_4215_buddy",
+        "char_4220_kormr",
         "char_4225_tanya",
         "char_4235_thumpy",
         "char_430_fartth",
@@ -2217,7 +2229,7 @@
       "title": "基建：加工站",
       "description": "使用在加工站拥有基建技能的干员推进指令",
       "memberCount": 78,
-      "informationStrength": 0.4892,
+      "informationStrength": 0.4919,
       "challengeDifficulty": 0.1967,
       "members": [
         "char_003_kalts",
@@ -2305,8 +2317,8 @@
       "family": "logistics",
       "title": "基建：发电站",
       "description": "使用在发电站拥有基建技能的干员推进指令",
-      "memberCount": 31,
-      "informationStrength": 0.7554,
+      "memberCount": 32,
+      "informationStrength": 0.749,
       "challengeDifficulty": 0.26,
       "members": [
         "char_017_huang",
@@ -2336,6 +2348,7 @@
         "char_4148_philae",
         "char_4188_confes",
         "char_4213_skybx",
+        "char_4218_aigis",
         "char_4227_gallus",
         "char_4236_tmslot",
         "char_469_indigo",
@@ -2348,7 +2361,7 @@
       "title": "基建：贸易站",
       "description": "使用在贸易站拥有基建技能的干员推进指令",
       "memberCount": 77,
-      "informationStrength": 0.4929,
+      "informationStrength": 0.4956,
       "challengeDifficulty": 0.1933,
       "members": [
         "char_1019_siege2",
@@ -2435,8 +2448,8 @@
       "family": "logistics",
       "title": "基建：训练室",
       "description": "使用在训练室拥有基建技能的干员推进指令",
-      "memberCount": 79,
-      "informationStrength": 0.4855,
+      "memberCount": 80,
+      "informationStrength": 0.4846,
       "challengeDifficulty": 0.2167,
       "members": [
         "char_1012_skadi2",
@@ -2510,6 +2523,7 @@
         "char_4165_ctrail",
         "char_4187_graceb",
         "char_4196_reckpr",
+        "char_4219_yukari",
         "char_4226_veen",
         "char_422_aurora",
         "char_4234_pedro",
@@ -2525,8 +2539,8 @@
       "family": "logistics",
       "title": "限定寻访",
       "description": "使用通过限定寻访获得的干员推进指令",
-      "memberCount": 25,
-      "informationStrength": 0.8175,
+      "memberCount": 29,
+      "informationStrength": 0.7774,
       "challengeDifficulty": 0.2833,
       "members": [
         "char_1029_yato2",
@@ -2550,6 +2564,10 @@
         "char_4185_amoris",
         "char_4186_tmoris",
         "char_4215_buddy",
+        "char_4217_makoto",
+        "char_4218_aigis",
+        "char_4219_yukari",
+        "char_4220_kormr",
         "char_456_ash",
         "char_457_blitz",
         "char_458_rfrost",
@@ -2562,7 +2580,7 @@
       "title": "时装品牌：时代",
       "description": "使用拥有“时代”系列时装的干员推进指令",
       "memberCount": 97,
-      "informationStrength": 0.4263,
+      "informationStrength": 0.429,
       "challengeDifficulty": 0.2067,
       "members": [
         "char_1014_nearl2",
@@ -2671,7 +2689,7 @@
       "title": "时装品牌：珊瑚海岸",
       "description": "使用拥有“珊瑚海岸”系列时装的干员推进指令",
       "memberCount": 62,
-      "informationStrength": 0.5554,
+      "informationStrength": 0.5581,
       "challengeDifficulty": 0.18,
       "members": [
         "char_1013_chen2",
@@ -2747,7 +2765,7 @@
       "title": "时装品牌：斗争血脉",
       "description": "使用拥有“斗争血脉”系列时装的干员推进指令",
       "memberCount": 36,
-      "informationStrength": 0.7123,
+      "informationStrength": 0.715,
       "challengeDifficulty": 0.1933,
       "members": [
         "char_003_kalts",
@@ -2795,7 +2813,7 @@
       "title": "时装品牌：0011制造",
       "description": "使用拥有“0011制造”系列时装的干员推进指令",
       "memberCount": 31,
-      "informationStrength": 0.7554,
+      "informationStrength": 0.7581,
       "challengeDifficulty": 0.2533,
       "members": [
         "char_010_chen",
@@ -2838,7 +2856,7 @@
       "title": "时装品牌：忒斯特收藏",
       "description": "使用拥有“忒斯特收藏”系列时装的干员推进指令",
       "memberCount": 24,
-      "informationStrength": 0.8293,
+      "informationStrength": 0.832,
       "challengeDifficulty": 0.1933,
       "members": [
         "char_002_amiya",
@@ -2874,7 +2892,7 @@
       "title": "时装品牌：音律联觉",
       "description": "使用拥有“音律联觉”系列时装的干员推进指令",
       "memberCount": 23,
-      "informationStrength": 0.8416,
+      "informationStrength": 0.8443,
       "challengeDifficulty": 0.1867,
       "members": [
         "char_017_huang",
@@ -2909,7 +2927,7 @@
       "title": "所属大系：罗德岛",
       "description": "使用上级势力归属“罗德岛”的干员推进指令",
       "memberCount": 92,
-      "informationStrength": 0.4416,
+      "informationStrength": 0.4443,
       "challengeDifficulty": 0.1767,
       "members": [
         "char_002_amiya",
@@ -3012,7 +3030,7 @@
       "title": "所属大系：哥伦比亚",
       "description": "使用上级势力归属“哥伦比亚”的干员推进指令",
       "memberCount": 49,
-      "informationStrength": 0.6233,
+      "informationStrength": 0.626,
       "challengeDifficulty": 0.2233,
       "members": [
         "char_1031_slent2",
@@ -3072,7 +3090,7 @@
       "title": "所属大系：维多利亚",
       "description": "使用上级势力归属“维多利亚”的干员推进指令",
       "memberCount": 39,
-      "informationStrength": 0.6892,
+      "informationStrength": 0.6919,
       "challengeDifficulty": 0.2633,
       "members": [
         "char_1019_siege2",
@@ -3122,7 +3140,7 @@
       "title": "所属大系：炎",
       "description": "使用上级势力归属“炎”的干员推进指令",
       "memberCount": 26,
-      "informationStrength": 0.8062,
+      "informationStrength": 0.8089,
       "challengeDifficulty": 0.2467,
       "members": [
         "char_1043_leizi2",
@@ -3159,7 +3177,7 @@
       "title": "所属势力：罗德岛",
       "description": "使用所属势力为“罗德岛”的干员推进指令",
       "memberCount": 59,
-      "informationStrength": 0.5697,
+      "informationStrength": 0.5724,
       "challengeDifficulty": 0.1767,
       "members": [
         "char_002_amiya",
@@ -3229,7 +3247,7 @@
       "title": "所属势力：拉特兰",
       "description": "使用所属势力为“拉特兰”的干员推进指令",
       "memberCount": 15,
-      "informationStrength": 0.9649,
+      "informationStrength": 0.9676,
       "challengeDifficulty": 0.3,
       "members": [
         "char_1032_excu2",
@@ -3255,7 +3273,7 @@
       "title": "出身地：哥伦比亚",
       "description": "使用出身地为“哥伦比亚”的干员推进指令",
       "memberCount": 51,
-      "informationStrength": 0.6118,
+      "informationStrength": 0.6145,
       "challengeDifficulty": 0.22,
       "members": [
         "char_1028_texas2",
@@ -3317,7 +3335,7 @@
       "title": "出身地：维多利亚",
       "description": "使用出身地为“维多利亚”的干员推进指令",
       "memberCount": 46,
-      "informationStrength": 0.6416,
+      "informationStrength": 0.6443,
       "challengeDifficulty": 0.2433,
       "members": [
         "char_017_huang",
@@ -3374,7 +3392,7 @@
       "title": "出身地：炎",
       "description": "使用出身地为“炎”的干员推进指令",
       "memberCount": 27,
-      "informationStrength": 0.7953,
+      "informationStrength": 0.798,
       "challengeDifficulty": 0.2467,
       "members": [
         "char_1040_blaze2",
@@ -3412,7 +3430,7 @@
       "title": "出身地：东国",
       "description": "使用出身地为“东国”的干员推进指令",
       "memberCount": 20,
-      "informationStrength": 0.8819,
+      "informationStrength": 0.8846,
       "challengeDifficulty": 0.2633,
       "members": [
         "char_1029_yato2",
@@ -3443,7 +3461,7 @@
       "title": "出身地：卡兹戴尔",
       "description": "使用出身地为“卡兹戴尔”的干员推进指令",
       "memberCount": 20,
-      "informationStrength": 0.8819,
+      "informationStrength": 0.8846,
       "challengeDifficulty": 0.2167,
       "members": [
         "char_1035_wisdel",
@@ -3474,7 +3492,7 @@
       "title": "出身地：拉特兰",
       "description": "使用出身地为“拉特兰”的干员推进指令",
       "memberCount": 18,
-      "informationStrength": 0.9123,
+      "informationStrength": 0.915,
       "challengeDifficulty": 0.2467,
       "members": [
         "char_1032_excu2",
@@ -3503,7 +3521,7 @@
       "title": "种族：菲林",
       "description": "使用种族为“菲林”的干员推进指令",
       "memberCount": 52,
-      "informationStrength": 0.6062,
+      "informationStrength": 0.6089,
       "challengeDifficulty": 0.1967,
       "members": [
         "char_003_kalts",
@@ -3566,7 +3584,7 @@
       "title": "种族：黎博利",
       "description": "使用种族为“黎博利”的干员推进指令",
       "memberCount": 43,
-      "informationStrength": 0.661,
+      "informationStrength": 0.6637,
       "challengeDifficulty": 0.29,
       "members": [
         "char_1031_slent2",
@@ -3620,7 +3638,7 @@
       "title": "种族：萨卡兹",
       "description": "使用种族为“萨卡兹”的干员推进指令",
       "memberCount": 29,
-      "informationStrength": 0.7747,
+      "informationStrength": 0.7774,
       "challengeDifficulty": 0.1933,
       "members": [
         "char_1011_lava2",
@@ -3660,7 +3678,7 @@
       "title": "种族：阿戈尔",
       "description": "使用种族为“阿戈尔”的干员推进指令",
       "memberCount": 17,
-      "informationStrength": 0.9288,
+      "informationStrength": 0.9315,
       "challengeDifficulty": 0.2533,
       "members": [
         "char_1023_ghost2",
@@ -7068,6 +7086,26 @@
       "identity_power_root_luo-de-dao",
       "identity_power_luo-de-dao"
     ],
+    "char_4217_makoto": [
+      "skill_all_manual",
+      "skill_range_change",
+      "logistics_base_room_zhi-zao-zhan",
+      "logistics_base_room_kong-zhi-zhong-shu",
+      "logistics_limited"
+    ],
+    "char_4218_aigis": [
+      "skill_all_manual",
+      "battle_stun",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_fa-dian-zhan",
+      "logistics_limited"
+    ],
+    "char_4219_yukari": [
+      "skill_all_manual",
+      "logistics_base_room_ren-li-ban-gong-shi",
+      "logistics_base_room_xun-lian-shi",
+      "logistics_limited"
+    ],
     "char_421_crow": [
       "skill_attack_recovery",
       "skill_auto_trigger",
@@ -7075,6 +7113,12 @@
       "logistics_base_room_jia-gong-zhan",
       "visual_brand_shan-hu-hai-an",
       "identity_race_li-bo-li"
+    ],
+    "char_4220_kormr": [
+      "skill_none",
+      "logistics_base_room_hui-ke-shi",
+      "logistics_base_room_su-she",
+      "logistics_limited"
     ],
     "char_4221_ju": [
       "skill_auto_trigger",
@@ -7625,7 +7669,9 @@
     ]
   },
   "manualReview": {
-    "battle_block_control": [],
+    "battle_block_control": [
+      "char_4217_makoto"
+    ],
     "battle_concealment": []
   }
 }
