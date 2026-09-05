@@ -13,6 +13,7 @@ DEFAULT_REPORT = PROJECT_ROOT / ".update-work" / "data-update-report.json"
 DEFAULT_VERSION = PROJECT_ROOT / "server-data" / "data-version.json"
 GENERATED_DATA_FILES = (
     "public/data/names.json",
+    "public/data/operator-search.json",
     "server-data/operators.json",
     "server-data/operator-archives.json",
     "server-data/operator-clues.json",
@@ -64,6 +65,7 @@ def validate(source):
     anomaly_rules = load_json("server-data/anomaly-rules.json")
     anomaly_questions = load_json("server-data/anomaly-questions.json")
     names = load_json("public/data/names.json")
+    operator_search = load_json("public/data/operator-search.json")
     operator_art = load_json("public/data/operator-art.json")
     attention_path = PROJECT_ROOT / "scripts" / "operator-attention-signals.json"
     attention = json.loads(attention_path.read_text(encoding="utf-8")) if attention_path.is_file() else {}
@@ -82,6 +84,45 @@ def validate(source):
     name_index = {record.get("n") for record in names if record.get("n")}
 
     structural_errors = []
+
+    if operator_search.get("schemaVersion") != 1:
+        structural_errors.append("operator search data schemaVersion must be 1")
+    search_aliases = operator_search.get("aliases") or {}
+    unknown_search_targets = sorted(set(search_aliases) - name_index)
+    if unknown_search_targets:
+        structural_errors.append(
+            f"operator search aliases have unknown targets: {unknown_search_targets[:8]}"
+        )
+    for name, alias_records in search_aliases.items():
+        if not isinstance(alias_records, list) or not alias_records:
+            structural_errors.append(f"operator search target {name} has no aliases")
+            continue
+        for alias_record in alias_records:
+            if not all(alias_record.get(key) for key in ("v", "p", "i")):
+                structural_errors.append(f"operator search target {name} has an incomplete alias")
+                break
+    search_groups = operator_search.get("specialGroups") or {}
+    special_names = set(search_groups.get("mama") or [])
+    special_names.update(search_groups.get("sarkazFixed") or [])
+    special_names.update(search_groups.get("sarkazPool") or [])
+    special_names.update(search_groups.get("electricCandidates") or [])
+    unknown_special_names = sorted(special_names - name_index)
+    if unknown_special_names:
+        structural_errors.append(
+            f"operator search special groups have unknown names: {unknown_special_names[:8]}"
+        )
+    if not set(search_groups.get("sarkazFixed") or []).issubset(
+        set(search_groups.get("sarkazPool") or [])
+    ):
+        structural_errors.append("fixed Sarkaz search choices must belong to the Sarkaz pool")
+    non_sarkaz_search_names = sorted(
+        name for name in search_groups.get("sarkazPool") or []
+        if operators.get(name, {}).get("race") != "萨卡兹"
+    )
+    if non_sarkaz_search_names:
+        structural_errors.append(
+            f"operator search Sarkaz pool has another race: {non_sarkaz_search_names[:8]}"
+        )
 
     anomaly_definitions = anomaly_rules.get("definitions") or {}
     anomaly_question_list = anomaly_questions.get("questions") or []

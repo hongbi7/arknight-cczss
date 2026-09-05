@@ -19,7 +19,7 @@ const python = hasConfig
   ? venvPython
   : (process.env.PYTHON || (process.platform === "win32" ? "python" : "python3"));
 
-for (const script of ["build_data.py", "build_anomaly_data.py", "build_themes.py"]) {
+for (const script of ["build_data.py", "build_search_data.py", "build_anomaly_data.py", "build_themes.py"]) {
   const result = spawnSync(python, [path.join(__dirname, script)], {
     cwd: ROOT,
     env: process.env,

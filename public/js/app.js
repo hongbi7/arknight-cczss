@@ -9,10 +9,14 @@ const FIRST_VISUAL_THEME_ID = "visual_brand_shan-hu-hai-an";
 const CORAL_HISTORY_LIMIT = 3;
 const DIRECTIVE_FIRST_CYCLE_MARKER = "__directive_first_family_cycle_complete__";
 const DIRECTIVE_FAMILIES = ["skill", "battle", "identity", "logistics", "visual"];
+const DEFAULT_ENDLESS_BUBBLE_MEDIA = "img/endfield-toad.png";
 
 let token = null;
 let namesIndex = [];
 let validNames = new Set();
+let operatorSearchEngine = null;
+let endlessEasterEggs = null;
+let lastEndlessInputTriggerKey = "";
 let currentMode = "sudden";
 let currentGameVersion = 1;
 let attempts = 0;
@@ -89,9 +93,11 @@ const suddenGameConfig = document.getElementById("suddenGameConfig");
 const suddenAttemptsGame = document.getElementById("suddenAttemptsGame");
 const applySuddenAttempts = document.getElementById("applySuddenAttempts");
 const endlessBubble = document.getElementById("endlessBubble");
+const endlessBubbleMedia = document.getElementById("endlessBubbleMedia");
 const endlessBubbleText = document.getElementById("endlessBubbleText");
 const endlessProgress = document.getElementById("endlessProgress");
 const mobileEndlessBubble = document.getElementById("mobileEndlessBubble");
+const mobileEndlessBubbleMedia = document.getElementById("mobileEndlessBubbleMedia");
 const mobileEndlessBubbleText = document.getElementById("mobileEndlessBubbleText");
 const mobileEndlessProgress = document.getElementById("mobileEndlessProgress");
 const choiceModalSub = document.getElementById("choiceModalSub");
@@ -672,6 +678,9 @@ async function startGame(mode, requestedMax, options = {}) {
   attempts = 0;
   lastRemaining = null;
   finished = false;
+  if (endlessEasterEggs) endlessEasterEggs.resetStreak();
+  lastEndlessInputTriggerKey = "";
+  hideEndlessBubble();
   setInputEnabled(false);
   applySuddenAttempts.disabled = mode !== "sudden";
   let transition = null;
@@ -836,6 +845,39 @@ function updateEndlessBubble() {
   });
 }
 
+function setEndlessBubbleMediaSource(element, source) {
+  if (!element) return;
+  if (element.getAttribute("src") === source) {
+    element.removeAttribute("src");
+    void element.offsetWidth;
+  }
+  element.src = source;
+}
+
+function setEndlessBubblePresentation(presentation) {
+  const mediaSource = presentation && presentation.type === "media" ? presentation.value : "";
+  const specialText = presentation && presentation.type === "text";
+  document.body.classList.toggle("endless-bubble-media-active", Boolean(mediaSource));
+  [endlessBubble, mobileEndlessBubble].forEach((element) => {
+    if (element) element.classList.toggle("is-media", Boolean(mediaSource));
+    if (element) element.classList.toggle("is-special-text", Boolean(specialText));
+  });
+  if (mediaSource) {
+    setEndlessBubbleMediaSource(endlessBubbleMedia, mediaSource);
+    setEndlessBubbleMediaSource(mobileEndlessBubbleMedia, mediaSource);
+  } else {
+    if (endlessBubbleMedia) endlessBubbleMedia.removeAttribute("src");
+    if (mobileEndlessBubbleMedia && mobileEndlessBubbleMedia.getAttribute("src") !== DEFAULT_ENDLESS_BUBBLE_MEDIA) {
+      mobileEndlessBubbleMedia.src = DEFAULT_ENDLESS_BUBBLE_MEDIA;
+    }
+  }
+  if (presentation && presentation.type === "text") {
+    [endlessBubbleText, mobileEndlessBubbleText].forEach((element) => {
+      if (element) element.textContent = presentation.value;
+    });
+  }
+}
+
 function replayBubble(element) {
   if (!element) return;
   element.classList.remove("show");
@@ -850,8 +892,17 @@ function clearMobileBubbleTimers() {
   mobileBubbleHideTimer = null;
 }
 
-function showEndlessBubble(won) {
-  if (won) {
+function showEndlessBubble(won, presentation = null, options = {}) {
+  setEndlessBubblePresentation(presentation);
+  [endlessBubble, mobileEndlessBubble].forEach((element) => {
+    if (element) element.classList.toggle("input-triggered", Boolean(options.inputTriggered));
+  });
+  if (presentation) {
+    const progress = totalOperators ? Math.min(1, attempts / totalOperators) : 0;
+    [endlessProgress, mobileEndlessProgress].forEach((element) => {
+      if (element) element.style.transform = "scaleX(" + progress + ")";
+    });
+  } else if (won) {
     [endlessBubbleText, mobileEndlessBubbleText].forEach((element) => {
       if (element) element.textContent = "穷举成功 · 目标已锁定";
     });
@@ -864,7 +915,8 @@ function showEndlessBubble(won) {
   if (bubbleTimer) clearTimeout(bubbleTimer);
   replayBubble(endlessBubble);
   bubbleTimer = setTimeout(() => {
-    if (endlessBubble) endlessBubble.classList.remove("show");
+    if (endlessBubble) endlessBubble.classList.remove("show", "input-triggered");
+    document.body.classList.remove("endless-bubble-media-active");
     bubbleTimer = null;
   }, 4000);
   clearMobileBubbleTimers();
@@ -874,7 +926,7 @@ function showEndlessBubble(won) {
       replayBubble(mobileEndlessBubble);
       mobileBubbleDelayTimer = null;
       mobileBubbleHideTimer = window.setTimeout(() => {
-        mobileEndlessBubble.classList.remove("show");
+        mobileEndlessBubble.classList.remove("show", "input-triggered");
         mobileBubbleHideTimer = null;
       }, 4000);
     }, 620);
@@ -883,10 +935,27 @@ function showEndlessBubble(won) {
 
 function hideEndlessBubble() {
   [endlessBubble, mobileEndlessBubble].forEach((element) => {
-    if (element) element.classList.remove("show");
+    if (element) element.classList.remove("show", "input-triggered");
   });
+  setEndlessBubblePresentation(null);
   if (bubbleTimer) { clearTimeout(bubbleTimer); bubbleTimer = null; }
   clearMobileBubbleTimers();
+}
+
+function handleEndlessInputEasterEgg(value) {
+  if (currentMode !== "endless" || !endlessEasterEggs) {
+    lastEndlessInputTriggerKey = "";
+    return;
+  }
+  const presentation = EndlessEasterEggs.classifyInput(value);
+  if (!presentation) {
+    lastEndlessInputTriggerKey = "";
+    return;
+  }
+  const triggerKey = presentation.type + ":" + presentation.value;
+  if (triggerKey === lastEndlessInputTriggerKey) return;
+  lastEndlessInputTriggerKey = triggerKey;
+  showEndlessBubble(false, presentation, { inputTriggered: true });
 }
 
 let lastRemaining = null;
@@ -903,37 +972,10 @@ function setInputEnabled(on) {
   }
 }
 
-/* ---------- 拼音模糊搜索 ---------- */
-
-function isSubsequence(query, target) {
-  let qi = 0;
-  for (let ti = 0; ti < target.length && qi < query.length; ti++) {
-    if (target[ti] === query[qi]) qi++;
-  }
-  return qi === query.length;
-}
-
-function scoreMatch(op, q) {
-  const n = op.n.toLowerCase();
-  if (n.includes(q)) return 3;
-  if (op.p && op.p === q) return 2.5;
-  if (op.p && op.p.includes(q)) return 2;
-  if (op.i && op.i === q) return 2.5;
-  if (op.i && isSubsequence(q, op.i)) return 1.5;
-  if (op.p && isSubsequence(q, op.p)) return 1;
-  return 0;
-}
+/* ---------- 拼音、绰号与身份名搜索 ---------- */
 
 function searchNames(query) {
-  const q = query.trim().toLowerCase().replace(/\s+/g, "");
-  if (!q) return [];
-  const scored = [];
-  for (const op of namesIndex) {
-    const s = scoreMatch(op, q);
-    if (s > 0) scored.push({ op, s });
-  }
-  scored.sort((a, b) => b.s - a.s || (b.op.hot - a.op.hot) || a.op.n.localeCompare(b.op.n, "zh"));
-  return scored.slice(0, 8);
+  return operatorSearchEngine ? operatorSearchEngine.search(query, 8) : [];
 }
 
 function renderSuggest(results) {
@@ -948,9 +990,12 @@ function renderSuggest(results) {
     suggestEl.classList.remove("hidden");
     return;
   }
-  results.forEach((r, idx) => {
+  const displayItems = results.map((r, idx) => ({ r, idx }));
+  if (isMobileLayout()) displayItems.reverse();
+  displayItems.forEach(({ r, idx }) => {
     const d = document.createElement("div");
     d.className = "suggest-item" + (idx === activeIndex ? " active" : "");
+    d.dataset.resultIndex = String(idx);
     const name = document.createElement("span");
     name.textContent = r.op.n;
     const py = document.createElement("span");
@@ -963,12 +1008,13 @@ function renderSuggest(results) {
     suggestEl.appendChild(d);
   });
   suggestEl.classList.remove("hidden");
+  if (isMobileLayout()) suggestEl.scrollTop = suggestEl.scrollHeight;
 }
 
 function setActive(idx) {
   activeIndex = idx;
   const items = suggestEl.querySelectorAll(".suggest-item");
-  items.forEach((el, i) => el.classList.toggle("active", i === idx));
+  items.forEach((el) => el.classList.toggle("active", Number(el.dataset.resultIndex) === idx));
 }
 
 function chooseSuggestion(idx) {
@@ -1141,6 +1187,9 @@ async function submitGuess() {
       return;
     }
     attempts += 1;
+    const endlessGuessPresentation = currentMode === "endless" && endlessEasterEggs
+      ? endlessEasterEggs.recordGuess(guessName)
+      : null;
     updateAttemptConfigState();
     token = data.token;
     lastRemaining = data.remaining;
@@ -1150,12 +1199,12 @@ async function submitGuess() {
         input.value = "";
         if (data.win) {
           renderComparisonFinalRecord(data);
-          showEndlessBubble(true);
+          showEndlessBubble(true, endlessGuessPresentation);
           finishGame(true, "猜中了！答案是 " + data.answerName + "，共用 " + attempts + " 次");
           return;
         }
         renderSuddenV3Row(data);
-        showEndlessBubble(false);
+        showEndlessBubble(false, endlessGuessPresentation);
         updateAttemptLabel();
         setStatus("已猜 " + attempts + " 次");
         setInputEnabled(true);
@@ -1174,11 +1223,11 @@ async function submitGuess() {
     renderRow(data);
     if (data.win) {
       input.value = "";
-      if (currentMode === "endless") showEndlessBubble(true);
+      if (currentMode === "endless") showEndlessBubble(true, endlessGuessPresentation);
       finishGame(true, "猜中了！答案是 " + data.answerName + "，共用 " + attempts + " 次");
       return;
     }
-    if (currentMode === "endless") showEndlessBubble(false);
+    if (currentMode === "endless") showEndlessBubble(false, endlessGuessPresentation);
     updateAttemptLabel();
     if (data.remaining === 0) {
       input.value = "";
@@ -3631,6 +3680,9 @@ function giveUpChoice() {
 
 function showModeScreen() {
   closeMobileDataSheet(false);
+  if (endlessEasterEggs) endlessEasterEggs.resetStreak();
+  lastEndlessInputTriggerKey = "";
+  hideEndlessBubble();
   gameStartSequence++;
   releaseDirectiveIntro();
   document.body.dataset.mode = "";
@@ -3874,6 +3926,7 @@ input.addEventListener("focus", syncMobileGuessDock);
 
 input.addEventListener("input", () => {
   quickInput.value = input.value;
+  handleEndlessInputEasterEgg(input.value);
   const results = searchNames(input.value);
   if (input.value.trim()) renderSuggest(results);
   else hideSuggest();
@@ -3898,6 +3951,7 @@ input.addEventListener("keydown", (e) => {
 
 quickInput.addEventListener("input", () => {
   input.value = quickInput.value;
+  handleEndlessInputEasterEgg(quickInput.value);
   const results = searchNames(quickInput.value);
   if (quickInput.value.trim()) renderQuickSuggest(results);
   else hideQuickSuggest();
@@ -5182,11 +5236,14 @@ anomalyErrorHomeBtn.addEventListener("click", showModeScreen);
 
 async function init() {
   clearDirectiveHistory();
-  const [names, art] = await Promise.all([
+  const [names, art, searchData] = await Promise.all([
     fetchJSON("data/names.json"),
     fetchJSON("data/operator-art.json").catch(() => ({})),
+    fetchJSON("data/operator-search.json").catch(() => ({ schemaVersion: 1 })),
   ]);
   namesIndex = names;
+  operatorSearchEngine = OperatorSearch.createOperatorSearch(names, searchData);
+  endlessEasterEggs = EndlessEasterEggs.createEndlessEasterEggs(searchData.specialGroups?.mama || []);
   operatorArt = art;
   validNames = new Set(names.map((x) => x.n));
   /* 搜索候选列表也接入滚动边界转交：候选滑到顶/底后继续滑动可带动外层档案卡片与最外层页面（移动端） */

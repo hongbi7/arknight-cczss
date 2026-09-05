@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260903-mobile-polish-1">
+<link rel="stylesheet" href="css/style.css?v=20260904-endless-bubbles-2">
 </head>
 <body data-mode="">
 
@@ -126,7 +126,8 @@
           <h2 id="gameSidebarTitle">缩小范围，<br>锁定目标。</h2>
           <p id="gameSidebarDesc">每次提交都会解锁 12 项档案比对结果。利用颜色与方向提示，逐步排除不可能。</p>
         </div>
-        <div id="endlessBubble" class="sidebar-callout">
+        <div id="endlessBubble" class="sidebar-callout" aria-live="polite">
+          <img id="endlessBubbleMedia" class="endless-bubble-media" alt="" aria-hidden="true">
           <span>ENUMERATION PROGRESS</span>
           <strong id="endlessBubbleText">离穷举完成还差 425</strong>
           <i aria-hidden="true"><b id="endlessProgress"></b></i>
@@ -225,7 +226,7 @@
         </section>
 
         <div id="mobileEndlessBubble" class="mobile-endless-callout" aria-live="polite">
-          <img src="img/endfield-toad.png" alt="" aria-hidden="true">
+          <img id="mobileEndlessBubbleMedia" src="img/endfield-toad.png" alt="" aria-hidden="true">
           <div>
             <span>ENUMERATION PROGRESS</span>
             <strong id="mobileEndlessBubbleText">离穷举完成还差 425</strong>
@@ -238,11 +239,11 @@
             <span class="console-step">01</span>
             <div>
               <h2>输入干员代号</h2>
-              <p>支持中文、完整拼音或首字母搜索</p>
+              <p>支持中文、拼音或首字母搜索</p>
             </div>
           </div>
           <div class="input-wrap">
-            <input id="guessInput" placeholder="例如：能天使 / nengtianshi / nts" autocomplete="off">
+            <input id="guessInput" placeholder="例如：能天使 / 小乐 / nengtianshi" autocomplete="off">
             <button id="guessBtn"><span>提交猜测</span><i aria-hidden="true">↗</i></button>
             <button id="revealBtn" class="ghost">揭晓答案</button>
             <div id="suggest" class="suggest hidden"></div>
@@ -468,6 +469,8 @@
 
 <div class="wipe" aria-hidden="true"><span></span></div>
 
-  <script src="js/app.js?v=20260903-mobile-polish-1"></script>
+  <script src="js/operator-search.js?v=20260903-operator-aliases-1"></script>
+  <script src="js/endless-easter-eggs.js?v=20260904-endless-bubbles-1"></script>
+  <script src="js/app.js?v=20260904-endless-bubbles-2"></script>
 </body>
 </html>
