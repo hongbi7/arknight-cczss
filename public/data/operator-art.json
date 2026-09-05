@@ -17,6 +17,15 @@
     "e1Asset": "char_286_cast3_1",
     "finalAsset": "char_286_cast3_summer#1"
   },
+  "char_4220_kormr": {
+    "e1": "/img/operators/e1/char_4220_kormr.webp",
+    "final": "/img/operators/final/char_4220_kormr.webp",
+    "finalKind": "skin",
+    "finalTitle": "飞越甜蜜之城",
+    "finalGroup": "女神异闻录３ Reload",
+    "e1Asset": "char_4220_kormr_1",
+    "finalAsset": "char_4220_kormr_p3r#1"
+  },
   "char_376_therex": {
     "e1": "/img/operators/e1/char_376_therex.webp",
     "final": "/img/operators/final/char_376_therex.webp",
@@ -1412,6 +1421,15 @@
     "e1Asset": "char_4213_skybx_1",
     "finalAsset": "char_4213_skybx_2"
   },
+  "char_4218_aigis": {
+    "e1": "/img/operators/e1/char_4218_aigis.webp",
+    "final": "/img/operators/final/char_4218_aigis.webp",
+    "finalKind": "skin",
+    "finalTitle": "静思真谛",
+    "finalGroup": "女神异闻录３ Reload",
+    "e1Asset": "char_4218_aigis_1",
+    "finalAsset": "char_4218_aigis_p3r#1"
+  },
   "char_002_amiya": {
     "e1": "/img/operators/e1/char_002_amiya.webp",
     "final": "/img/operators/final/char_002_amiya.webp",
@@ -2393,6 +2411,15 @@
     "e1Asset": "char_4223_botany_1",
     "finalAsset": "char_4223_botany_2"
   },
+  "char_4219_yukari": {
+    "e1": "/img/operators/e1/char_4219_yukari.webp",
+    "final": "/img/operators/final/char_4219_yukari.webp",
+    "finalKind": "skin",
+    "finalTitle": "戍卫晨昏",
+    "finalGroup": "女神异闻录３ Reload",
+    "e1Asset": "char_4219_yukari_1",
+    "finalAsset": "char_4219_yukari_p3r#1"
+  },
   "char_4234_pedro": {
     "e1": "/img/operators/e1/char_4234_pedro.webp",
     "final": "/img/operators/final/char_4234_pedro.webp",
@@ -3220,6 +3247,15 @@
     "finalGroup": "斗争血脉/VI",
     "e1Asset": "char_1023_ghost2_1",
     "finalAsset": "char_1023_ghost2_boc#6"
+  },
+  "char_4217_makoto": {
+    "e1": "/img/operators/e1/char_4217_makoto.webp",
+    "final": "/img/operators/final/char_4217_makoto.webp",
+    "finalKind": "skin",
+    "finalTitle": "见证荣光",
+    "finalGroup": "女神异闻录３ Reload",
+    "e1Asset": "char_4217_makoto_1",
+    "finalAsset": "char_4217_makoto_p3r#1"
   },
   "char_4048_doroth": {
     "e1": "/img/operators/e1/char_4048_doroth.webp",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "builderVersion": 5,
+  "builderVersion": 6,
   "definitions": {
     "skill_attack_recovery": {
       "id": "skill_attack_recovery",
@@ -1278,8 +1278,8 @@
       "family": "battle",
       "title": "阵线重构",
       "description": "可以主动改变自身、友方或召唤物的阻挡数",
-      "memberCount": 57,
-      "informationStrength": 0.5824,
+      "memberCount": 58,
+      "informationStrength": 0.5774,
       "challengeDifficulty": 0.2133,
       "members": [
         "char_1023_ghost2",
@@ -1323,6 +1323,7 @@
         "char_4183_mortis",
         "char_420_flamtl",
         "char_4212_nasti",
+        "char_4217_makoto",
         "char_4222_taraxa",
         "char_4228_closur",
         "char_422_aurora",
@@ -7089,6 +7090,7 @@
     "char_4217_makoto": [
       "skill_all_manual",
       "skill_range_change",
+      "battle_block_control",
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_kong-zhi-zhong-shu",
       "logistics_limited"
@@ -7669,9 +7671,7 @@
     ]
   },
   "manualReview": {
-    "battle_block_control": [
-      "char_4217_makoto"
-    ],
+    "battle_block_control": [],
     "battle_concealment": []
   }
 }
