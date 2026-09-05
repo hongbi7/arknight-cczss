@@ -3,16 +3,22 @@
 
 import argparse
 import hashlib
+import importlib.util
 import json
+import sys
 from collections import Counter
 from pathlib import Path
+
+from atomic_write import atomic_write_json
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REPORT = PROJECT_ROOT / ".update-work" / "data-update-report.json"
 DEFAULT_VERSION = PROJECT_ROOT / "server-data" / "data-version.json"
 GENERATED_DATA_FILES = (
+    "public/data/faction-logos.json",
     "public/data/names.json",
+    "public/data/operator-art.json",
     "public/data/operator-search.json",
     "server-data/operators.json",
     "server-data/operator-archives.json",
@@ -51,11 +57,86 @@ def public_asset_exists(url):
 
 def file_digest(relative_path):
     path = PROJECT_ROOT / relative_path
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    return {"bytes": path.stat().st_size, "sha256": digest}
+    payload = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    digest = hashlib.sha256(payload).hexdigest()
+    return {"bytes": len(payload), "sha256": digest}
 
 
-def validate(source):
+def expected_anomaly_fingerprint(excel_root):
+    """Compute the fingerprint using the anomaly builder's authoritative input set.
+
+    Keeping this call routed through build_anomaly_data avoids a second, inevitably
+    stale list of inputs in the validator when the anomaly builder changes.
+    """
+    builder_path = PROJECT_ROOT / "scripts" / "build_anomaly_data.py"
+    spec = importlib.util.spec_from_file_location("anomaly_data_builder", builder_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Unable to load anomaly builder: {builder_path}")
+    module = importlib.util.module_from_spec(spec)
+    builder_dir = str(builder_path.parent)
+    added_path = builder_dir not in sys.path
+    if added_path:
+        sys.path.insert(0, builder_dir)
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        if added_path:
+            sys.path.remove(builder_dir)
+    fingerprint_fn = getattr(module, "stable_fingerprint", None)
+    if fingerprint_fn is None:
+        fingerprint_fn = getattr(module, "anomaly_input_fingerprint", None)
+    if fingerprint_fn is None:
+        raise RuntimeError("build_anomaly_data.py exposes no input fingerprint function")
+    return fingerprint_fn(Path(excel_root))
+
+
+def verify_version_manifest(version_path, generated_data):
+    """Return errors for a version manifest whose file digests are stale."""
+    version_path = Path(version_path)
+    if not version_path.is_file():
+        return [f"version manifest does not exist: {version_path}"]
+    try:
+        manifest = json.loads(version_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        return [f"version manifest is unreadable: {error}"]
+    recorded = manifest.get("generatedData")
+    if not isinstance(recorded, dict):
+        return ["version manifest has no generatedData records"]
+    errors = []
+    expected_paths = set(generated_data)
+    recorded_paths = set(recorded)
+    for relative_path in sorted(expected_paths - recorded_paths):
+        errors.append(f"version manifest is missing generatedData record: {relative_path}")
+    for relative_path in sorted(recorded_paths - expected_paths):
+        errors.append(f"version manifest has unknown generatedData record: {relative_path}")
+    for relative_path in sorted(expected_paths & recorded_paths):
+        actual = generated_data[relative_path]
+        entry = recorded[relative_path]
+        if not isinstance(entry, dict) or entry.get("bytes") != actual["bytes"] or entry.get("sha256") != actual["sha256"]:
+            errors.append(f"version manifest digest mismatch: {relative_path}")
+    return errors
+
+
+def summarize_public_mirror(report):
+    """Keep mirror diagnostics in the run report without destabilizing data-version."""
+    downloaded = report.get("downloaded") or []
+    errors = list(report.get("errors") or [])
+    if report.get("error"):
+        errors.append(str(report["error"]))
+    return {
+        "status": report.get("status") or "unknown",
+        "repository": report.get("repository"),
+        "revision": report.get("revision"),
+        "downloadedCount": (
+            len(downloaded) if isinstance(downloaded, list) else int(downloaded)
+        ),
+        "notFound": sorted(set(report.get("notFound") or [])),
+        "errors": errors,
+        "operatorsMissingE1": sorted(set(report.get("operatorsMissingE1") or [])),
+    }
+
+
+def validate(source, anomaly_input_root=None, version_path=None, public_mirror=None):
     operators = load_json("server-data/operators.json")
     archives = load_json("server-data/operator-archives.json")
     clues = load_json("server-data/operator-clues.json")
@@ -130,8 +211,21 @@ def validate(source):
     anomaly_difficulties = set((anomaly_rules.get("difficulties") or {}).keys())
     if anomaly_rules.get("schemaVersion") != 1 or anomaly_questions.get("schemaVersion") != 1:
         structural_errors.append("anomaly data schemaVersion must be 1")
+    if anomaly_rules.get("builderVersion") != anomaly_questions.get("builderVersion"):
+        structural_errors.append("anomaly rule and question builderVersion mismatch")
     if anomaly_rules.get("sourceFingerprint") != anomaly_questions.get("sourceFingerprint"):
         structural_errors.append("anomaly rule and question source fingerprints differ")
+    if anomaly_input_root:
+        try:
+            expected_fingerprint = expected_anomaly_fingerprint(anomaly_input_root)
+            actual_fingerprint = anomaly_rules.get("sourceFingerprint")
+            if actual_fingerprint != expected_fingerprint:
+                structural_errors.append(
+                    "anomaly source fingerprint does not match its real inputs "
+                    f"(expected={expected_fingerprint}, actual={actual_fingerprint})"
+                )
+        except (OSError, ValueError, RuntimeError) as error:
+            structural_errors.append(f"unable to verify anomaly input fingerprint: {error}")
     if anomaly_domains != EXPECTED_ANOMALY_DOMAINS:
         structural_errors.append(
             f"anomaly domains differ (actual={sorted(anomaly_domains)})"
@@ -498,7 +592,7 @@ def validate(source):
     else:
         status = "ready"
 
-    return {
+    report = {
         "schemaVersion": 1,
         "status": status,
         "source": source,
@@ -529,6 +623,14 @@ def validate(source):
             for relative_path in GENERATED_DATA_FILES
         },
     }
+    if public_mirror is not None:
+        report["publicMirror"] = public_mirror
+    if version_path:
+        structural_errors.extend(verify_version_manifest(version_path, report["generatedData"]))
+        report["structuralErrors"] = structural_errors
+        if structural_errors:
+            report["status"] = "invalid"
+    return report
 
 
 def compact_version(report):
@@ -546,8 +648,7 @@ def compact_version(report):
 
 
 def write_json(path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_write_json(path, value, indent=2, trailing_newline=True)
 
 
 def main():
@@ -555,14 +656,40 @@ def main():
     parser.add_argument("--source-repository", default="unknown")
     parser.add_argument("--source-revision", default="unknown")
     parser.add_argument("--source-commit-time")
+    parser.add_argument("--asset-source-repository")
+    parser.add_argument("--asset-source-revision")
+    parser.add_argument(
+        "--public-asset-report",
+        type=Path,
+        help="public mirror report to preserve in the full validation report",
+    )
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--version", type=Path, default=DEFAULT_VERSION)
+    parser.add_argument(
+        "--anomaly-input-root",
+        type=Path,
+        help="GameData excel root used to recompute the anomaly input fingerprint",
+    )
+    parser.add_argument(
+        "--verify-existing-version",
+        action="store_true",
+        help="verify the existing version manifest instead of allowing it to be replaced",
+    )
     parser.add_argument(
         "--strict-assets",
         action="store_true",
         help="fail when client-derived assets or translation mappings need attention",
     )
+    parser.add_argument(
+        "--list-generated-files",
+        action="store_true",
+        help="print the canonical generated-file list and exit",
+    )
     args = parser.parse_args()
+
+    if args.list_generated_files:
+        print("\n".join(GENERATED_DATA_FILES))
+        return
 
     source = {
         "repository": args.source_repository,
@@ -570,10 +697,28 @@ def main():
     }
     if args.source_commit_time:
         source["commitTime"] = args.source_commit_time
+    if args.asset_source_repository:
+        source["assetRepository"] = args.asset_source_repository
+    if args.asset_source_revision:
+        source["assetRevision"] = args.asset_source_revision
 
-    report = validate(source)
+    public_mirror = None
+    if args.public_asset_report:
+        public_mirror = summarize_public_mirror(
+            json.loads(args.public_asset_report.read_text(encoding="utf-8"))
+        )
+
+    report = validate(
+        source,
+        anomaly_input_root=args.anomaly_input_root,
+        version_path=args.version if args.verify_existing_version else None,
+        public_mirror=public_mirror,
+    )
     write_json(args.report, report)
-    write_json(args.version, compact_version(report))
+    # Verification is intentionally read-only: an existing manifest may belong
+    # to an in-progress update and must not be replaced by this check.
+    if not args.verify_existing_version:
+        write_json(args.version, compact_version(report))
     print(json.dumps({
         "status": report["status"],
         "counts": report["counts"],

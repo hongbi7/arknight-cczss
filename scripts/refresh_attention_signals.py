@@ -22,6 +22,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+from atomic_write import atomic_write_json
+
 
 ROOT = Path(__file__).resolve().parents[1]
 OPERATORS_PATH = ROOT / "server-data" / "operators.json"
@@ -306,8 +308,8 @@ def main():
         },
         "operators": {operator_id: value for operator_id, value in records.items() if value},
     }
-    args.output.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    CACHE_PATH.write_text(json.dumps(output, ensure_ascii=False) + "\n", encoding="utf-8")
+    atomic_write_json(args.output, output, indent=2, trailing_newline=True)
+    atomic_write_json(CACHE_PATH, output, trailing_newline=True)
     print(json.dumps({
         "output": str(args.output),
         "operators": len(output["operators"]),

@@ -16,6 +16,7 @@ from pathlib import Path
 from PIL import Image
 
 import build_gameplay_assets as clue_assets
+from atomic_write import atomic_write_json
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -78,6 +79,13 @@ def public_asset_exists(public_root, url):
     except ValueError:
         return False
     return path.is_file()
+
+
+def resolve_final_asset(operator, latest):
+    """Return the asset that the current data says should be displayed."""
+    if latest and latest.get("portraitId"):
+        return latest["portraitId"]
+    return f"{operator['id']}_{'2' if int(operator.get('rarity') or 0) >= 4 else '1'}"
 
 
 class PublicAssetFetcher:
@@ -161,20 +169,18 @@ def build_operator_art(fetcher, operators, skins, public_root):
 
         latest = skins.get(operator_id)
         if latest and latest.get("portraitId"):
-            desired_asset = latest["portraitId"]
             final_kind = "skin"
             final_title = latest["skinName"]
             final_group = latest["skinGroup"]
         elif int(operator.get("rarity") or 0) >= 4:
-            desired_asset = f"{operator_id}_2"
             final_kind = "e2"
             final_title = "精英二阶段"
             final_group = "精英档案"
         else:
-            desired_asset = f"{operator_id}_1"
             final_kind = "e1"
             final_title = "精英一阶段"
             final_group = "基础档案"
+        desired_asset = resolve_final_asset(operator, latest)
 
         existing_final_ok = public_asset_exists(public_root, existing.get("final"))
         final_url = existing.get("final") if existing_final_ok else None
@@ -194,8 +200,10 @@ def build_operator_art(fetcher, operators, skins, public_root):
                 final_asset = desired_asset
                 resolved_desired = True
             else:
+                # Keep a usable old image, but record that it is stale.  A
+                # partial mirror update must not silently bless old artwork.
+                pending_asset = desired_asset
                 if not final_url:
-                    pending_asset = desired_asset
                     final_url = e1_url
                     final_asset = existing.get("e1Asset") or f"{operator_id}_1"
 
@@ -212,11 +220,7 @@ def build_operator_art(fetcher, operators, skins, public_root):
             record["pendingAsset"] = pending_asset
         manifest[operator_id] = record
 
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    atomic_write_json(manifest_path, manifest, indent=2, trailing_newline=True)
 
 
 def build_faction_logos(fetcher, operators, public_root):
@@ -240,10 +244,11 @@ def build_faction_logos(fetcher, operators, public_root):
         save_webp(image, public_root / url.lstrip("/"), 240, 240, 88)
         manifest[power_id] = url
 
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(
-        json.dumps(dict(sorted(manifest.items())), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+    atomic_write_json(
+        manifest_path,
+        dict(sorted(manifest.items())),
+        indent=2,
+        trailing_newline=True,
     )
 
 
@@ -267,8 +272,7 @@ def build_skill_icons(fetcher, clues, public_root):
 
 
 def write_report(path, report):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_write_json(path, report, indent=2, trailing_newline=True)
 
 
 def main():
@@ -303,12 +307,14 @@ def main():
     build_skill_icons(fetcher, clues, args.public_root)
     art_retained, art_missing = clue_assets.build_art_clues(clues, args.public_root, force=False)
 
+    not_found = sorted(set(fetcher.not_found))
+    mirror_complete = not fetcher.errors and not not_found and not art_missing
     report = {
-        "status": "complete" if not fetcher.errors else "partial",
+        "status": "complete" if mirror_complete else "partial",
         "repository": args.repository,
         "revision": revision,
         "downloaded": fetcher.downloaded,
-        "notFound": sorted(set(fetcher.not_found)),
+        "notFound": not_found,
         "errors": fetcher.errors,
         "artCluesPresent": art_retained,
         "operatorsMissingE1": art_missing,

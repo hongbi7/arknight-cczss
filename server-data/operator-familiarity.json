@@ -35,6 +35,22 @@
     "activeAttentionProviders": [],
     "version": "2026-08-popularity-3"
   },
+  "char_4220_kormr": {
+    "name": "虎狼丸",
+    "score": 22,
+    "tier": "C",
+    "confidence": 0.35,
+    "structuralScore": 22,
+    "usageScore": null,
+    "communityScore": null,
+    "attentionScore": null,
+    "attentionSources": {},
+    "progressionSignalsVersion": "2026-08-26-yituliu-1",
+    "signalsVersion": "2026-08-26-yituliu-1",
+    "attentionSignalsVersion": "2026-08-27-attention-1",
+    "activeAttentionProviders": [],
+    "version": "2026-08-popularity-3"
+  },
   "char_376_therex": {
     "name": "THRM-EX",
     "score": 67,
@@ -2545,6 +2561,22 @@
     "activeAttentionProviders": [],
     "version": "2026-08-popularity-3"
   },
+  "char_4218_aigis": {
+    "name": "埃癸斯",
+    "score": 32,
+    "tier": "C",
+    "confidence": 0.35,
+    "structuralScore": 32,
+    "usageScore": null,
+    "communityScore": null,
+    "attentionScore": null,
+    "attentionSources": {},
+    "progressionSignalsVersion": "2026-08-26-yituliu-1",
+    "signalsVersion": "2026-08-26-yituliu-1",
+    "attentionSignalsVersion": "2026-08-27-attention-1",
+    "activeAttentionProviders": [],
+    "version": "2026-08-popularity-3"
+  },
   "char_002_amiya": {
     "name": "阿米娅",
     "score": 79,
@@ -4293,6 +4325,22 @@
     "activeAttentionProviders": [],
     "version": "2026-08-popularity-3"
   },
+  "char_4219_yukari": {
+    "name": "岳羽由加莉",
+    "score": 32,
+    "tier": "C",
+    "confidence": 0.35,
+    "structuralScore": 32,
+    "usageScore": null,
+    "communityScore": null,
+    "attentionScore": null,
+    "attentionSources": {},
+    "progressionSignalsVersion": "2026-08-26-yituliu-1",
+    "signalsVersion": "2026-08-26-yituliu-1",
+    "attentionSignalsVersion": "2026-08-27-attention-1",
+    "activeAttentionProviders": [],
+    "version": "2026-08-popularity-3"
+  },
   "char_4234_pedro": {
     "name": "佩德洛",
     "score": 14,
@@ -5776,6 +5824,22 @@
     "confidence": 0.78,
     "structuralScore": 42,
     "usageScore": 70,
+    "communityScore": null,
+    "attentionScore": null,
+    "attentionSources": {},
+    "progressionSignalsVersion": "2026-08-26-yituliu-1",
+    "signalsVersion": "2026-08-26-yituliu-1",
+    "attentionSignalsVersion": "2026-08-27-attention-1",
+    "activeAttentionProviders": [],
+    "version": "2026-08-popularity-3"
+  },
+  "char_4217_makoto": {
+    "name": "结城理",
+    "score": 35,
+    "tier": "B",
+    "confidence": 0.35,
+    "structuralScore": 35,
+    "usageScore": null,
     "communityScore": null,
     "attentionScore": null,
     "attentionSources": {},

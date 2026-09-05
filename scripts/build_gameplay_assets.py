@@ -9,6 +9,8 @@ from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageStat
 
+from atomic_write import atomic_write_json
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FRAGMENT_FACE_GUARD_RATIO = 0.42
@@ -77,10 +79,11 @@ def build_factions(game_root, public_root):
         save_webp(data.image, output, (240, 240))
         manifest[power_id] = f"/img/factions/{power_id}.webp"
     manifest_path = public_root / "data" / "faction-logos.json"
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(
-        json.dumps(dict(sorted(manifest.items())), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+    atomic_write_json(
+        manifest_path,
+        dict(sorted(manifest.items())),
+        indent=2,
+        trailing_newline=True,
     )
     print(json.dumps({"factionLogos": len(manifest), "manifest": str(manifest_path)}, ensure_ascii=False))
 
@@ -355,10 +358,7 @@ def build_clues(game_root, public_root, clues_path, force=False):
         for skill in clue.get("skills") or []:
             target_url = skill.get("iconTargetUrl") or skill.get("iconUrl")
             skill["iconUrl"] = None if target_url in missing_urls else target_url
-    clues_path.write_text(
-        json.dumps(clues, ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8",
-    )
+    atomic_write_json(clues_path, clues, separators=(",", ":"))
     print(json.dumps({
         "artWritten": art_written,
         "artMissingOperators": art_missing,

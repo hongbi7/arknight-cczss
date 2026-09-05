@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_GAMEDATA_REPOSITORY = "https://github.com/Kengxxiao/ArknightsGameData.git"
 DEFAULT_CACHE_DIR = PROJECT_ROOT / ".cache" / "arknights-gamedata"
 DEFAULT_REPORT = PROJECT_ROOT / ".update-work" / "data-update-report.json"
+DEFAULT_VERSION = PROJECT_ROOT / "server-data" / "data-version.json"
 REQUIRED_TABLES = (
     "character_table.json",
     "handbook_info_table.json",
@@ -128,10 +129,15 @@ def source_metadata(excel_root, configured_repository):
         }
 
 
-def build_structured_data(excel_root):
+def build_operator_data(excel_root):
     env = os.environ.copy()
     env["ARKNIGHTS_GAMEDATA_ROOT"] = str(excel_root)
     run((sys.executable, PROJECT_ROOT / "scripts" / "build_data.py"), env=env)
+    run((sys.executable, PROJECT_ROOT / "scripts" / "build_search_data.py"))
+
+
+def build_structured_data(excel_root):
+    build_operator_data(excel_root)
     run((
         sys.executable,
         PROJECT_ROOT / "scripts" / "build_archives.py",
@@ -187,30 +193,57 @@ def build_client_assets(game_root, excel_root, force_assets):
 
     # Faction and skill manifests are client-derived. Rebuild once more so new
     # manifest entries become visible in the server-only operator records.
-    build_structured_data(excel_root)
+    build_operator_data(excel_root)
 
 
 def build_public_assets(excel_root):
+    report_path = PROJECT_ROOT / ".update-work" / "public-asset-report.json"
     run((
         sys.executable,
         PROJECT_ROOT / "scripts" / "fetch_public_assets.py",
         "--skin-table", excel_root / "skin_table.json",
-        "--report", PROJECT_ROOT / ".update-work" / "public-asset-report.json",
+        "--report", report_path,
     ))
     # Public Logo and skill files affect URLs emitted by build_data.py.
-    build_structured_data(excel_root)
+    build_operator_data(excel_root)
+    return report_path
 
 
-def validate(metadata, report_path, strict_assets):
+def merge_public_asset_metadata(metadata, report_path, version_path=DEFAULT_VERSION):
+    """Record the public mirror input alongside the GameData revision."""
+    if not report_path.is_file():
+        return
+    asset_report = json.loads(report_path.read_text(encoding="utf-8"))
+    asset_repository = asset_report.get("repository")
+    asset_revision = asset_report.get("revision")
+    if asset_repository:
+        metadata["assetRepository"] = asset_repository
+    if not asset_revision and asset_repository and version_path.is_file():
+        previous_version = json.loads(version_path.read_text(encoding="utf-8"))
+        previous_source = previous_version.get("source") or {}
+        if previous_source.get("assetRepository") == asset_repository:
+            asset_revision = previous_source.get("assetRevision")
+    if asset_revision:
+        metadata["assetRevision"] = asset_revision
+
+
+def validate(metadata, report_path, strict_assets, excel_root, public_asset_report=None):
     command = [
         sys.executable,
         PROJECT_ROOT / "scripts" / "validate_data_update.py",
         "--source-repository", metadata["repository"],
         "--source-revision", metadata["revision"],
+        "--anomaly-input-root", excel_root,
         "--report", report_path,
     ]
     if metadata.get("commitTime"):
         command.extend(("--source-commit-time", metadata["commitTime"]))
+    if metadata.get("assetRepository"):
+        command.extend(("--asset-source-repository", metadata["assetRepository"]))
+    if metadata.get("assetRevision"):
+        command.extend(("--asset-source-revision", metadata["assetRevision"]))
+    if public_asset_report:
+        command.extend(("--public-asset-report", public_asset_report))
     if strict_assets:
         command.append("--strict-assets")
     run(command)
@@ -224,6 +257,14 @@ def run_tests(report, full_update):
         raise RuntimeError("Node.js and npm are required to validate generated data")
     run((node, "--check", PROJECT_ROOT / "lib" / "game.js"))
     run((node, "--check", PROJECT_ROOT / "lib" / "anomaly.js"))
+    run((
+        sys.executable,
+        PROJECT_ROOT / "tests" / "data-pipeline" / "test_validate_data_update.py",
+    ))
+    run((
+        sys.executable,
+        PROJECT_ROOT / "tests" / "data-pipeline" / "test_partial_asset_refresh.py",
+    ))
     if full_update or report.get("status") == "ready":
         run((npm, "test"))
     else:
@@ -286,8 +327,10 @@ def main():
     }, ensure_ascii=False, indent=2), flush=True)
 
     build_structured_data(excel_root)
+    public_asset_report = None
     if not args.skip_public_assets:
-        build_public_assets(excel_root)
+        public_asset_report = build_public_assets(excel_root)
+        merge_public_asset_metadata(metadata, public_asset_report)
     game_root = None
     if not args.data_only:
         game_root = resolve_path(args.game_root)
@@ -299,8 +342,19 @@ def main():
     build_theme_bank(excel_root)
     if game_root:
         build_anomaly_skin_art(game_root, args.force_assets)
+        # Newly extracted portraits change outfit-question eligibility. Rebuild
+        # once against the final asset set so the fingerprint and banks converge
+        # within this run instead of drifting on the next update.
+        build_anomaly_data(excel_root)
+        build_theme_bank(excel_root)
 
-    report = validate(metadata, report_path, strict_assets=not args.data_only)
+    report = validate(
+        metadata,
+        report_path,
+        strict_assets=not args.data_only,
+        excel_root=excel_root,
+        public_asset_report=public_asset_report,
+    )
     run_tests(report, full_update=not args.data_only)
     print(json.dumps({
         "result": report["status"],

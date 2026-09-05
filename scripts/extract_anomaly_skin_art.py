@@ -15,6 +15,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from atomic_write import atomic_write_json
 from extract_operator_art import find_bundle, read_sprite, save_webp
 
 
@@ -185,11 +186,7 @@ def main():
         "reused": reused,
         "failures": failures,
     }
-    args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    atomic_write_json(args.report, report, indent=2, trailing_newline=True)
     print(json.dumps({
         "referenced": len(skins),
         "extracted": len(extracted),

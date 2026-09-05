@@ -45,6 +45,29 @@ def main():
     print(f"- 可选技能图标缺口：{counts['optionalSkillIconGaps']}")
     print(f"- 人工复核项：{counts['manualReviewItems']}")
 
+    mirror = report.get("publicMirror")
+    if mirror:
+        print(f"- 公开素材镜像：`{mirror.get('status', 'unknown')}`")
+        if mirror.get("revision"):
+            print(f"- 素材镜像版本：`{mirror['revision']}`")
+        print(
+            "- 镜像同步结果："
+            f"下载 {mirror.get('downloadedCount', 0)}，"
+            f"未收录 {len(mirror.get('notFound') or [])}，"
+            f"下载错误 {len(mirror.get('errors') or [])}"
+        )
+
+        if mirror.get("notFound"):
+            print()
+            print("### 公开镜像尚未收录")
+            print()
+            print(sample(mirror["notFound"]))
+        if mirror.get("errors"):
+            print()
+            print("### 公开镜像下载错误")
+            print()
+            print(sample(mirror["errors"]))
+
     for label, values in report.get("requiredAssets", {}).items():
         if values:
             print()

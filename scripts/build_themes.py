@@ -16,6 +16,9 @@ from pathlib import Path
 
 from pypinyin import pinyin, Style
 
+from atomic_write import atomic_write_json
+from canonical_theme_members import CANONICAL_THEME_SPECS, build_theme_members
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_PATH = Path(ROOT)
 
@@ -29,6 +32,7 @@ BRAND_THEME_MIN_MEMBERS = 15
 BRAND_THEME_MIN_FAMILIAR = 12
 IDENTITY_THEME_MIN_MEMBERS = 15
 IDENTITY_THEME_MIN_FAMILIAR = 8
+BUILDER_VERSION = 6
 
 
 def find_excel_root():
@@ -100,29 +104,6 @@ def character_gameplay_text(character_record):
     return "\n".join(str(value) for value in values if value)
 
 
-def highest_respawn_time(character_record):
-    phases = character_record.get("phases") or []
-    if not phases:
-        return None
-    frames = phases[-1].get("attributesKeyFrames") or []
-    if not frames:
-        return None
-    value = (frames[-1].get("data") or {}).get("respawnTime")
-    return int(value) if value is not None else None
-
-
-def has_force_mechanic(character_record):
-    force_keys = {"force", "p_force", "attack@force", "base_force_level"}
-    for skill_ref in character_record.get("skills") or []:
-        skill = skills.get(skill_ref.get("skillId")) or {}
-        levels = skill.get("levels") or []
-        if not levels:
-            continue
-        if any(str(item.get("key")) in force_keys for item in levels[-1].get("blackboard") or []):
-            return True
-    return False
-
-
 def skin_art_url(operator_id, portrait_id):
     digest = hashlib.sha256(portrait_id.encode("utf-8")).hexdigest()[:12]
     return f"/img/operators/skins/{operator_id}_{digest}.webp"
@@ -152,61 +133,15 @@ def familiar_count(members):
 
 
 theme_specs = [
-    ("skill_attack_recovery", "skill", "攻势蓄能", "至少一个技能采用攻击回复"),
-    ("skill_auto_trigger", "skill", "自律响应", "至少一个技能会自动触发"),
-    ("skill_passive", "skill", "被动响应", "至少拥有一个被动技能"),
-    ("skill_all_manual", "skill", "指令响应", "所有技能均需手动触发"),
-    ("skill_manual_auto", "skill", "双轨触发", "同时拥有手动与自动触发技能"),
-    ("skill_chargeable", "skill", "多重蓄能", "至少一个技能可以充能"),
-    ("skill_ammo", "skill", "弹药协议", "至少一个技能使用弹药机制"),
-    ("skill_range_change", "skill", "火力域重构", "至少一个技能会改变攻击范围"),
-    ("skill_distinct_ranges", "skill", "复合火力域", "不同技能使用不同攻击范围"),
-    ("skill_none", "skill", "简式作战协议", "没有常规战斗技能"),
-    ("battle_block_control", "battle", "阵线重构", "可以主动改变自身、友方或召唤物的阻挡数"),
-    ("battle_fast_redeploy", "battle", "快速再投", "自身基础再部署时间不高于35秒"),
-    ("battle_forced_movement", "battle", "位移干预", "能够推动、拖拽或强制移动目标"),
-    ("battle_concealment", "battle", "光学遮蔽", "自身、友方或召唤物能够获得隐匿或迷彩"),
-    ("battle_elemental", "battle", "元素干涉", "能够造成、治疗、减免或改变元素损伤机制"),
+    *CANONICAL_THEME_SPECS,
     ("identity_alter_family", "identity", "平行履历", "属于拥有异格形态的身份组"),
     ("identity_alter_form", "identity", "异格档案", "当前档案是一名异格干员"),
 ]
 
 theme_members = {theme_id: set() for theme_id, _, _, _ in theme_specs}
-for operator_id, record in operator_by_id.items():
-    operator_skills = (clues.get(operator_id) or {}).get("skills") or []
-    mechanics = [skill.get("mechanic") or {} for skill in operator_skills]
-    if any(mechanic.get("spRecovery") == "attack" for mechanic in mechanics):
-        theme_members["skill_attack_recovery"].add(operator_id)
-    if any(mechanic.get("activation") == "auto" for mechanic in mechanics):
-        theme_members["skill_auto_trigger"].add(operator_id)
-    if any(mechanic.get("activation") == "passive" for mechanic in mechanics):
-        theme_members["skill_passive"].add(operator_id)
-    if mechanics and all(mechanic.get("activation") == "manual" for mechanic in mechanics):
-        theme_members["skill_all_manual"].add(operator_id)
-    if (
-        any(mechanic.get("activation") == "manual" for mechanic in mechanics)
-        and any(mechanic.get("activation") == "auto" for mechanic in mechanics)
-    ):
-        theme_members["skill_manual_auto"].add(operator_id)
-    if any(mechanic.get("chargeable") for mechanic in mechanics):
-        theme_members["skill_chargeable"].add(operator_id)
-    if any(mechanic.get("ammo") for mechanic in mechanics):
-        theme_members["skill_ammo"].add(operator_id)
-    if any(skill.get("rangeOverridden") for skill in operator_skills):
-        theme_members["skill_range_change"].add(operator_id)
-    if len({skill.get("rangeId") for skill in operator_skills}) >= 2:
-        theme_members["skill_distinct_ranges"].add(operator_id)
-    if not operator_skills:
-        theme_members["skill_none"].add(operator_id)
-
-    character_record = character[operator_id]
-    respawn_time = highest_respawn_time(character_record)
-    if respawn_time is not None and respawn_time <= 35:
-        theme_members["battle_fast_redeploy"].add(operator_id)
-    if has_force_mechanic(character_record):
-        theme_members["battle_forced_movement"].add(operator_id)
-    if re.search(r"元素损伤|神经损伤|侵蚀损伤|灼燃损伤|凋亡损伤", character_gameplay_text(character_record)):
-        theme_members["battle_elemental"].add(operator_id)
+theme_members.update(build_theme_members(
+    operators, clues, character, skills, theme_overrides,
+))
 
 for theme_id in ("battle_block_control", "battle_concealment"):
     override = theme_overrides.get(theme_id) or {}
@@ -291,36 +226,8 @@ add_theme(
     limited_rule["members"],
 )
 
-# 形象：服装品牌（皮肤立绘映射见下方 operator-brand-art.json）。
-# 个别品牌按维护判断固定解锁次数：覆盖“成员 ≤25 或冷门品牌降为 1、其余 2 次”的默认规则。
-BRAND_DIRECTIVE_GOALS = {"珊瑚海岸": 3}
-# 个别品牌在全部主题中的出现权重乘数（不是族内权重）。
-BRAND_WEIGHT_BOOSTS = {"珊瑚海岸": 3.5}
-brand_candidates = []
-for rule_id in sorted((key for key in rules if key.startswith("visual.outfit_brand."))):
-    rule = rule_or_raise(rule_id)
-    if "：" not in rule["title"]:
-        raise ValueError(f"Unexpected outfit brand title: {rule['title']}")
-    brand = rule["title"].split("：", 1)[1]
-    members = set(rule["members"])
-    if len(members) < BRAND_THEME_MIN_MEMBERS or familiar_count(members) < BRAND_THEME_MIN_FAMILIAR:
-        continue
-    brand_candidates.append((brand, members))
-brand_candidates.sort(key=lambda item: (-len(item[1]), item[0]))
-for brand, members in brand_candidates:
-    add_theme(
-        f"visual_brand_{slugify(brand)}",
-        "visual",
-        f"时装品牌：{brand}",
-        f"使用拥有“{brand}”系列时装的干员推进指令",
-        members,
-        art_brand=brand,
-        directive_goal=BRAND_DIRECTIVE_GOALS.get(brand),
-        weight_boost=BRAND_WEIGHT_BOOSTS.get(brand),
-    )
-
-# 每个品牌主题成员在该品牌下最新的一套付费皮肤（与异类题库 optionArt 同源同规则，
-# 保证两边 URL 一致），供猜测行换装与皮肤提取使用。
+# 形象：从皮肤源表生成品牌主题，不能依赖某条异类规则是否恰好有可出题组合。
+# 每个成员使用该品牌下最新的一套付费皮肤；选取规则与异类题库 optionArt 一致。
 latest_paid_skin_by_brand = defaultdict(dict)
 for skin in (skin_table.get("charSkins") or {}).values():
     operator_id = skin.get("charId")
@@ -340,6 +247,33 @@ for skin in (skin_table.get("charSkins") or {}).values():
             "imageUrl": skin_art_url(operator_id, portrait_id),
             "skinName": display.get("skinName") or "时装",
         }
+
+# 个别品牌按维护判断固定解锁次数：覆盖“成员 ≤25 或冷门品牌降为 1、其余 2 次”的默认规则。
+BRAND_DIRECTIVE_GOALS = {"珊瑚海岸": 3}
+# 个别品牌在全部主题中的出现权重乘数（不是族内权重）。
+BRAND_WEIGHT_BOOSTS = {"珊瑚海岸": 3.5}
+brand_groups = defaultdict(set)
+for operator_id, records in latest_paid_skin_by_brand.items():
+    for brand in records:
+        brand_groups[brand].add(operator_id)
+brand_candidates = [
+    (brand, members)
+    for brand, members in brand_groups.items()
+    if len(members) >= BRAND_THEME_MIN_MEMBERS
+    and familiar_count(members) >= BRAND_THEME_MIN_FAMILIAR
+]
+brand_candidates.sort(key=lambda item: (-len(item[1]), item[0]))
+for brand, members in brand_candidates:
+    add_theme(
+        f"visual_brand_{slugify(brand)}",
+        "visual",
+        f"时装品牌：{brand}",
+        f"使用拥有“{brand}”系列时装的干员推进指令",
+        members,
+        art_brand=brand,
+        directive_goal=BRAND_DIRECTIVE_GOALS.get(brand),
+        weight_boost=BRAND_WEIGHT_BOOSTS.get(brand),
+    )
 
 # 身份：势力大系、所属势力、出身地、种族（玩家可报出成员的头部分组才纳入）。
 IDENTITY_THEME_SPECS = [
@@ -442,7 +376,7 @@ if uncovered:
 brand_art = {}
 for brand, members in brand_candidates:
     records = {}
-    for operator_id in members:
+    for operator_id in sorted(members):
         record = latest_paid_skin_by_brand.get(operator_id, {}).get(brand)
         if not record:
             raise ValueError(f"Brand theme member {operator_id} has no {brand} skin record")
@@ -473,14 +407,25 @@ for brand, records in brand_art.items():
 
 theme_data = {
     "schemaVersion": 1,
+    "builderVersion": BUILDER_VERSION,
     "definitions": theme_definitions,
     "byOperator": themes_by_operator,
     "manualReview": review_candidates,
 }
 
 os.makedirs(OUT_THEMES.parent, exist_ok=True)
-json.dump(theme_data, open(OUT_THEMES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-json.dump(brand_art_payload, open(OUT_BRAND_ART, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+atomic_write_json(
+    OUT_THEMES,
+    theme_data,
+    indent=2,
+    trailing_newline=True,
+)
+atomic_write_json(
+    OUT_BRAND_ART,
+    brand_art_payload,
+    separators=(",", ":"),
+    trailing_newline=True,
+)
 
 families = defaultdict(int)
 for definition in theme_definitions.values():

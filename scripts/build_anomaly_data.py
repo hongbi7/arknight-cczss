@@ -11,6 +11,9 @@ from collections import Counter, defaultdict
 from itertools import combinations
 from pathlib import Path
 
+from atomic_write import atomic_write_json
+from canonical_theme_members import CANONICAL_THEME_SPECS, build_theme_members
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SERVER_DATA = ROOT / "server-data"
@@ -44,7 +47,7 @@ MIN_QUESTIONS_PER_RULE = 1
 MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY = 60
 MAX_GENERATION_ATTEMPTS = 24000
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 4
+BUILDER_VERSION = 7
 
 
 def find_excel_root():
@@ -79,8 +82,12 @@ def load_json(path):
 
 
 def write_json(path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_write_json(path, value, indent=2, trailing_newline=True)
+
+
+def normalized_text_bytes(path):
+    payload = Path(path).read_bytes()
+    return payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
 
 
 def clean_text(value):
@@ -88,6 +95,42 @@ def clean_text(value):
     value = re.sub(r"<[^>]+>", "", value)
     value = value.replace("\\n", "\n")
     return value
+
+
+def skin_art_filename(operator_id, portrait_id):
+    digest = hashlib.sha256(portrait_id.encode("utf-8")).hexdigest()[:12]
+    return f"{operator_id}_{digest}.webp"
+
+
+def available_paid_skin_art_names(excel_root):
+    """Return available art for the source-derived paid-skin records."""
+    operators = load_json(SERVER_DATA / "operators.json")
+    operator_ids = {record["id"] for record in operators.values()}
+    skin_table = load_json(excel_root / "skin_table.json")
+    skin_art_root = ROOT / "public" / "img" / "operators" / "skins"
+    latest_by_operator_brand = {}
+    latest_by_operator = {}
+    for skin in (skin_table.get("charSkins") or {}).values():
+        operator_id = skin.get("charId")
+        portrait_id = skin.get("portraitId") or skin.get("spPortraitId")
+        display = skin.get("displaySkin") or {}
+        brand = normalize_brand(display.get("skinGroupName"))
+        if not skin.get("isBuySkin") or operator_id not in operator_ids or not portrait_id or not brand:
+            continue
+        rank = (display.get("getTime") or 0, display.get("sortId") or 0)
+        record = (rank, skin_art_filename(operator_id, portrait_id))
+        brand_key = (operator_id, brand)
+        if brand_key not in latest_by_operator_brand or rank > latest_by_operator_brand[brand_key][0]:
+            latest_by_operator_brand[brand_key] = record
+        if operator_id not in latest_by_operator or rank > latest_by_operator[operator_id][0]:
+            latest_by_operator[operator_id] = record
+
+    available = set()
+    referenced = list(latest_by_operator_brand.values()) + list(latest_by_operator.values())
+    for _, filename in referenced:
+        if (skin_art_root / filename).is_file():
+            available.add(filename)
+    return sorted(available)
 
 
 def stable_fingerprint(excel_root):
@@ -98,15 +141,20 @@ def stable_fingerprint(excel_root):
         "building_data.json", "skin_table.json",
     ):
         digest.update(name.encode("utf-8"))
-        digest.update((excel_root / name).read_bytes())
+        digest.update(normalized_text_bytes(excel_root / name))
     for path in (
         SERVER_DATA / "operators.json",
-        SERVER_DATA / "operator-themes.json",
+        SERVER_DATA / "operator-clues.json",
         SERVER_DATA / "operator-identities.json",
         ROOT / "scripts" / "anomaly-rule-overrides.json",
+        ROOT / "scripts" / "theme-overrides.json",
+        ROOT / "scripts" / "canonical_theme_members.py",
     ):
         digest.update(str(path.relative_to(ROOT)).replace("\\", "/").encode("utf-8"))
-        digest.update(path.read_bytes())
+        digest.update(normalized_text_bytes(path))
+    digest.update(b"available-skin-art")
+    for filename in available_paid_skin_art_names(excel_root):
+        digest.update(filename.encode("utf-8"))
     digest.update(f"builder-version:{BUILDER_VERSION}".encode("utf-8"))
     return "sha256:" + digest.hexdigest()
 
@@ -127,7 +175,8 @@ class RuleBank:
         self.disabled = []
 
     def add(self, rule_id, domain, title, description, members, values, difficulty, source,
-            match_label=None, allow_broad=False, option_art=None, eligible_odd_ids=None):
+            match_label=None, allow_broad=False, option_art=None, eligible_odd_ids=None,
+            eligible_member_ids=None):
         members = set(members)
         override = self.overrides.get(rule_id) or {}
         included = set(override.get("include") or [])
@@ -170,6 +219,8 @@ class RuleBank:
             rule["_optionArt"] = option_art
         if eligible_odd_ids is not None:
             rule["_eligibleOddIds"] = set(eligible_odd_ids)
+        if eligible_member_ids is not None:
+            rule["_eligibleMemberIds"] = set(eligible_member_ids)
         self.rules.append(rule)
 
     def categorical(self, domain, key, label, values, difficulty, source, excluded=None):
@@ -245,8 +296,7 @@ def normalize_brand(value):
 
 
 def skin_art_url(operator_id, portrait_id):
-    digest = hashlib.sha256(portrait_id.encode("utf-8")).hexdigest()[:12]
-    return f"/img/operators/skins/{operator_id}_{digest}.webp"
+    return f"/img/operators/skins/{skin_art_filename(operator_id, portrait_id)}"
 
 
 def parse_recruit_names(detail, operator_names):
@@ -509,15 +559,16 @@ def build_rules(excel_root, operators, themes, identities, overrides):
         option_art = {}
         for oid in operator_ids:
             skin = paid_skin_by_operator_brand[oid].get(brand) if oid in members else latest_paid_skin.get(oid)
-            if not skin:
+            if not skin or not (ROOT / "public" / skin["imageUrl"].lstrip("/")).is_file():
                 continue
             option_art[oid] = {
                 key: value for key, value in skin.items() if key != "rank"
             }
         bank.add(f"visual.outfit_brand.{slug(brand)}", "visual", f"服装品牌：{brand}",
-                 f"其余三名干员均拥有“{brand}”品牌服装", members, brand_values,
-                 1, "skin.displaySkin.skinGroupName", brand,
-                 option_art=option_art, eligible_odd_ids=option_art)
+                  f"其余三名干员均拥有“{brand}”品牌服装", members, brand_values,
+                  1, "skin.displaySkin.skinGroupName", brand,
+                  option_art=option_art, eligible_odd_ids=option_art,
+                  eligible_member_ids=option_art)
 
     return bank, operator_by_id
 
@@ -702,6 +753,8 @@ def generate_questions(bank, operator_by_id, fingerprint):
             eligible = [oid for oid in operator_ids if operator_by_id[oid].get("familiarityScore", 0) >= config["min"]]
             inside = [oid for oid in eligible if oid in rule["_memberSet"]]
             outside = [oid for oid in eligible if oid not in rule["_memberSet"]]
+            if rule.get("_eligibleMemberIds") is not None:
+                inside = [oid for oid in inside if oid in rule["_eligibleMemberIds"]]
             if rule.get("_eligibleOddIds") is not None:
                 outside = [oid for oid in outside if oid in rule["_eligibleOddIds"]]
             if len(inside) < 3 or not outside:
@@ -779,13 +832,31 @@ def public_rule(rule):
     return {key: value for key, value in rule.items() if not key.startswith("_")}
 
 
+def canonical_themes(operators, excel_root, overrides):
+    clues = load_json(SERVER_DATA / "operator-clues.json")
+    character = load_json(excel_root / "character_table.json")
+    skills = load_json(excel_root / "skill_table.json")
+    members = build_theme_members(operators, clues, character, skills, overrides)
+    return {"definitions": {
+        theme_id: {
+            "id": theme_id,
+            "family": family,
+            "title": title,
+            "description": description,
+            "members": sorted(members[theme_id]),
+        }
+        for theme_id, family, title, description in CANONICAL_THEME_SPECS
+    }}
+
+
 def main():
     excel_root = find_excel_root()
     operators = load_json(SERVER_DATA / "operators.json")
-    themes = load_json(SERVER_DATA / "operator-themes.json")
     identities = load_json(SERVER_DATA / "operator-identities.json")
     overrides = load_json(ROOT / "scripts" / "anomaly-rule-overrides.json")
+    theme_overrides = load_json(ROOT / "scripts" / "theme-overrides.json")
     fingerprint = stable_fingerprint(excel_root)
+    themes = canonical_themes(operators, excel_root, theme_overrides)
     bank, operator_by_id = build_rules(excel_root, operators, themes, identities, overrides)
     questions, rule_question_counts, generation_failures, collision_report = generate_questions(
         bank, operator_by_id, fingerprint
@@ -803,6 +874,7 @@ def main():
 
     rule_output = {
         "schemaVersion": 1,
+        "builderVersion": BUILDER_VERSION,
         "sourceFingerprint": fingerprint,
         "domains": {
             domain: {"id": domain, "label": labels[0], "labelEn": labels[1]}
@@ -813,11 +885,13 @@ def main():
     }
     question_output = {
         "schemaVersion": 1,
+        "builderVersion": BUILDER_VERSION,
         "sourceFingerprint": fingerprint,
         "questions": sorted(questions, key=lambda item: item["id"]),
     }
     report = {
         "schemaVersion": 1,
+        "builderVersion": BUILDER_VERSION,
         "sourceFingerprint": fingerprint,
         "rules": len(bank.rules),
         "questions": len(questions),
