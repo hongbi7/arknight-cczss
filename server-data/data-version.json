@@ -14,8 +14,8 @@
     "familiarityRecords": 425,
     "identityGroups": 37,
     "themes": 53,
-    "anomalyRules": 225,
-    "anomalyQuestions": 10521,
+    "anomalyRules": 229,
+    "anomalyQuestions": 10731,
     "anomalyBuckets": 18,
     "operatorArtRecords": 425,
     "requiredAssetGaps": 0,
@@ -93,9 +93,21 @@
     }
   },
   "generatedData": {
+    "public/data/faction-logos.json": {
+      "bytes": 1973,
+      "sha256": "0e8b53f7edc0965806e78e9b46cd52675575a3b3ec3b8316a8a31d0112522893"
+    },
     "public/data/names.json": {
       "bytes": 29964,
       "sha256": "18f4974a2a770454970a4ec838bdefb84d926522dd13f5ab3d287dd3a4567518"
+    },
+    "public/data/operator-art.json": {
+      "bytes": 136604,
+      "sha256": "10d62df2f0ccd28c9c98cf9a7d58b4374535cd40fb34b160670d469a5b1e60fa"
+    },
+    "public/data/operator-search.json": {
+      "bytes": 11918,
+      "sha256": "b99f0e04b9fecda15ac7d69735d59c7c873fa8e6c82efe8ccb6d8afa93458e98"
     },
     "server-data/operators.json": {
       "bytes": 603767,
@@ -118,20 +130,20 @@
       "sha256": "dabb6086a06841ec5293b04b9363b141b29f5a190b80afe57e1825bced4f5e8b"
     },
     "server-data/operator-themes.json": {
-      "bytes": 223146,
-      "sha256": "0ffd5c351eeff26e92d5aed2df0be4de2dc5428db989f5abcd9dd73e1d1fb08d"
+      "bytes": 223172,
+      "sha256": "25e2f42d41f5a45cb9772d766b71142a975be8d1ee4d0b7f6e443ebabdfb414f"
     },
     "server-data/operator-brand-art.json": {
-      "bytes": 41995,
-      "sha256": "043b6d4ebd719a7b0955b71ba21b066b9f2f607a4e3c52f10fe9ce212d7e57a4"
+      "bytes": 41997,
+      "sha256": "3dabff30194f2f08f6eec62af12144fc25e8cbb3d264ef2055a7a3146ab40237"
     },
     "server-data/anomaly-rules.json": {
-      "bytes": 258762,
-      "sha256": "18d6c63367024fb819ef52068bdde93f182ef79b1dda1bc1e33798d8bc403948"
+      "bytes": 262938,
+      "sha256": "c2f941b3b7d5b9215ce32a3359991da2a09cddfc771c49deee7ebbd234c08c8c"
     },
     "server-data/anomaly-questions.json": {
-      "bytes": 10815680,
-      "sha256": "2120abb008708c2a3c22016a86df084ebfce2f46bc7c406f52b9a8a6a97ae6d5"
+      "bytes": 11070197,
+      "sha256": "8776075ca3a98daa01780ca17632b1dc1683b9531c1867d5be2d0e9c4fbe0a38"
     }
   }
 }

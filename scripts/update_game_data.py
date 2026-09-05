@@ -128,10 +128,15 @@ def source_metadata(excel_root, configured_repository):
         }
 
 
-def build_structured_data(excel_root):
+def build_operator_data(excel_root):
     env = os.environ.copy()
     env["ARKNIGHTS_GAMEDATA_ROOT"] = str(excel_root)
     run((sys.executable, PROJECT_ROOT / "scripts" / "build_data.py"), env=env)
+    run((sys.executable, PROJECT_ROOT / "scripts" / "build_search_data.py"))
+
+
+def build_structured_data(excel_root):
+    build_operator_data(excel_root)
     run((
         sys.executable,
         PROJECT_ROOT / "scripts" / "build_archives.py",
@@ -187,7 +192,7 @@ def build_client_assets(game_root, excel_root, force_assets):
 
     # Faction and skill manifests are client-derived. Rebuild once more so new
     # manifest entries become visible in the server-only operator records.
-    build_structured_data(excel_root)
+    build_operator_data(excel_root)
 
 
 def build_public_assets(excel_root):
@@ -198,19 +203,35 @@ def build_public_assets(excel_root):
         "--report", PROJECT_ROOT / ".update-work" / "public-asset-report.json",
     ))
     # Public Logo and skill files affect URLs emitted by build_data.py.
-    build_structured_data(excel_root)
+    build_operator_data(excel_root)
 
 
-def validate(metadata, report_path, strict_assets):
+def merge_public_asset_metadata(metadata):
+    """Record the public mirror input alongside the GameData revision."""
+    report_path = PROJECT_ROOT / ".update-work" / "public-asset-report.json"
+    if not report_path.is_file():
+        return
+    asset_report = json.loads(report_path.read_text(encoding="utf-8"))
+    if asset_report.get("repository") and asset_report.get("revision"):
+        metadata["assetRepository"] = asset_report["repository"]
+        metadata["assetRevision"] = asset_report["revision"]
+
+
+def validate(metadata, report_path, strict_assets, excel_root):
     command = [
         sys.executable,
         PROJECT_ROOT / "scripts" / "validate_data_update.py",
         "--source-repository", metadata["repository"],
         "--source-revision", metadata["revision"],
+        "--anomaly-input-root", excel_root,
         "--report", report_path,
     ]
     if metadata.get("commitTime"):
         command.extend(("--source-commit-time", metadata["commitTime"]))
+    if metadata.get("assetRepository"):
+        command.extend(("--asset-source-repository", metadata["assetRepository"]))
+    if metadata.get("assetRevision"):
+        command.extend(("--asset-source-revision", metadata["assetRevision"]))
     if strict_assets:
         command.append("--strict-assets")
     run(command)
@@ -224,6 +245,10 @@ def run_tests(report, full_update):
         raise RuntimeError("Node.js and npm are required to validate generated data")
     run((node, "--check", PROJECT_ROOT / "lib" / "game.js"))
     run((node, "--check", PROJECT_ROOT / "lib" / "anomaly.js"))
+    run((
+        sys.executable,
+        PROJECT_ROOT / "tests" / "data-pipeline" / "test_validate_data_update.py",
+    ))
     if full_update or report.get("status") == "ready":
         run((npm, "test"))
     else:
@@ -288,6 +313,7 @@ def main():
     build_structured_data(excel_root)
     if not args.skip_public_assets:
         build_public_assets(excel_root)
+        merge_public_asset_metadata(metadata)
     game_root = None
     if not args.data_only:
         game_root = resolve_path(args.game_root)
@@ -299,8 +325,18 @@ def main():
     build_theme_bank(excel_root)
     if game_root:
         build_anomaly_skin_art(game_root, args.force_assets)
+        # Newly extracted portraits change outfit-question eligibility. Rebuild
+        # once against the final asset set so the fingerprint and banks converge
+        # within this run instead of drifting on the next update.
+        build_anomaly_data(excel_root)
+        build_theme_bank(excel_root)
 
-    report = validate(metadata, report_path, strict_assets=not args.data_only)
+    report = validate(
+        metadata,
+        report_path,
+        strict_assets=not args.data_only,
+        excel_root=excel_root,
+    )
     run_tests(report, full_update=not args.data_only)
     print(json.dumps({
         "result": report["status"],

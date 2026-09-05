@@ -96,17 +96,12 @@ jobs:
         id: changes
         shell: bash
         run: |
-          git add \
-            public/data/faction-logos.json \
-            public/data/names.json \
-            public/data/operator-art.json \
+          mapfile -t generated_data_files < <(python scripts/validate_data_update.py --list-generated-files)
+          git add -- \
+            "${generated_data_files[@]}" \
             public/img/clues \
             public/img/factions \
             public/img/operators \
-            server-data/operators.json \
-            server-data/operator-archives.json \
-            server-data/operator-clues.json \
-            server-data/operator-familiarity.json \
             server-data/data-version.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"

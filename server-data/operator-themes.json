@@ -1,5 +1,6 @@
 {
   "schemaVersion": 1,
+  "builderVersion": 5,
   "definitions": {
     "skill_attack_recovery": {
       "id": "skill_attack_recovery",
