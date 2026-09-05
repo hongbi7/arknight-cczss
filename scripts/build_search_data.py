@@ -7,6 +7,8 @@ from pathlib import Path
 
 from pypinyin import Style, lazy_pinyin
 
+from atomic_write import atomic_write_json
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATH = PROJECT_ROOT / "scripts" / "operator-search-aliases.json"
@@ -118,9 +120,11 @@ def main():
             "electricCandidates": electric_candidates,
         },
     }
-    OUTPUT_PATH.write_text(
-        json.dumps(output, ensure_ascii=False, separators=(",", ":")) + "\n",
-        encoding="utf-8",
+    atomic_write_json(
+        OUTPUT_PATH,
+        output,
+        separators=(",", ":"),
+        trailing_newline=True,
     )
     print(
         f"Wrote {OUTPUT_PATH.relative_to(PROJECT_ROOT)} "

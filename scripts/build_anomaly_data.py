@@ -11,6 +11,7 @@ from collections import Counter, defaultdict
 from itertools import combinations
 from pathlib import Path
 
+from atomic_write import atomic_write_json
 from canonical_theme_members import CANONICAL_THEME_SPECS, build_theme_members
 
 
@@ -46,7 +47,7 @@ MIN_QUESTIONS_PER_RULE = 1
 MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY = 60
 MAX_GENERATION_ATTEMPTS = 24000
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 6
+BUILDER_VERSION = 7
 
 
 def find_excel_root():
@@ -81,8 +82,12 @@ def load_json(path):
 
 
 def write_json(path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_write_json(path, value, indent=2, trailing_newline=True)
+
+
+def normalized_text_bytes(path):
+    payload = Path(path).read_bytes()
+    return payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
 
 
 def clean_text(value):
@@ -136,7 +141,7 @@ def stable_fingerprint(excel_root):
         "building_data.json", "skin_table.json",
     ):
         digest.update(name.encode("utf-8"))
-        digest.update((excel_root / name).read_bytes())
+        digest.update(normalized_text_bytes(excel_root / name))
     for path in (
         SERVER_DATA / "operators.json",
         SERVER_DATA / "operator-clues.json",
@@ -146,7 +151,7 @@ def stable_fingerprint(excel_root):
         ROOT / "scripts" / "canonical_theme_members.py",
     ):
         digest.update(str(path.relative_to(ROOT)).replace("\\", "/").encode("utf-8"))
-        digest.update(path.read_bytes())
+        digest.update(normalized_text_bytes(path))
     digest.update(b"available-skin-art")
     for filename in available_paid_skin_art_names(excel_root):
         digest.update(filename.encode("utf-8"))

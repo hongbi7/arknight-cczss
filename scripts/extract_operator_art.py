@@ -12,6 +12,8 @@ import re
 import sys
 from pathlib import Path
 
+from atomic_write import atomic_write_json
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 UNITYPY_ROOT = PROJECT_ROOT / ".tools" / "unitypy"
@@ -214,6 +216,17 @@ def public_asset_exists(public_root, url):
     return path.is_file()
 
 
+def can_reuse_manifest(existing, public_root, desired_asset):
+    """Reuse only an entry whose files and data fingerprint are current."""
+    return bool(
+        existing
+        and not existing.get("pendingAsset")
+        and existing.get("finalAsset") == desired_asset
+        and public_asset_exists(public_root, existing.get("e1"))
+        and public_asset_exists(public_root, existing.get("final"))
+    )
+
+
 def build_operator_art(game_root, operators_path, skin_table_path, public_root, missing_only=False):
     operators = json.loads(operators_path.read_text(encoding="utf-8"))
     skins = latest_skin_map(skin_table_path)
@@ -233,12 +246,11 @@ def build_operator_art(game_root, operators_path, skin_table_path, public_root, 
     for index, operator in enumerate(operators.values(), 1):
         operator_id = operator["id"]
         existing = existing_manifest.get(operator_id)
-        if (
-            existing
-            and not existing.get("pendingAsset")
-            and public_asset_exists(public_root, existing.get("e1"))
-            and public_asset_exists(public_root, existing.get("final"))
-        ):
+        latest = skins.get(operator_id)
+        desired_asset = (latest or {}).get("portraitId")
+        if not desired_asset:
+            desired_asset = f"{operator_id}_{'2' if int(operator.get('rarity') or 0) >= 4 else '1'}"
+        if can_reuse_manifest(existing, public_root, desired_asset):
             manifest[operator_id] = existing
             reused += 1
             continue
@@ -266,7 +278,6 @@ def build_operator_art(game_root, operators_path, skin_table_path, public_root, 
         save_webp(e1_image, e1_path, 760, 900, 84)
         final_image = None
         final_asset = None
-        latest = skins.get(operator_id)
         if latest:
             final_image, final_asset = read_sprite(skin_bundle, [latest["portraitId"]])
 
@@ -304,11 +315,7 @@ def build_operator_art(game_root, operators_path, skin_table_path, public_root, 
             flush=True,
         )
 
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    atomic_write_json(manifest_path, manifest, indent=2, trailing_newline=True)
     print(json.dumps({
         "records": len(manifest),
         "reused": reused,

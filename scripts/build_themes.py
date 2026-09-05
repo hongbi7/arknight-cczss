@@ -16,6 +16,7 @@ from pathlib import Path
 
 from pypinyin import pinyin, Style
 
+from atomic_write import atomic_write_json
 from canonical_theme_members import CANONICAL_THEME_SPECS, build_theme_members
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,7 +32,7 @@ BRAND_THEME_MIN_MEMBERS = 15
 BRAND_THEME_MIN_FAMILIAR = 12
 IDENTITY_THEME_MIN_MEMBERS = 15
 IDENTITY_THEME_MIN_FAMILIAR = 8
-BUILDER_VERSION = 5
+BUILDER_VERSION = 6
 
 
 def find_excel_root():
@@ -413,13 +414,17 @@ theme_data = {
 }
 
 os.makedirs(OUT_THEMES.parent, exist_ok=True)
-OUT_THEMES.write_text(
-    json.dumps(theme_data, ensure_ascii=False, indent=2) + "\n",
-    encoding="utf-8",
+atomic_write_json(
+    OUT_THEMES,
+    theme_data,
+    indent=2,
+    trailing_newline=True,
 )
-OUT_BRAND_ART.write_text(
-    json.dumps(brand_art_payload, ensure_ascii=False, separators=(",", ":")) + "\n",
-    encoding="utf-8",
+atomic_write_json(
+    OUT_BRAND_ART,
+    brand_art_payload,
+    separators=(",", ":"),
+    trailing_newline=True,
 )
 
 families = defaultdict(int)

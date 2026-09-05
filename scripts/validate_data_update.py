@@ -9,6 +9,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+from atomic_write import atomic_write_json
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REPORT = PROJECT_ROOT / ".update-work" / "data-update-report.json"
@@ -55,8 +57,9 @@ def public_asset_exists(url):
 
 def file_digest(relative_path):
     path = PROJECT_ROOT / relative_path
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    return {"bytes": path.stat().st_size, "sha256": digest}
+    payload = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    digest = hashlib.sha256(payload).hexdigest()
+    return {"bytes": len(payload), "sha256": digest}
 
 
 def expected_anomaly_fingerprint(excel_root):
@@ -114,7 +117,26 @@ def verify_version_manifest(version_path, generated_data):
     return errors
 
 
-def validate(source, anomaly_input_root=None, version_path=None):
+def summarize_public_mirror(report):
+    """Keep mirror diagnostics in the run report without destabilizing data-version."""
+    downloaded = report.get("downloaded") or []
+    errors = list(report.get("errors") or [])
+    if report.get("error"):
+        errors.append(str(report["error"]))
+    return {
+        "status": report.get("status") or "unknown",
+        "repository": report.get("repository"),
+        "revision": report.get("revision"),
+        "downloadedCount": (
+            len(downloaded) if isinstance(downloaded, list) else int(downloaded)
+        ),
+        "notFound": sorted(set(report.get("notFound") or [])),
+        "errors": errors,
+        "operatorsMissingE1": sorted(set(report.get("operatorsMissingE1") or [])),
+    }
+
+
+def validate(source, anomaly_input_root=None, version_path=None, public_mirror=None):
     operators = load_json("server-data/operators.json")
     archives = load_json("server-data/operator-archives.json")
     clues = load_json("server-data/operator-clues.json")
@@ -601,6 +623,8 @@ def validate(source, anomaly_input_root=None, version_path=None):
             for relative_path in GENERATED_DATA_FILES
         },
     }
+    if public_mirror is not None:
+        report["publicMirror"] = public_mirror
     if version_path:
         structural_errors.extend(verify_version_manifest(version_path, report["generatedData"]))
         report["structuralErrors"] = structural_errors
@@ -624,8 +648,7 @@ def compact_version(report):
 
 
 def write_json(path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_write_json(path, value, indent=2, trailing_newline=True)
 
 
 def main():
@@ -635,6 +658,11 @@ def main():
     parser.add_argument("--source-commit-time")
     parser.add_argument("--asset-source-repository")
     parser.add_argument("--asset-source-revision")
+    parser.add_argument(
+        "--public-asset-report",
+        type=Path,
+        help="public mirror report to preserve in the full validation report",
+    )
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--version", type=Path, default=DEFAULT_VERSION)
     parser.add_argument(
@@ -674,10 +702,17 @@ def main():
     if args.asset_source_revision:
         source["assetRevision"] = args.asset_source_revision
 
+    public_mirror = None
+    if args.public_asset_report:
+        public_mirror = summarize_public_mirror(
+            json.loads(args.public_asset_report.read_text(encoding="utf-8"))
+        )
+
     report = validate(
         source,
         anomaly_input_root=args.anomaly_input_root,
         version_path=args.version if args.verify_existing_version else None,
+        public_mirror=public_mirror,
     )
     write_json(args.report, report)
     # Verification is intentionally read-only: an existing manifest may belong

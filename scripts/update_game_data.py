@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_GAMEDATA_REPOSITORY = "https://github.com/Kengxxiao/ArknightsGameData.git"
 DEFAULT_CACHE_DIR = PROJECT_ROOT / ".cache" / "arknights-gamedata"
 DEFAULT_REPORT = PROJECT_ROOT / ".update-work" / "data-update-report.json"
+DEFAULT_VERSION = PROJECT_ROOT / "server-data" / "data-version.json"
 REQUIRED_TABLES = (
     "character_table.json",
     "handbook_info_table.json",
@@ -196,28 +197,37 @@ def build_client_assets(game_root, excel_root, force_assets):
 
 
 def build_public_assets(excel_root):
+    report_path = PROJECT_ROOT / ".update-work" / "public-asset-report.json"
     run((
         sys.executable,
         PROJECT_ROOT / "scripts" / "fetch_public_assets.py",
         "--skin-table", excel_root / "skin_table.json",
-        "--report", PROJECT_ROOT / ".update-work" / "public-asset-report.json",
+        "--report", report_path,
     ))
     # Public Logo and skill files affect URLs emitted by build_data.py.
     build_operator_data(excel_root)
+    return report_path
 
 
-def merge_public_asset_metadata(metadata):
+def merge_public_asset_metadata(metadata, report_path, version_path=DEFAULT_VERSION):
     """Record the public mirror input alongside the GameData revision."""
-    report_path = PROJECT_ROOT / ".update-work" / "public-asset-report.json"
     if not report_path.is_file():
         return
     asset_report = json.loads(report_path.read_text(encoding="utf-8"))
-    if asset_report.get("repository") and asset_report.get("revision"):
-        metadata["assetRepository"] = asset_report["repository"]
-        metadata["assetRevision"] = asset_report["revision"]
+    asset_repository = asset_report.get("repository")
+    asset_revision = asset_report.get("revision")
+    if asset_repository:
+        metadata["assetRepository"] = asset_repository
+    if not asset_revision and asset_repository and version_path.is_file():
+        previous_version = json.loads(version_path.read_text(encoding="utf-8"))
+        previous_source = previous_version.get("source") or {}
+        if previous_source.get("assetRepository") == asset_repository:
+            asset_revision = previous_source.get("assetRevision")
+    if asset_revision:
+        metadata["assetRevision"] = asset_revision
 
 
-def validate(metadata, report_path, strict_assets, excel_root):
+def validate(metadata, report_path, strict_assets, excel_root, public_asset_report=None):
     command = [
         sys.executable,
         PROJECT_ROOT / "scripts" / "validate_data_update.py",
@@ -232,6 +242,8 @@ def validate(metadata, report_path, strict_assets, excel_root):
         command.extend(("--asset-source-repository", metadata["assetRepository"]))
     if metadata.get("assetRevision"):
         command.extend(("--asset-source-revision", metadata["assetRevision"]))
+    if public_asset_report:
+        command.extend(("--public-asset-report", public_asset_report))
     if strict_assets:
         command.append("--strict-assets")
     run(command)
@@ -248,6 +260,10 @@ def run_tests(report, full_update):
     run((
         sys.executable,
         PROJECT_ROOT / "tests" / "data-pipeline" / "test_validate_data_update.py",
+    ))
+    run((
+        sys.executable,
+        PROJECT_ROOT / "tests" / "data-pipeline" / "test_partial_asset_refresh.py",
     ))
     if full_update or report.get("status") == "ready":
         run((npm, "test"))
@@ -311,9 +327,10 @@ def main():
     }, ensure_ascii=False, indent=2), flush=True)
 
     build_structured_data(excel_root)
+    public_asset_report = None
     if not args.skip_public_assets:
-        build_public_assets(excel_root)
-        merge_public_asset_metadata(metadata)
+        public_asset_report = build_public_assets(excel_root)
+        merge_public_asset_metadata(metadata, public_asset_report)
     game_root = None
     if not args.data_only:
         game_root = resolve_path(args.game_root)
@@ -336,6 +353,7 @@ def main():
         report_path,
         strict_assets=not args.data_only,
         excel_root=excel_root,
+        public_asset_report=public_asset_report,
     )
     run_tests(report, full_update=not args.data_only)
     print(json.dumps({

@@ -5,8 +5,10 @@ large generated operator archives.
 """
 
 import ast
+import hashlib
 import importlib.util
 import re
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -23,7 +25,32 @@ def load_validator():
     return module
 
 
+def load_updater():
+    path = ROOT / "scripts" / "update_game_data.py"
+    spec = importlib.util.spec_from_file_location("update_game_data", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_atomic_writer():
+    path = ROOT / "scripts" / "atomic_write.py"
+    spec = importlib.util.spec_from_file_location("atomic_write", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 class DataPipelineRegressionTests(unittest.TestCase):
+    def test_atomic_writer_replaces_existing_file_with_lf_text(self):
+        writer = load_atomic_writer()
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "generated.json"
+            target.write_bytes(b"old\r\n")
+            writer.atomic_write_text(target, "new\n")
+            self.assertEqual(target.read_bytes(), b"new\n")
+            self.assertEqual(list(target.parent.glob(".generated.json.*.tmp")), [])
+
     def test_workflow_stages_every_generated_data_file(self):
         validator = load_validator()
         workflow = (ROOT / ".github" / "workflows" / "update-game-data.yml").read_text(encoding="utf-8")
@@ -79,6 +106,95 @@ class DataPipelineRegressionTests(unittest.TestCase):
                 {"public/data/names.json": {"bytes": 2, "sha256": "new"}},
             )
         self.assertEqual(errors, ["version manifest digest mismatch: public/data/names.json"])
+
+    def test_file_digest_normalizes_windows_line_endings(self):
+        validator = load_validator()
+        original_root = validator.PROJECT_ROOT
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            relative_path = "sample.json"
+            (root / relative_path).write_bytes(b'{\r\n  "ok": true\r\n}\r\n')
+            validator.PROJECT_ROOT = root
+            try:
+                digest = validator.file_digest(relative_path)
+            finally:
+                validator.PROJECT_ROOT = original_root
+        normalized = b'{\n  "ok": true\n}\n'
+        self.assertEqual(digest, {
+            "bytes": len(normalized),
+            "sha256": hashlib.sha256(normalized).hexdigest(),
+        })
+
+    def test_anomaly_fingerprint_normalizes_line_endings(self):
+        builder_path = ROOT / "scripts" / "build_anomaly_data.py"
+        spec = importlib.util.spec_from_file_location("build_anomaly_data", builder_path)
+        module = importlib.util.module_from_spec(spec)
+        scripts_path = str(builder_path.parent)
+        added_path = scripts_path not in sys.path
+        if added_path:
+            sys.path.insert(0, scripts_path)
+        try:
+            spec.loader.exec_module(module)
+        finally:
+            if added_path:
+                sys.path.remove(scripts_path)
+        with tempfile.TemporaryDirectory() as directory:
+            sample_path = Path(directory) / "sample.txt"
+            sample_path.write_bytes(b"first\r\nsecond\rthird\n")
+            self.assertEqual(module.normalized_text_bytes(sample_path), b"first\nsecond\nthird\n")
+
+    def test_public_mirror_partial_summary_is_preserved_only_in_full_report(self):
+        validator = load_validator()
+        summary = validator.summarize_public_mirror({
+            "status": "partial",
+            "repository": "https://example.invalid/assets.git",
+            "revision": "abc123",
+            "downloaded": ["one.png"],
+            "notFound": ["missing.png", "missing.png"],
+            "errors": ["timeout.png: timed out"],
+            "operatorsMissingE1": ["char_new", "char_new"],
+        })
+        self.assertEqual(summary["downloadedCount"], 1)
+        self.assertEqual(summary["status"], "partial")
+        self.assertEqual(summary["notFound"], ["missing.png"])
+        self.assertEqual(summary["operatorsMissingE1"], ["char_new"])
+
+        compact = validator.compact_version({
+            "schemaVersion": 1,
+            "status": "asset_refresh_required",
+            "source": {},
+            "counts": {},
+            "manualReview": {},
+            "requiredAssets": {},
+            "optionalSkillIcons": [],
+            "attentionCoverage": {},
+            "generatedData": {},
+            "publicMirror": summary,
+        })
+        self.assertNotIn("publicMirror", compact)
+
+    def test_unavailable_public_mirror_keeps_last_known_revision(self):
+        updater = load_updater()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            report_path = root / "public-report.json"
+            version_path = root / "data-version.json"
+            report_path.write_text(
+                '{"status":"unavailable","repository":"https://example.invalid/assets.git"}',
+                encoding="utf-8",
+            )
+            version_path.write_text(
+                '{"source":{"assetRepository":"https://example.invalid/assets.git",'
+                '"assetRevision":"known-revision"}}',
+                encoding="utf-8",
+            )
+            metadata = {}
+            updater.merge_public_asset_metadata(metadata, report_path, version_path)
+
+        self.assertEqual(metadata, {
+            "assetRepository": "https://example.invalid/assets.git",
+            "assetRevision": "known-revision",
+        })
 
 
 if __name__ == "__main__":

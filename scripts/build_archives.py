@@ -6,6 +6,8 @@ import json
 import re
 from pathlib import Path
 
+from atomic_write import atomic_write_json
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = PROJECT_ROOT / "server-data" / "operator-archives.json"
@@ -36,8 +38,12 @@ def build(source, output):
                 })
         if sections:
             archives[operator_id] = sections
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(archives, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    atomic_write_json(
+        output,
+        archives,
+        separators=(",", ":"),
+        trailing_newline=True,
+    )
     print(json.dumps({"archives": len(archives), "output": str(output)}, ensure_ascii=False))
 
 

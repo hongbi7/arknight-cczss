@@ -9,6 +9,8 @@ from pathlib import Path
 
 from pypinyin import pinyin, Style
 
+from atomic_write import atomic_write_json
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_PATH = Path(ROOT)
 
@@ -51,6 +53,8 @@ OUT_NAMES = os.path.join(ROOT, "public", "data", "names.json")
 OUT_CLUES = os.path.join(ROOT, "server-data", "operator-clues.json")
 OUT_FAMILIARITY = os.path.join(ROOT, "server-data", "operator-familiarity.json")
 OUT_IDENTITIES = os.path.join(ROOT, "server-data", "operator-identities.json")
+
+
 
 EXP_KEYS = [
     "战斗经验", "格斗经验", "表演经验", "保镖经验", "偷窃经验", "向导经验",
@@ -805,16 +809,11 @@ identity_data = {
 
 os.makedirs(os.path.dirname(OUT_SERVER), exist_ok=True)
 os.makedirs(os.path.dirname(OUT_NAMES), exist_ok=True)
-json.dump(result, open(OUT_SERVER, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-json.dump(names, open(OUT_NAMES, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-json.dump(clue_data, open(OUT_CLUES, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-json.dump(identity_data, open(OUT_IDENTITIES, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-json.dump(
-    familiarity_data,
-    open(OUT_FAMILIARITY, "w", encoding="utf-8"),
-    ensure_ascii=False,
-    indent=2,
-)
+atomic_write_json(OUT_SERVER, result, separators=(",", ":"))
+atomic_write_json(OUT_NAMES, names, separators=(",", ":"))
+atomic_write_json(OUT_CLUES, clue_data, separators=(",", ":"))
+atomic_write_json(OUT_IDENTITIES, identity_data, indent=2)
+atomic_write_json(OUT_FAMILIARITY, familiarity_data, indent=2)
 
 print("operators:", len(result))
 print("hot:", sum(1 for r in result.values() if r["hot"]))
