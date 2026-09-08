@@ -164,6 +164,15 @@
       return pendingGroupUnlocks.splice(0);
     }
 
+    /* 称号气泡未在全域检索中触发过的话，新开一局时清空解锁进度 */
+    function resetGroupUnlocks() {
+      for (const group of aliasCandidateGroups) {
+        group.typedAliases.clear();
+        group.unlocked = false;
+      }
+      pendingGroupUnlocks.length = 0;
+    }
+
     function resolveGroupSubmission(value) {
       const query = normalize(value);
       if (!query) return null;
@@ -173,7 +182,7 @@
       return null;
     }
 
-    return { search, consumeGroupUnlocks, resolveGroupSubmission };
+    return { search, consumeGroupUnlocks, resolveGroupSubmission, resetGroupUnlocks };
   }
 
   return { createOperatorSearch, normalize };

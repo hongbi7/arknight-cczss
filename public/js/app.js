@@ -33,6 +33,7 @@ let workspaceWheelDistance = 0;
 let totalOperators = 0;
 let suddenMax = DEFAULT_SUDDEN_ATTEMPTS;
 let bubbleTimer = null;
+let endlessBubbleHideAt = 0;
 let mobileBubbleDelayTimer = null;
 let mobileBubbleHideTimer = null;
 let finalFocusTimer = null;
@@ -673,6 +674,9 @@ async function startGame(mode, requestedMax, options = {}) {
   const startSequence = ++gameStartSequence;
   const firstEntry = gameScreen.classList.contains("hidden");
   if (mode === "sudden" && !options.preserveDirectiveHistory) clearDirectiveHistory();
+  if (!groupUnlockBubbleShown && operatorSearchEngine && operatorSearchEngine.resetGroupUnlocks) {
+    operatorSearchEngine.resetGroupUnlocks();
+  }
   currentMode = mode;
   currentGameVersion = 1;
   if (mode === "sudden") syncSuddenControls(requestedMax == null ? suddenMax : requestedMax);
@@ -917,6 +921,7 @@ function showEndlessBubble(won, presentation = null, options = {}) {
   }
   if (bubbleTimer) clearTimeout(bubbleTimer);
   replayBubble(endlessBubble);
+  endlessBubbleHideAt = Date.now() + 4000;
   bubbleTimer = setTimeout(() => {
     if (endlessBubble) endlessBubble.classList.remove("show", "input-triggered");
     document.body.classList.remove("endless-bubble-media-active");
@@ -984,12 +989,51 @@ function searchNames(query) {
   return operatorSearchEngine ? operatorSearchEngine.search(query, 8) : [];
 }
 
-/* 称号组在输入过程中集满 3 个不同称号即解锁全部候选；全域检索中解锁时弹出提示气泡 */
+/* 称号气泡在全域检索中触发过后，称号解锁才长期保留；否则新开一局时重置 */
+let groupUnlockBubbleShown = false;
+
+/* 称号组集满 3 个不同称号即解锁：全域检索弹气泡，终局校验免费载入一次档案卡片 */
 function consumeSearchGroupUnlocks() {
-  if (!operatorSearchEngine || !operatorSearchEngine.consumeGroupUnlocks) return;
+  if (!operatorSearchEngine || !operatorSearchEngine.consumeGroupUnlocks) return { unlocked: [], ready: null };
   const unlocked = operatorSearchEngine.consumeGroupUnlocks();
-  if (!unlocked.length || currentMode !== "endless") return;
-  showEndlessBubble(false, { type: "text", value: "是你吗？莫斯提马" }, { inputTriggered: true });
+  if (!unlocked.length) return { unlocked: [], ready: null };
+  let ready = null;
+  if (currentMode === "endless") {
+    groupUnlockBubbleShown = true;
+    showEndlessBubble(false, { type: "text", value: "是你吗？莫斯提马" }, { inputTriggered: true });
+    /* 候选展开动效等气泡完全消失后再开始 */
+    ready = new Promise((resolve) => {
+      window.setTimeout(resolve, Math.max(0, endlessBubbleHideAt - Date.now()));
+    });
+  } else if (currentMode === "sudden") {
+    /* 候选展开动效等免费档案卡片加载完、聚焦好后再开始 */
+    ready = Promise.all(unlocked.map((name) => loadGroupUnlockFreeCard(name)));
+  }
+  return { unlocked, ready };
+}
+
+/* 终局校验的称号彩蛋卡片只展示比对结果，不写入会话也不消耗猜测次数 */
+async function loadGroupUnlockFreeCard(name) {
+  if (!token || finished || currentMode !== "sudden" || !isSuddenV3()) return;
+  if (guessedOperatorNames.has(name)) return;
+  const requestToken = token;
+  try {
+    const data = await fetchJSON("/api/guess", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: requestToken, guess: name, free: true }),
+    });
+    if (!data || data.error) return;
+    if (currentMode !== "sudden" || finished || token !== requestToken) return;
+    const record = renderSuddenV3Row(data);
+    if (record && record.card) {
+      await waitForRecordReady(record.card, record.image);
+      /* 再等平滑滚动落定，保证档案卡片聚焦完成 */
+      await new Promise((resolve) => window.setTimeout(resolve, isReducedMotion() ? 0 : 420));
+    }
+  } catch (e) {
+    /* 免费卡片加载失败静默忽略，不影响正常猜测 */
+  }
 }
 
 function prepareSuggestionState(results, query) {
@@ -1022,8 +1066,78 @@ function restoreSuggestionScroll(container, keepScroll) {
   syncSuggestionScroll(container);
 }
 
+/* 称号解锁演出：等触发演出结束后播加载动效再展开全部称号；演出期间接管候选框，继续输入不打断 */
+const UNLOCK_SUGGEST_DELAY = 1600;
+let unlockSuggestTimer = null;
+let unlockSuggestSeq = 0;
+let unlockSequenceActive = false;
+
+function cancelUnlockSuggestDelay() {
+  unlockSuggestSeq += 1;
+  unlockSequenceActive = false;
+  if (unlockSuggestTimer) window.clearTimeout(unlockSuggestTimer);
+  unlockSuggestTimer = null;
+}
+
+function renderSuggestUnlockLoading(isQuick, query, results, ready) {
+  cancelUnlockSuggestDelay();
+  unlockSequenceActive = true;
+  const seq = unlockSuggestSeq;
+  /* 终局校验的动效等卡片聚焦后在顶部快捷搜索框播放（移动端无快捷框时留在原框） */
+  const animIsQuick = () => (
+    currentMode === "sudden"
+      ? document.body.classList.contains("quick-guess-active") && !isMobileLayout()
+      : isQuick
+  );
+  suggestEl.classList.add("hidden");
+  quickSuggestEl.classList.add("hidden");
+  if (currentMode === "sudden") {
+    /* 终局校验等档案卡片加载聚焦期间收起候选框，避免遮挡卡片演出 */
+  } else if (isQuick) {
+    /* 全域检索等气泡消失期间维持锁定时的单候选展示 */
+    renderQuickSuggest(results.slice(0, 1), query);
+  } else {
+    renderSuggest(results.slice(0, 1), query);
+  }
+  Promise.resolve(ready).then(() => {
+    if (seq !== unlockSuggestSeq) return;
+    const targetQuick = animIsQuick();
+    const container = targetQuick ? quickSuggestEl : suggestEl;
+    const other = targetQuick ? suggestEl : quickSuggestEl;
+    other.classList.add("hidden");
+    container.innerHTML = "";
+    const loading = document.createElement("div");
+    loading.className = "suggest-loading";
+    const label = document.createElement("span");
+    label.className = "loading-label";
+    label.textContent = "TITLE ARCHIVE // 称号档案展开中";
+    const bar = document.createElement("div");
+    bar.className = "loading-bar";
+    loading.appendChild(label);
+    loading.appendChild(bar);
+    for (let index = 0; index < 3; index++) {
+      const row = document.createElement("div");
+      row.className = "loading-row";
+      loading.appendChild(row);
+    }
+    container.appendChild(loading);
+    suggestItems = [];
+    quickSuggestItems = [];
+    activeIndex = -1;
+    quickActiveIndex = -1;
+    container.classList.remove("hidden");
+    unlockSuggestTimer = window.setTimeout(() => {
+      unlockSuggestTimer = null;
+      if (seq !== unlockSuggestSeq) return;
+      unlockSequenceActive = false;
+      if (targetQuick) renderQuickSuggest(results, query);
+      else renderSuggest(results, query);
+    }, UNLOCK_SUGGEST_DELAY);
+  });
+}
+
 function renderSuggest(results, query = input.value) {
-  hideQuickSuggest();
+  quickSuggestEl.classList.add("hidden");
   suggestEl.innerHTML = "";
   const keepScroll = prepareSuggestionState(results, query);
   if (!results.length) {
@@ -1103,6 +1217,7 @@ function updateSuggestionActiveItems() {
 }
 
 function clearSuggestionState() {
+  cancelUnlockSuggestDelay();
   guessEntryQuery = "";
   suggestItems = [];
   quickSuggestItems = [];
@@ -1130,11 +1245,12 @@ function chooseSuggestion(idx) {
 }
 
 function hideSuggest() {
+  cancelUnlockSuggestDelay();
   suggestEl.classList.add("hidden");
 }
 
 function renderQuickSuggest(results, query = quickInput.value) {
-  hideSuggest();
+  suggestEl.classList.add("hidden");
   quickSuggestEl.innerHTML = "";
   const keepScroll = prepareSuggestionState(results, query);
   if (!results.length) {
@@ -1192,6 +1308,7 @@ function chooseQuickSuggestion(index) {
 }
 
 function hideQuickSuggest() {
+  cancelUnlockSuggestDelay();
   quickSuggestEl.classList.add("hidden");
 }
 
@@ -4055,10 +4172,12 @@ input.addEventListener("focus", syncMobileGuessDock);
 
 /* 滚动过外部区域后点回输入框时，按当前文字重新展开候选 */
 function reopenSuggest() {
+  if (unlockSequenceActive) return;
   if (input.value.trim()) renderSuggest(searchNames(input.value));
 }
 
 function reopenQuickSuggest() {
+  if (unlockSequenceActive) return;
   if (quickInput.value.trim()) renderQuickSuggest(searchNames(quickInput.value));
 }
 
@@ -4069,10 +4188,14 @@ quickInput.addEventListener("click", reopenQuickSuggest);
 
 input.addEventListener("input", () => {
   quickInput.value = input.value;
+  /* 称号解锁演出期间候选框由演出接管，继续输入不打断 */
+  if (unlockSequenceActive) return;
   const results = searchNames(input.value);
-  consumeSearchGroupUnlocks();
-  if (input.value.trim()) renderSuggest(results);
-  else {
+  const groupUnlock = consumeSearchGroupUnlocks();
+  if (input.value.trim()) {
+    if (groupUnlock.unlocked.length) renderSuggestUnlockLoading(false, input.value.trim(), results, groupUnlock.ready);
+    else renderSuggest(results);
+  } else {
     hideSuggest();
     clearSuggestionState();
   }
@@ -4099,10 +4222,14 @@ input.addEventListener("keydown", (e) => {
 
 quickInput.addEventListener("input", () => {
   input.value = quickInput.value;
+  /* 称号解锁演出期间候选框由演出接管，继续输入不打断 */
+  if (unlockSequenceActive) return;
   const results = searchNames(quickInput.value);
-  consumeSearchGroupUnlocks();
-  if (quickInput.value.trim()) renderQuickSuggest(results);
-  else {
+  const groupUnlock = consumeSearchGroupUnlocks();
+  if (quickInput.value.trim()) {
+    if (groupUnlock.unlocked.length) renderSuggestUnlockLoading(true, quickInput.value.trim(), results, groupUnlock.ready);
+    else renderQuickSuggest(results);
+  } else {
     hideQuickSuggest();
     clearSuggestionState();
   }

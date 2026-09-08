@@ -234,6 +234,11 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
 .suggest-item.active { color: #fff; background: rgba(var(--accent-rgb),.12); }
 .suggest-item .py { color: var(--muted); font-family: var(--font); font-size: 10px; letter-spacing: 1px; }
 .suggest-empty { padding: 15px; color: var(--muted); font-family: var(--sans); font-size: 12px; }
+.suggest-loading { position: relative; padding: 13px 14px 12px; overflow: hidden; }
+.suggest-loading .loading-label { display: block; color: rgba(var(--accent-rgb),.72); font-family: var(--font); font-size: 9px; font-weight: 700; letter-spacing: 2px; animation: suggest-loading-pulse 1s ease-in-out infinite; }
+.suggest-loading .loading-bar { position: relative; height: 3px; margin-top: 9px; overflow: hidden; background: rgba(var(--accent-rgb),.13); }
+.suggest-loading .loading-bar::after { content: ""; position: absolute; top: 0; bottom: 0; left: -40%; width: 40%; background: linear-gradient(90deg,transparent,var(--accent),transparent); box-shadow: 0 0 10px rgba(var(--accent-rgb),.6); animation: suggest-loading-scan .85s linear infinite; }
+.suggest-loading .loading-row { height: 30px; margin-top: 7px; border: 1px solid rgba(var(--accent-rgb),.13); background: linear-gradient(100deg,rgba(var(--accent-rgb),.04) 30%,rgba(var(--accent-rgb),.13) 50%,rgba(var(--accent-rgb),.04) 70%); background-size: 220% 100%; animation: suggest-loading-shimmer 1.05s linear infinite; }
 .status { min-height: 18px; margin: 13px 0 0; color: #7fa3b6; font-family: var(--sans); font-size: 11px; }
 .status:not(:empty)::before { content: "◆"; margin-right: 8px; color: var(--accent); font-size: 8px; }
 .status.error { color: var(--wrong); }
@@ -494,6 +499,9 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
 @keyframes final-archive-in { 0% { opacity: 0; clip-path: inset(0 0 0 100%); transform: translateX(70px); } 45% { opacity: 1; } 100% { clip-path: inset(0); transform: none; } }
 @keyframes callout-slide { 0% { max-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; opacity: 0; transform: translateX(-112%) skewX(-4deg); } 12%,82% { max-height: var(--callout-open-height); margin-top: var(--callout-gap); padding-top: 15px; padding-bottom: 14px; border-width: 1px; opacity: 1; transform: none; } 100% { max-height: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; opacity: 0; transform: translateX(-32px); } }
 @keyframes callout-mini-scan { 0% { left: -42%; opacity: 0; } 20% { opacity: .7; } 100% { left: 122%; opacity: 0; } }
+@keyframes suggest-loading-pulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+@keyframes suggest-loading-scan { 0% { left: -40%; } 100% { left: 100%; } }
+@keyframes suggest-loading-shimmer { 0% { background-position: 130% 0; } 100% { background-position: -90% 0; } }
 @keyframes operator-scan { 0% { left: -70%; opacity: 0; } 18% { opacity: .75; } 100% { left: 138%; opacity: 0; } }
 @keyframes choice-out-left { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateX(-65vw) skewX(-7deg); } }
 @keyframes choice-out-right { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateX(65vw) skewX(7deg); } }
