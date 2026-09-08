@@ -106,36 +106,7 @@
     );
     const sarkazNames = sarkazFixed.concat(sarkazRandom.slice(0, Math.max(0, 8 - sarkazFixed.length)));
 
-    function specialResults(query) {
-      for (const group of aliasCandidateGroups) {
-        const isHan = /\p{Script=Han}/u.test(query);
-        /* 称号中文前两个字（或拼音前六个字母）命中就算触发一次联想 */
-        const recordThreshold = (isHan ? query.length >= 2 : query.length >= 6) ? 102 : 112;
-        const matched = group.aliases.filter((alias) => scoreAlias(alias, query) >= recordThreshold);
-        if (!matched.length) continue;
-        for (const alias of matched) group.typedAliases.add(alias.value);
-        if (!group.unlocked && group.typedAliases.size >= 3) {
-          group.unlocked = true;
-          pendingGroupUnlocks.push(group.name);
-        }
-        /* 锁定时要三个字才接管候选只显示本代号；解锁后两个字即展开全部 */
-        const displayMinLength = isHan ? (group.unlocked ? 2 : 3) : 6;
-        if (query.length >= displayMinLength) return group.unlocked ? group.results : group.results.slice(0, 1);
-      }
-      let resultNames = null;
-      if (query === "妈妈" || query === "mama") resultNames = mamaNames;
-      if (query === "魔族佬" || query === "mozulao") resultNames = sarkazNames;
-      if (query === "电" || query === "dian") resultNames = electricNames;
-      if (!resultNames) return null;
-      return resultNames.map((name) => ({ op: byName.get(name), s: 200 }));
-    }
-
-    function search(value, limit) {
-      const query = normalize(value);
-      if (!query || blockedQueries.has(query)) return [];
-      const special = specialResults(query);
-      if (special) return special;
-
+    function normalResults(query, limit) {
       const scored = [];
       for (const record of index) {
         let score = scoreOfficial(record, query);
@@ -149,6 +120,44 @@
         || left.op.n.localeCompare(right.op.n, "zh")
       );
       return scored.slice(0, limit || 8);
+    }
+
+    function specialResults(query, fallbackResults) {
+      for (const group of aliasCandidateGroups) {
+        const isHan = /\p{Script=Han}/u.test(query);
+        const matched = group.aliases.filter((alias) => scoreAlias(alias, query) > 0);
+        if (!matched.length) continue;
+        /* 锁定时要三个字才接管候选只显示本代号；解锁后两个字即展开全部 */
+        const isOnlyVisibleCandidate = fallbackResults.length === 1 && fallbackResults[0].op.n === group.name;
+        let unlockedNow = false;
+        /* 只记录明确的一条称号：共享前缀或同屏的其他候选都不能替任一称号记账。 */
+        if (!group.unlocked && matched.length === 1 && isOnlyVisibleCandidate) {
+          group.typedAliases.add(matched[0].value);
+          if (group.typedAliases.size >= 3) {
+            group.unlocked = true;
+            unlockedNow = true;
+            pendingGroupUnlocks.push(group.name);
+          }
+        }
+        const displayMinLength = isHan ? (group.unlocked ? 2 : 3) : 6;
+        const displaysGroupCandidate = query.length >= displayMinLength;
+        if (displaysGroupCandidate || unlockedNow) return group.unlocked ? group.results : group.results.slice(0, 1);
+      }
+      let resultNames = null;
+      if (query === "妈妈" || query === "mama") resultNames = mamaNames;
+      if (query === "魔族佬" || query === "mozulao") resultNames = sarkazNames;
+      if (query === "电" || query === "dian") resultNames = electricNames;
+      if (!resultNames) return null;
+      return resultNames.map((name) => ({ op: byName.get(name), s: 200 }));
+    }
+
+    function search(value, limit) {
+      const query = normalize(value);
+      if (!query || blockedQueries.has(query)) return [];
+      const fallbackResults = normalResults(query, limit);
+      const special = specialResults(query, fallbackResults);
+      if (special) return special;
+      return fallbackResults;
     }
 
     function consumeGroupUnlocks() {

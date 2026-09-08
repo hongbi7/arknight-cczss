@@ -26,6 +26,7 @@ let suggestItems = [];
 let activeIndex = -1;
 let quickSuggestItems = [];
 let quickActiveIndex = -1;
+let suggestScrollTop = 0;
 let quickVisibilityFrame = null;
 let workspaceWheelFrame = null;
 let workspaceWheelDistance = 0;
@@ -678,7 +679,7 @@ async function startGame(mode, requestedMax, options = {}) {
   token = null;
   attempts = 0;
   guessedOperatorNames.clear();
-  guessEntryQuery = "";
+  clearSuggestionState();
   lastRemaining = null;
   finished = false;
   if (endlessEasterEggs) endlessEasterEggs.resetStreak();
@@ -956,11 +957,11 @@ function handleEndlessInputEasterEgg(value) {
 }
 
 function clearGuessEntry() {
-  guessEntryQuery = "";
   input.value = "";
   quickInput.value = "";
   hideSuggest();
   hideQuickSuggest();
+  clearSuggestionState();
 }
 
 let lastRemaining = null;
@@ -991,17 +992,47 @@ function consumeSearchGroupUnlocks() {
   showEndlessBubble(false, { type: "text", value: "是你吗？莫斯提马" }, { inputTriggered: true });
 }
 
-function renderSuggest(results) {
+function prepareSuggestionState(results, query) {
+  const keepsCurrentQuery = query === guessEntryQuery;
+  guessEntryQuery = query;
+  suggestItems = results;
+  quickSuggestItems = results;
+  if (!keepsCurrentQuery || activeIndex < 0 || activeIndex >= results.length) {
+    activeIndex = results.length ? 0 : -1;
+    quickActiveIndex = activeIndex;
+    if (!keepsCurrentQuery) suggestScrollTop = 0;
+  } else {
+    quickActiveIndex = activeIndex;
+  }
+  return keepsCurrentQuery;
+}
+
+function syncSuggestionScroll(container) {
+  if (container.classList.contains("hidden")) return;
+  suggestScrollTop = container.scrollTop;
+  const other = container === suggestEl ? quickSuggestEl : suggestEl;
+  if (!other.classList.contains("hidden") && other.scrollTop !== suggestScrollTop) other.scrollTop = suggestScrollTop;
+}
+
+function restoreSuggestionScroll(container, keepScroll) {
+  if (!keepScroll && container === suggestEl && isMobileLayout()) {
+    suggestScrollTop = container.scrollHeight;
+  }
+  container.scrollTop = suggestScrollTop;
+  syncSuggestionScroll(container);
+}
+
+function renderSuggest(results, query = input.value) {
   hideQuickSuggest();
   suggestEl.innerHTML = "";
-  suggestItems = results;
-  activeIndex = results.length ? 0 : -1;
+  const keepScroll = prepareSuggestionState(results, query);
   if (!results.length) {
     const d = document.createElement("div");
     d.className = "suggest-empty";
     d.textContent = "没有匹配的干员";
     suggestEl.appendChild(d);
     suggestEl.classList.remove("hidden");
+    restoreSuggestionScroll(suggestEl, keepScroll);
     return;
   }
   const displayItems = results.map((r, idx) => ({ r, idx }));
@@ -1027,12 +1058,19 @@ function renderSuggest(results) {
     suggestEl.appendChild(d);
   });
   suggestEl.classList.remove("hidden");
-  if (isMobileLayout()) suggestEl.scrollTop = suggestEl.scrollHeight;
+  restoreSuggestionScroll(suggestEl, keepScroll);
 }
 
 function scrollActiveSuggestItem(container) {
   const activeItem = container ? container.querySelector(".suggest-item.active") : null;
-  if (activeItem) activeItem.scrollIntoView({ block: "nearest" });
+  if (!activeItem) return;
+  const itemTop = activeItem.offsetTop;
+  const itemBottom = itemTop + activeItem.offsetHeight;
+  if (itemTop < container.scrollTop) container.scrollTop = itemTop;
+  else if (itemBottom > container.scrollTop + container.clientHeight) {
+    container.scrollTop = itemBottom - container.clientHeight;
+  }
+  syncSuggestionScroll(container);
 }
 
 /* 键盘滚动候选时列表会在静止的鼠标下方移动，按坐标忽略被滚动顶出来的悬停，直到鼠标真正移动 */
@@ -1053,11 +1091,30 @@ quickSuggestEl.addEventListener("mousemove", (e) => {
   quickLastMouse = { x: e.clientX, y: e.clientY };
   quickHoverLock = false;
 });
+suggestEl.addEventListener("scroll", () => syncSuggestionScroll(suggestEl));
+quickSuggestEl.addEventListener("scroll", () => syncSuggestionScroll(quickSuggestEl));
+
+function updateSuggestionActiveItems() {
+  [suggestEl, quickSuggestEl].forEach((container) => {
+    container.querySelectorAll(".suggest-item").forEach((item) => {
+      item.classList.toggle("active", Number(item.dataset.resultIndex) === activeIndex);
+    });
+  });
+}
+
+function clearSuggestionState() {
+  guessEntryQuery = "";
+  suggestItems = [];
+  quickSuggestItems = [];
+  activeIndex = -1;
+  quickActiveIndex = -1;
+  suggestScrollTop = 0;
+}
 
 function setActive(idx, options = {}) {
   activeIndex = idx;
-  const items = suggestEl.querySelectorAll(".suggest-item");
-  items.forEach((el) => el.classList.toggle("active", Number(el.dataset.resultIndex) === idx));
+  quickActiveIndex = idx;
+  updateSuggestionActiveItems();
   if (options.scroll) {
     suggestHoverLock = true;
     scrollActiveSuggestItem(suggestEl);
@@ -1069,30 +1126,30 @@ function chooseSuggestion(idx) {
   input.value = suggestItems[idx].op.n;
   quickInput.value = input.value;
   hideSuggest();
+  clearSuggestionState();
 }
 
 function hideSuggest() {
   suggestEl.classList.add("hidden");
-  suggestItems = [];
-  activeIndex = -1;
 }
 
-function renderQuickSuggest(results) {
+function renderQuickSuggest(results, query = quickInput.value) {
   hideSuggest();
   quickSuggestEl.innerHTML = "";
-  quickSuggestItems = results;
-  quickActiveIndex = results.length ? 0 : -1;
+  const keepScroll = prepareSuggestionState(results, query);
   if (!results.length) {
     const empty = document.createElement("div");
     empty.className = "suggest-empty";
     empty.textContent = "没有匹配的干员";
     quickSuggestEl.appendChild(empty);
     quickSuggestEl.classList.remove("hidden");
+    restoreSuggestionScroll(quickSuggestEl, keepScroll);
     return;
   }
   results.forEach((result, index) => {
     const item = document.createElement("div");
     item.className = "suggest-item" + (index === quickActiveIndex ? " active" : "");
+    item.dataset.resultIndex = String(index);
     const name = document.createElement("span");
     name.textContent = result.label || result.op.n;
     const py = document.createElement("span");
@@ -1113,13 +1170,13 @@ function renderQuickSuggest(results) {
     quickSuggestEl.appendChild(item);
   });
   quickSuggestEl.classList.remove("hidden");
+  restoreSuggestionScroll(quickSuggestEl, keepScroll);
 }
 
 function setQuickActive(index, options = {}) {
   quickActiveIndex = index;
-  quickSuggestEl.querySelectorAll(".suggest-item").forEach((item, itemIndex) => {
-    item.classList.toggle("active", itemIndex === index);
-  });
+  activeIndex = index;
+  updateSuggestionActiveItems();
   if (options.scroll) {
     quickHoverLock = true;
     scrollActiveSuggestItem(quickSuggestEl);
@@ -1131,12 +1188,11 @@ function chooseQuickSuggestion(index) {
   quickInput.value = quickSuggestItems[index].op.n;
   input.value = quickInput.value;
   hideQuickSuggest();
+  clearSuggestionState();
 }
 
 function hideQuickSuggest() {
   quickSuggestEl.classList.add("hidden");
-  quickSuggestItems = [];
-  quickActiveIndex = -1;
 }
 
 function isOriginalGuessVisible() {
@@ -4012,12 +4068,14 @@ quickInput.addEventListener("focus", reopenQuickSuggest);
 quickInput.addEventListener("click", reopenQuickSuggest);
 
 input.addEventListener("input", () => {
-  guessEntryQuery = input.value;
   quickInput.value = input.value;
   const results = searchNames(input.value);
   consumeSearchGroupUnlocks();
   if (input.value.trim()) renderSuggest(results);
-  else hideSuggest();
+  else {
+    hideSuggest();
+    clearSuggestionState();
+  }
 });
 
 input.addEventListener("keydown", (e) => {
@@ -4040,12 +4098,14 @@ input.addEventListener("keydown", (e) => {
 });
 
 quickInput.addEventListener("input", () => {
-  guessEntryQuery = quickInput.value;
   input.value = quickInput.value;
   const results = searchNames(quickInput.value);
   consumeSearchGroupUnlocks();
   if (quickInput.value.trim()) renderQuickSuggest(results);
-  else hideQuickSuggest();
+  else {
+    hideQuickSuggest();
+    clearSuggestionState();
+  }
 });
 
 quickInput.addEventListener("keydown", (e) => {
