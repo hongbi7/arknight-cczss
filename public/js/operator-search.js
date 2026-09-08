@@ -74,6 +74,23 @@
     }));
     const blockedQueries = new Set((data.blockedQueries || []).map(normalize));
     const groups = data.specialGroups || {};
+    const aliasCandidateGroups = Object.entries(groups.aliasCandidates || {}).flatMap(([name, labels]) => {
+      const record = index.find((candidate) => candidate.operator.n === name);
+      if (!record) return [];
+      const aliases = (aliasesByName[name] || []).filter((alias) => labels.includes(alias.v));
+      return [{
+        name,
+        typedAliases: new Set(),
+        unlocked: false,
+        aliases: aliases.map((alias) => ({
+          value: normalize(alias.v), pinyin: normalize(alias.p), initials: normalize(alias.i),
+        })),
+        results: [{ op: record.operator, s: 200 }].concat(aliases.map((alias) => ({
+          op: record.operator, label: alias.v, pinyin: alias.p, s: 200,
+        }))),
+      }];
+    });
+    const pendingGroupUnlocks = [];
     const mamaNames = (groups.mama || []).filter((name) => byName.has(name));
     const electricNameMatches = names
       .filter((operator) => operator.n.includes("电"))
@@ -90,6 +107,21 @@
     const sarkazNames = sarkazFixed.concat(sarkazRandom.slice(0, Math.max(0, 8 - sarkazFixed.length)));
 
     function specialResults(query) {
+      for (const group of aliasCandidateGroups) {
+        const isHan = /\p{Script=Han}/u.test(query);
+        /* 称号中文前两个字（或拼音前六个字母）命中就算触发一次联想 */
+        const recordThreshold = (isHan ? query.length >= 2 : query.length >= 6) ? 102 : 112;
+        const matched = group.aliases.filter((alias) => scoreAlias(alias, query) >= recordThreshold);
+        if (!matched.length) continue;
+        for (const alias of matched) group.typedAliases.add(alias.value);
+        if (!group.unlocked && group.typedAliases.size >= 3) {
+          group.unlocked = true;
+          pendingGroupUnlocks.push(group.name);
+        }
+        /* 锁定时要三个字才接管候选只显示本代号；解锁后两个字即展开全部 */
+        const displayMinLength = isHan ? (group.unlocked ? 2 : 3) : 6;
+        if (query.length >= displayMinLength) return group.unlocked ? group.results : group.results.slice(0, 1);
+      }
       let resultNames = null;
       if (query === "妈妈" || query === "mama") resultNames = mamaNames;
       if (query === "魔族佬" || query === "mozulao") resultNames = sarkazNames;
@@ -119,7 +151,20 @@
       return scored.slice(0, limit || 8);
     }
 
-    return { search };
+    function consumeGroupUnlocks() {
+      return pendingGroupUnlocks.splice(0);
+    }
+
+    function resolveGroupSubmission(value) {
+      const query = normalize(value);
+      if (!query) return null;
+      for (const group of aliasCandidateGroups) {
+        if (group.aliases.some((alias) => alias.value === query || alias.pinyin === query)) return group.name;
+      }
+      return null;
+    }
+
+    return { search, consumeGroupUnlocks, resolveGroupSubmission };
   }
 
   return { createOperatorSearch, normalize };

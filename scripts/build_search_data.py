@@ -69,6 +69,12 @@ def main():
         output_aliases[name] = [build_alias_record(value) for value in unique_values]
 
     groups = source.get("specialGroups") or {}
+    alias_candidates = groups.get("aliasCandidates") or {}
+    for name, candidates in alias_candidates.items():
+        if name not in name_records or not candidates:
+            raise ValueError(f"invalid alias candidate group: {name}")
+        if len(set(candidates)) != len(candidates) or not set(candidates) <= set(aliases.get(name, [])):
+            raise ValueError(f"alias candidates must be unique configured aliases: {name}")
     mama_names = groups.get("mama") or []
     sarkaz_fixed = groups.get("sarkazFixed") or []
     electric_candidates = groups.get("electricCandidates") or []
@@ -114,6 +120,7 @@ def main():
         "aliases": output_aliases,
         "blockedQueries": list(dict.fromkeys(query for query in blocked_queries if query)),
         "specialGroups": {
+            "aliasCandidates": alias_candidates,
             "mama": mama_names,
             "sarkazFixed": sarkaz_fixed,
             "sarkazPool": sarkaz_names,

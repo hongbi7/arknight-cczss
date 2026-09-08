@@ -15,11 +15,12 @@ let token = null;
 let namesIndex = [];
 let validNames = new Set();
 let operatorSearchEngine = null;
+let guessEntryQuery = "";
 let endlessEasterEggs = null;
-let lastEndlessInputTriggerKey = "";
 let currentMode = "sudden";
 let currentGameVersion = 1;
 let attempts = 0;
+const guessedOperatorNames = new Set();
 let finished = false;
 let suggestItems = [];
 let activeIndex = -1;
@@ -676,10 +677,11 @@ async function startGame(mode, requestedMax, options = {}) {
   if (mode === "sudden") syncSuddenControls(requestedMax == null ? suddenMax : requestedMax);
   token = null;
   attempts = 0;
+  guessedOperatorNames.clear();
+  guessEntryQuery = "";
   lastRemaining = null;
   finished = false;
   if (endlessEasterEggs) endlessEasterEggs.resetStreak();
-  lastEndlessInputTriggerKey = "";
   hideEndlessBubble();
   setInputEnabled(false);
   applySuddenAttempts.disabled = mode !== "sudden";
@@ -835,8 +837,8 @@ function renderPips(remaining) {
 }
 
 function updateEndlessBubble() {
-  const remaining = Math.max(0, totalOperators - attempts);
-  const progress = totalOperators ? Math.min(1, attempts / totalOperators) : 0;
+  const remaining = Math.max(0, totalOperators - guessedOperatorNames.size);
+  const progress = totalOperators ? Math.min(1, guessedOperatorNames.size / totalOperators) : 0;
   [endlessBubbleText, mobileEndlessBubbleText].forEach((element) => {
     if (element) element.textContent = "离穷举完成还差 " + remaining;
   });
@@ -898,7 +900,7 @@ function showEndlessBubble(won, presentation = null, options = {}) {
     if (element) element.classList.toggle("input-triggered", Boolean(options.inputTriggered));
   });
   if (presentation) {
-    const progress = totalOperators ? Math.min(1, attempts / totalOperators) : 0;
+    const progress = totalOperators ? Math.min(1, guessedOperatorNames.size / totalOperators) : 0;
     [endlessProgress, mobileEndlessProgress].forEach((element) => {
       if (element) element.style.transform = "scaleX(" + progress + ")";
     });
@@ -943,19 +945,22 @@ function hideEndlessBubble() {
 }
 
 function handleEndlessInputEasterEgg(value) {
-  if (currentMode !== "endless" || !endlessEasterEggs) {
-    lastEndlessInputTriggerKey = "";
-    return;
-  }
+  if (currentMode !== "endless" || !endlessEasterEggs) return false;
   const presentation = EndlessEasterEggs.classifyInput(value);
-  if (!presentation) {
-    lastEndlessInputTriggerKey = "";
-    return;
-  }
-  const triggerKey = presentation.type + ":" + presentation.value;
-  if (triggerKey === lastEndlessInputTriggerKey) return;
-  lastEndlessInputTriggerKey = triggerKey;
+  if (!presentation) return false;
+  endlessEasterEggs.resetStreak();
+  clearGuessEntry();
+  settleMobileKeyboard();
   showEndlessBubble(false, presentation, { inputTriggered: true });
+  return true;
+}
+
+function clearGuessEntry() {
+  guessEntryQuery = "";
+  input.value = "";
+  quickInput.value = "";
+  hideSuggest();
+  hideQuickSuggest();
 }
 
 let lastRemaining = null;
@@ -978,7 +983,16 @@ function searchNames(query) {
   return operatorSearchEngine ? operatorSearchEngine.search(query, 8) : [];
 }
 
+/* 称号组在输入过程中集满 3 个不同称号即解锁全部候选；全域检索中解锁时弹出提示气泡 */
+function consumeSearchGroupUnlocks() {
+  if (!operatorSearchEngine || !operatorSearchEngine.consumeGroupUnlocks) return;
+  const unlocked = operatorSearchEngine.consumeGroupUnlocks();
+  if (!unlocked.length || currentMode !== "endless") return;
+  showEndlessBubble(false, { type: "text", value: "是你吗？莫斯提马" }, { inputTriggered: true });
+}
+
 function renderSuggest(results) {
+  hideQuickSuggest();
   suggestEl.innerHTML = "";
   suggestItems = results;
   activeIndex = results.length ? 0 : -1;
@@ -997,24 +1011,57 @@ function renderSuggest(results) {
     d.className = "suggest-item" + (idx === activeIndex ? " active" : "");
     d.dataset.resultIndex = String(idx);
     const name = document.createElement("span");
-    name.textContent = r.op.n;
+    name.textContent = r.label || r.op.n;
     const py = document.createElement("span");
     py.className = "py";
-    py.textContent = r.op.p;
+    py.textContent = r.pinyin || r.op.p;
     d.appendChild(name);
     d.appendChild(py);
     d.addEventListener("mousedown", (e) => { e.preventDefault(); chooseSuggestion(idx); });
-    d.addEventListener("mouseenter", () => { setActive(idx); });
+    d.addEventListener("mouseenter", (e) => {
+      if (suggestHoverLock && !hoverMouseMoved(suggestLastMouse, e)) return;
+      suggestHoverLock = false;
+      suggestLastMouse = { x: e.clientX, y: e.clientY };
+      setActive(idx);
+    });
     suggestEl.appendChild(d);
   });
   suggestEl.classList.remove("hidden");
   if (isMobileLayout()) suggestEl.scrollTop = suggestEl.scrollHeight;
 }
 
-function setActive(idx) {
+function scrollActiveSuggestItem(container) {
+  const activeItem = container ? container.querySelector(".suggest-item.active") : null;
+  if (activeItem) activeItem.scrollIntoView({ block: "nearest" });
+}
+
+/* 键盘滚动候选时列表会在静止的鼠标下方移动，按坐标忽略被滚动顶出来的悬停，直到鼠标真正移动 */
+let suggestHoverLock = false;
+let suggestLastMouse = null;
+let quickHoverLock = false;
+let quickLastMouse = null;
+
+function hoverMouseMoved(lastMouse, event) {
+  return !lastMouse || lastMouse.x !== event.clientX || lastMouse.y !== event.clientY;
+}
+
+suggestEl.addEventListener("mousemove", (e) => {
+  suggestLastMouse = { x: e.clientX, y: e.clientY };
+  suggestHoverLock = false;
+});
+quickSuggestEl.addEventListener("mousemove", (e) => {
+  quickLastMouse = { x: e.clientX, y: e.clientY };
+  quickHoverLock = false;
+});
+
+function setActive(idx, options = {}) {
   activeIndex = idx;
   const items = suggestEl.querySelectorAll(".suggest-item");
   items.forEach((el) => el.classList.toggle("active", Number(el.dataset.resultIndex) === idx));
+  if (options.scroll) {
+    suggestHoverLock = true;
+    scrollActiveSuggestItem(suggestEl);
+  }
 }
 
 function chooseSuggestion(idx) {
@@ -1031,6 +1078,7 @@ function hideSuggest() {
 }
 
 function renderQuickSuggest(results) {
+  hideSuggest();
   quickSuggestEl.innerHTML = "";
   quickSuggestItems = results;
   quickActiveIndex = results.length ? 0 : -1;
@@ -1046,27 +1094,36 @@ function renderQuickSuggest(results) {
     const item = document.createElement("div");
     item.className = "suggest-item" + (index === quickActiveIndex ? " active" : "");
     const name = document.createElement("span");
-    name.textContent = result.op.n;
+    name.textContent = result.label || result.op.n;
     const py = document.createElement("span");
     py.className = "py";
-    py.textContent = result.op.p;
+    py.textContent = result.pinyin || result.op.p;
     item.appendChild(name);
     item.appendChild(py);
     item.addEventListener("mousedown", (event) => {
       event.preventDefault();
       chooseQuickSuggestion(index);
     });
-    item.addEventListener("mouseenter", () => setQuickActive(index));
+    item.addEventListener("mouseenter", (e) => {
+      if (quickHoverLock && !hoverMouseMoved(quickLastMouse, e)) return;
+      quickHoverLock = false;
+      quickLastMouse = { x: e.clientX, y: e.clientY };
+      setQuickActive(index);
+    });
     quickSuggestEl.appendChild(item);
   });
   quickSuggestEl.classList.remove("hidden");
 }
 
-function setQuickActive(index) {
+function setQuickActive(index, options = {}) {
   quickActiveIndex = index;
   quickSuggestEl.querySelectorAll(".suggest-item").forEach((item, itemIndex) => {
     item.classList.toggle("active", itemIndex === index);
   });
+  if (options.scroll) {
+    quickHoverLock = true;
+    scrollActiveSuggestItem(quickSuggestEl);
+  }
 }
 
 function chooseQuickSuggestion(index) {
@@ -1122,15 +1179,22 @@ function focusGuessEntry() {
 }
 
 async function submitQuickGuess() {
-  if (finished || quickInput.disabled) return;
+  if (finished || quickInput.disabled || !token || clueDecoding) return;
   const raw = quickInput.value.trim();
   if (!raw) return;
+  if (handleEndlessInputEasterEgg(raw)) return;
   if (!validNames.has(raw)) {
-    if (!quickSuggestItems.length) {
+    const groupSubmission = operatorSearchEngine && operatorSearchEngine.resolveGroupSubmission
+      ? operatorSearchEngine.resolveGroupSubmission(raw)
+      : null;
+    if (groupSubmission) {
+      quickInput.value = groupSubmission;
+    } else if (!quickSuggestItems.length) {
       setStatus("“" + raw + "”不在可猜干员名单中，请从下拉提示中选择。", true);
       return;
+    } else {
+      chooseQuickSuggestion(quickActiveIndex >= 0 ? quickActiveIndex : 0);
     }
-    chooseQuickSuggestion(quickActiveIndex >= 0 ? quickActiveIndex : 0);
   }
   input.value = quickInput.value;
   await submitGuess();
@@ -1155,12 +1219,18 @@ function suddenErrorText(code) {
 }
 
 async function submitGuess() {
-  if (finished || !token || clueDecoding) return;
+  if (finished || input.disabled || !token || clueDecoding) return;
   const raw = input.value.trim();
   if (!raw) return;
+  if (handleEndlessInputEasterEgg(raw)) return;
   let guessName = raw;
   if (!validNames.has(raw)) {
-    if (suggestItems.length) {
+    const groupSubmission = operatorSearchEngine && operatorSearchEngine.resolveGroupSubmission
+      ? operatorSearchEngine.resolveGroupSubmission(raw)
+      : null;
+    if (groupSubmission) {
+      guessName = groupSubmission;
+    } else if (suggestItems.length) {
       guessName = suggestItems[0].op.n;
     } else {
       setStatus("“" + raw + "”不在可猜干员名单中，请从下拉提示中选择。", true);
@@ -1182,11 +1252,15 @@ async function submitGuess() {
       return;
     }
     if (data.error) {
+      if (data.error === "duplicate_guess") clearGuessEntry();
       setStatus(isComparisonV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
       setInputEnabled(true);
+      focusGuessEntry();
       return;
     }
+    clearGuessEntry();
     attempts += 1;
+    guessedOperatorNames.add(guessName);
     const endlessGuessPresentation = currentMode === "endless" && endlessEasterEggs
       ? endlessEasterEggs.recordGuess(guessName)
       : null;
@@ -3681,7 +3755,6 @@ function giveUpChoice() {
 function showModeScreen() {
   closeMobileDataSheet(false);
   if (endlessEasterEggs) endlessEasterEggs.resetStreak();
-  lastEndlessInputTriggerKey = "";
   hideEndlessBubble();
   gameStartSequence++;
   releaseDirectiveIntro();
@@ -3924,10 +3997,25 @@ window.addEventListener("scroll", () => syncMobileGuessDock({ realignAnchor: fal
 
 input.addEventListener("focus", syncMobileGuessDock);
 
+/* 滚动过外部区域后点回输入框时，按当前文字重新展开候选 */
+function reopenSuggest() {
+  if (input.value.trim()) renderSuggest(searchNames(input.value));
+}
+
+function reopenQuickSuggest() {
+  if (quickInput.value.trim()) renderQuickSuggest(searchNames(quickInput.value));
+}
+
+input.addEventListener("focus", reopenSuggest);
+input.addEventListener("click", reopenSuggest);
+quickInput.addEventListener("focus", reopenQuickSuggest);
+quickInput.addEventListener("click", reopenQuickSuggest);
+
 input.addEventListener("input", () => {
+  guessEntryQuery = input.value;
   quickInput.value = input.value;
-  handleEndlessInputEasterEgg(input.value);
   const results = searchNames(input.value);
+  consumeSearchGroupUnlocks();
   if (input.value.trim()) renderSuggest(results);
   else hideSuggest();
 });
@@ -3936,13 +4024,15 @@ input.addEventListener("keydown", (e) => {
   if (e.isComposing) return;
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    if (suggestItems.length) setActive((activeIndex + 1) % suggestItems.length);
+    if (suggestItems.length) setActive((activeIndex + 1) % suggestItems.length, { scroll: true });
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    if (suggestItems.length) setActive((activeIndex - 1 + suggestItems.length) % suggestItems.length);
+    if (suggestItems.length) setActive((activeIndex - 1 + suggestItems.length) % suggestItems.length, { scroll: true });
   } else if (e.key === "Enter") {
     e.preventDefault();
-    if (suggestItems.length) chooseSuggestion(activeIndex >= 0 ? activeIndex : 0);
+    if (suggestItems.length && !(currentMode === "endless" && EndlessEasterEggs.classifyInput(input.value))) {
+      chooseSuggestion(activeIndex >= 0 ? activeIndex : 0);
+    }
     submitGuess();
   } else if (e.key === "Escape") {
     hideSuggest();
@@ -3950,9 +4040,10 @@ input.addEventListener("keydown", (e) => {
 });
 
 quickInput.addEventListener("input", () => {
+  guessEntryQuery = quickInput.value;
   input.value = quickInput.value;
-  handleEndlessInputEasterEgg(quickInput.value);
   const results = searchNames(quickInput.value);
+  consumeSearchGroupUnlocks();
   if (quickInput.value.trim()) renderQuickSuggest(results);
   else hideQuickSuggest();
 });
@@ -3961,10 +4052,10 @@ quickInput.addEventListener("keydown", (e) => {
   if (e.isComposing) return;
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    if (quickSuggestItems.length) setQuickActive((quickActiveIndex + 1) % quickSuggestItems.length);
+    if (quickSuggestItems.length) setQuickActive((quickActiveIndex + 1) % quickSuggestItems.length, { scroll: true });
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    if (quickSuggestItems.length) setQuickActive((quickActiveIndex - 1 + quickSuggestItems.length) % quickSuggestItems.length);
+    if (quickSuggestItems.length) setQuickActive((quickActiveIndex - 1 + quickSuggestItems.length) % quickSuggestItems.length, { scroll: true });
   } else if (e.key === "Enter") {
     e.preventDefault();
     submitQuickGuess();
