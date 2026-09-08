@@ -24,10 +24,29 @@
     return null;
   }
 
-  function createEndlessEasterEggs(mamaNames) {
+  function createEndlessEasterEggs(mamaNames, options = {}) {
     const mamaSet = mamaNames instanceof Set ? new Set(mamaNames) : new Set(mamaNames || []);
+    const random = options.random || Math.random;
     let streak = 0;
-    let mediaIndex = 0;
+    let mediaQueue = [];
+    let lastMedia = null;
+
+    function nextMedia() {
+      if (!mediaQueue.length) {
+        mediaQueue = MAMA_MEDIA.slice();
+        for (let index = mediaQueue.length - 1; index > 0; index--) {
+          const swapIndex = Math.floor(random() * (index + 1));
+          [mediaQueue[index], mediaQueue[swapIndex]] = [mediaQueue[swapIndex], mediaQueue[index]];
+        }
+        // Each cycle shows every image once; adjacent cycles must not repeat.
+        if (mediaQueue[0] === lastMedia) {
+          const swapIndex = 1 + Math.floor(random() * (mediaQueue.length - 1));
+          [mediaQueue[0], mediaQueue[swapIndex]] = [mediaQueue[swapIndex], mediaQueue[0]];
+        }
+      }
+      lastMedia = mediaQueue.shift();
+      return lastMedia;
+    }
 
     function resetStreak() {
       streak = 0;
@@ -37,11 +56,8 @@
       const guess = String(value == null ? "" : value);
       if (guess !== "电弧" && mamaSet.has(guess)) {
         streak++;
-        if (streak === 3) {
-          const media = MAMA_MEDIA[mediaIndex];
-          mediaIndex = (mediaIndex + 1) % MAMA_MEDIA.length;
-          streak = 0;
-          return { type: "media", value: media };
+        if (streak >= 3) {
+          return { type: "media", value: nextMedia() };
         }
         return null;
       }
@@ -53,7 +69,6 @@
       recordGuess,
       resetStreak,
       getStreak: () => streak,
-      getMediaIndex: () => mediaIndex,
     };
   }
 

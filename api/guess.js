@@ -18,7 +18,7 @@ module.exports = function handler(req, res) {
   req.on("end", () => {
     try {
       const payload = JSON.parse(body || "{}");
-      const out = game.guess(payload.token, payload.guess);
+      const out = game.guess(payload.token, payload.guess, { free: payload.free === true });
       res.setHeader("Content-Type", "application/json; charset=utf-8");
       if (!out || out.error) res.statusCode = out && out.error === "unknown_operator" ? 404 : 400;
       res.end(JSON.stringify(out));

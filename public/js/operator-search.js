@@ -74,6 +74,23 @@
     }));
     const blockedQueries = new Set((data.blockedQueries || []).map(normalize));
     const groups = data.specialGroups || {};
+    const aliasCandidateGroups = Object.entries(groups.aliasCandidates || {}).flatMap(([name, labels]) => {
+      const record = index.find((candidate) => candidate.operator.n === name);
+      if (!record) return [];
+      const aliases = (aliasesByName[name] || []).filter((alias) => labels.includes(alias.v));
+      return [{
+        name,
+        typedAliases: new Set(),
+        unlocked: false,
+        aliases: aliases.map((alias) => ({
+          value: normalize(alias.v), pinyin: normalize(alias.p), initials: normalize(alias.i),
+        })),
+        results: [{ op: record.operator, s: 200 }].concat(aliases.map((alias) => ({
+          op: record.operator, label: alias.v, pinyin: alias.p, s: 200,
+        }))),
+      }];
+    });
+    const pendingGroupUnlocks = [];
     const mamaNames = (groups.mama || []).filter((name) => byName.has(name));
     const electricNameMatches = names
       .filter((operator) => operator.n.includes("电"))
@@ -89,21 +106,7 @@
     );
     const sarkazNames = sarkazFixed.concat(sarkazRandom.slice(0, Math.max(0, 8 - sarkazFixed.length)));
 
-    function specialResults(query) {
-      let resultNames = null;
-      if (query === "妈妈" || query === "mama") resultNames = mamaNames;
-      if (query === "魔族佬" || query === "mozulao") resultNames = sarkazNames;
-      if (query === "电" || query === "dian") resultNames = electricNames;
-      if (!resultNames) return null;
-      return resultNames.map((name) => ({ op: byName.get(name), s: 200 }));
-    }
-
-    function search(value, limit) {
-      const query = normalize(value);
-      if (!query || blockedQueries.has(query)) return [];
-      const special = specialResults(query);
-      if (special) return special;
-
+    function normalResults(query, limit) {
       const scored = [];
       for (const record of index) {
         let score = scoreOfficial(record, query);
@@ -119,7 +122,67 @@
       return scored.slice(0, limit || 8);
     }
 
-    return { search };
+    function specialResults(query, fallbackResults) {
+      for (const group of aliasCandidateGroups) {
+        const isHan = /\p{Script=Han}/u.test(query);
+        const matched = group.aliases.filter((alias) => scoreAlias(alias, query) > 0);
+        if (!matched.length) continue;
+        /* 锁定时要三个字才接管候选只显示本代号；解锁后两个字即展开全部 */
+        const isOnlyVisibleCandidate = fallbackResults.length === 1 && fallbackResults[0].op.n === group.name;
+        let unlockedNow = false;
+        /* 只记录明确的一条称号：共享前缀或同屏的其他候选都不能替任一称号记账。 */
+        if (!group.unlocked && matched.length === 1 && isOnlyVisibleCandidate) {
+          group.typedAliases.add(matched[0].value);
+          if (group.typedAliases.size >= 3) {
+            group.unlocked = true;
+            unlockedNow = true;
+            pendingGroupUnlocks.push(group.name);
+          }
+        }
+        const displayMinLength = isHan ? (group.unlocked ? 2 : 3) : 6;
+        const displaysGroupCandidate = query.length >= displayMinLength;
+        if (displaysGroupCandidate || unlockedNow) return group.unlocked ? group.results : group.results.slice(0, 1);
+      }
+      let resultNames = null;
+      if (query === "妈妈" || query === "mama") resultNames = mamaNames;
+      if (query === "魔族佬" || query === "mozulao") resultNames = sarkazNames;
+      if (query === "电" || query === "dian") resultNames = electricNames;
+      if (!resultNames) return null;
+      return resultNames.map((name) => ({ op: byName.get(name), s: 200 }));
+    }
+
+    function search(value, limit) {
+      const query = normalize(value);
+      if (!query || blockedQueries.has(query)) return [];
+      const fallbackResults = normalResults(query, limit);
+      const special = specialResults(query, fallbackResults);
+      if (special) return special;
+      return fallbackResults;
+    }
+
+    function consumeGroupUnlocks() {
+      return pendingGroupUnlocks.splice(0);
+    }
+
+    /* 称号气泡未在全域检索中触发过的话，新开一局时清空解锁进度 */
+    function resetGroupUnlocks() {
+      for (const group of aliasCandidateGroups) {
+        group.typedAliases.clear();
+        group.unlocked = false;
+      }
+      pendingGroupUnlocks.length = 0;
+    }
+
+    function resolveGroupSubmission(value) {
+      const query = normalize(value);
+      if (!query) return null;
+      for (const group of aliasCandidateGroups) {
+        if (group.aliases.some((alias) => alias.value === query || alias.pinyin === query)) return group.name;
+      }
+      return null;
+    }
+
+    return { search, consumeGroupUnlocks, resolveGroupSubmission, resetGroupUnlocks };
   }
 
   return { createOperatorSearch, normalize };

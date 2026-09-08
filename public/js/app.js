@@ -15,22 +15,25 @@ let token = null;
 let namesIndex = [];
 let validNames = new Set();
 let operatorSearchEngine = null;
+let guessEntryQuery = "";
 let endlessEasterEggs = null;
-let lastEndlessInputTriggerKey = "";
 let currentMode = "sudden";
 let currentGameVersion = 1;
 let attempts = 0;
+const guessedOperatorNames = new Set();
 let finished = false;
 let suggestItems = [];
 let activeIndex = -1;
 let quickSuggestItems = [];
 let quickActiveIndex = -1;
+let suggestScrollTop = 0;
 let quickVisibilityFrame = null;
 let workspaceWheelFrame = null;
 let workspaceWheelDistance = 0;
 let totalOperators = 0;
 let suddenMax = DEFAULT_SUDDEN_ATTEMPTS;
 let bubbleTimer = null;
+let endlessBubbleHideAt = 0;
 let mobileBubbleDelayTimer = null;
 let mobileBubbleHideTimer = null;
 let finalFocusTimer = null;
@@ -671,15 +674,19 @@ async function startGame(mode, requestedMax, options = {}) {
   const startSequence = ++gameStartSequence;
   const firstEntry = gameScreen.classList.contains("hidden");
   if (mode === "sudden" && !options.preserveDirectiveHistory) clearDirectiveHistory();
+  if (!groupUnlockBubbleShown && operatorSearchEngine && operatorSearchEngine.resetGroupUnlocks) {
+    operatorSearchEngine.resetGroupUnlocks();
+  }
   currentMode = mode;
   currentGameVersion = 1;
   if (mode === "sudden") syncSuddenControls(requestedMax == null ? suddenMax : requestedMax);
   token = null;
   attempts = 0;
+  guessedOperatorNames.clear();
+  clearSuggestionState();
   lastRemaining = null;
   finished = false;
   if (endlessEasterEggs) endlessEasterEggs.resetStreak();
-  lastEndlessInputTriggerKey = "";
   hideEndlessBubble();
   setInputEnabled(false);
   applySuddenAttempts.disabled = mode !== "sudden";
@@ -835,8 +842,8 @@ function renderPips(remaining) {
 }
 
 function updateEndlessBubble() {
-  const remaining = Math.max(0, totalOperators - attempts);
-  const progress = totalOperators ? Math.min(1, attempts / totalOperators) : 0;
+  const remaining = Math.max(0, totalOperators - guessedOperatorNames.size);
+  const progress = totalOperators ? Math.min(1, guessedOperatorNames.size / totalOperators) : 0;
   [endlessBubbleText, mobileEndlessBubbleText].forEach((element) => {
     if (element) element.textContent = "离穷举完成还差 " + remaining;
   });
@@ -898,7 +905,7 @@ function showEndlessBubble(won, presentation = null, options = {}) {
     if (element) element.classList.toggle("input-triggered", Boolean(options.inputTriggered));
   });
   if (presentation) {
-    const progress = totalOperators ? Math.min(1, attempts / totalOperators) : 0;
+    const progress = totalOperators ? Math.min(1, guessedOperatorNames.size / totalOperators) : 0;
     [endlessProgress, mobileEndlessProgress].forEach((element) => {
       if (element) element.style.transform = "scaleX(" + progress + ")";
     });
@@ -914,6 +921,7 @@ function showEndlessBubble(won, presentation = null, options = {}) {
   }
   if (bubbleTimer) clearTimeout(bubbleTimer);
   replayBubble(endlessBubble);
+  endlessBubbleHideAt = Date.now() + 4000;
   bubbleTimer = setTimeout(() => {
     if (endlessBubble) endlessBubble.classList.remove("show", "input-triggered");
     document.body.classList.remove("endless-bubble-media-active");
@@ -943,19 +951,22 @@ function hideEndlessBubble() {
 }
 
 function handleEndlessInputEasterEgg(value) {
-  if (currentMode !== "endless" || !endlessEasterEggs) {
-    lastEndlessInputTriggerKey = "";
-    return;
-  }
+  if (currentMode !== "endless" || !endlessEasterEggs) return false;
   const presentation = EndlessEasterEggs.classifyInput(value);
-  if (!presentation) {
-    lastEndlessInputTriggerKey = "";
-    return;
-  }
-  const triggerKey = presentation.type + ":" + presentation.value;
-  if (triggerKey === lastEndlessInputTriggerKey) return;
-  lastEndlessInputTriggerKey = triggerKey;
+  if (!presentation) return false;
+  endlessEasterEggs.resetStreak();
+  clearGuessEntry();
+  settleMobileKeyboard();
   showEndlessBubble(false, presentation, { inputTriggered: true });
+  return true;
+}
+
+function clearGuessEntry() {
+  input.value = "";
+  quickInput.value = "";
+  hideSuggest();
+  hideQuickSuggest();
+  clearSuggestionState();
 }
 
 let lastRemaining = null;
@@ -978,16 +989,164 @@ function searchNames(query) {
   return operatorSearchEngine ? operatorSearchEngine.search(query, 8) : [];
 }
 
-function renderSuggest(results) {
-  suggestEl.innerHTML = "";
+/* 称号气泡在全域检索中触发过后，称号解锁才长期保留；否则新开一局时重置 */
+let groupUnlockBubbleShown = false;
+
+/* 称号组集满 3 个不同称号即解锁：全域检索弹气泡，终局校验免费载入一次档案卡片 */
+function consumeSearchGroupUnlocks() {
+  if (!operatorSearchEngine || !operatorSearchEngine.consumeGroupUnlocks) return { unlocked: [], ready: null };
+  const unlocked = operatorSearchEngine.consumeGroupUnlocks();
+  if (!unlocked.length) return { unlocked: [], ready: null };
+  let ready = null;
+  if (currentMode === "endless") {
+    groupUnlockBubbleShown = true;
+    showEndlessBubble(false, { type: "text", value: "是你吗？莫斯提马" }, { inputTriggered: true });
+    /* 候选展开动效等气泡完全消失后再开始 */
+    ready = new Promise((resolve) => {
+      window.setTimeout(resolve, Math.max(0, endlessBubbleHideAt - Date.now()));
+    });
+  } else if (currentMode === "sudden") {
+    /* 候选展开动效等免费档案卡片加载完、聚焦好后再开始 */
+    ready = Promise.all(unlocked.map((name) => loadGroupUnlockFreeCard(name)));
+  }
+  return { unlocked, ready };
+}
+
+/* 终局校验的称号彩蛋卡片只展示比对结果，不写入会话也不消耗猜测次数 */
+async function loadGroupUnlockFreeCard(name) {
+  if (!token || finished || currentMode !== "sudden" || !isSuddenV3()) return;
+  if (guessedOperatorNames.has(name)) return;
+  const requestToken = token;
+  try {
+    const data = await fetchJSON("/api/guess", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: requestToken, guess: name, free: true }),
+    });
+    if (!data || data.error) return;
+    if (currentMode !== "sudden" || finished || token !== requestToken) return;
+    const record = renderSuddenV3Row(data);
+    if (record && record.card) {
+      await waitForRecordReady(record.card, record.image);
+      /* 再等平滑滚动落定，保证档案卡片聚焦完成 */
+      await new Promise((resolve) => window.setTimeout(resolve, isReducedMotion() ? 0 : 420));
+    }
+  } catch (e) {
+    /* 免费卡片加载失败静默忽略，不影响正常猜测 */
+  }
+}
+
+function prepareSuggestionState(results, query) {
+  const keepsCurrentQuery = query === guessEntryQuery;
+  guessEntryQuery = query;
   suggestItems = results;
-  activeIndex = results.length ? 0 : -1;
+  quickSuggestItems = results;
+  if (!keepsCurrentQuery || activeIndex < 0 || activeIndex >= results.length) {
+    activeIndex = results.length ? 0 : -1;
+    quickActiveIndex = activeIndex;
+    if (!keepsCurrentQuery) suggestScrollTop = 0;
+  } else {
+    quickActiveIndex = activeIndex;
+  }
+  return keepsCurrentQuery;
+}
+
+function syncSuggestionScroll(container) {
+  if (container.classList.contains("hidden")) return;
+  suggestScrollTop = container.scrollTop;
+  const other = container === suggestEl ? quickSuggestEl : suggestEl;
+  if (!other.classList.contains("hidden") && other.scrollTop !== suggestScrollTop) other.scrollTop = suggestScrollTop;
+}
+
+function restoreSuggestionScroll(container, keepScroll) {
+  if (!keepScroll && container === suggestEl && isMobileLayout()) {
+    suggestScrollTop = container.scrollHeight;
+  }
+  container.scrollTop = suggestScrollTop;
+  syncSuggestionScroll(container);
+}
+
+/* 称号解锁演出：等触发演出结束后播加载动效再展开全部称号；演出期间接管候选框，继续输入不打断 */
+const UNLOCK_SUGGEST_DELAY = 1600;
+let unlockSuggestTimer = null;
+let unlockSuggestSeq = 0;
+let unlockSequenceActive = false;
+
+function cancelUnlockSuggestDelay() {
+  unlockSuggestSeq += 1;
+  unlockSequenceActive = false;
+  if (unlockSuggestTimer) window.clearTimeout(unlockSuggestTimer);
+  unlockSuggestTimer = null;
+}
+
+function renderSuggestUnlockLoading(isQuick, query, results, ready) {
+  cancelUnlockSuggestDelay();
+  unlockSequenceActive = true;
+  const seq = unlockSuggestSeq;
+  /* 终局校验的动效等卡片聚焦后在顶部快捷搜索框播放（移动端无快捷框时留在原框） */
+  const animIsQuick = () => (
+    currentMode === "sudden"
+      ? document.body.classList.contains("quick-guess-active") && !isMobileLayout()
+      : isQuick
+  );
+  suggestEl.classList.add("hidden");
+  quickSuggestEl.classList.add("hidden");
+  if (currentMode === "sudden") {
+    /* 终局校验等档案卡片加载聚焦期间收起候选框，避免遮挡卡片演出 */
+  } else if (isQuick) {
+    /* 全域检索等气泡消失期间维持锁定时的单候选展示 */
+    renderQuickSuggest(results.slice(0, 1), query);
+  } else {
+    renderSuggest(results.slice(0, 1), query);
+  }
+  Promise.resolve(ready).then(() => {
+    if (seq !== unlockSuggestSeq) return;
+    const targetQuick = animIsQuick();
+    const container = targetQuick ? quickSuggestEl : suggestEl;
+    const other = targetQuick ? suggestEl : quickSuggestEl;
+    other.classList.add("hidden");
+    container.innerHTML = "";
+    const loading = document.createElement("div");
+    loading.className = "suggest-loading";
+    const label = document.createElement("span");
+    label.className = "loading-label";
+    label.textContent = "TITLE ARCHIVE // 称号档案展开中";
+    const bar = document.createElement("div");
+    bar.className = "loading-bar";
+    loading.appendChild(label);
+    loading.appendChild(bar);
+    for (let index = 0; index < 3; index++) {
+      const row = document.createElement("div");
+      row.className = "loading-row";
+      loading.appendChild(row);
+    }
+    container.appendChild(loading);
+    suggestItems = [];
+    quickSuggestItems = [];
+    activeIndex = -1;
+    quickActiveIndex = -1;
+    container.classList.remove("hidden");
+    unlockSuggestTimer = window.setTimeout(() => {
+      unlockSuggestTimer = null;
+      if (seq !== unlockSuggestSeq) return;
+      unlockSequenceActive = false;
+      if (targetQuick) renderQuickSuggest(results, query);
+      else renderSuggest(results, query);
+    }, UNLOCK_SUGGEST_DELAY);
+  });
+}
+
+function renderSuggest(results, query = input.value) {
+  quickSuggestEl.classList.add("hidden");
+  suggestEl.innerHTML = "";
+  const keepScroll = prepareSuggestionState(results, query);
   if (!results.length) {
     const d = document.createElement("div");
     d.className = "suggest-empty";
     d.textContent = "没有匹配的干员";
     suggestEl.appendChild(d);
     suggestEl.classList.remove("hidden");
+    restoreSuggestionScroll(suggestEl, keepScroll);
     return;
   }
   const displayItems = results.map((r, idx) => ({ r, idx }));
@@ -997,24 +1156,84 @@ function renderSuggest(results) {
     d.className = "suggest-item" + (idx === activeIndex ? " active" : "");
     d.dataset.resultIndex = String(idx);
     const name = document.createElement("span");
-    name.textContent = r.op.n;
+    name.textContent = r.label || r.op.n;
     const py = document.createElement("span");
     py.className = "py";
-    py.textContent = r.op.p;
+    py.textContent = r.pinyin || r.op.p;
     d.appendChild(name);
     d.appendChild(py);
     d.addEventListener("mousedown", (e) => { e.preventDefault(); chooseSuggestion(idx); });
-    d.addEventListener("mouseenter", () => { setActive(idx); });
+    d.addEventListener("mouseenter", (e) => {
+      if (suggestHoverLock && !hoverMouseMoved(suggestLastMouse, e)) return;
+      suggestHoverLock = false;
+      suggestLastMouse = { x: e.clientX, y: e.clientY };
+      setActive(idx);
+    });
     suggestEl.appendChild(d);
   });
   suggestEl.classList.remove("hidden");
-  if (isMobileLayout()) suggestEl.scrollTop = suggestEl.scrollHeight;
+  restoreSuggestionScroll(suggestEl, keepScroll);
 }
 
-function setActive(idx) {
+function scrollActiveSuggestItem(container) {
+  const activeItem = container ? container.querySelector(".suggest-item.active") : null;
+  if (!activeItem) return;
+  const itemTop = activeItem.offsetTop;
+  const itemBottom = itemTop + activeItem.offsetHeight;
+  if (itemTop < container.scrollTop) container.scrollTop = itemTop;
+  else if (itemBottom > container.scrollTop + container.clientHeight) {
+    container.scrollTop = itemBottom - container.clientHeight;
+  }
+  syncSuggestionScroll(container);
+}
+
+/* 键盘滚动候选时列表会在静止的鼠标下方移动，按坐标忽略被滚动顶出来的悬停，直到鼠标真正移动 */
+let suggestHoverLock = false;
+let suggestLastMouse = null;
+let quickHoverLock = false;
+let quickLastMouse = null;
+
+function hoverMouseMoved(lastMouse, event) {
+  return !lastMouse || lastMouse.x !== event.clientX || lastMouse.y !== event.clientY;
+}
+
+suggestEl.addEventListener("mousemove", (e) => {
+  suggestLastMouse = { x: e.clientX, y: e.clientY };
+  suggestHoverLock = false;
+});
+quickSuggestEl.addEventListener("mousemove", (e) => {
+  quickLastMouse = { x: e.clientX, y: e.clientY };
+  quickHoverLock = false;
+});
+suggestEl.addEventListener("scroll", () => syncSuggestionScroll(suggestEl));
+quickSuggestEl.addEventListener("scroll", () => syncSuggestionScroll(quickSuggestEl));
+
+function updateSuggestionActiveItems() {
+  [suggestEl, quickSuggestEl].forEach((container) => {
+    container.querySelectorAll(".suggest-item").forEach((item) => {
+      item.classList.toggle("active", Number(item.dataset.resultIndex) === activeIndex);
+    });
+  });
+}
+
+function clearSuggestionState() {
+  cancelUnlockSuggestDelay();
+  guessEntryQuery = "";
+  suggestItems = [];
+  quickSuggestItems = [];
+  activeIndex = -1;
+  quickActiveIndex = -1;
+  suggestScrollTop = 0;
+}
+
+function setActive(idx, options = {}) {
   activeIndex = idx;
-  const items = suggestEl.querySelectorAll(".suggest-item");
-  items.forEach((el) => el.classList.toggle("active", Number(el.dataset.resultIndex) === idx));
+  quickActiveIndex = idx;
+  updateSuggestionActiveItems();
+  if (options.scroll) {
+    suggestHoverLock = true;
+    scrollActiveSuggestItem(suggestEl);
+  }
 }
 
 function chooseSuggestion(idx) {
@@ -1022,51 +1241,62 @@ function chooseSuggestion(idx) {
   input.value = suggestItems[idx].op.n;
   quickInput.value = input.value;
   hideSuggest();
+  clearSuggestionState();
 }
 
 function hideSuggest() {
+  cancelUnlockSuggestDelay();
   suggestEl.classList.add("hidden");
-  suggestItems = [];
-  activeIndex = -1;
 }
 
-function renderQuickSuggest(results) {
+function renderQuickSuggest(results, query = quickInput.value) {
+  suggestEl.classList.add("hidden");
   quickSuggestEl.innerHTML = "";
-  quickSuggestItems = results;
-  quickActiveIndex = results.length ? 0 : -1;
+  const keepScroll = prepareSuggestionState(results, query);
   if (!results.length) {
     const empty = document.createElement("div");
     empty.className = "suggest-empty";
     empty.textContent = "没有匹配的干员";
     quickSuggestEl.appendChild(empty);
     quickSuggestEl.classList.remove("hidden");
+    restoreSuggestionScroll(quickSuggestEl, keepScroll);
     return;
   }
   results.forEach((result, index) => {
     const item = document.createElement("div");
     item.className = "suggest-item" + (index === quickActiveIndex ? " active" : "");
+    item.dataset.resultIndex = String(index);
     const name = document.createElement("span");
-    name.textContent = result.op.n;
+    name.textContent = result.label || result.op.n;
     const py = document.createElement("span");
     py.className = "py";
-    py.textContent = result.op.p;
+    py.textContent = result.pinyin || result.op.p;
     item.appendChild(name);
     item.appendChild(py);
     item.addEventListener("mousedown", (event) => {
       event.preventDefault();
       chooseQuickSuggestion(index);
     });
-    item.addEventListener("mouseenter", () => setQuickActive(index));
+    item.addEventListener("mouseenter", (e) => {
+      if (quickHoverLock && !hoverMouseMoved(quickLastMouse, e)) return;
+      quickHoverLock = false;
+      quickLastMouse = { x: e.clientX, y: e.clientY };
+      setQuickActive(index);
+    });
     quickSuggestEl.appendChild(item);
   });
   quickSuggestEl.classList.remove("hidden");
+  restoreSuggestionScroll(quickSuggestEl, keepScroll);
 }
 
-function setQuickActive(index) {
+function setQuickActive(index, options = {}) {
   quickActiveIndex = index;
-  quickSuggestEl.querySelectorAll(".suggest-item").forEach((item, itemIndex) => {
-    item.classList.toggle("active", itemIndex === index);
-  });
+  activeIndex = index;
+  updateSuggestionActiveItems();
+  if (options.scroll) {
+    quickHoverLock = true;
+    scrollActiveSuggestItem(quickSuggestEl);
+  }
 }
 
 function chooseQuickSuggestion(index) {
@@ -1074,12 +1304,12 @@ function chooseQuickSuggestion(index) {
   quickInput.value = quickSuggestItems[index].op.n;
   input.value = quickInput.value;
   hideQuickSuggest();
+  clearSuggestionState();
 }
 
 function hideQuickSuggest() {
+  cancelUnlockSuggestDelay();
   quickSuggestEl.classList.add("hidden");
-  quickSuggestItems = [];
-  quickActiveIndex = -1;
 }
 
 function isOriginalGuessVisible() {
@@ -1122,15 +1352,22 @@ function focusGuessEntry() {
 }
 
 async function submitQuickGuess() {
-  if (finished || quickInput.disabled) return;
+  if (finished || quickInput.disabled || !token || clueDecoding) return;
   const raw = quickInput.value.trim();
   if (!raw) return;
+  if (handleEndlessInputEasterEgg(raw)) return;
   if (!validNames.has(raw)) {
-    if (!quickSuggestItems.length) {
+    const groupSubmission = operatorSearchEngine && operatorSearchEngine.resolveGroupSubmission
+      ? operatorSearchEngine.resolveGroupSubmission(raw)
+      : null;
+    if (groupSubmission) {
+      quickInput.value = groupSubmission;
+    } else if (!quickSuggestItems.length) {
       setStatus("“" + raw + "”不在可猜干员名单中，请从下拉提示中选择。", true);
       return;
+    } else {
+      chooseQuickSuggestion(quickActiveIndex >= 0 ? quickActiveIndex : 0);
     }
-    chooseQuickSuggestion(quickActiveIndex >= 0 ? quickActiveIndex : 0);
   }
   input.value = quickInput.value;
   await submitGuess();
@@ -1155,12 +1392,18 @@ function suddenErrorText(code) {
 }
 
 async function submitGuess() {
-  if (finished || !token || clueDecoding) return;
+  if (finished || input.disabled || !token || clueDecoding) return;
   const raw = input.value.trim();
   if (!raw) return;
+  if (handleEndlessInputEasterEgg(raw)) return;
   let guessName = raw;
   if (!validNames.has(raw)) {
-    if (suggestItems.length) {
+    const groupSubmission = operatorSearchEngine && operatorSearchEngine.resolveGroupSubmission
+      ? operatorSearchEngine.resolveGroupSubmission(raw)
+      : null;
+    if (groupSubmission) {
+      guessName = groupSubmission;
+    } else if (suggestItems.length) {
       guessName = suggestItems[0].op.n;
     } else {
       setStatus("“" + raw + "”不在可猜干员名单中，请从下拉提示中选择。", true);
@@ -1182,11 +1425,15 @@ async function submitGuess() {
       return;
     }
     if (data.error) {
+      if (data.error === "duplicate_guess") clearGuessEntry();
       setStatus(isComparisonV3() ? suddenErrorText(data.error) : ("出错了：" + data.error), true);
       setInputEnabled(true);
+      focusGuessEntry();
       return;
     }
+    clearGuessEntry();
     attempts += 1;
+    guessedOperatorNames.add(guessName);
     const endlessGuessPresentation = currentMode === "endless" && endlessEasterEggs
       ? endlessEasterEggs.recordGuess(guessName)
       : null;
@@ -3681,7 +3928,6 @@ function giveUpChoice() {
 function showModeScreen() {
   closeMobileDataSheet(false);
   if (endlessEasterEggs) endlessEasterEggs.resetStreak();
-  lastEndlessInputTriggerKey = "";
   hideEndlessBubble();
   gameStartSequence++;
   releaseDirectiveIntro();
@@ -3924,25 +4170,50 @@ window.addEventListener("scroll", () => syncMobileGuessDock({ realignAnchor: fal
 
 input.addEventListener("focus", syncMobileGuessDock);
 
+/* 滚动过外部区域后点回输入框时，按当前文字重新展开候选 */
+function reopenSuggest() {
+  if (unlockSequenceActive) return;
+  if (input.value.trim()) renderSuggest(searchNames(input.value));
+}
+
+function reopenQuickSuggest() {
+  if (unlockSequenceActive) return;
+  if (quickInput.value.trim()) renderQuickSuggest(searchNames(quickInput.value));
+}
+
+input.addEventListener("focus", reopenSuggest);
+input.addEventListener("click", reopenSuggest);
+quickInput.addEventListener("focus", reopenQuickSuggest);
+quickInput.addEventListener("click", reopenQuickSuggest);
+
 input.addEventListener("input", () => {
   quickInput.value = input.value;
-  handleEndlessInputEasterEgg(input.value);
+  /* 称号解锁演出期间候选框由演出接管，继续输入不打断 */
+  if (unlockSequenceActive) return;
   const results = searchNames(input.value);
-  if (input.value.trim()) renderSuggest(results);
-  else hideSuggest();
+  const groupUnlock = consumeSearchGroupUnlocks();
+  if (input.value.trim()) {
+    if (groupUnlock.unlocked.length) renderSuggestUnlockLoading(false, input.value.trim(), results, groupUnlock.ready);
+    else renderSuggest(results);
+  } else {
+    hideSuggest();
+    clearSuggestionState();
+  }
 });
 
 input.addEventListener("keydown", (e) => {
   if (e.isComposing) return;
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    if (suggestItems.length) setActive((activeIndex + 1) % suggestItems.length);
+    if (suggestItems.length) setActive((activeIndex + 1) % suggestItems.length, { scroll: true });
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    if (suggestItems.length) setActive((activeIndex - 1 + suggestItems.length) % suggestItems.length);
+    if (suggestItems.length) setActive((activeIndex - 1 + suggestItems.length) % suggestItems.length, { scroll: true });
   } else if (e.key === "Enter") {
     e.preventDefault();
-    if (suggestItems.length) chooseSuggestion(activeIndex >= 0 ? activeIndex : 0);
+    if (suggestItems.length && !(currentMode === "endless" && EndlessEasterEggs.classifyInput(input.value))) {
+      chooseSuggestion(activeIndex >= 0 ? activeIndex : 0);
+    }
     submitGuess();
   } else if (e.key === "Escape") {
     hideSuggest();
@@ -3951,20 +4222,27 @@ input.addEventListener("keydown", (e) => {
 
 quickInput.addEventListener("input", () => {
   input.value = quickInput.value;
-  handleEndlessInputEasterEgg(quickInput.value);
+  /* 称号解锁演出期间候选框由演出接管，继续输入不打断 */
+  if (unlockSequenceActive) return;
   const results = searchNames(quickInput.value);
-  if (quickInput.value.trim()) renderQuickSuggest(results);
-  else hideQuickSuggest();
+  const groupUnlock = consumeSearchGroupUnlocks();
+  if (quickInput.value.trim()) {
+    if (groupUnlock.unlocked.length) renderSuggestUnlockLoading(true, quickInput.value.trim(), results, groupUnlock.ready);
+    else renderQuickSuggest(results);
+  } else {
+    hideQuickSuggest();
+    clearSuggestionState();
+  }
 });
 
 quickInput.addEventListener("keydown", (e) => {
   if (e.isComposing) return;
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    if (quickSuggestItems.length) setQuickActive((quickActiveIndex + 1) % quickSuggestItems.length);
+    if (quickSuggestItems.length) setQuickActive((quickActiveIndex + 1) % quickSuggestItems.length, { scroll: true });
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    if (quickSuggestItems.length) setQuickActive((quickActiveIndex - 1 + quickSuggestItems.length) % quickSuggestItems.length);
+    if (quickSuggestItems.length) setQuickActive((quickActiveIndex - 1 + quickSuggestItems.length) % quickSuggestItems.length, { scroll: true });
   } else if (e.key === "Enter") {
     e.preventDefault();
     submitQuickGuess();

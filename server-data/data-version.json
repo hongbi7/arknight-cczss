@@ -108,8 +108,8 @@
       "sha256": "fefa759b0ffc557099e8e376dc33685b1375ada128cd72ad6883f69524153bca"
     },
     "public/data/operator-search.json": {
-      "bytes": 11917,
-      "sha256": "8baefc967c1457af5a2c31e4b633a0a7b8385402ee927612858e408faa044c6c"
+      "bytes": 13011,
+      "sha256": "3b21d75fac4e0e60183c6f0b2ab1db9f9df94af05e0f38771bcd5b03a11e8d43"
     },
     "server-data/operators.json": {
       "bytes": 609363,
