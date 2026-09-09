@@ -54,6 +54,8 @@ npx wrangler@4 pages project create arknight-guess-images --production-branch ma
 
 用临时检出的当前 `deploy/install.sh` 升级已安装部署器，步骤见[生产部署文档](production-deployment.md#update-deployer)。安装器会创建 root 管理的 `/opt/arknight-guess/image-pages.map`，但会保留已有 map 文件，不会替换用户的 Nginx server 配置，也不会自动启用图片跳转。
 
+私有仓库还需给 ECS 现有 GitHub fine-grained PAT 增加目标仓库的 **Deployments: Read-only** 权限；保留 Contents、Actions 只读。这与 GitHub Actions 自动获得的 `deployments: write` 权限不同，也与 Cloudflare token 无关。部署器读取记录返回 403 时先核对此项。
+
 确认项目名后，编辑 root 管理的配置：
 
 ```bash
@@ -89,6 +91,8 @@ sudo install -o root -g root -m 0644 \
   "$IMAGE_NGINX_DIR/deploy/nginx-image-pages-http.conf.example" \
   /etc/nginx/conf.d/arknight-image-pages.conf
 ```
+
+上述匿名 clone 适用于公开仓库。私有仓库按[安装包方式](production-deployment.md#install-deployer)从已登录 GitHub 的本地电脑导出 main 的 `deploy/`、通过 Workbench 上传并解包，再将 `IMAGE_NGINX_DIR` 设为解包目录，执行上面的 `install` 命令。不要把 PAT 写进 clone URL。
 
 该文件以 `$realpath_root` 查询 `/opt/arknight-guess/image-pages.map`。map 的默认值为空；只有已验证 release 的 `public` 真实目录有 URL，才允许 302。示例设置 `map_hash_bucket_size 128`，以容纳带 40 位 SHA 的完整路径；若其他 HTTP 配置已经设置此指令，保留一处且至少为 128，避免重复定义。参见 [Nginx map 哈希设置](https://nginx.org/en/docs/http/ngx_http_map_module.html#map_hash_bucket_size)。
 

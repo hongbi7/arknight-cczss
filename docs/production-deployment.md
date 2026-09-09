@@ -34,7 +34,7 @@ ECS 每天北京时间 12:30:00 启动一次检查，计时精度为一秒，错
 
 这个时间只控制 ECS 部署检查；现有数据更新工作流的定时规则、草稿 PR 流程和合并后触发 CI 的规则都不改变。
 
-私有 GitHub 仓库需要在 ECS 配置专用 fine-grained PAT，只授权目标仓库的 Contents 与 Actions 只读权限。该令牌同时用于读取 CI 和 HTTPS Git 拉取；配置及轮换方法见[私库凭证](#private-credentials)。
+私有 GitHub 仓库需要在 ECS 配置专用 fine-grained PAT，只授权目标仓库的 Contents 与 Actions 只读权限；启用 Pages 图片版本绑定时还需要 Deployments 只读权限。该令牌用于读取 CI、图片发布记录和 HTTPS Git 拉取；配置及轮换方法见[私库凭证](#private-credentials)。
 
 <a id="prepare"></a>
 
@@ -268,7 +268,7 @@ sudo bash "$DEPLOY_INSTALL_DIR/deploy/install.sh"
 
 ### 私库凭证与轮换
 
-私库必须配置凭证；公开仓库匿名 API 经常限流时也可配置。在 GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens 创建专用令牌，Repository access 只选择目标仓库，Contents 和 Actions 均设为 Read-only，Metadata 保持只读，并设置到期时间。不要使用具有仓库写权限的个人日常令牌。[GitHub 令牌说明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+私库必须配置凭证；公开仓库匿名 API 经常限流时也可配置。在 GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens 创建专用令牌，Repository access 只选择目标仓库，Contents 和 Actions 均设为 Read-only，Metadata 保持只读，并设置到期时间。启用 Pages 图片自动发布时，还须将 Deployments 设为 Read-only，以读取 CI 写入的图片发布记录及状态。已有令牌可编辑此权限，无需重新生成或复制其内容。不要使用具有仓库写权限的个人日常令牌。[GitHub 令牌说明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 
 在 ECS 使用编辑器写入 `/etc/arknight-deploy.env`，不要在命令行参数、聊天或日志中粘贴令牌：
 
