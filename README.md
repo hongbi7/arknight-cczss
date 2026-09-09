@@ -133,7 +133,7 @@ npm test
 
 ## 阿里云 ECS 自动部署
 
-Ubuntu + Nginx + Node.js 24 + systemd 的生产部署与现有手工部署迁移步骤，见 [`docs/production-deployment.md`](docs/production-deployment.md)。
+Ubuntu + Nginx + Node.js 24 + systemd 的[完整部署教程](docs/production-deployment.md)覆盖全新 ECS 的环境安装、服务用户与密钥、Node/Nginx 配置、SSH 隧道验收、首次发布和每日定时，也提供已有手工部署的迁移步骤。需要立即更新时，按[手动触发部署](docs/production-deployment.md#manual-deploy)先确认 GitHub CI，再在 ECS 执行部署并核对版本。
 
 2 核 / 2 GiB / 3 Mbps 的本地 Ubuntu 测试环境、自动化分层和压测摸底方案，见 [`docs/performance-testing.md`](docs/performance-testing.md)。该文档是实施方案，尚未运行容量测试。
 
