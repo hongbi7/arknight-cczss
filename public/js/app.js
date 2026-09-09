@@ -40,6 +40,8 @@ let finalFocusTimer = null;
 let finalArchiveTimer = null;
 let pendingVisualIntelReveal = null;
 let operatorArt = {};
+let portraitPreviews = { names: {}, images: {} };
+const preparedPortraits = new Map();
 let gameStartSequence = 0;
 let wipeSequence = 0;
 let directiveIntroTimer = null;
@@ -198,7 +200,7 @@ function syncArtPreviewViewport() {
 }
 
 function openArtPreview(image, operatorName, artLabel, returnFocus, imageKind) {
-  const source = image && (image.currentSrc || image.src);
+  const source = image && (image.dataset.fullSrc || image.currentSrc || image.src);
   if (!source) return;
   artPreviewReturnFocus = returnFocus || document.activeElement;
   if (imageKind) artPreview.dataset.imageKind = imageKind;
@@ -279,7 +281,7 @@ function closeMobileDataSheet(restoreFocus) {
 }
 
 async function fetchJSON(url, options) {
-  const res = await fetch(url, options);
+  const res = await fetch(url, { priority: "high", ...options });
   return res.json();
 }
 
@@ -803,6 +805,10 @@ function updateSidebarModeCopy(mode) {
 }
 
 function updateHudTags(mode) {
+  // Pending images from the previous mode may keep downloading, at low priority.
+  [rowsEl, choiceList, anomalyOptions, intelRail].forEach(lowerImagePriority);
+  preparedPortraits.forEach((image) => { image.fetchPriority = "low"; });
+  document.querySelector(".chessmaster-scene img").fetchPriority = mode ? "low" : "high";
   updateSidebarModeCopy(mode);
   if (mode === "endless") {
     hudTagL.textContent = "P.R.T.S. // RHODES ISLAND ARCHIVE";
@@ -1393,6 +1399,7 @@ function suddenErrorText(code) {
 
 async function submitGuess() {
   if (finished || input.disabled || !token || clueDecoding) return;
+  const startSequence = gameStartSequence;
   const raw = input.value.trim();
   if (!raw) return;
   if (handleEndlessInputEasterEgg(raw)) return;
@@ -1411,6 +1418,7 @@ async function submitGuess() {
     }
   }
   const mobileViewportReady = settleMobileKeyboard();
+  prepareGuessPortrait(guessName);
   setInputEnabled(false);
   hideSuggest();
   try {
@@ -1419,6 +1427,7 @@ async function submitGuess() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, guess: guessName }),
     });
+    if (startSequence !== gameStartSequence) return;
     if (data.error === "invalid_session") {
       setStatus("会话失效，重新开始……");
       await startGame(currentMode);
@@ -1440,7 +1449,11 @@ async function submitGuess() {
     updateAttemptConfigState();
     token = data.token;
     lastRemaining = data.remaining;
+    if (data.operator && data.operator.id) {
+      preparePortrait(data.operator.themeArtUrl || artUrl(data.operator.id, !!data.win));
+    }
     await mobileViewportReady;
+    if (startSequence !== gameStartSequence) return;
     if (isComparisonV3() && Number(data.version) === SUDDEN_VERSION) {
       if (currentMode === "endless") {
         input.value = "";
@@ -1459,6 +1472,7 @@ async function submitGuess() {
         return;
       }
       const open = await handleSuddenV3Guess(data);
+      if (startSequence !== gameStartSequence) return;
       input.value = "";
       if (open) {
         setStatus("已猜 " + attempts + " 次");
@@ -1485,6 +1499,7 @@ async function submitGuess() {
     setStatus("已猜 " + attempts + " 次");
     setInputEnabled(true);
   } catch (e) {
+    if (startSequence !== gameStartSequence) return;
     setStatus("网络错误，请重试。", true);
     setInputEnabled(true);
   }
@@ -1493,6 +1508,7 @@ async function submitGuess() {
 
 /* 返回 true 表示仍在常规猜测阶段（恢复输入）；false 表示已获胜或进入终局 */
 async function handleSuddenV3Guess(data) {
+  const startSequence = gameStartSequence;
   const themeResult = data.themeResult || null;
   const clue = Array.isArray(data.pendingClues) && data.pendingClues.length ? data.pendingClues[0] : null;
   if (clue) pendingClue = clue;
@@ -1511,14 +1527,17 @@ async function handleSuddenV3Guess(data) {
     if (isMobileLayout() && renderedRecord) {
       await waitForRecordReady(renderedRecord.card, renderedRecord.image);
     }
+    if (startSequence !== gameStartSequence) return false;
     playDirectiveCompletion();
     if (clue) {
       setStatus("战术指令条件达成，正在确认情报权限……");
       await waitForDirectiveConfirmation();
+      if (startSequence !== gameStartSequence) return false;
       setStatus("情报权限已开放，正在读取情报……");
       await requestClueReveal();
     }
   }
+  if (startSequence !== gameStartSequence) return false;
   if (data.remaining === 0) {
     await continueToFinalChoices(data);
     return false;
@@ -1628,6 +1647,7 @@ function finishGame(won, text) {
 /* ---------- 四选一（终局校验） ---------- */
 
 async function showChoiceModal() {
+  const startSequence = gameStartSequence;
   setStatus("常规核验结束，进入终局校验。");
   try {
     const data = await fetchJSON("/api/choices", {
@@ -1635,10 +1655,13 @@ async function showChoiceModal() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
     });
+    if (startSequence !== gameStartSequence) return;
     if (data.error === "invalid_session") {
       await startGame(currentMode);
       return;
     }
+    lowerImagePriority(rowsEl);
+    lowerImagePriority(choiceList);
     choiceList.innerHTML = "";
     choiceModal.classList.remove("is-resolving");
     choiceList.dataset.count = data.options.length;
@@ -1648,13 +1671,16 @@ async function showChoiceModal() {
       b.className = "choice-btn";
       const art = document.createElement("span");
       art.className = "choice-art";
-      const image = document.createElement("img");
       const usesSilhouette = data.choicePresentation === "silhouette" && Boolean(operator.choiceImageUrl);
+      const image = usesSilhouette ? new Image() : takePortrait(artUrl(operator.id, false), art);
       if (usesSilhouette) art.classList.add("choice-silhouette");
-      image.src = usesSilhouette ? operator.choiceImageUrl : artUrl(operator.id, false);
+      image.loading = "eager";
+      image.fetchPriority = "high";
+      if (usesSilhouette) {
+        image.src = operator.choiceImageUrl;
+        image.addEventListener("error", () => art.classList.add("image-missing"));
+      }
       image.alt = operator.name + (usesSilhouette ? " 剪影" : " 精英一阶段立绘");
-      image.loading = "lazy";
-      image.addEventListener("error", () => art.classList.add("image-missing"));
       art.appendChild(image);
       art.title = "点击选择 " + operator.name;
       const preview = document.createElement("span");
@@ -1715,6 +1741,7 @@ function playChoiceExit(selectedButton) {
 }
 
 async function onPick(name, selectedButton) {
+  const startSequence = gameStartSequence;
   const btns = choiceList.querySelectorAll(".choice-btn");
   btns.forEach((b) => (b.disabled = true));
   try {
@@ -1722,10 +1749,18 @@ async function onPick(name, selectedButton) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, pick: name }),
+    }).then((data) => {
+      if (startSequence === gameStartSequence && !data.error && data.operator?.id) {
+        lowerImagePriority(choiceList);
+        preparePortrait(data.operator.themeArtUrl || artUrl(data.operator.id, true));
+      }
+      return data;
     });
     const [, data] = await Promise.all([playChoiceExit(selectedButton), request]);
+    if (startSequence !== gameStartSequence) return;
     if (data.error) throw new Error(data.error);
     choiceModal.classList.add("hidden");
+    lowerImagePriority(choiceList);
     choiceModal.classList.remove("is-resolving");
     if (isSuddenV3() && Number(data.version) === SUDDEN_VERSION) {
       if (!data.win && data.pickRecord) {
@@ -1742,6 +1777,7 @@ async function onPick(name, selectedButton) {
       finishGame(false, "猜错了……答案是 " + data.answerName);
     }
   } catch (e) {
+    if (startSequence !== gameStartSequence) return;
     choiceModal.classList.remove("is-resolving");
     btns.forEach((b) => {
       b.disabled = false;
@@ -2324,6 +2360,7 @@ function syncGuessRecordCountState() {
 
 /* 已有档案的下移与新卡 0.94 → 1 的缩放收尾共用同一时间轴，避免末段二次下抖。 */
 function prependGuessCard(card, animateExisting) {
+  lowerImagePriority(rowsEl);
   const existingCards = Array.from(rowsEl.querySelectorAll(":scope > .guess-card"));
   const previousTops = new Map(existingCards.map((item) => [item, item.getBoundingClientRect().top]));
   rowsEl.prepend(card);
@@ -2425,15 +2462,11 @@ function renderSuddenV3Row(r) {
   visual.className = "operator-visual";
   const visualScan = document.createElement("span");
   visualScan.className = "operator-visual-scan";
-  const image = document.createElement("img");
-  image.className = "operator-art";
   const themeArtUrl = operator.themeArtUrl || "";
   const themeArtSkinName = operator.themeArtSkinName || "";
+  const image = takePortrait(themeArtUrl || artUrl(operator.id, false), visual);
+  image.className = "operator-art";
   image.alt = r.guessName + (themeArtUrl ? ` ${themeArtSkinName || "品牌"}时装立绘` : " 精英一阶段立绘");
-  image.loading = firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
-  image.decoding = "async";
-  image.src = themeArtUrl || artUrl(operator.id, false);
-  image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
@@ -2574,16 +2607,12 @@ function renderComparisonFinalRecord(r) {
   visual.className = "operator-visual";
   const visualScan = document.createElement("span");
   visualScan.className = "operator-visual-scan";
-  const image = document.createElement("img");
+  const image = takePortrait(themeArtUrl || artUrl(operator.id, true), visual);
   image.className = "operator-art";
-  image.src = themeArtUrl || artUrl(operator.id, true);
   const artLabel = themeArtUrl
     ? ` ${themeArtSkinName || "品牌"}时装立绘`
     : (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘");
   image.alt = r.answerName + artLabel;
-  image.loading = "eager";
-  image.decoding = "async";
-  image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
@@ -2976,6 +3005,7 @@ function showDirectiveIntel(clue) {
 
 async function requestClueReveal() {
   if (clueDecoding || !pendingClue || !token) return null;
+  const startSequence = gameStartSequence;
   const restoreInput = !finished && !input.disabled;
   if (restoreInput) setInputEnabled(false);
   clueDecoding = true;
@@ -2989,6 +3019,7 @@ async function requestClueReveal() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, clueId: pendingClue.id }),
     });
+    if (startSequence !== gameStartSequence) return null;
     if (data.error === "invalid_session") {
       setStatus("会话失效，重新开始……");
       await startGame(currentMode);
@@ -3015,17 +3046,20 @@ async function requestClueReveal() {
     }
     return data.clue || null;
   } catch (e) {
+    if (startSequence !== gameStartSequence) return null;
     directiveNote.textContent = "情报读取失败 · 可点击重试";
     directiveDecodeBtn.classList.remove("hidden");
     mobileDirectiveDecodeBtn.classList.remove("hidden");
     setStatus("情报读取失败，可从战术指令卡重试。", true);
     return null;
   } finally {
-    clueDecoding = false;
-    directivePanel.classList.remove("is-decoding");
-    if (restoreInput && !finished) {
-      setInputEnabled(true);
-      focusGuessEntry();
+    if (startSequence === gameStartSequence) {
+      clueDecoding = false;
+      directivePanel.classList.remove("is-decoding");
+      if (restoreInput && !finished) {
+        setInputEnabled(true);
+        focusGuessEntry();
+      }
     }
   }
 }
@@ -3102,9 +3136,10 @@ function buildIntelCard(clue, inModal) {
       iconButton.type = "button";
       iconButton.setAttribute("aria-label", "查看" + (skill.slot || "技能") + "图标大图");
       const img = document.createElement("img");
+      img.fetchPriority = "high";
       img.src = skill.imageUrl || "";
       img.alt = skill.imageAlt || ((skill.slot || "技能") + "图标");
-      img.loading = "lazy";
+      img.loading = "eager";
       img.addEventListener("error", () => iconButton.classList.add("image-missing"));
       const slot = document.createElement("b");
       slot.textContent = skill.slot || "SKILL";
@@ -3134,9 +3169,10 @@ function buildIntelCard(clue, inModal) {
     const media = document.createElement("div");
     media.className = "intel-media" + (kind === "skillIcon" ? " intel-media-icon" : "");
     const img = document.createElement("img");
+    img.fetchPriority = "high";
     img.src = clue.imageUrl;
     img.alt = clue.imageAlt || "已解码情报图像";
-    img.loading = "lazy";
+    img.loading = "eager";
     img.addEventListener("error", () => media.classList.add("intel-media-missing"));
     media.appendChild(img);
     /* 完整剪影 + 局部显影：点击查看大图，始终 object-fit:contain 不裁剪 */
@@ -3348,9 +3384,7 @@ async function revealVisualIntel(operator, answerName, finalRecord) {
   if (!cards.length) return;
 
   /* 终局档案完成加载、入场与滚动聚焦后，才读取剪影原始立绘并在屏幕外解码。 */
-  const preloadedImage = new Image();
-  preloadedImage.decoding = "async";
-  preloadedImage.src = imageUrl;
+  const preloadedImage = createPortrait(imageUrl, "auto");
   await waitForImageDecode(preloadedImage);
 
   let revealedCount = 0;
@@ -3368,7 +3402,8 @@ async function revealVisualIntel(operator, answerName, finalRecord) {
     media.dataset.previewKind = "";
     image.loading = "eager";
     image.decoding = "async";
-    image.src = imageUrl;
+    image.dataset.fullSrc = imageUrl;
+    image.src = preloadedImage.getAttribute("src");
     image.alt = (answerName || "目标干员") + " " + artLabel;
     const kindLabel = card.querySelector(".intel-kind-label");
     const title = card.querySelector(".intel-title");
@@ -3752,16 +3787,12 @@ function renderRow(r) {
   visual.className = "operator-visual";
   const visualScan = document.createElement("span");
   visualScan.className = "operator-visual-scan";
-  const image = document.createElement("img");
+  const image = takePortrait(artUrl(operator.id, finalRecord), visual);
   image.className = "operator-art";
   const artLabel = finalRecord
     ? (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘")
     : " 精英一阶段立绘";
   image.alt = r.guessName + artLabel;
-  image.loading = finalRecord || firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
-  image.decoding = "async";
-  image.src = artUrl(operator.id, finalRecord);
-  image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
@@ -4174,6 +4205,87 @@ input.addEventListener("focus", syncMobileGuessDock);
 function reopenSuggest() {
   if (unlockSequenceActive) return;
   if (input.value.trim()) renderSuggest(searchNames(input.value));
+}
+
+function createPortrait(source, priority = "high") {
+  const image = new Image();
+  const preview = portraitPreviews.images[source];
+  image.loading = "eager";
+  image.fetchPriority = priority;
+  image.decoding = "async";
+  image.dataset.fullSrc = source;
+  image.dataset.portraitState = "loading";
+  image.addEventListener("error", () => {
+    if (image.dataset.previewFallback !== "true" && preview && preview !== source) {
+      image.dataset.previewFallback = "true";
+      image.src = source;
+    } else {
+      image.dataset.portraitState = "failed";
+    }
+  });
+  image.src = preview || source;
+  return image;
+}
+
+function preparePortrait(source) {
+  preparePortraits([source]);
+}
+
+function preparePortraits(sources) {
+  const current = new Set(sources);
+  preparedPortraits.forEach((image, url) => { image.fetchPriority = current.has(url) ? "high" : "low"; });
+  sources.forEach((source) => {
+    if (!preparedPortraits.has(source)) preparedPortraits.set(source, createPortrait(source));
+  });
+  // Retain only a few pending images; consumed images belong to their cards.
+  for (const source of preparedPortraits.keys()) {
+    if (preparedPortraits.size <= 4) break;
+    if (!current.has(source)) preparedPortraits.delete(source);
+  }
+}
+
+function lowerImagePriority(root) {
+  if (root) root.querySelectorAll("img").forEach((image) => { image.fetchPriority = "low"; });
+}
+
+function prepareAnomalyQuestion(question) {
+  if (!question || !Array.isArray(question.options) || question.options.length !== 4) return;
+  lowerImagePriority(anomalyOptions);
+  // Only the four public options of this question, including its exact brand skins.
+  preparePortraits(question.options.map((option) => option.imageUrl || artUrl(option.id, false)));
+}
+
+function prepareGuessPortrait(name) {
+  // Brand directives choose a skin in the response. Avoid downloading unused E1 art.
+  if (currentMode === "sudden" && directiveSnapshot?.id?.startsWith("visual_brand_")) return;
+  const id = portraitPreviews.names[name];
+  if (id && operatorArt[id]) preparePortrait(artUrl(id, false));
+}
+
+function takePortrait(source, visual) {
+  const image = preparedPortraits.get(source) || createPortrait(source);
+  preparedPortraits.delete(source);
+  const status = document.createElement("span");
+  status.className = "portrait-load-status";
+  status.setAttribute("role", "status");
+  status.textContent = "立绘加载中…";
+  visual.appendChild(status);
+  visual.classList.add("art-loading");
+  const update = async () => {
+    if (image.dataset.portraitState === "failed") {
+      visual.classList.remove("art-loading");
+      visual.classList.add("image-missing");
+      status.textContent = "立绘暂时无法加载";
+    } else if (image.complete && image.naturalWidth) {
+      await waitForImageDecode(image);
+      visual.classList.remove("art-loading");
+      status.remove();
+    }
+  };
+  image.addEventListener("load", update);
+  image.addEventListener("error", update);
+  update();
+  return image;
 }
 
 function reopenQuickSuggest() {
@@ -4893,6 +5005,10 @@ async function startAnomaly(domain) {
   updateHudTags("anomaly");
   const transition = playWipe();
   const dataRequest = fetchJSON("/api/anomaly/new?domain=" + encodeURIComponent(selectedDomain))
+    .then((data) => {
+      if (startSequence === gameStartSequence && !data.error) prepareAnomalyQuestion(data.question);
+      return data;
+    })
     .catch(() => ({ error: "network" }));
   await transition.covered;
   if (startSequence !== gameStartSequence) return;
@@ -4929,6 +5045,7 @@ async function startAnomaly(domain) {
 }
 
 function renderAnomalyOptions(options) {
+  lowerImagePriority(anomalyOptions);
   anomalyOptions.innerHTML = "";
   anomalyOptions.classList.remove("is-resolving", "is-reviewed");
   options.forEach((option, index) => {
@@ -4943,11 +5060,8 @@ function renderAnomalyOptions(options) {
 
     const art = document.createElement("span");
     art.className = "anomaly-option-art";
-    const image = document.createElement("img");
-    image.src = option.imageUrl || artUrl(option.id, false);
+    const image = takePortrait(option.imageUrl || artUrl(option.id, false), art);
     image.alt = option.name + (option.artKind === "skin" ? " 时装立绘" : " 精英一阶段立绘");
-    image.decoding = "async";
-    image.addEventListener("error", () => art.classList.add("image-missing"));
     const scan = document.createElement("span");
     scan.className = "anomaly-option-scan";
     scan.setAttribute("aria-hidden", "true");
@@ -5326,6 +5440,7 @@ async function nextAnomalyRound() {
     if (data.difficulty) anomaly.difficulty = data.difficulty;
     if (data.difficultyProgress) anomaly.difficultyProgress = data.difficultyProgress;
     if (Number.isFinite(data.scansRemaining)) anomaly.scansRemaining = data.scansRemaining;
+    prepareAnomalyQuestion(data.question);
     applyAnomalyQuestion(data.question);
   } finally {
     if (startSequence === gameStartSequence) {
@@ -5349,12 +5464,12 @@ function showAnomalySummary() {
   const art = document.createElement("div");
   art.className = "anomaly-summary-art";
   art.setAttribute("aria-hidden", "true");
-  const mlyss = document.createElement("img");
+  const mlyss = createPortrait("/img/operators/final/char_249_mlyss.webp", "low");
   mlyss.className = "anomaly-summary-mlyss";
-  mlyss.src = "img/operators/final/char_249_mlyss.webp";
   mlyss.alt = "";
   const rhine = document.createElement("img");
   rhine.className = "anomaly-summary-rhine";
+  rhine.fetchPriority = "low";
   rhine.src = "img/factions/rhine.webp";
   rhine.alt = "";
   art.appendChild(mlyss);
@@ -5514,15 +5629,17 @@ anomalyErrorHomeBtn.addEventListener("click", showModeScreen);
 
 async function init() {
   clearDirectiveHistory();
-  const [names, art, searchData] = await Promise.all([
+  const [names, art, searchData, previews] = await Promise.all([
     fetchJSON("data/names.json"),
     fetchJSON("data/operator-art.json").catch(() => ({})),
     fetchJSON("data/operator-search.json").catch(() => ({ schemaVersion: 1 })),
+    fetchJSON("data/portrait-previews.json").catch(() => ({ names: {}, images: {} })),
   ]);
   namesIndex = names;
   operatorSearchEngine = OperatorSearch.createOperatorSearch(names, searchData);
   endlessEasterEggs = EndlessEasterEggs.createEndlessEasterEggs(searchData.specialGroups?.mama || []);
   operatorArt = art;
+  portraitPreviews = previews;
   validNames = new Set(names.map((x) => x.n));
   /* 搜索候选列表也接入滚动边界转交：候选滑到顶/底后继续滑动可带动外层档案卡片与最外层页面（移动端） */
   bindMobileScrollBoundaryHandoff(suggestEl);

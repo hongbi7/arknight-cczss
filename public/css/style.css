@@ -277,6 +277,11 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
 .operator-art-caption span { color: var(--accent); font-size: 7px; font-weight: 700; letter-spacing: 2.4px; }
 .operator-art-caption strong { overflow: hidden; color: #f2f5f7; font-family: var(--sans); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .operator-visual.image-missing .operator-art { display: none; }
+.operator-visual.art-loading .operator-art { visibility: hidden; }
+.anomaly-option-art.art-loading img, .choice-art.art-loading img { visibility: hidden; }
+.portrait-load-status { position: absolute; z-index: 3; top: 44%; left: 12px; right: 12px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 1px; pointer-events: none; }
+.operator-visual.image-missing .portrait-load-status { top: auto; bottom: 80px; }
+.anomaly-option-art.image-missing .portrait-load-status, .choice-art.image-missing .portrait-load-status { top: auto; bottom: 12px; }
 .operator-visual.image-missing::after { content: "NO\A IMAGE"; top: 42%; right: 0; left: 0; color: rgba(255,255,255,.15); font-size: 22px; letter-spacing: 3px; text-align: center; }
 .operator-visual.art-preview-trigger { cursor: pointer; outline: none; transition: box-shadow .2s ease; }
 .operator-visual.art-preview-trigger:hover { box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb),.52); }
@@ -1331,7 +1336,7 @@ body[data-mode="sudden"] .directive-panel { display: block; }
 
 /* ============ ANOMALY 异类审查（莱茵生命生态科 · 缪尔赛思主题） ============ */
 body[data-mode="anomaly"] { --accent: #48e0a4; --accent-rgb: 72,224,164; --accent-ink: #03231a; }
-body[data-mode="anomaly"] .bg-layer { background: radial-gradient(circle at 82% 10%, rgba(72,224,164,.08), transparent 30%), linear-gradient(90deg, rgba(7,10,14,.97), rgba(7,10,14,.86) 52%, rgba(7,10,14,.94)), url("../img/operators/final/char_249_mlyss.webp") right -4% center / auto 88% fixed no-repeat, linear-gradient(145deg,#0b1210 0%,#070a0e 62%); }
+body[data-mode="anomaly"] .bg-layer { background: radial-gradient(circle at 82% 10%, rgba(72,224,164,.08), transparent 30%), linear-gradient(90deg, rgba(7,10,14,.97), rgba(7,10,14,.86) 52%, rgba(7,10,14,.94)), url("../img/operators/cards/final/char_249_mlyss.webp") right -4% center / auto 88% fixed no-repeat, linear-gradient(145deg,#0b1210 0%,#070a0e 62%); }
 
 /* --- 模式选择页：执棋者战术桌 + 错层协议组 --- */
 .mode-stage { min-height: 1070px; padding: 556px clamp(24px,4.5vw,66px) 36px; border-color: transparent; background: radial-gradient(circle at 50% -14%,rgba(255,255,255,.07),transparent 42%),linear-gradient(135deg,#0b1117,#070a0e 72%); box-shadow: 0 34px 100px rgba(0,0,0,.42),inset 0 0 0 1px rgba(255,255,255,.018); }

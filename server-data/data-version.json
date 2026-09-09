@@ -111,6 +111,14 @@
       "bytes": 13011,
       "sha256": "3b21d75fac4e0e60183c6f0b2ab1db9f9df94af05e0f38771bcd5b03a11e8d43"
     },
+    "public/data/portrait-previews.json": {
+      "bytes": 131716,
+      "sha256": "51f6071b8e9bee6d2e3461bd7d19dd80199692a1e59d30f671110c9937ddbf66"
+    },
+    "server-data/portrait-previews.json": {
+      "bytes": 378982,
+      "sha256": "58d2c3e7d75579c08dfcf9a7cc13ace95b7814260f10a1ae6aa16a4d0b7e353c"
+    },
     "server-data/operators.json": {
       "bytes": 609363,
       "sha256": "a6895f52553898a2b77d9a35e45aa810462b500c148941d5b5d00c0712ccf4d9"
