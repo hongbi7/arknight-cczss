@@ -7,6 +7,8 @@
 
   const MUSIC_TEXT = "需要我帮你穷举下一次抢票日期吗？";
   const RUA_TEXT = "还是希望大家有种";
+  const LINUO_TEXT = "魔族佬也能当偶像了？";
+  const ADMIN_TEXT = "咕咕嘎嘎？";
   const HAIMAO_MEDIA = "img/endless-easter-eggs/haimao.gif";
   const MAMA_MEDIA = [
     "img/endless-easter-eggs/mama-01.jpg",
@@ -21,6 +23,8 @@
     if (input.includes("海猫")) return { type: "media", value: HAIMAO_MEDIA };
     if (input.trim() === "音律联觉") return { type: "text", value: MUSIC_TEXT };
     if (input.toLowerCase().includes("rua")) return { type: "text", value: RUA_TEXT };
+    if (input.includes("梨诺")) return { type: "text", value: LINUO_TEXT };
+    if (input.includes("管理员")) return { type: "text", value: ADMIN_TEXT };
     return null;
   }
 
@@ -78,6 +82,8 @@
     constants: {
       MUSIC_TEXT,
       RUA_TEXT,
+      LINUO_TEXT,
+      ADMIN_TEXT,
       HAIMAO_MEDIA,
       MAMA_MEDIA: MAMA_MEDIA.slice(),
     },
