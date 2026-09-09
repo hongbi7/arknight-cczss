@@ -9,6 +9,7 @@ commit.  It is intended to be installed root-owned at
 """
 
 import argparse
+import base64
 import hashlib
 try:  # fcntl is present on the Ubuntu production host.
     import fcntl
@@ -91,7 +92,7 @@ class PullDeployer:
         if missing:
             raise DeployError("deployment configuration is missing: " + ", ".join(missing))
         if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(config["repository"])):
-            raise DeployError("repository must be an owner/name public GitHub repository")
+            raise DeployError("repository must be an owner/name GitHub repository")
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", str(config["branch"])):
             raise DeployError("branch contains unsupported characters")
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", str(config["workflow"])):
@@ -154,7 +155,7 @@ class PullDeployer:
             if error.code in (403, 429):
                 raise DeployError("GitHub API access denied or rate limited; check outbound access and the optional read-only token") from error
             if error.code in (401, 404):
-                raise DeployError("GitHub repository is unavailable; private repositories are not supported by this deployer") from error
+                raise DeployError("GitHub repository is unavailable; check repository name, token expiry, and read-only Contents/Actions access") from error
             raise DeployError("GitHub API request failed (HTTP " + str(error.code) + ")") from error
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
             raise DeployError("GitHub API request failed; leaving the current release running") from error
@@ -169,13 +170,33 @@ class PullDeployer:
         kwargs.setdefault("env", self._minimal_env())
         return self.run(["/usr/sbin/runuser", "-u", user, "--"] + command, **kwargs)
 
-    def _git(self, *args, **kwargs):
+    def _git(self, *args, authenticated=False, **kwargs):
         """Every git invocation is performed by the non-root deploy account."""
         kwargs.setdefault("timeout", 1500)
+        if authenticated:
+            kwargs["env"] = self._git_fetch_env()
         try:
             return self._runuser(self.deploy_user, ["/usr/bin/git"] + list(args), **kwargs)
         except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
             raise DeployError("git operation failed; leaving the current release running") from error
+
+    def _git_fetch_env(self):
+        """Pass credentials only to fetch, never to argv, Git config, or Node."""
+        environment = self._minimal_env()
+        token = os.environ.get("GITHUB_TOKEN")
+        if token:
+            remote = "https://github.com/%s.git" % self.config["repository"]
+            authorization = base64.b64encode(("x-access-token:" + token).encode()).decode("ascii")
+            environment.update({
+                "GIT_CONFIG_COUNT": "3",
+                "GIT_CONFIG_KEY_0": "credential.helper",
+                "GIT_CONFIG_VALUE_0": "",
+                "GIT_CONFIG_KEY_1": "http." + remote + ".extraHeader",
+                "GIT_CONFIG_VALUE_1": "Authorization: Basic " + authorization,
+                "GIT_CONFIG_KEY_2": "http.followRedirects",
+                "GIT_CONFIG_VALUE_2": "false",
+            })
+        return environment
 
     def _assert_layout(self):
         if os.geteuid() != 0:
@@ -426,7 +447,7 @@ class PullDeployer:
         self._git("-C", str(self.cache), "remote", "remove", "origin", check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self._git("-C", str(self.cache), "remote", "add", "origin", remote)
         branch_ref = "refs/remotes/origin/" + self.config["branch"]
-        self._git("-c", "pack.threads=1", "-C", str(self.cache), "fetch", "--depth=1", "--no-tags", "origin", "+%s:%s" % (self.config["branch"], branch_ref))
+        self._git("-c", "pack.threads=1", "-C", str(self.cache), "fetch", "--depth=1", "--no-tags", "origin", "+%s:%s" % (self.config["branch"], branch_ref), authenticated=True)
         actual = self._git("-C", str(self.cache), "rev-parse", branch_ref, capture_output=True).stdout.strip().lower()
         if actual != sha:
             raise DeployError("GitHub main changed while fetching; retry on the next timer run")

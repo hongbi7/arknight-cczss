@@ -10,6 +10,7 @@ APP_USER="arkguess"
 DEPLOY_USER="arkdeploy"
 CONFIG_PATH="/etc/arknight-deploy.json"
 GAME_ENV_PATH="/etc/arknight-guess.env"
+DEPLOY_ENV_PATH="/etc/arknight-deploy.env"
 LOCK_PATH="${ROOT_DIR}/deploy.lock"
 IMAGE_MAP_PATH="${ROOT_DIR}/image-pages.map"
 
@@ -54,6 +55,11 @@ systemctl cat arknight-guess.service >/dev/null 2>&1 || die "existing arknight-g
 [[ "$(stat -c '%a:%U:%G' "${GAME_ENV_PATH}")" == "600:root:root" ]] || \
   die "${GAME_ENV_PATH} must be owned by root:root with mode 0600"
 grep -q '^GAME_SECRET=.' "${GAME_ENV_PATH}" || die "${GAME_ENV_PATH} does not contain GAME_SECRET"
+if [[ -e "${DEPLOY_ENV_PATH}" || -L "${DEPLOY_ENV_PATH}" ]]; then
+  [[ -f "${DEPLOY_ENV_PATH}" && ! -L "${DEPLOY_ENV_PATH}" ]] || die "${DEPLOY_ENV_PATH} must be a regular file"
+  [[ "$(stat -c '%a:%U:%G' "${DEPLOY_ENV_PATH}")" == "600:root:root" ]] || \
+    die "${DEPLOY_ENV_PATH} must be owned by root:root with mode 0600"
+fi
 
 [[ ! -L "${ROOT_DIR}" ]] || die "${ROOT_DIR} must not be a symlink"
 install -d -o root -g root -m 0755 "${ROOT_DIR}"
