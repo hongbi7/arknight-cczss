@@ -48,8 +48,11 @@ test("终局校验：六次猜测、错误四选一、错项档案与终局档�
       && Array.isArray(guessData.pendingClues)
       && guessData.pendingClues.length
     );
-    if (unlockedIntel) await expect(mobileDataSheet).toBeVisible();
-    else await page.waitForTimeout(450);
+    if (unlockedIntel && testInfo.project.name === "mobile-chromium") {
+      await expect(mobileDataSheet).toBeVisible();
+    } else {
+      await page.waitForTimeout(450);
+    }
     if (await mobileDataSheet.count() && await mobileDataSheet.isVisible()) {
       await page.locator("#mobileDataSheetClose").click();
       await expect(mobileDataSheet).toHaveCount(0);

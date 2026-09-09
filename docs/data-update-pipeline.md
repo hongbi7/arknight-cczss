@@ -74,6 +74,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/update_local.ps1 -Fo
 
 管线从不自动合并 PR。GameData 中的新字段、阵营归类或异常档案仍需要人判断，自动化只负责发现、生成和阻止不完整数据误发布。
 
+ECS 自动发布启用后，合并到 `main` 会触发独立的 `Production CI`。服务器只拉取当前主分支提交且通过该工作流的版本，再预检、切换和重启；数据任务本身完成不等于生产已经更新。首次启用、状态检查与回滚步骤见 [`production-deployment.md`](production-deployment.md)。
+
 ## 状态与故障含义
 
 - `ready`：结构正确，必需素材齐全，没有未知分类。
