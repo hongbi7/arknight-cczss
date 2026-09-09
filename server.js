@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { handleHealth } = require("./lib/health.js");
 const apiNew = require("./api/new.js");
 const apiGuess = require("./api/guess.js");
 const apiReveal = require("./api/reveal.js");
@@ -25,6 +26,7 @@ function cliArg(name) {
 const PORT = Number(cliArg("port")) || Number(process.env.PORT) || 3000;
 const HOST = cliArg("host") || process.env.HOST || "0.0.0.0";
 const PUBLIC = path.join(__dirname, "public");
+const SERVE_STATIC = process.env.SERVE_STATIC !== "false";
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -61,6 +63,7 @@ function serveStatic(pathname, req, res) {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, "http://localhost");
+  if (url.pathname === "/api/health") return handleHealth(req, res, __dirname);
   if (url.pathname === "/api/new") return apiNew(req, res);
   if (url.pathname === "/api/guess") return apiGuess(req, res);
   if (url.pathname === "/api/reveal") return apiReveal(req, res);
@@ -72,6 +75,11 @@ const server = http.createServer((req, res) => {
   if (url.pathname === "/api/anomaly/scan") return apiAnomalyScan(req, res);
   if (url.pathname === "/api/anomaly/answer") return apiAnomalyAnswer(req, res);
   if (url.pathname === "/api/anomaly/next") return apiAnomalyNext(req, res);
+  if (!SERVE_STATIC) {
+    res.statusCode = 404;
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    return res.end("Not Found");
+  }
   serveStatic(url.pathname, req, res);
 });
 

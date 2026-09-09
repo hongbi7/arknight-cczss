@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodically check for a verified Arknights Guess release
+
+[Timer]
+OnCalendar=*-*-* 12:30:00 Asia/Shanghai
+RandomizedDelaySec=0
+AccuracySec=1s
+Persistent=false
+Unit=arknight-deploy.service
+
+[Install]
+WantedBy=timers.target

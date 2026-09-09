@@ -1,0 +1,20 @@
+[Unit]
+Description=Check and deploy the latest verified Arknights Guess release
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/arknight-deploy.json
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+EnvironmentFile=-/etc/arknight-deploy.env
+ExecStart=/usr/bin/python3 -I /usr/local/lib/arknight-deploy/pull_deploy.py check
+TimeoutStartSec=30min
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/opt/arknight-guess /run/lock
+MemoryMax=768M
+TasksMax=128

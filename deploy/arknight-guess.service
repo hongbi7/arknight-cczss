@@ -1,0 +1,27 @@
+[Unit]
+Description=Arknights Operator Guessing Game
+After=network.target
+
+[Service]
+Type=simple
+User=arkguess
+Group=arkguess
+WorkingDirectory=/opt/arknight-guess/app
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3000
+# Optional with Nginx serving /public directly. Keep it unset for local static serving.
+Environment=SERVE_STATIC=false
+EnvironmentFile=/etc/arknight-guess.env
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+MemoryMax=768M
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

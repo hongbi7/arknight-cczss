@@ -1,0 +1,12 @@
+{
+  "repository": "hongbi7/arknight-cczss",
+  "branch": "main",
+  "workflow": "production-ci.yml",
+  "root_dir": "/opt/arknight-guess",
+  "service": "arknight-guess",
+  "app_user": "arkguess",
+  "deploy_user": "arkdeploy",
+  "health_url": "http://127.0.0.1:3000",
+  "public_url": "http://127.0.0.1",
+  "keep_releases": 3
+}

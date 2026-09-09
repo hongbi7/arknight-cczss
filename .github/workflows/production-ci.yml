@@ -1,0 +1,84 @@
+name: Production CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Only tests are cancelled. ECS serializes the actual release independently.
+concurrency:
+  group: production-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the exact candidate commit
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            scripts/requirements-data.txt
+            scripts/requirements-public-assets.txt
+
+      - name: Install validation dependencies
+        run: |
+          npm ci --ignore-scripts
+          python -m pip install --disable-pip-version-check -r scripts/requirements-data.txt -r scripts/requirements-public-assets.txt
+
+      - name: Validate the committed data and assets without rebuilding
+        run: |
+          node -e 'if (require("./server-data/data-version.json").status !== "ready") { throw new Error("Production requires data status ready"); }'
+          npm run validate:production
+
+      - name: Test game logic and deployment guard rails
+        run: |
+          npm test
+          npm run test:deployment
+          python -m unittest discover -s tests/data-pipeline -p 'test_*.py'
+          bash -n deploy/install.sh
+
+      - name: Install Chromium for existing browser regressions
+        run: npx playwright install --with-deps chromium
+
+      - name: Exercise all three modes on desktop and mobile
+        run: npx playwright test tests/e2e/original-modes.spec.js tests/e2e/anomaly-flow.spec.js
+
+      - name: Retain validation and browser reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: production-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .update-work/production-validation.json
+            output/playwright/report/
+            output/playwright/results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Record the commit eligible for ECS polling
+        env:
+          VALIDATED_COMMIT: ${{ github.sha }}
+        run: |
+          printf 'Validated commit: `%s`\n\n' "$VALIDATED_COMMIT" >> "$GITHUB_STEP_SUMMARY"
+          printf 'ECS checks the successful main-branch run and deploys independently. This workflow does not report production deployment success.\n' >> "$GITHUB_STEP_SUMMARY"
