@@ -1,4 +1,5 @@
 import importlib.util
+import base64
 import copy
 import io
 import json
@@ -156,6 +157,53 @@ class GitHubSelectionTests(TemporaryDeploy):
         deployer._promote = lambda *_args: self.fail("stale candidate must not be promoted")
         with self.assertRaisesRegex(pull_deploy.DeployError, "during candidate"):
             deployer.check()
+
+
+class PrivateRepositoryTests(TemporaryDeploy):
+    def test_token_reaches_only_authenticated_fetch_and_never_command_arguments(self):
+        calls = []
+        token = "fake-read-only-deployment-token"
+        encoded = base64.b64encode(("x-access-token:" + token).encode()).decode()
+        deployer = self.deployer(run=lambda command, **kwargs: calls.append((command, kwargs)))
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": token, "GAME_SECRET": "production-secret", "GIT_TRACE_CURL": "1"}):
+            deployer._git("fetch", "origin", authenticated=True)
+            deployer._git("archive", SHA_A)
+            deployer._runuser("arkguess", ["/usr/bin/node", "server.js"])
+        fetch_command, fetch_options = calls[0]
+        self.assertEqual(fetch_command[:4], ["/usr/sbin/runuser", "-u", "arkdeploy", "--"])
+        environment = fetch_options["env"]
+        self.assertEqual(environment["GIT_CONFIG_KEY_1"], "http.https://github.com/hongbi7/arknight-cczss.git.extraHeader")
+        self.assertEqual(environment["GIT_CONFIG_VALUE_1"], "Authorization: Basic " + encoded)
+        self.assertEqual(environment["GIT_CONFIG_VALUE_0"], "")
+        self.assertEqual(environment["GIT_CONFIG_VALUE_2"], "false")
+        for command, options in calls:
+            self.assertNotIn(token, str(command))
+            self.assertNotIn(encoded, str(command))
+            self.assertNotIn("GITHUB_TOKEN", options["env"])
+            self.assertNotIn("GAME_SECRET", options["env"])
+            self.assertNotIn("GIT_TRACE_CURL", options["env"])
+        for _, options in calls[1:]:
+            self.assertNotIn("GIT_CONFIG_COUNT", options["env"])
+            self.assertNotIn(encoded, str(options["env"]))
+
+    def test_public_repository_fetch_without_token_stays_anonymous(self):
+        with mock.patch.dict(os.environ, {}, clear=True):
+            environment = self.deployer()._git_fetch_env()
+        self.assertNotIn("GIT_CONFIG_COUNT", environment)
+        self.assertEqual(environment["GIT_TERMINAL_PROMPT"], "0")
+
+    def test_git_fetch_authenticates_only_network_operation(self):
+        calls = []
+        deployer = self.deployer()
+        def git(*args, **kwargs):
+            calls.append((args, kwargs))
+            return SimpleNamespace(stdout=SHA_A)
+        deployer._git = git
+        deployer._git_fetch(SHA_A)
+        authenticated = [args for args, kwargs in calls if kwargs.get("authenticated")]
+        self.assertEqual(len(authenticated), 1)
+        self.assertIn("fetch", authenticated[0])
+        self.assertIn("origin", authenticated[0])
 
 
 class ArchiveSafetyTests(TemporaryDeploy):

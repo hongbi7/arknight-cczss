@@ -1,6 +1,6 @@
 # 生产部署与自动发布
 
-这份文档面向第一次接触本项目的部署者，以 Ubuntu 24.04 LTS、Node.js 24 和公开 GitHub 仓库为例。按顺序操作即可从一台新 ECS 建立本机可访问的站点，再启用自动发布；已有站点的用户可以跳过首次安装部分。
+这份文档面向第一次接触本项目的部署者，以 Ubuntu 24.04 LTS、Node.js 24 和 GitHub 仓库为例。公开仓库可匿名拉取；私有仓库需要本节后文的专用只读凭证。按顺序操作即可从一台新 ECS 建立本机可访问的站点，再启用自动发布；已有站点的用户可以跳过首次安装部分。
 
 - **全新服务器**：[准备仓库与服务器](#prepare) → [首次安装应用](#bootstrap) → [安装自动部署器](#install-deployer) → [首次发布与启用定时](#first-release)。
 - **已有手工部署**：核对[迁移前条件](#migration)后，从[安装自动部署器](#install-deployer)继续，保留现有生产密钥。
@@ -34,7 +34,7 @@ ECS 每天北京时间 12:30:00 启动一次检查，计时精度为一秒，错
 
 这个时间只控制 ECS 部署检查；现有数据更新工作流的定时规则、草稿 PR 流程和合并后触发 CI 的规则都不改变。
 
-目前只支持公开 GitHub 仓库。私有仓库需要另行设计只读部署凭证和密钥轮换，不能仅通过在本机加入 token 来假定可用。
+私有 GitHub 仓库需要在 ECS 配置专用 fine-grained PAT，只授权目标仓库的 Contents 与 Actions 只读权限。该令牌同时用于读取 CI 和 HTTPS Git 拉取；配置及轮换方法见[私库凭证](#private-credentials)。
 
 <a id="prepare"></a>
 
@@ -44,7 +44,7 @@ ECS 每天北京时间 12:30:00 启动一次检查，计时精度为一秒，错
 
 先将完整代码、JSON、素材、`deploy/` 和 `.github/workflows/production-ci.yml` 合并到目标仓库的 `main`。打开仓库 **Actions → Production CI**，确认当前 `main` 提交的运行结果为绿色成功；PR 分支上的绿色检查不能代替合并后主分支的检查。如果尚无主分支运行记录，按[手动触发部署的第一步](#manual-ci)运行 CI。
 
-本文使用 `hongbi7/arknight-cczss`。如果部署自己的公开 fork，请把文中 GitHub 仓库地址替换为自己的地址，并在安装部署器后把 `/etc/arknight-deploy.json` 的 `repository` 改成自己的 `所有者/仓库名`；确认 fork 的 Actions 已启用。不要把某个功能分支直接当作生产版本。
+本文使用 `hongbi7/arknight-cczss`。如果部署自己的 fork，请把文中 GitHub 仓库地址替换为自己的地址，并在安装部署器后把 `/etc/arknight-deploy.json` 的 `repository` 改成自己的 `所有者/仓库名`；确认 fork 的 Actions 已启用。不要把某个功能分支直接当作生产版本。
 
 ### 1.2 登录 ECS
 
@@ -90,6 +90,8 @@ Node 版本必须显示 `v24.x.x`；如果脚本下载或安装失败，先解�
 自动部署安装脚本需要一个已能运行的应用作为回滚基线，因此先完成本节。已有手工部署的用户不要重复创建用户、克隆到原目录或生成新密钥，直接核对下一节的迁移条件。
 
 ### 2.1 创建服务用户并取得代码
+
+下列直接 `clone` 适用于公开仓库。私库首次建站仍先执行创建用户和两个目录的命令，再在自己已登录 GitHub 的本地仓库用 `git fetch origin`、`git archive --format=tar.gz --output=bootstrap.tar.gz origin/main` 导出主分支，并通过 Workbench 上传到 ECS 临时目录。确认其对应提交 CI 成功后，在空的 `app` 目录中以 `arkguess` 解包，例如 `sudo -u arkguess tar -xzf /tmp/bootstrap.tar.gz -C /opt/arknight-guess/app`；记录本地 `git rev-parse origin/main` 的 SHA。解包版不含 `.git`，跳过下方 clone 和 rev-parse。不要为首次安装把个人 GitHub 凭证写进仓库 URL。
 
 ```bash
 sudo useradd --system --user-group --no-create-home \
@@ -188,7 +190,7 @@ ssh -N -L 127.0.0.1:8080:127.0.0.1:80 YOUR_LOGIN_USER@YOUR_ECS_IP
 
 - Ubuntu、Node.js 24、Nginx 和 Git 已安装；`node -v` 显示 `v24.x`。
 - `arkguess` 是 `/usr/sbin/nologin` 服务用户；现有 `arknight-guess.service` 已运行。
-- 当前实际 Git 工作目录是 `/opt/arknight-guess/app`，分支为 `main`。
+- 当前实际应用目录是 `/opt/arknight-guess/app`，内容来自已确认的 `main` 版本；可以是 Git 工作目录或首次上传解包的版本。
 - `/etc/arknight-guess.env` 存在，内容含 `GAME_SECRET=...`，并且权限为 `root:root`、`0600`。
 - Nginx 已在本机 `127.0.0.1:80` 把站点根目录设为 `/opt/arknight-guess/app/public`，只把 `/api/` 反向代理到 `127.0.0.1:3000`。
 - ECS 能以出站 HTTPS 访问 `github.com` 和 `api.github.com`。不需要放宽入站 SSH。
@@ -201,13 +203,30 @@ ssh -N -L 127.0.0.1:8080:127.0.0.1:80 YOUR_LOGIN_USER@YOUR_ECS_IP
 
 ## 4. 安装自动部署器
 
-先把包含本部署文件和 CI 工作流的提交合并到 `main`。在 ECS 上用一个临时目录取得安装脚本；这不会对正在运行的 `/opt/arknight-guess/app` 执行 `git pull`：
+先把包含本部署文件和 CI 工作流的提交合并到 `main`。以下匿名下载适用于公开仓库；私库使用后面的安装包方式。两种方式都不会对正在运行的 `/opt/arknight-guess/app` 执行 `git pull`：
 
 ```bash
 DEPLOY_INSTALL_DIR=$(mktemp -d /tmp/arknight-deploy-install.XXXXXX)
 git clone --depth 1 --filter=blob:none --sparse --branch main \
   https://github.com/hongbi7/arknight-cczss.git "$DEPLOY_INSTALL_DIR"
 git -C "$DEPLOY_INSTALL_DIR" sparse-checkout set deploy
+sudo bash "$DEPLOY_INSTALL_DIR/deploy/install.sh"
+```
+
+私库在自己已登录 GitHub 的本地仓库执行（实例 ID 替换为自己的值）：
+
+```bash
+git fetch origin
+git rev-parse origin/main
+git archive --format=tar.gz --output=installer.tar.gz origin/main deploy
+workbench upload installer.tar.gz /tmp/arknight-installer.tar.gz -i YOUR_INSTANCE_ID
+```
+
+记录输出 SHA，并确认是准备安装的版本。在 ECS 执行：
+
+```bash
+DEPLOY_INSTALL_DIR=$(mktemp -d /tmp/arknight-deploy-install.XXXXXX)
+tar -xzf /tmp/arknight-installer.tar.gz -C "$DEPLOY_INSTALL_DIR"
 sudo bash "$DEPLOY_INSTALL_DIR/deploy/install.sh"
 ```
 
@@ -242,13 +261,31 @@ sudo bash "$DEPLOY_INSTALL_DIR/deploy/install.sh"
 }
 ```
 
-如果 GitHub API 匿名访问经常触发限额，可创建只具公开只读权限的 token 并保存到 `/etc/arknight-deploy.env`：
+现有 Nginx 如果监听 `127.0.0.1:8080`，应把 `public_url` 改成 `http://127.0.0.1:8080`；不要仅为符合示例改动已有站点端口，也不要误用返回 Nginx 欢迎页的默认站点。
+
+<a id="private-credentials"></a>
+
+### 私库凭证与轮换
+
+私库必须配置凭证；公开仓库匿名 API 经常限流时也可配置。在 GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens 创建专用令牌，Repository access 只选择目标仓库，Contents 和 Actions 均设为 Read-only，Metadata 保持只读，并设置到期时间。不要使用具有仓库写权限的个人日常令牌。[GitHub 令牌说明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+
+在 ECS 使用编辑器写入 `/etc/arknight-deploy.env`，不要在命令行参数、聊天或日志中粘贴令牌：
 
 ```ini
-GITHUB_TOKEN=...
+GITHUB_TOKEN=REPLACE_WITH_DEDICATED_READ_ONLY_TOKEN
 ```
 
-该文件若创建，也应使用 `root:root` 和 `0600`。它只用于 GitHub API 读取，不会赋予 CI 服务器访问权限，也不能把私有仓库支持变成已配置状态。
+```bash
+sudo chown root:root /etc/arknight-deploy.env
+sudo chmod 600 /etc/arknight-deploy.env
+sudo stat -c '%a:%U:%G' /etc/arknight-deploy.env
+```
+
+应返回 `600:root:root`。安装器会拒绝权限不符或为软链接的凭证文件。systemd 每次启动部署服务时读取该文件，无需把令牌提交到仓库或设置为 GitHub Actions secret。
+
+令牌只在部署协调器读取 API 和 `arkdeploy` 的 Git fetch 进程中使用。Git 的认证头通过进程环境配置传入，限定于目标 GitHub 仓库 URL，禁用重定向与凭证存储助手；不会写入命令行、Git remote、缓存配置或发布目录，也不会传给 `arkguess` 的候选 Node 进程。实现依据 [Git 环境配置说明](https://git-scm.com/docs/git-config#Documentation/git-config.txt-GIT_CONFIG_COUNT)。
+
+到期前创建同权限的新令牌，在没有部署运行时替换 env 文件中的值，保持 `root:root`、`0600`，手动执行一次部署检查确认 API 和 Git 均可访问，再撤销旧令牌。401/404 可能表示令牌过期、选错仓库或权限不足，403 也可能是限流；失败发生在切换前会保留当前线上版本。直接在命令行运行 Python `check` 不会自动加载这个 env 文件，请通过 `systemctl start arknight-deploy.service` 触发。
 
 <a id="first-release"></a>
 
