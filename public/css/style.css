@@ -277,6 +277,9 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .46; }
 .operator-art-caption span { color: var(--accent); font-size: 7px; font-weight: 700; letter-spacing: 2.4px; }
 .operator-art-caption strong { overflow: hidden; color: #f2f5f7; font-family: var(--sans); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .operator-visual.image-missing .operator-art { display: none; }
+.operator-visual.art-loading .operator-art { visibility: hidden; }
+.portrait-load-status { position: absolute; z-index: 3; top: 44%; left: 12px; right: 12px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 1px; pointer-events: none; }
+.operator-visual.image-missing .portrait-load-status { top: auto; bottom: 80px; }
 .operator-visual.image-missing::after { content: "NO\A IMAGE"; top: 42%; right: 0; left: 0; color: rgba(255,255,255,.15); font-size: 22px; letter-spacing: 3px; text-align: center; }
 .operator-visual.art-preview-trigger { cursor: pointer; outline: none; transition: box-shadow .2s ease; }
 .operator-visual.art-preview-trigger:hover { box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb),.52); }

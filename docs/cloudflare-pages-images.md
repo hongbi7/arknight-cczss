@@ -2,6 +2,8 @@
 
 本项目把游戏图片发布到一个专用的 Cloudflare Pages Direct Upload 项目。页面、JSON 和 `/api/` 仍由阿里云 ECS 的 Nginx 和 Node.js 提供；浏览器访问 `/img/...` 时，Nginx 根据当前 release 返回到该 release 对应 Pages **唯一部署地址**的 302，图片字节不经过 ECS 的 3 Mbps 出口。
 
+档案卡片的轻量立绘、原图放大及慢图回归见 [立绘加载优化](portrait-loading.md)。轻量图通过同一个 Pages 图片集合发布，无需额外服务。
+
 ```text
 浏览器 ── 页面、JSON、API ──► ECS Nginx ──► Node.js（仅 /api）
    │

@@ -40,6 +40,8 @@ let finalFocusTimer = null;
 let finalArchiveTimer = null;
 let pendingVisualIntelReveal = null;
 let operatorArt = {};
+let portraitPreviews = { names: {}, images: {} };
+const preparedPortraits = new Map();
 let gameStartSequence = 0;
 let wipeSequence = 0;
 let directiveIntroTimer = null;
@@ -198,7 +200,7 @@ function syncArtPreviewViewport() {
 }
 
 function openArtPreview(image, operatorName, artLabel, returnFocus, imageKind) {
-  const source = image && (image.currentSrc || image.src);
+  const source = image && (image.dataset.fullSrc || image.currentSrc || image.src);
   if (!source) return;
   artPreviewReturnFocus = returnFocus || document.activeElement;
   if (imageKind) artPreview.dataset.imageKind = imageKind;
@@ -1411,6 +1413,7 @@ async function submitGuess() {
     }
   }
   const mobileViewportReady = settleMobileKeyboard();
+  prepareGuessPortrait(guessName);
   setInputEnabled(false);
   hideSuggest();
   try {
@@ -1440,6 +1443,9 @@ async function submitGuess() {
     updateAttemptConfigState();
     token = data.token;
     lastRemaining = data.remaining;
+    if (data.operator && data.operator.id) {
+      preparePortrait(data.operator.themeArtUrl || artUrl(data.operator.id, !!data.win));
+    }
     await mobileViewportReady;
     if (isComparisonV3() && Number(data.version) === SUDDEN_VERSION) {
       if (currentMode === "endless") {
@@ -2425,15 +2431,11 @@ function renderSuddenV3Row(r) {
   visual.className = "operator-visual";
   const visualScan = document.createElement("span");
   visualScan.className = "operator-visual-scan";
-  const image = document.createElement("img");
-  image.className = "operator-art";
   const themeArtUrl = operator.themeArtUrl || "";
   const themeArtSkinName = operator.themeArtSkinName || "";
+  const image = takePortrait(themeArtUrl || artUrl(operator.id, false), visual);
+  image.className = "operator-art";
   image.alt = r.guessName + (themeArtUrl ? ` ${themeArtSkinName || "品牌"}时装立绘` : " 精英一阶段立绘");
-  image.loading = firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
-  image.decoding = "async";
-  image.src = themeArtUrl || artUrl(operator.id, false);
-  image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
@@ -2574,16 +2576,12 @@ function renderComparisonFinalRecord(r) {
   visual.className = "operator-visual";
   const visualScan = document.createElement("span");
   visualScan.className = "operator-visual-scan";
-  const image = document.createElement("img");
+  const image = takePortrait(themeArtUrl || artUrl(operator.id, true), visual);
   image.className = "operator-art";
-  image.src = themeArtUrl || artUrl(operator.id, true);
   const artLabel = themeArtUrl
     ? ` ${themeArtSkinName || "品牌"}时装立绘`
     : (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘");
   image.alt = r.answerName + artLabel;
-  image.loading = "eager";
-  image.decoding = "async";
-  image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
@@ -3752,16 +3750,12 @@ function renderRow(r) {
   visual.className = "operator-visual";
   const visualScan = document.createElement("span");
   visualScan.className = "operator-visual-scan";
-  const image = document.createElement("img");
+  const image = takePortrait(artUrl(operator.id, finalRecord), visual);
   image.className = "operator-art";
   const artLabel = finalRecord
     ? (artEntry.finalKind === "skin" ? " 最新时装立绘" : " 最终档案立绘")
     : " 精英一阶段立绘";
   image.alt = r.guessName + artLabel;
-  image.loading = finalRecord || firstRecord || window.matchMedia("(max-width: 760px)").matches ? "eager" : "lazy";
-  image.decoding = "async";
-  image.src = artUrl(operator.id, finalRecord);
-  image.addEventListener("error", () => visual.classList.add("image-missing"));
   visual.classList.add("art-preview-trigger");
   visual.tabIndex = 0;
   visual.setAttribute("role", "button");
@@ -4174,6 +4168,65 @@ input.addEventListener("focus", syncMobileGuessDock);
 function reopenSuggest() {
   if (unlockSequenceActive) return;
   if (input.value.trim()) renderSuggest(searchNames(input.value));
+}
+
+function createPortrait(source) {
+  const image = new Image();
+  const preview = portraitPreviews.images[source];
+  image.loading = "eager";
+  image.fetchPriority = "high";
+  image.decoding = "async";
+  image.dataset.fullSrc = source;
+  image.dataset.portraitState = "loading";
+  image.addEventListener("error", () => {
+    if (image.dataset.previewFallback !== "true" && preview && preview !== source) {
+      image.dataset.previewFallback = "true";
+      image.src = source;
+    } else {
+      image.dataset.portraitState = "failed";
+    }
+  });
+  image.src = preview || source;
+  return image;
+}
+
+function preparePortrait(source) {
+  if (!preparedPortraits.has(source)) preparedPortraits.set(source, createPortrait(source));
+  // Retain only a few pending images; consumed images belong to their cards.
+  while (preparedPortraits.size > 4) preparedPortraits.delete(preparedPortraits.keys().next().value);
+}
+
+function prepareGuessPortrait(name) {
+  // Brand directives choose a skin in the response. Avoid downloading unused E1 art.
+  if (currentMode === "sudden" && directiveSnapshot?.id?.startsWith("visual_brand_")) return;
+  const id = portraitPreviews.names[name];
+  if (id && operatorArt[id]) preparePortrait(artUrl(id, false));
+}
+
+function takePortrait(source, visual) {
+  const image = preparedPortraits.get(source) || createPortrait(source);
+  preparedPortraits.delete(source);
+  const status = document.createElement("span");
+  status.className = "portrait-load-status";
+  status.setAttribute("role", "status");
+  status.textContent = "立绘加载中…";
+  visual.appendChild(status);
+  visual.classList.add("art-loading");
+  const update = async () => {
+    if (image.dataset.portraitState === "failed") {
+      visual.classList.remove("art-loading");
+      visual.classList.add("image-missing");
+      status.textContent = "立绘暂时无法加载";
+    } else if (image.complete && image.naturalWidth) {
+      await waitForImageDecode(image);
+      visual.classList.remove("art-loading");
+      status.remove();
+    }
+  };
+  image.addEventListener("load", update);
+  image.addEventListener("error", update);
+  update();
+  return image;
 }
 
 function reopenQuickSuggest() {
@@ -5514,15 +5567,17 @@ anomalyErrorHomeBtn.addEventListener("click", showModeScreen);
 
 async function init() {
   clearDirectiveHistory();
-  const [names, art, searchData] = await Promise.all([
+  const [names, art, searchData, previews] = await Promise.all([
     fetchJSON("data/names.json"),
     fetchJSON("data/operator-art.json").catch(() => ({})),
     fetchJSON("data/operator-search.json").catch(() => ({ schemaVersion: 1 })),
+    fetchJSON("data/portrait-previews.json").catch(() => ({ names: {}, images: {} })),
   ]);
   namesIndex = names;
   operatorSearchEngine = OperatorSearch.createOperatorSearch(names, searchData);
   endlessEasterEggs = EndlessEasterEggs.createEndlessEasterEggs(searchData.specialGroups?.mama || []);
   operatorArt = art;
+  portraitPreviews = previews;
   validNames = new Set(names.map((x) => x.n));
   /* 搜索候选列表也接入滚动边界转交：候选滑到顶/底后继续滑动可带动外层档案卡片与最外层页面（移动端） */
   bindMobileScrollBoundaryHandoff(suggestEl);
