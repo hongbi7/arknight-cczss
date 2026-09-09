@@ -20,7 +20,7 @@
 GitHub main + 通过 CI ──► ECS 定时主动拉取
 ```
 
-Nginx 直接提供 `public/`，包括约数百 MiB 的图片；Node 只处理 `/api/`。没有 Docker、宝塔或数据库。游戏状态在加密 token 中，题库和档案是仓库内的 JSON，因此每个发布目录都是可独立运行的版本。
+Nginx 直接提供 `public/`，Node 只处理 `/api/`。没有 Docker、宝塔或数据库。游戏状态在加密 token 中，题库和档案是仓库内的 JSON，因此每个发布目录都是可独立运行的版本。可选的 Cloudflare Pages 图片发布会让 Nginx 把 `/img/` 302 到与当前 release 绑定的唯一 Pages 部署地址；页面、JSON 和 API 仍在 ECS，且未启用时本地图片路径完全不变。
 
 部署器由 ECS 主动建立 HTTPS 出站连接到 GitHub。GitHub Actions 没有服务器私钥，也不会 SSH 到 ECS，现有“22 端口仅允许个人公网 IP”的安全组规则可以保持不变。备案未通过前，本方案不需要域名、DNS 或证书；示例 Nginx 只监听 `127.0.0.1:80`，自动部署检查不会经过公网。无论何时都不要公开 3000。
 
@@ -28,7 +28,7 @@ Nginx 直接提供 `public/`，包括约数百 MiB 的图片；Node 只处理 `/
 
 自动数据任务继续只创建草稿 PR。先审查数据、素材和严格校验结果，再把 PR 合并到 `main`。生产部署器只考虑 `main` 当前头提交，且该提交最新一次 `production-ci.yml` 的 `push` 或手动运行必须成功完成。PR 的检查结果不会直接授权生产发布；合并后会重新检查实际的 `main` 提交。草稿、未合并分支、旧提交的成功记录和只跑了一半的更新都不会发布。
 
-`Production CI` 使用 Node 24、Python 3.13，执行游戏单元测试、部署故障测试、数据管线测试、已提交 JSON 的哈希与素材完整性校验，以及现有的桌面/移动端三模式核心流程回归。它不会重新生成游戏数据，不需要生产密钥，也不需要服务器登录凭据。
+`Production CI` 使用 Node 24、Python 3.13，执行游戏单元测试、部署故障测试、数据管线测试、已提交 JSON 的哈希与素材完整性校验，以及现有的桌面/移动端三模式核心流程回归。它不会重新生成游戏数据，不需要生产密钥，也不需要服务器登录凭据。启用可选的图片发布后，只有 `main` 的全部验证成功才会上传图片并记录其唯一 Pages URL；PR 只测试，不上传图片。
 
 ECS 每天北京时间 12:30:00 启动一次检查，计时精度为一秒，错过该时间不会补跑。这里的时间是开始检查的时间，不是发布完成的保证时间；下载、候选测试和切换仍需要时间。若当天 `main` 的 CI 尚未成功，部署器会跳过，等到第二天 12:30 再检查，也可以在 CI 成功后手动运行 `systemctl start arknight-deploy.service`。下载耗时较长时不会叠加新任务。它发现目标提交后才下载、测试并切换 `app` 软链接。CI 成功表示仓库版本已验证；服务器端仍以 `journalctl` 和健康检查确认它实际部署成功。
 
@@ -238,6 +238,7 @@ sudo bash "$DEPLOY_INSTALL_DIR/deploy/install.sh"
   "deploy_user": "arkdeploy",
   "health_url": "http://127.0.0.1:3000",
   "public_url": "http://127.0.0.1",
+  "image_pages": null,
   "keep_releases": 3
 }
 ```
@@ -350,6 +351,8 @@ sudo /usr/bin/python3 -I /usr/local/lib/arknight-deploy/pull_deploy.py status
 
 [Nginx 示例](../deploy/nginx-arknight-guess.conf.example) 是备案前的本机配置：它只监听 `127.0.0.1:80`，以便部署器检查 `index.html`、`data/names.json` 和 `/api/health` 是否来自同一 release，站点不会对外提供访问。`/api/` 使用 `no-store`，`index.html` 使用 `no-cache`，而图片可缓存一天并允许陈旧内容短暂复用。
 
+如果要启用 Cloudflare Pages 图片自动发布，请按 [Cloudflare Pages 图片自动发布](cloudflare-pages-images.md) 配置 GitHub variables/secret、`image_pages`、HTTP 层 map 和 `/img/` location。图片 Pages 使用 `pages.dev` 不需要游戏域名、HTTPS、ECS SSH 密钥或 Cloudflare token 存在于 ECS；这不改变将 ECS 游戏站公开给中国大陆用户所需的备案。安装器默认不启用，也不会改写已有 Nginx 配置。
+
 备案通过、域名解析生效后，再创建或修改 HTTPS 虚拟主机，配置证书和需要的公开 `listen 80/443`，并把 `/etc/arknight-deploy.json` 的 `public_url` 改为正式 `https://` 域名。保留本示例的 `root`、`location` 与缓存规则，且不要把 `server-data/` 设为可访问根目录。此切换不是自动部署器会执行的操作。
 
 [Node systemd 示例](../deploy/arknight-guess.service) 增加了 `SERVE_STATIC=false`，使生产 Node 仅处理 API；Nginx 已直接发送静态文件。为避免覆盖现有服务，可按需创建 systemd drop-in：
@@ -410,7 +413,7 @@ sudo systemctl start arknight-deploy.service
 
 切换前会先将恢复记录写入 `deploy-state.json`。若断电、进程被杀或服务超时导致操作中断，下次 `check` 会优先恢复记录中的上一版本并暂停发布；恢复也失败时会保留记录并明确报错。此时先查应用日志，不要删除状态文件或盲目 `resume`。网络、GitHub API、磁盘或候选预检在切换前失败时，当前版本继续运行。
 
-系统升级前创建 ECS 快照，并备份 `/etc/arknight-guess.env`、`/etc/arknight-deploy.json`、Nginx 配置和证书续期配置。没有数据库需要备份。2 GB 内存实例建议准备 2 GB Swap：常驻游戏服务限制为 768 MiB，部署服务也限制为 768 MiB（候选 Node 的堆上限为 384 MiB），还需要给 Ubuntu、Nginx 和内核留出余量。持续观察 CPU、内存、磁盘和公网带宽；当 3 Mbps 经常跑满时，优先将 `/img` 迁移至 OSS + CDN。
+系统升级前创建 ECS 快照，并备份 `/etc/arknight-guess.env`、`/etc/arknight-deploy.json`、Nginx 配置、`/opt/arknight-guess/image-pages.map` 和证书续期配置。没有数据库需要备份。2 GB 内存实例建议准备 2 GB Swap：常驻游戏服务限制为 768 MiB，部署服务也限制为 768 MiB（候选 Node 的堆上限为 384 MiB），还需要给 Ubuntu、Nginx 和内核留出余量。持续观察 CPU、内存、磁盘和公网带宽；启用图片 Pages 后也应从目标用户网络验证它的实际效果。
 
 ## 9. 调整已安装的部署器
 
@@ -427,9 +430,13 @@ systemd-analyze calendar '*-*-* 12:30:00 Asia/Shanghai'
 
 日历表达式明确指定 `Asia/Shanghai`，不依赖服务器显示时区；`Persistent=false` 表示错过当天时点不会在开机时补跑。语法与补跑行为参见 Ubuntu 的 [systemd.time](https://manpages.ubuntu.com/manpages/noble/man7/systemd.time.7.html) 和 [systemd.timer](https://manpages.ubuntu.com/manpages/noble/man5/systemd.timer.5.html) 手册。
 
+<a id="update-deployer"></a>
+
 ## 10. 更新部署器本身
 
 部署器不会自行更新，也不会自动提权更新 systemd 或 Nginx。要升级它，先把相应仓库提交合并到 `main`，再用临时检出的该版本重新运行 `deploy/install.sh`。脚本会暂停 timer、保留配置和现有 release，然后重新安装部署器文件；完成后先手动运行一次 `arknight-deploy.service`，确认无误再恢复 timer。
+
+图片 Pages 功能的升级会额外创建 `/opt/arknight-guess/image-pages.map`，但不会覆盖已有 map 或修改 Nginx 的 server 块。要采用它，仍需按 [Cloudflare Pages 图片自动发布](cloudflare-pages-images.md) 完成一次性 Nginx 配置、填写 `image_pages` 并让新的 `main` 提交成功通过 CI；不能仅因更新部署器就假定当前 SHA 已有图片发布记录。若当前 SHA 已经部署且 release 内没有 `image-pages.json`，启用后必须由下一次新提交完成这条链路。
 
 ## 11. 实现边界与参考
 

@@ -1,223 +1,159 @@
-# Cloudflare Pages 图片部署方案与实施步骤
+# Cloudflare Pages 图片自动发布
 
-本方案只把游戏图片部署到 Cloudflare Pages，页面、JSON 和 `/api/` 继续由现有 ECS 提供。使用 Pages 自带的 HTTPS 地址，不需要绑定尚未完成备案的域名。
-
-仓库现在提供图片打包工具、远程校验工具以及可选 Nginx 配置片段。这些文件不会自动创建 Cloudflare 项目、上传素材或修改 ECS。首次接入采用人工验证后的版本绑定；完整的图片自动发布设计见最后一节，尚未接入当前生产管线。
-
-## 1. 部署结构与免费范围
+本项目把游戏图片发布到一个专用的 Cloudflare Pages Direct Upload 项目。页面、JSON 和 `/api/` 仍由阿里云 ECS 的 Nginx 和 Node.js 提供；浏览器访问 `/img/...` 时，Nginx 根据当前 release 返回到该 release 对应 Pages **唯一部署地址**的 302，图片字节不经过 ECS 的 3 Mbps 出口。
 
 ```text
-浏览器 ── 页面 / JSON / API ──► ECS：Nginx + Node.js
+浏览器 ── 页面、JSON、API ──► ECS Nginx ──► Node.js（仅 /api）
    │
-   └── /img/... ──► Nginx 返回 302（仅很小的响应）
-                         │
-                         ▼
-              固定部署版本的 *.pages.dev/img/...
-                         │
-                         └── 图片直接传给浏览器
+   └── /img/... ──► ECS Nginx 302 ──► <唯一部署>.项目名.pages.dev/img/...
 ```
 
-图片字节不经过 ECS 出口。第一张未缓存的图片会多一次重定向；先采用这个方式，是因为当前 HTML、CSS、客户端素材映射和 API 都已有 `/img/` 路径，可以统一接入。API 的健康检查与本机 Nginx 入口保持原样。
+图片 Pages 使用 `pages.dev` 地址本身不需要绑定游戏域名或为图片项目申请备案，也不需要 ECS SSH 密钥或 Cloudflare 凭证驻留在 ECS。这不改变日后将 ECS 游戏站公开给中国大陆用户所需的备案与网络配置。Nginx 和自动部署检查仍只使用 `127.0.0.1`，ECS 的每日北京时间 12:30 检查时间也不变。首次图片请求多一次很小的 302；浏览器缓存中的旧图片、在旧页面打开后发生的新发布，以及 Cloudflare 本身不可访问时，都不会由 Nginx 自动回源。
 
-Pages 纯静态资源请求免费且不限请求数，不调用 Functions。本次实际打包约 3,500 张图片，符合免费版每站 20,000 文件、单文件 25 MiB 的限制；工具会在上传前检查这些限制。参见 [静态资源计费](https://developers.cloudflare.com/pages/functions/pricing/) 和 [平台限制](https://developers.cloudflare.com/pages/platform/limits/)。
+Pages 免费版的静态文件与请求额度适合本项目当前的图片规模；它不等同于中国大陆网络加速，应在目标网络实测。参见 Cloudflare 的[平台限制](https://developers.cloudflare.com/pages/platform/limits/)、[Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/)和[大陆网络说明](https://developers.cloudflare.com/china-network/)。
 
-本方案不使用 R2、Workers、付费图片转换或自定义域名。Cloudflare 的免费网络不包含其单独销售的大陆网络服务，应在目标用户的网络上验证图片访问速度。参见 [大陆网络说明](https://developers.cloudflare.com/china-network/)。
+## 自动发布规则
 
-## 2. 先准备与游戏版本相符的图片包
+图片发布是 `Production CI` 中 `main` 的一段工作：先完成数据、游戏和浏览器验证，再打包 `public/img`、上传 Pages，并校验返回的唯一部署 URL。Pull request 只执行测试，不上传图片，也不创建可供 ECS 采用的记录。
 
-在本地项目根目录运行，需要 Node.js 24：
+上传成功后，工作流会在 GitHub `cloudflare-images` environment 创建一条成功 deployment，记录：Git 提交 SHA、图片清单摘要、唯一 URL、workflow run ID 和 run attempt。它不会自动 inactive 旧记录，因此当前 release 与可回滚 release 仍各自保留对应 URL。ECS 只接受与**当前 main 提交、成功 CI 的同一次 run/attempt**相符的图片记录；不存在、过期或不匹配就拒绝把该版本切为 Pages 图片。
 
-```powershell
-node scripts/build_image_pages.js
-```
+ECS 为候选 release 下载该记录后，以 `arkguess` 用户执行完整本地清单比对和远端图片抽样校验。只有校验通过，才把 `{ SHA, digest, URL, runID, attempt }` 写入 release 的 `image-pages.json`、更新 Nginx map 并切换 `app` 软链接。Nginx map 同时保留候选与旧 release 的不可变 URL，因此切换和回滚都会自动选择对应图片版本。
 
-输出目录为 `output/cloudflare-pages`，已经被 Git 忽略。工具只导出 `public/img` 中的常规图片，保留原目录结构：
+GitHub deployment 的作用与字段见 [Deployments REST API](https://docs.github.com/en/rest/deployments/deployments)。它是 ECS 可验证的发布证明，不能由分支别名或项目主域替代。
 
-```text
-output/cloudflare-pages/
-├── img/
-│   ├── operators/
-│   └── ...
-├── assets-manifest.json
-├── _headers
-├── 404.html
-└── index.html
-```
+## 1. 创建 Pages 项目和 GitHub 凭证
 
-`index.html` 是简单的图片站说明，不是游戏页面。清单记录图片路径、大小、SHA-256 和整套图片的摘要，用来与 ECS 上实际使用的图片逐一比对。`404.html` 让不存在的图片返回 404，防止误返回 SPA 首页；行为依据 [Pages 文件服务说明](https://developers.cloudflare.com/pages/configuration/serving-pages/)。
+这一节只需为图片项目执行一次。图片项目采用 Direct Upload。在本地电脑用 Wrangler 创建空项目，再由 CI 上传图片：
 
-`_headers` 为公开图片配置跨源访问、禁止搜索收录及缓存验证。当前游戏用 `<img>`、CSS 和图片预览展示素材，没有读取 Canvas 像素；跨源图片可用于这些现有流程。使用 `max-age=0, must-revalidate` 保留浏览器的 ETag 验证，暂不对可能复用的文件路径设置一年 `immutable`。参见 [Pages 响应头配置](https://developers.cloudflare.com/pages/configuration/headers/)。
-
-**上传目录必须是 `output/cloudflare-pages`。** 不要上传整个仓库或 `server-data`；这里不需要生产 `GAME_SECRET`。再次打包只会重建工具自己生成的输出目录，若该目录有未知内容或符号链接，工具会拒绝覆盖。
-
-打包器读取当前磁盘上的图片，不会把它自动变成 `main` 的图片。现有本地修改需要按正常流程提交、合并、通过 CI 并部署；正式接入前，第 5 步必须与 ECS 的实际图片比对通过。
-
-## 3. 创建 Pages 项目并上传
-
-本项目文件数超过控制台拖拽上传的 1,000 文件限制，所以使用 Wrangler 的 Direct Upload。Wrangler 支持最多 20,000 文件；后续也能由 GitHub Actions 执行同类上传。参见 [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/)。
-
-先登录 Cloudflare：
-
-```powershell
+```bash
 npx wrangler@4 login
-```
-
-按浏览器提示登录并授权。然后创建图片项目，下例名称可以改成你自己的；若名称不可用，请换一个，并同步修改后续命令：
-
-```powershell
 npx wrangler@4 pages project create arknight-guess-images --production-branch main
 ```
 
-采用 Direct Upload 后无需把 GitHub 仓库连接到 Pages，也无需为游戏设置框架。项目类型确定后不能直接切换成 Git 集成项目；如以后需要那种方式，可以创建另一个项目。参见 [Direct Upload 的集成限制](https://developers.cloudflare.com/pages/get-started/direct-upload/)。
+第一条命令打开浏览器登录；第二条只创建项目。项目已存在时跳过创建。可以将示例名称替换为自己的名称，后续所有配置使用同一个值。参见 Cloudflare 的 [Direct Upload 建项步骤](https://developers.cloudflare.com/pages/get-started/direct-upload/#create-your-project)。
 
-上传刚才的输出目录到一个图片验收分支：
+1. 在 Cloudflare Workers & Pages 确认刚创建的项目，项目名只能使用小写字母、数字和连字符。确认项目地址为 `项目名.pages.dev`；若因名称占用而被追加随机后缀，请换一个未占用的项目名，使项目名与地址前缀一致。本实现严格核对两者，不接受别名或其他项目的地址。
+2. 在 Cloudflare 创建 API Token，权限仅授予此账户的 **Cloudflare Pages: Edit**。不要使用全局 API Key，也不要赋予 DNS、Workers、R2 或账户管理权限。Cloudflare 的 token 权限说明见 [API token 文档](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/)。
+3. 在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中添加：
 
-```powershell
-npx wrangler@4 pages deploy output/cloudflare-pages --project-name arknight-guess-images --branch image-baseline --commit-dirty=true
-```
+   | 类型 | 名称 | 值 |
+   | --- | --- | --- |
+   | Variable | `IMAGE_PAGES_ENABLED` | `true` |
+   | Variable | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 账户 ID |
+   | Variable | `CLOUDFLARE_PAGES_PROJECT` | 第 1 步的项目名 |
+   | Secret | `CLOUDFLARE_API_TOKEN` | 第 2 步的最小权限 token |
 
-`--commit-dirty=true` 允许上传当前目录生成的静态制品，并不代表它通过生产 CI。命令参数见 [Wrangler Pages 命令](https://developers.cloudflare.com/workers/wrangler/commands/pages/)。
+`IMAGE_PAGES_ENABLED` 未设置或不等于 `true` 时，CI 只会跳过图片上传。ECS 的行为仍由 `/etc/arknight-deploy.json` 的 `image_pages` 决定：它为 `null` 时继续本地发送 `/img`；若仍启用，则缺少当前 SHA 的验证记录会使新版本在切换前被拒绝，不能把“关闭 CI 上传”当作自动本地回退。token 只存在 GitHub Actions secret，不要放入仓库、`/etc/arknight-deploy.env`、ECS 用户家目录或 systemd 环境文件。
 
-记录上传结果中的**唯一部署地址**，格式类似：
+首次设置后，让一个新的 `main` 提交完整通过 `Production CI` 并成功生成 `cloudflare-images` deployment，才有可被 ECS 使用的记录。为已在 `main` 上存在、但没有图片 deployment 的同一 SHA 补设 variable，不会凭空产生记录；尤其当这个 SHA 已部署到 ECS 且 release 内没有 `image-pages.json` 时，再启用 `image_pages` 仍会被部署器拒绝。请用下一次通过 CI 的 `main` 提交启用图片发布。
 
-```text
-https://<部署哈希>.arknight-guess-images.pages.dev
-```
+## 2. ECS 启用图片版本绑定
 
-这里的部署哈希由 Cloudflare 返回，不是 Git 提交 SHA，不能自行填写。不要用会随下一次上传变化的 `image-baseline.arknight-guess-images.pages.dev` 分支别名，也不要用项目主域代替。唯一部署地址指向该次原子部署，旧版本仍能单独访问；保留正在使用及回滚所需的部署，不要删除它们。参见 [唯一部署地址与分支别名](https://developers.cloudflare.com/pages/configuration/preview-deployments/)。
+先把包含此功能的版本发布到 ECS，但此时不必更改 Nginx。部署器默认禁用 Pages 图片：`/etc/arknight-deploy.json` 中 `image_pages` 缺失或为 `null` 时，全部图片继续本地提供。
 
-在 Cloudflare 的 Workers & Pages 中可以查看项目和部署记录。浏览器必须能直接访问图片，所以本图片部署不要配置需要登录的 Access 访问策略。
+用临时检出的当前 `deploy/install.sh` 升级已安装部署器，步骤见[生产部署文档](production-deployment.md#update-deployer)。安装器会创建 root 管理的 `/opt/arknight-guess/image-pages.map`，但会保留已有 map 文件，不会替换用户的 Nginx server 配置，也不会自动启用图片跳转。
 
-## 4. 本地校验与速度对比
-
-将下面的占位地址替换成刚才得到的唯一部署地址：
-
-```powershell
-node scripts/check_image_pages.js --base-url https://REPLACE_HASH.REPLACE_PROJECT.pages.dev
-```
-
-校验器只读运行，检查：
-
-- 图片清单与本地 `public/img` 的全部路径、大小和 SHA-256 是否一致。
-- 实际下载少量代表性图片，检查内容哈希、图片 Content-Type 和跨源响应头。
-- 不存在的图片是否返回 404。
-
-它不会把整套数百 MiB 图片重新下载一遍，因此这是全量本地清单比对和远程抽样验收，不是远程每个文件的逐字节下载验证。失败时先排查上传目录、上传版本和访问策略，不进入 Nginx 接入步骤。
-
-在浏览器打开打包日志中的样本图片，分别用家庭宽带和手机网络测试；与原 ECS 同一张图片比较完成时间和失败率。测速应关闭代理并记录网络条件，浏览器开发者工具勾选 Disable cache 后再比较首次加载。如果 Pages 在目标网络上持续更慢或不可访问，可保留图片部署作为备用，暂不切换入口。
-
-## 5. 在 ECS 上确认同一套图片
-
-先按 [生产部署文档](production-deployment.md) 完成 release 目录与 `app` 软链接的迁移。本步骤利用不可变的 release 目录进行版本绑定，不适用于仍直接在同一 Git 目录里 `git pull` 更新的运行方式。
-
-把只读校验工具复制到 ECS 的临时目录；替换登录用户和公网 IP，SSH 仍使用你现有的可信 IP 限制：
-
-```powershell
-scp scripts/check_image_pages.js LOGIN_USER@ECS_IP:/tmp/check_image_pages.js
-```
-
-在 ECS 的 Bash 中运行：
+确认项目名后，编辑 root 管理的配置：
 
 ```bash
-RELEASE_DIR=$(readlink -f /opt/arknight-guess/app)
-printf '%s\n' "$RELEASE_DIR"
-node /tmp/check_image_pages.js \
-  --base-url https://REPLACE_HASH.REPLACE_PROJECT.pages.dev \
-  --local-root "$RELEASE_DIR"
+sudo nano /etc/arknight-deploy.json
 ```
 
-目录应是 `/opt/arknight-guess/releases/<40位Git提交SHA>`。使用解析后的固定路径，避免每日自动发布切换软链接后，比对过程读到另一个版本。校验器打印通过验证的真实 `public` 根目录，下一步必须使用这个路径。
+添加或修改以下字段，其他字段保持不变：
 
-如果 ECS 与本地图片不同，校验会失败。应先让两端使用同一个正式版本，或者从 ECS 对应的提交重新打包和上传，再重新校验。不要仅凭开局 API 成功就认为图片版本也一致。
-
-## 6. 给 Nginx 加入版本绑定的图片跳转
-
-先备份当前站点配置：
-
-```bash
-sudo cp /etc/nginx/sites-available/arknight-guess \
-  /etc/nginx/sites-available/arknight-guess.before-pages-$(date +%Y%m%d-%H%M%S)
-sudo nano /etc/nginx/sites-available/arknight-guess
-```
-
-仅替换已有的 `location ^~ /img/` 块，其他监听、API 代理和静态目录规则保持当前配置。可复制仓库的 [Nginx 图片片段](../deploy/nginx-images-pages.location.example)，填入刚才校验通过的 **release SHA** 和 **Pages 唯一部署地址**：
-
-```nginx
-location ^~ /img/ {
-    if ($realpath_root = "/opt/arknight-guess/releases/REPLACE_WITH_RELEASE_SHA/public") {
-        add_header Cache-Control "no-store" always;
-        return 302 https://REPLACE_HASH.REPLACE_PROJECT.pages.dev$request_uri;
-    }
-
-    try_files $uri =404;
-    add_header Cache-Control "public, max-age=86400, stale-while-revalidate=604800";
-    access_log off;
+```json
+"image_pages": {
+  "project": "arknight-guess-images"
 }
 ```
 
-`$realpath_root` 是当前静态根目录解析软链接后的路径。只有校验过的那一个 release 才跳转；以后 12:30 发布到新 release 时，该条件不匹配，就自动使用新 release 自带的本地图片。回滚到其他 release 也会使用其本地图片；回滚到这个已绑定版本则继续使用对应的固定 Pages 部署。
+启用前可先用 `null` 保持本地图片：
 
-这让首次试用能与已有每日自动发布共存。**它还不是每个新版本都会自动启用 Pages 的完整管线。** 本地 `public/img` 必须保留。不可变发布目录和 Nginx 变量的定义见 [Nginx 核心模块](https://nginx.org/en/docs/http/ngx_http_core_module.html#variables)，响应头的配置位置见 [响应头模块](https://nginx.org/en/docs/http/ngx_http_headers_module.html)。
+```json
+"image_pages": null
+```
 
-检查通过后再 reload；这里不需要重启 Node：
+配置 JSON 必须合法；错误的 project、缺少 Pages deployment、摘要不符或远端校验失败都会使候选发布在切换前失败，当前 app 与其已有图片路由保持运行。
+
+## 3. 一次性配置 Nginx
+
+自动发布的 runtime archive 只包含运行所需文件，**不包含 `deploy/`**。因此不要从 `/opt/arknight-guess/app/deploy/` 复制 Nginx 示例。用升级部署器时保留的临时 checkout；若已删除，以下命令重新取得仅含 `deploy/` 的临时 checkout。随后将 HTTP 层 map 示例安装为 `/etc/nginx/conf.d/arknight-image-pages.conf`。它必须在 `http {}` 范围被 Nginx 加载，不能贴入站点 `server {}` 块：
+
+```bash
+IMAGE_NGINX_DIR=$(mktemp -d /tmp/arknight-image-nginx.XXXXXX)
+git clone --depth 1 --filter=blob:none --sparse --branch main \
+  https://github.com/hongbi7/arknight-cczss.git "$IMAGE_NGINX_DIR"
+git -C "$IMAGE_NGINX_DIR" sparse-checkout set deploy
+sudo install -o root -g root -m 0644 \
+  "$IMAGE_NGINX_DIR/deploy/nginx-image-pages-http.conf.example" \
+  /etc/nginx/conf.d/arknight-image-pages.conf
+```
+
+该文件以 `$realpath_root` 查询 `/opt/arknight-guess/image-pages.map`。map 的默认值为空；只有已验证 release 的 `public` 真实目录有 URL，才允许 302。示例设置 `map_hash_bucket_size 128`，以容纳带 40 位 SHA 的完整路径；若其他 HTTP 配置已经设置此指令，保留一处且至少为 128，避免重复定义。参见 [Nginx map 哈希设置](https://nginx.org/en/docs/http/ngx_http_map_module.html#map_hash_bucket_size)。
+
+接着，用临时 checkout 中的 [location 示例](../deploy/nginx-images-pages.location.example)替换游戏站点中原有的 `location ^~ /img/` 块：
+
+```bash
+sudo cat "$IMAGE_NGINX_DIR/deploy/nginx-images-pages.location.example"
+sudo nano /etc/nginx/sites-available/arknight-guess
+```
+
+将前一条命令显示的完整 `location` 块粘贴到站点配置。新 location 在 `$arknight_image_origin` 非空时返回 `302` 和 `Cache-Control: no-store`，否则用原来的 `try_files` 本地发送图片。删除旧的手工固定 SHA/Pages URL 片段，避免它与 map 规则冲突。临时 checkout 可保留到本次配置验收完成。
+
+检查并载入：
 
 ```bash
 sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-不要使用 `proxy_pass` 把 Pages 图片转发回来，那样图片仍会经过 ECS 出口。也不要用长期缓存的 301；当前 302 返回 `no-store`，便于立即回退。
+若 `nginx -t` 或 reload 失败，修正配置后重试，**不要**开启 `image_pages`。部署器在每次带图片映射的发布前也会执行 Nginx 检查；检查失败不会切换 release。
 
-## 7. 验收与回退
+Nginx 只重定向，让浏览器直接连接 Pages；不要使用 `proxy_pass` 代理 Pages，否则图片仍消耗 ECS 出口带宽。
 
-保持生产示例当前的本机监听方式，在 ECS 上用实际存在的图片路径检查：
+## 4. 首次发布与验收
+
+确认当前 `main` 的 Production CI 已在 `cloudflare-images` environment 显示成功 deployment，然后在 ECS 启动一次部署检查：
 
 ```bash
-curl -I http://127.0.0.1/img/REPLACE_WITH_EXISTING_IMAGE.webp
-curl -IL http://127.0.0.1/img/REPLACE_WITH_EXISTING_IMAGE.webp
-curl -fsS http://127.0.0.1/api/health
+sudo systemctl start arknight-deploy.service
+sudo journalctl -u arknight-deploy.service -n 150 --no-pager
+sudo /usr/bin/python3 -I /usr/local/lib/arknight-deploy/pull_deploy.py status
 ```
 
-当前运行的 release 与绑定路径一致时，第一条应返回 302 和固定 Pages 地址；跟随跳转后应为 200，Content-Type 为图片类型。若返回本地图片 200，先检查是否已经自动发布到另一个 release，以及绑定路径是否与校验输出一致。
+部署日志应显示图片 deployment 被接受、远端抽样校验完成及最终 release SHA。确认 release 内的记录和 map：
 
-需要在本地浏览器操作游戏时，可通过已有 SSH 登录建立本地端口转发，无需开放服务器新端口或绑定域名：
-
-```powershell
-ssh -N -L 8080:127.0.0.1:80 LOGIN_USER@ECS_IP
+```bash
+RELEASE_DIR=$(readlink -f /opt/arknight-guess/app)
+sudo cat "$RELEASE_DIR/image-pages.json"
+sudo cat /opt/arknight-guess/image-pages.map
+curl -I http://127.0.0.1/img/REPLACE_WITH_AN_EXISTING_IMAGE.webp
 ```
 
-保持该终端运行，浏览器访问 `http://127.0.0.1:8080`。确认首页、三个模式、异常审计的四张选项图、终局候选、图片放大及手机布局都正常。开发者工具里图片最终地址应是 Pages，API 仍走游戏入口；首次测试禁用缓存，避免先前缓存的同源图片让跳转看起来没有生效。
+最后一条在有对应 Pages map 的 release 上应返回 302，`Location` 是 `https://<唯一部署>.<项目>.pages.dev/img/...`；跟随跳转应返回图片。对没有记录的手工基线、旧 release 或禁用 `image_pages` 的部署，应正常返回本地图片 200。
 
-若 Pages 在用户网络上故障，恢复备份的站点配置（使用第 6 步实际生成的文件名），然后重新 `nginx -t`、reload，即可回到本地图片。也可以直接恢复 [原 Nginx 模板](../deploy/nginx-arknight-guess.conf.example) 中的 `/img/` 块；不要覆盖已经单独调整过的其他站点设置。
+可用既有 SSH 隧道在浏览器中验收，无需开放新端口：
 
-Nginx 302 后不会知道浏览器是否成功下载 Pages 图片，因此当前方案不承诺远端故障时自动回源；回退由管理员执行。部署 API 的健康检查也不能代替外部用户对图片的验收。
-
-## 8. 后续自动化发布设计
-
-当前生产 CI、部署器和每天北京时间 12:30 的 timer 没有因本方案被改为自动上传图片。要长期免人工维护，应再完成下面的链路：
-
-```text
-main 的精确提交
-    ↓
-Production CI：游戏 / 数据 / 浏览器检查
-    ↓
-打包图片 → Wrangler 上传 → 校验唯一部署 URL
-    ↓
-记录：Git SHA + 图片摘要 + Pages 唯一部署 URL
-    ↓
-ECS 在 12:30 拉取该 SHA
-    ↓
-核对图片版本并准备 release 的图片配置
-    ↓
-切换应用与图片配置，验证；失败时一起回滚
+```bash
+ssh -N -L 127.0.0.1:8080:127.0.0.1:80 YOUR_LOGIN_USER@YOUR_ECS_IP
 ```
 
-实施要点：
+打开 `http://127.0.0.1:8080`，禁用浏览器缓存后检查首页、三个模式、异常审计的四张选项图、终局候选、图片放大和移动布局。开发者工具应显示 API 仍来自 ECS，图片最终请求到 Pages。
 
-1. 在受信任的 `main` CI 中上传，使用只针对相应 Cloudflare 账户的 `Cloudflare Pages: Edit` API Token；保存在 GitHub Secrets，账户 ID 和项目名保存在配置中。首次本地 OAuth 登录不等于 GitHub 已有凭证。参见 [使用 CI Direct Upload](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/)。
-2. 图片上传及远程校验必须是 `Production CI` 成功条件的一部分。仅增加一个独立图片 workflow，不会自动成为当前 ECS 部署器的发布门禁。
-3. 发布记录绑定精确 Git SHA、图片摘要和唯一部署地址。ECS 需读取和验证该记录，在 root 管理的部署流程中更新 Nginx 图片配置，并把配置变动纳入失败恢复；不能直接执行从仓库取得的任意 root 脚本。
-4. 保留仍在运行、可回滚及活跃客户端所需的 Pages 部署。多个版本使用各自的唯一地址，不依赖会变化的项目主域；仅在同一个可变 URL 后加 `?v=SHA` 并不能恢复已被覆盖的文件内容。
-5. 完整自动化还应让前端按版本直接请求图片 URL，处理旧页面跨发布的资源一致性，减少逐图重定向，并设计远端失败时的本地降级。首次试用的目录绑定解决的是当前服务版本对应哪套图片，不承诺页面一直打开跨多个版本时仍固定在旧版本。
+## 回滚、关闭与排错
 
-这些自动化改造尚未实现，不应在上线记录中标为完成。本文提供的首次接入步骤可以先验证免费 Pages 在目标网络上的实际收益，再决定是否继续接入自动化。
+发布器的普通回滚命令会在切换前核对旧版本的 GitHub 发布记录，并重新验证 Pages 清单、摘要和图片样本；通过后才切回旧 `app` 软链接，并依据 map 选回那个 release 的图片 URL。没有图片记录的旧版本使用本地图片。回滚后发布器会 pin 自动发布，按[生产部署文档](production-deployment.md#operations)处理并在确认后 `resume`。不要删除当前或可回滚 release 对应的 Pages 历史部署。
+
+要临时关闭 CDN，先把 `/etc/arknight-deploy.json` 的 `image_pages` 改为 `null`，然后运行一次部署检查。部署器会清空 map，使当前及后续 release 立即恢复本地图片；不要删除 `image-pages.map`，它仍是 Nginx 已加载的 include 文件。Pages 或用户网络故障时，Nginx 无法根据浏览器的下载失败自动切回 ECS，管理员需要用这一方式介入。
+
+| 现象 | 原因与处理 |
+| --- | --- |
+| CI 没有 `cloudflare-images` deployment | 检查只在 `main` 上传；核对 `IMAGE_PAGES_ENABLED=true`、三个 GitHub 配置项和 secret。修正后让新的 `main` 提交完成 CI。 |
+| `no matching image deployment` 或 deployment 被拒绝 | 当前 SHA 没有同一成功 CI run/attempt 的记录，或项目名、摘要、run 信息不一致。不要手工填写 URL；先修正 CI 配置并让新提交重新验证。 |
+| 远端图片抽样或清单验证失败 | Pages 访问策略、项目、上传内容或网络异常。当前 release 保持不变；查看 CI 和 `arknight-deploy.service` 日志。 |
+| `nginx -t`/reload 失败 | map 文件位置或 `/img/` location 配置错误。修正后先手动 `nginx -t`，再启动部署服务。 |
+| 图片仍由 ECS 返回 200 | 当前 release 没有 `image-pages.json`、`image_pages` 未启用、map 未被 Nginx 加载，或 URL 与 `$realpath_root` 不匹配。核对上述三个文件与 `readlink -f` 输出。 |
+| 浏览器拿到旧图片 | 旧页面已加载的图片或之前的本地图片缓存不会随发布自动刷新。禁用缓存并刷新页面重试；新图片请求按当前 release 路由，并非整页版本固定。 |
+
+本轮实现没有把前端图片地址改为直接 Pages URL，也没有为 CDN 故障实现自动回源。保留 `public/img` 是发布预检、回滚和本地回退所必需的。

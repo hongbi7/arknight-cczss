@@ -10,7 +10,8 @@ on:
 permissions:
   contents: read
 
-# Only tests are cancelled. ECS serializes the actual release independently.
+# Superseded runs may cancel tests or image uploads. ECS only accepts completed
+# successful runs and serializes application releases independently.
 concurrency:
   group: production-ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -51,6 +52,11 @@ jobs:
           node -e 'if (require("./server-data/data-version.json").status !== "ready") { throw new Error("Production requires data status ready"); }'
           npm run validate:production
 
+      - name: Install Nginx for image-routing integration checks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nginx
+
       - name: Test game logic and deployment guard rails
         run: |
           npm test
@@ -82,4 +88,60 @@ jobs:
           VALIDATED_COMMIT: ${{ github.sha }}
         run: |
           printf 'Validated commit: `%s`\n\n' "$VALIDATED_COMMIT" >> "$GITHUB_STEP_SUMMARY"
-          printf 'ECS checks the successful main-branch run and deploys independently. This workflow does not report production deployment success.\n' >> "$GITHUB_STEP_SUMMARY"
+          printf 'When enabled, Cloudflare Pages image publication is also part of this CI result. ECS checks the successful main-branch run and deploys independently. This workflow does not report production deployment success.\n' >> "$GITHUB_STEP_SUMMARY"
+
+  publish_images:
+    needs: validate
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.ref == 'refs/heads/main' &&
+      vars.IMAGE_PAGES_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Check out the validated commit
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Validate Cloudflare Pages configuration
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+        run: |
+          node -e 'const account=process.env.CLOUDFLARE_ACCOUNT_ID || ""; const project=process.env.CLOUDFLARE_PAGES_PROJECT || ""; if (!/^[0-9a-f]{32}$/i.test(account)) throw new Error("CLOUDFLARE_ACCOUNT_ID must be a 32-character hexadecimal account ID"); if (!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(project)) throw new Error("CLOUDFLARE_PAGES_PROJECT must be a DNS slug");'
+
+      - name: Build the immutable image asset set
+        run: node scripts/build_image_pages.js
+
+      - name: Upload image assets to a unique Cloudflare Pages deployment
+        id: pages
+        # cloudflare/wrangler-action v4, resolved from its maintained v4 tag on 2026-09-09.
+        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy output/cloudflare-pages
+            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+            --branch=sha-${{ github.sha }}
+            --commit-hash=${{ github.sha }}
+            --commit-dirty=false
+
+      - name: Verify the remote image asset set and record its GitHub deployment
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+          PAGES_DEPLOYMENT_URL: ${{ steps.pages.outputs.deployment-url }}
+        run: |
+          IMAGE_PAGES_ASSET_SET_SHA256="$(node -p 'require("./output/cloudflare-pages/assets-manifest.json").assetSetSha256')"
+          export IMAGE_PAGES_ASSET_SET_SHA256
+          node scripts/record_image_pages.js

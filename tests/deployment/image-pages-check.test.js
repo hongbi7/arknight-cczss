@@ -80,6 +80,27 @@ async function main() {
     assert.strictEqual(result.files, 2);
     assert.deepStrictEqual(result.samples, ["/img/operators/a.webp", "/img/operators/b.webp"]);
     assert.strictEqual(result.digest, manifest.assetSetSha256);
+    const expected = await verifyImagePages({
+      baseUrl: "https://abcdef12.game-images.pages.dev",
+      localRoot: root,
+      fetchImpl: fetchFor(root, manifest),
+      expectedDigest: manifest.assetSetSha256,
+      missingSuffix: "expected-digest",
+    });
+    assert.strictEqual(expected.digest, manifest.assetSetSha256);
+    await assert.rejects(() => verifyImagePages({
+      baseUrl: "https://abcdef12.game-images.pages.dev",
+      localRoot: root,
+      fetchImpl: fetchFor(root, manifest),
+      expectedDigest: "a".repeat(64),
+      missingSuffix: "wrong-expected-digest",
+    }), /expectedDigest/);
+    await assert.rejects(() => verifyImagePages({
+      baseUrl: "https://abcdef12.game-images.pages.dev",
+      localRoot: root,
+      fetchImpl: fetchFor(root, manifest),
+      expectedDigest: "not-a-digest",
+    }), /64-character hexadecimal/);
   });
 
   await withFixture(async (root) => {
