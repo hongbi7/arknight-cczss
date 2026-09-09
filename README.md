@@ -137,6 +137,8 @@ Ubuntu + Nginx + Node.js 24 + systemd 的生产部署与现有手工部署迁移
 
 2 核 / 2 GiB / 3 Mbps 的本地 Ubuntu 测试环境、自动化分层和压测摸底方案，见 [`docs/performance-testing.md`](docs/performance-testing.md)。该文档是实施方案，尚未运行容量测试。
 
+免费 Cloudflare Pages 图片托管的打包、上传、版本校验、Nginx 接入和回退步骤，见 [`docs/cloudflare-pages-images.md`](docs/cloudflare-pages-images.md)。
+
 主分支提交先经过 `Production CI` 的游戏测试、数据与素材完整性校验以及桌面端/移动端核心流程回归。ECS 每天北京时间 12:30 主动检查当前 `main` 提交，通过 CI 后才拉取该版本、预检、切换并重启；检查失败自动恢复旧版并暂停后续自动发布。备案通过前，部署器通过本机 Nginx 的 `http://127.0.0.1` 校验，不需要绑定域名或 HTTPS。SSH 安全组继续仅允许可信 IP，无需向 GitHub 提供服务器登录凭据。数据更新草稿 PR 仍需补齐素材并审核合并。
 
 ## 部署上线（Vercel，免费）

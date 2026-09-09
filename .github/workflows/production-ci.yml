@@ -55,6 +55,7 @@ jobs:
         run: |
           npm test
           npm run test:deployment
+          npm run test:images:pages
           python -m unittest discover -s tests/data-pipeline -p 'test_*.py'
           bash -n deploy/install.sh
 
