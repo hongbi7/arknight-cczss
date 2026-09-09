@@ -348,7 +348,6 @@ def main():
         build_anomaly_data(excel_root)
         build_theme_bank(excel_root)
 
-    run([sys.executable, PROJECT_ROOT / "scripts" / "build_portrait_previews.py"])
     report = validate(
         metadata,
         report_path,

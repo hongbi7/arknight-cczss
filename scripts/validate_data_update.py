@@ -20,8 +20,6 @@ GENERATED_DATA_FILES = (
     "public/data/names.json",
     "public/data/operator-art.json",
     "public/data/operator-search.json",
-    "public/data/portrait-previews.json",
-    "server-data/portrait-previews.json",
     "server-data/operators.json",
     "server-data/operator-archives.json",
     "server-data/operator-clues.json",
