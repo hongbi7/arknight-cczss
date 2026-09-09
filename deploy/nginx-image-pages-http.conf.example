@@ -1,0 +1,10 @@
+# Install this file in Nginx's http context, for example as
+# /etc/nginx/conf.d/arknight-image-pages-map.conf.  The generated include is
+# root-owned and is replaced atomically by the pull deployer.
+# Release realpaths include a 40-character commit SHA, exceeding Nginx's
+# common default map hash bucket. Keep this in the http context with map.
+map_hash_bucket_size 128;
+map $realpath_root $arknight_image_origin {
+    default "";
+    include /opt/arknight-guess/image-pages.map;
+}

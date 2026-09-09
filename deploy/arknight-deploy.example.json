@@ -8,5 +8,6 @@
   "deploy_user": "arkdeploy",
   "health_url": "http://127.0.0.1:3000",
   "public_url": "http://127.0.0.1",
+  "image_pages": null,
   "keep_releases": 3
 }

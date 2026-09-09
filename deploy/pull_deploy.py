@@ -40,9 +40,17 @@ SHA_RE = re.compile(r"^[0-9a-f]{40}$", re.I)
 SAFE_RELEASE_FILES = {"server.js", "package.json", "package-lock.json"}
 SAFE_RELEASE_DIRS = {"api", "lib", "public", "server-data", "scripts"}
 ARCHIVE_PATHS = ["api", "lib", "public", "server-data", "server.js", "package.json",
-                 "package-lock.json", "scripts/check_deployment.js"]
-REQUIRED_FILES = {"server.js", "package.json", "package-lock.json", "scripts/check_deployment.js"}
+                 "package-lock.json", "scripts/check_deployment.js", "scripts/check_image_pages.js"]
+REQUIRED_FILES = {"server.js", "package.json", "package-lock.json", "scripts/check_deployment.js",
+                  "scripts/check_image_pages.js"}
 MIN_FREE_BYTES = 2 * 1024 * 1024 * 1024
+IMAGE_PAGES_RECORD = "image-pages.json"
+IMAGE_PAGES_ENVIRONMENT = "cloudflare-images"
+IMAGE_PAGES_TASK = "deploy:images"
+IMAGE_PAGES_KIND = "arknight-image-pages-release"
+IMAGE_PAGES_PROJECT_RE = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$")
+IMAGE_PAGES_URL_RE = re.compile(r"^https://([0-9a-f]{8,64})\.([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)\.pages\.dev$")
+IMAGE_PATH_RE = re.compile(r"^/img/(?!.*(?:^|/)\.?(?:\.|/))(?:[^/%\\:\x00-\x1f\x7f]+/)*[^/%\\:\x00-\x1f\x7f]+$")
 
 
 class DeployError(RuntimeError):
@@ -58,6 +66,7 @@ class PullDeployer:
         self.app = self.root / "app"
         self.state_path = self.root / "deploy-state.json"
         self.lock_path = self.root / "deploy.lock"
+        self.image_map = self.root / "image-pages.map"
         self.api_json = api_json or self._api_json
         self.run = run or self._run
         self.sleep = sleep
@@ -97,7 +106,20 @@ class PullDeployer:
             cls.validate_origin(field, config[field])
         if not isinstance(config["keep_releases"], int) or config["keep_releases"] < 2:
             raise DeployError("keep_releases must be an integer of at least 2")
+        # Old configurations intentionally stay valid and keep serving local
+        # images until the operator explicitly enables Pages binding.
+        config.setdefault("image_pages", None)
+        cls.validate_image_pages_config(config["image_pages"])
         return cls(config)
+
+    @staticmethod
+    def validate_image_pages_config(value):
+        if value is None:
+            return
+        if not isinstance(value, dict) or set(value) != {"project"} or not isinstance(value.get("project"), str):
+            raise DeployError("image_pages must be null or an object containing only project")
+        if not IMAGE_PAGES_PROJECT_RE.fullmatch(value["project"]):
+            raise DeployError("image_pages.project must be a lowercase DNS label")
 
     @staticmethod
     def validate_origin(field, value):
@@ -190,6 +212,7 @@ class PullDeployer:
                 raise DeployError(str(item) + " is missing; run the installer first")
         if not self.releases.is_dir() or not self.cache.is_dir():
             raise DeployError("release cache paths must be directories")
+        self._assert_image_map_path()
         # Resolve users now: this turns a typo into a non-mutating failure.
         user_ids = []
         for user in (self.deploy_user, self.app_user):
@@ -248,7 +271,13 @@ class PullDeployer:
             raise DeployError("GitHub returned no usable main commit; leaving the current release running")
         return sha.lower()
 
-    def approved_run(self, sha):
+    def approved_run_details(self, sha):
+        """Return the newest successful main CI run for ``sha`` or None.
+
+        The deployment binding includes both GitHub's immutable run id and its
+        rerun attempt.  A successful earlier attempt must never authorize an
+        image deployment published by a later failed attempt.
+        """
         repo = urllib.parse.quote(self.config["repository"], safe="/")
         workflow = urllib.parse.quote(self.config["workflow"], safe="")
         branch = urllib.parse.quote(self.config["branch"], safe="")
@@ -266,9 +295,150 @@ class PullDeployer:
                 # The API lists newest runs first. Do not fall back to an older
                 # success when the same commit's latest validation is failing.
                 if run.get("status") == "completed" and run.get("conclusion") == "success":
-                    return run.get("html_url") or "GitHub Actions run"
+                    run_id = run.get("id")
+                    attempt = run.get("run_attempt")
+                    return {
+                        "id": run_id,
+                        "attempt": attempt,
+                        "url": run.get("html_url") or "GitHub Actions run",
+                    }
                 return None
         return None
+
+    def approved_run(self, sha):
+        """Backward-compatible human-readable approval result for status/tests."""
+        run = self.approved_run_details(sha)
+        return run["url"] if run else None
+
+    @staticmethod
+    def _image_base_url(project, value):
+        if not isinstance(value, str) or value != value.strip() or not IMAGE_PAGES_URL_RE.fullmatch(value):
+            raise DeployError("Cloudflare image deployment URL is invalid")
+        match = IMAGE_PAGES_URL_RE.fullmatch(value)
+        if match.group(2) != project:
+            raise DeployError("Cloudflare image deployment URL does not belong to the configured project")
+        return value
+
+    @staticmethod
+    def _image_sample_path(value):
+        if not isinstance(value, str) or not IMAGE_PATH_RE.fullmatch(value):
+            raise DeployError("Cloudflare image samplePath is invalid")
+        parts = value.split("/")[2:]
+        if not parts or any(part in ("", ".", "..") for part in parts):
+            raise DeployError("Cloudflare image samplePath is invalid")
+        return value
+
+    def _validate_image_payload(self, payload, sha, run=None, *, require_project=True):
+        """Validate the root-owned release record or GitHub deployment payload."""
+        required = {
+            "schemaVersion", "kind", "commit", "repository", "workflow", "runId", "runAttempt",
+            "project", "baseUrl", "assetSetSha256", "samplePath",
+        }
+        if not isinstance(payload, dict) or set(payload) != required:
+            raise DeployError("Cloudflare image deployment payload has an unsupported schema")
+        if payload.get("schemaVersion") != 1 or payload.get("kind") != IMAGE_PAGES_KIND:
+            raise DeployError("Cloudflare image deployment payload has an unsupported schema")
+        if payload.get("commit", "").lower() != sha or not SHA_RE.fullmatch(str(payload.get("commit", ""))):
+            raise DeployError("Cloudflare image deployment payload commit does not match the release")
+        if payload.get("repository") != self.config["repository"] or payload.get("workflow") != self.config["workflow"]:
+            raise DeployError("Cloudflare image deployment payload has a different repository or workflow")
+        if not isinstance(payload.get("runId"), int) or payload["runId"] <= 0 or not isinstance(payload.get("runAttempt"), int) or payload["runAttempt"] <= 0:
+            raise DeployError("Cloudflare image deployment payload has invalid CI run metadata")
+        if not isinstance(payload.get("project"), str) or not IMAGE_PAGES_PROJECT_RE.fullmatch(payload["project"]):
+            raise DeployError("Cloudflare image deployment payload has an invalid project")
+        configured = self.config.get("image_pages")
+        if require_project and (not configured or payload["project"] != configured["project"]):
+            raise DeployError("Cloudflare image deployment payload does not match the configured project")
+        self._image_base_url(payload["project"], payload.get("baseUrl"))
+        if not isinstance(payload.get("assetSetSha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", payload["assetSetSha256"], re.I):
+            raise DeployError("Cloudflare image deployment payload has an invalid asset-set digest")
+        self._image_sample_path(payload.get("samplePath"))
+        if run and (payload["runId"] != run["id"] or payload["runAttempt"] != run["attempt"]):
+            raise DeployError("Cloudflare image deployment was not produced by the approved CI run")
+        return payload
+
+    def _image_deployments(self, sha):
+        repo = urllib.parse.quote(self.config["repository"], safe="/")
+        query = urllib.parse.urlencode({"sha": sha, "environment": IMAGE_PAGES_ENVIRONMENT,
+                                        "task": IMAGE_PAGES_TASK, "per_page": 100})
+        payload = self.api_json("/repos/%s/deployments?%s" % (repo, query))
+        return payload if isinstance(payload, list) else []
+
+    def _image_status_is_current_success(self, deployment_id, base_url):
+        repo = urllib.parse.quote(self.config["repository"], safe="/")
+        statuses = self.api_json("/repos/%s/deployments/%s/statuses?per_page=1" % (repo, deployment_id))
+        if not isinstance(statuses, list) or not statuses:
+            return False
+        latest = statuses[0]
+        return (isinstance(latest, dict) and latest.get("state") == "success" and
+                latest.get("environment_url") == base_url)
+
+    def image_pages_binding(self, sha, run):
+        """Find the exact Pages deployment created by the approved CI attempt."""
+        if not self.config.get("image_pages"):
+            return None
+        deployments = self._image_deployments(sha)
+        for deployment in deployments:
+            if not isinstance(deployment, dict):
+                continue
+            deployment_sha = deployment.get("sha")
+            deployment_ref = deployment.get("ref")
+            if (not isinstance(deployment_sha, str) or not isinstance(deployment_ref, str) or
+                    deployment_sha.lower() != sha or deployment_ref.lower() != sha or
+                    deployment.get("environment") != IMAGE_PAGES_ENVIRONMENT or deployment.get("task") != IMAGE_PAGES_TASK):
+                continue
+            deployment_id = deployment.get("id")
+            if not isinstance(deployment_id, int) or deployment_id <= 0:
+                return None
+            payload = deployment.get("payload")
+            # GitHub can return JSON text for old deployment API records.
+            if isinstance(payload, str):
+                try:
+                    payload = json.loads(payload)
+                except json.JSONDecodeError:
+                    return None
+            try:
+                payload = self._validate_image_payload(payload, sha, run)
+            except (DeployError, OSError):
+                # This is the newest deployment for this SHA/environment. Do
+                # not revive an older run or attempt when it disagrees.
+                return None
+            if not self._image_status_is_current_success(deployment_id, payload["baseUrl"]):
+                # The endpoint is newest-first.  A current matching deployment
+                # that did not complete successfully must not fall back.
+                return None
+            return {"id": deployment_id, "payload": payload}
+        return None
+
+    def image_record_is_live(self, sha, record):
+        """Confirm GitHub still exposes the historical deployment record."""
+        if not self.config.get("image_pages"):
+            return True
+        for deployment in self._image_deployments(sha):
+            if not isinstance(deployment, dict):
+                continue
+            deployment_sha = deployment.get("sha")
+            deployment_ref = deployment.get("ref")
+            if (not isinstance(deployment_sha, str) or not isinstance(deployment_ref, str) or
+                    deployment_sha.lower() != sha or deployment_ref.lower() != sha or
+                    deployment.get("environment") != IMAGE_PAGES_ENVIRONMENT or deployment.get("task") != IMAGE_PAGES_TASK):
+                continue
+            payload = deployment.get("payload")
+            if isinstance(payload, str):
+                try:
+                    payload = json.loads(payload)
+                except json.JSONDecodeError:
+                    continue
+            deployment_id = deployment.get("id")
+            if not isinstance(deployment_id, int) or deployment_id <= 0:
+                continue
+            try:
+                payload = self._validate_image_payload(payload, sha)
+            except DeployError:
+                continue
+            if payload == record and self._image_status_is_current_success(deployment_id, payload["baseUrl"]):
+                return True
+        return False
 
     def _git_fetch(self, sha):
         remote = "https://github.com/%s.git" % self.config["repository"]
@@ -294,7 +464,7 @@ class PullDeployer:
         if top not in SAFE_RELEASE_DIRS:
             return False
         if top == "scripts":
-            return len(parts) == 1 or name == "scripts/check_deployment.js"
+            return len(parts) == 1 or name in ("scripts/check_deployment.js", "scripts/check_image_pages.js")
         return True
 
     def _extract_archive(self, sha, staging):
@@ -380,6 +550,166 @@ class PullDeployer:
     def _node_check(self, cwd, base_url, sha):
         self._runuser(self.app_user, ["/usr/bin/node", "scripts/check_deployment.js", "--base-url", base_url, "--expected-commit", sha], cwd=str(cwd), env=self._minimal_env(SERVE_STATIC="false"))
 
+    def _image_check(self, cwd, binding):
+        payload = binding["payload"]
+        self._runuser(
+            self.app_user,
+            ["/usr/bin/node", "scripts/check_image_pages.js", "--base-url", payload["baseUrl"],
+             "--local-root", str(cwd), "--expected-digest", payload["assetSetSha256"]],
+            cwd=str(cwd), env=self._minimal_env(), timeout=180,
+        )
+
+    def _read_image_record(self, release, sha, *, configured_project=False):
+        record = release / IMAGE_PAGES_RECORD
+        try:
+            if record.is_symlink():
+                raise OSError("record is a symlink")
+            payload = json.loads(record.read_text(encoding="utf-8"))
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            raise DeployError("release has no valid Cloudflare image binding") from error
+        return self._validate_image_payload(payload, sha, require_project=configured_project)
+
+    def _write_image_record(self, release, binding):
+        """Write only root-generated, immutable metadata after the Pages check."""
+        destination = release / IMAGE_PAGES_RECORD
+        if destination.exists() or destination.is_symlink():
+            raise DeployError("release already has an image binding record")
+        temporary = release / ("." + IMAGE_PAGES_RECORD + ".new")
+        try:
+            with open(temporary, "x", encoding="utf-8") as output:
+                output.write(json.dumps(binding["payload"], sort_keys=True, indent=2) + "\n")
+                output.flush()
+                os.fsync(output.fileno())
+            os.chmod(temporary, 0o644)
+            os.replace(temporary, destination)
+        except OSError as error:
+            temporary.unlink(missing_ok=True)
+            raise DeployError("could not store the verified Cloudflare image binding") from error
+
+    def _assert_image_map_path(self):
+        if self.image_map.parent != self.root or self.image_map.name != "image-pages.map":
+            raise DeployError("image map path is invalid")
+        if self.image_map.is_symlink():
+            raise DeployError("image map must not be a symlink")
+        if not self.image_map.exists():
+            return
+        stat = self.image_map.stat()
+        if not self.image_map.is_file() or (os.name != "nt" and (stat.st_uid != 0 or stat.st_mode & 0o022)):
+            raise DeployError("image map must be a root-owned non-writable regular file")
+
+    def _image_map_entries(self):
+        """Emit only root-validated release roots and immutable Pages URLs."""
+        if not self.config.get("image_pages"):
+            return []
+        entries = []
+        for release in self.releases.iterdir():
+            if release.is_symlink() or not release.is_dir() or not SHA_RE.fullmatch(release.name):
+                continue
+            try:
+                payload = self._read_image_record(release, release.name.lower())
+                public = (release / "public").resolve(strict=True)
+                if public.parent != release.resolve() or not public.is_dir():
+                    raise DeployError("release public directory is unsafe")
+            except (DeployError, OSError):
+                # A partially staged, old, or manually created release must
+                # keep local images. It cannot inject Nginx configuration.
+                continue
+            entries.append((str(public), payload["baseUrl"]))
+        return sorted(entries)
+
+    @staticmethod
+    def _render_image_map(entries):
+        lines = ["# Generated by arknight pull deployer. Do not edit."]
+        for public_root, base_url in entries:
+            # Both fields originate from strict local path / URL validators;
+            # retain a final narrow character check before writing Nginx text.
+            if not public_root.startswith("/") or any(character in public_root for character in '";{}$\\\n\r'):
+                raise DeployError("unsafe release root for image map")
+            if not IMAGE_PAGES_URL_RE.fullmatch(base_url) or any(character in base_url for character in '";{}$\\\n\r'):
+                raise DeployError("unsafe Cloudflare URL for image map")
+            lines.append('"%s" "%s";' % (public_root, base_url))
+        return "\n".join(lines) + "\n"
+
+    def _read_map_bytes(self):
+        self._assert_image_map_path()
+        if not self.image_map.exists():
+            return None
+        return self.image_map.read_bytes()
+
+    def _restore_map_bytes(self, previous):
+        temporary = self.image_map.with_name("." + self.image_map.name + ".restore")
+        try:
+            if previous is None:
+                self.image_map.unlink(missing_ok=True)
+            else:
+                with open(temporary, "xb") as destination:
+                    destination.write(previous)
+                    destination.flush()
+                    os.fsync(destination.fileno())
+                os.chmod(temporary, 0o644)
+                os.replace(temporary, self.image_map)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+    def _nginx(self, *args):
+        self.run(["/usr/sbin/nginx"] + list(args), timeout=45, env=self._minimal_env())
+
+    def _write_image_map(self):
+        """Atomically install a map and restore the loaded configuration on error."""
+        # Upgrades from the pre-Pages installer may have no map file and no
+        # Nginx map include. Disabled mode must remain a zero-touch local flow.
+        if not self.config.get("image_pages") and not self.image_map.exists():
+            return None
+        previous = self._read_map_bytes()
+        rendered = self._render_image_map(self._image_map_entries()).encode("utf-8")
+        if previous == rendered:
+            return previous
+        temporary = self.image_map.with_name("." + self.image_map.name + ".new")
+        try:
+            with open(temporary, "xb") as destination:
+                destination.write(rendered)
+                destination.flush()
+                os.fsync(destination.fileno())
+            os.chmod(temporary, 0o644)
+            os.replace(temporary, self.image_map)
+            self._nginx("-t")
+            self._systemctl("reload", "nginx")
+            return previous
+        except BaseException as original:
+            try:
+                self._restore_map_bytes(previous)
+                self._nginx("-t")
+                self._systemctl("reload", "nginx")
+            except BaseException as restoration:
+                raise DeployError("Nginx image map failed and its previous configuration could not be restored") from restoration
+            raise DeployError("Nginx rejected the image map; the previous map was restored") from original
+        finally:
+            temporary.unlink(missing_ok=True)
+
+    def _verify_image_redirect(self, sha):
+        if not self.config.get("image_pages"):
+            return
+        # Hand-managed baselines and releases made before Pages was enabled are
+        # valid rollback targets. They deliberately retain local /img files.
+        if not (self.app / IMAGE_PAGES_RECORD).exists():
+            return
+        payload = self._read_image_record(self.app, sha, configured_project=True)
+        request = urllib.request.Request(self.config["public_url"].rstrip("/") + payload["samplePath"], method="GET")
+        # urllib follows redirects by default.  A tiny local handler makes the
+        # verification assert Nginx's Location rather than Pages availability.
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, request, fp, code, msg, headers, newurl):
+                return None
+        try:
+            opener = urllib.request.build_opener(NoRedirect())
+            opener.open(request, timeout=12)
+            raise ValueError()
+        except urllib.error.HTTPError as response:
+            if response.code != 302 or response.headers.get("Location") != payload["baseUrl"] + payload["samplePath"]:
+                raise DeployError("Nginx image redirect does not match the verified Cloudflare release") from response
+        except (urllib.error.URLError, TimeoutError, ValueError) as error:
+            raise DeployError("Nginx image redirect verification failed") from error
+
     def _candidate_check(self, staging, sha):
         port = self._free_port()
         process = subprocess.Popen(
@@ -419,7 +749,7 @@ class PullDeployer:
             raise DeployError("release path escaped the releases directory")
         return result
 
-    def _create_release(self, sha):
+    def _create_release(self, sha, image_binding=None):
         release = self._release_dir(sha)
         if release.exists():
             # A previous attempt may have completed staging but never promoted.
@@ -432,7 +762,13 @@ class PullDeployer:
                 raise DeployError("existing release metadata does not match its directory")
             self._assert_no_dependencies(release)
             self._assert_data_ready(release)
+            if image_binding:
+                recorded = self._read_image_record(release, sha, configured_project=True)
+                if recorded != image_binding["payload"]:
+                    raise DeployError("existing release has a different Cloudflare image binding")
             self._candidate_check(release, sha)
+            if image_binding:
+                self._image_check(release, image_binding)
             return release
         staging = Path(tempfile.mkdtemp(prefix="." + sha + ".", dir=self.releases))
         try:
@@ -442,6 +778,11 @@ class PullDeployer:
             (staging / "deployment-version.json").write_text(json.dumps({"commit": sha}) + "\n", encoding="utf-8")
             self._make_runtime_readable(staging)
             self._candidate_check(staging, sha)
+            if image_binding:
+                self._image_check(staging, image_binding)
+                # The archive contains no deployment metadata. This root-only
+                # record is written only after the remote asset set passed.
+                self._write_image_record(staging, image_binding)
             os.replace(staging, release)
             self._log("candidate passed " + sha)
             return release
@@ -512,6 +853,7 @@ class PullDeployer:
             self._wait_url(self.config["health_url"].rstrip("/"), sha, seconds=15)
             self._node_check(self.app, self.config["health_url"], sha)
             self._public_check(sha)
+            self._verify_image_redirect(sha)
             return
         # Manual baseline releases predate /api/health.  Verify a playable opening
         # instead, without executing any application code as root.
@@ -565,13 +907,24 @@ class PullDeployer:
         # the next timer invocation. Only this installed root-owned program writes state.
         state["pending"] = {"previous": str(previous), "candidate": sha}
         self._write_state(state)
+        map_before = None
+        map_prepared = False
         try:
+            # The map contains both the candidate and old release mappings, so
+            # a symlink-only rollback returns to the same immutable image set.
+            if self.config.get("image_pages") or self.image_map.exists():
+                map_before = self._write_image_map()
+                map_prepared = True
             self._switch(release)
             self._systemctl("restart", self.config["service"])
             self._verify_live(sha)
         except BaseException as original:
             state.update({"pinned": True, "failed_commit": sha})
             try:
+                if map_prepared:
+                    self._restore_map_bytes(map_before)
+                    self._nginx("-t")
+                    self._systemctl("reload", "nginx")
                 self._restore(previous, previous_sha)
             except BaseException as rollback_error:
                 self._write_state(state)
@@ -615,14 +968,50 @@ class PullDeployer:
         with self._locked():
             state = self._state()
             self._recover_pending(state)
+            # This is also the emergency CDN-off path. It must complete before
+            # consulting GitHub or honoring a deployment pin, so an operator
+            # can return image traffic to ECS while the Internet is unavailable.
+            if (not self.config.get("image_pages") and self.image_map.exists() and
+                    self._read_map_bytes() != self._render_image_map([]).encode("utf-8")):
+                self._write_image_map()
             if state.get("pinned"):
                 self._log("automatic deployment is pinned")
                 return False
             sha = self._main_sha()
             if sha == state.get("last_successful") and self._app_target() == self._release_dir(sha):
+                if self.config.get("image_pages"):
+                    run = self.approved_run_details(sha)
+                    if not run:
+                        self._log("no successful production CI run for " + sha)
+                        return False
+                    binding = self.image_pages_binding(sha, run)
+                    if not binding:
+                        self._log("no verified Cloudflare Pages image deployment for " + sha)
+                        return False
+                    active_release = self._release_dir(sha)
+                    if not (active_release / IMAGE_PAGES_RECORD).exists():
+                        raise DeployError("the deployed release has no image binding; publish a new commit before enabling image_pages")
+                    recorded = self._read_image_record(active_release, sha, configured_project=True)
+                    if recorded != binding["payload"]:
+                        raise DeployError("the deployed release has no matching image binding; publish a new commit before enabling image_pages")
+                    self._image_check(active_release, binding)
+                    self._write_image_map()
+                    self._verify_image_redirect(sha)
                 self._log("already deployed " + sha)
                 return False
-            run_url = self.approved_run(sha)
+            image_binding = None
+            if self.config.get("image_pages"):
+                run = self.approved_run_details(sha)
+                if not run:
+                    self._log("no successful production CI run for " + sha)
+                    return False
+                image_binding = self.image_pages_binding(sha, run)
+                if not image_binding:
+                    self._log("no verified Cloudflare Pages image deployment for " + sha)
+                    return False
+                run_url = run["url"]
+            else:
+                run_url = self.approved_run(sha)
             if not run_url:
                 self._log("no successful production CI run for " + sha)
                 return False
@@ -633,7 +1022,7 @@ class PullDeployer:
             # next timer cycle, never be silently replaced by an older commit.
             if self._main_sha() != sha:
                 raise DeployError("GitHub main advanced before release switch; retry later")
-            release = self._create_release(sha)
+            release = self._create_release(sha, image_binding) if image_binding else self._create_release(sha)
             if self._main_sha() != sha:
                 raise DeployError("GitHub main advanced during candidate verification; retry later")
             self._promote(release, sha, state)
@@ -650,7 +1039,19 @@ class PullDeployer:
             release = self._release_dir(sha)
             if not release.is_dir() or not (release / "deployment-version.json").is_file():
                 raise DeployError("rollback release is incomplete or no longer present")
+            image_record = None
+            if self.config.get("image_pages"):
+                record_path = release / IMAGE_PAGES_RECORD
+                if record_path.exists():
+                    record = self._read_image_record(release, sha, configured_project=True)
+                    if not self.image_record_is_live(sha, record):
+                        raise DeployError("rollback image binding is no longer verified by GitHub")
+                    image_record = record
             self._candidate_check(release, sha)
+            if image_record:
+                # GitHub's historical success status does not prove the
+                # immutable Pages deployment still serves the same bytes.
+                self._image_check(release, {"payload": image_record})
             self._promote(release, sha, state, pin=True)
             self._log("rolled back to " + sha + "; automatic deployment pinned")
 

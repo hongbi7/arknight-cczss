@@ -25,6 +25,8 @@ server {
     }
 
     location ^~ /img/ {
+        # To use Cloudflare Pages per release, replace this complete block with
+        # nginx-images-pages.location.example after installing its http map.
         try_files $uri =404;
         add_header Cache-Control "public, max-age=86400, stale-while-revalidate=604800";
         access_log off;

@@ -1,14 +1,13 @@
-# Replace the existing /img/ location inside the game's server block.
-# Fill both placeholders using a verified, immutable ECS release and the
-# unique Cloudflare deployment URL, not the project or branch alias.
+# Include this complete location block inside the game's server block after
+# installing nginx-image-pages-http.conf.example in Nginx's http context.
 location ^~ /img/ {
-    if ($realpath_root = "/opt/arknight-guess/releases/REPLACE_WITH_RELEASE_SHA/public") {
+    # A matching release root redirects the browser directly to its immutable
+    # Pages deployment. Releases without a verified record stay local.
+    if ($arknight_image_origin != "") {
         add_header Cache-Control "no-store" always;
-        return 302 https://REPLACE_WITH_DEPLOYMENT_HASH.REPLACE_WITH_PROJECT.pages.dev$request_uri;
+        return 302 $arknight_image_origin$request_uri;
     }
 
-    # Unmatched releases keep their own images, including after daily updates
-    # or rollback. Keep local assets until automatic version binding exists.
     try_files $uri =404;
     add_header Cache-Control "public, max-age=86400, stale-while-revalidate=604800";
     access_log off;

@@ -74,7 +74,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/update_local.ps1 -Fo
 
 管线从不自动合并 PR。GameData 中的新字段、阵营归类或异常档案仍需要人判断，自动化只负责发现、生成和阻止不完整数据误发布。
 
-ECS 自动发布启用后，合并到 `main` 会触发独立的 `Production CI`。服务器只拉取当前主分支提交且通过该工作流的版本，再预检、切换和重启；数据任务本身完成不等于生产已经更新。首次启用、状态检查与回滚步骤见 [`production-deployment.md`](production-deployment.md)。
+ECS 自动发布启用后，合并到 `main` 会触发独立的 `Production CI`。服务器只拉取当前主分支提交且通过该工作流的版本，再预检、切换和重启；数据任务本身完成不等于生产已经更新。若启用了 Cloudflare Pages 图片自动发布，CI 成功后还会为同一提交生成图片 deployment，ECS 必须验证该记录与成功 CI run/attempt 完全一致，才会采用 Pages 图片。首次启用、状态检查与回滚步骤见 [`production-deployment.md`](production-deployment.md) 和 [`cloudflare-pages-images.md`](cloudflare-pages-images.md)。
 
 ## 状态与故障含义
 

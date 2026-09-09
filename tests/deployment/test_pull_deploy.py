@@ -254,6 +254,7 @@ class ArchiveSafetyTests(TemporaryDeploy):
             ("package.json", b"{}", "file"),
             ("package-lock.json", b"{}", "file"),
             ("scripts/check_deployment.js", b"// smoke", "file"),
+            ("scripts/check_image_pages.js", b"// image smoke", "file"),
             ("server-data/data-version.json", b'{"status":"ready"}', "file"),
         ]
         checked = []
@@ -291,7 +292,7 @@ class ArchiveSafetyTests(TemporaryDeploy):
         source.mkdir()
         fixtures = {
             "server.js": "// fixture", "package.json": "{}", "package-lock.json": "{}",
-            "scripts/check_deployment.js": "// fixture", "server-data/data-version.json": '{"status":"ready"}',
+            "scripts/check_deployment.js": "// fixture", "scripts/check_image_pages.js": "// image fixture", "server-data/data-version.json": '{"status":"ready"}',
             "api/new.js": "// fixture", "lib/game.js": "// fixture", "public/index.html": "<html></html>",
             "docs/private.md": "not in runtime", "scripts/build_data.py": "not in runtime",
             ".github/workflows/ci.yml": "not in runtime",
@@ -412,6 +413,256 @@ class PromotionTests(TemporaryDeploy):
         self.assertIn(SHA_D, remaining)
         self.assertIn(SHA_A, remaining)
         self.assertEqual(len(remaining), 3)
+
+
+class ImagePagesTests(TemporaryDeploy):
+    PROJECT = "arknight-guess-images"
+    BASE_URL = "https://1a2b3c4d.arknight-guess-images.pages.dev"
+    RUN = {"id": 101, "attempt": 2, "url": "https://github.example/runs/101"}
+
+    def image_deployer(self, **kwargs):
+        values = config(self.directory)
+        values["image_pages"] = {"project": self.PROJECT}
+        return pull_deploy.PullDeployer(values, sleep=lambda _seconds: None, **kwargs)
+
+    def payload(self, sha=SHA_A, **changes):
+        result = {
+            "schemaVersion": 1,
+            "kind": "arknight-image-pages-release",
+            "commit": sha,
+            "repository": "hongbi7/arknight-cczss",
+            "workflow": "production-ci.yml",
+            "runId": self.RUN["id"],
+            "runAttempt": self.RUN["attempt"],
+            "project": self.PROJECT,
+            "baseUrl": self.BASE_URL,
+            "assetSetSha256": "1" * 64,
+            "samplePath": "/img/operators/final/example.webp",
+        }
+        result.update(changes)
+        return result
+
+    def deployment(self, payload=None, **changes):
+        result = {
+            "id": 202,
+            "sha": SHA_A,
+            "ref": SHA_A,
+            "environment": "cloudflare-images",
+            "task": "deploy:images",
+            "payload": payload or self.payload(),
+        }
+        result.update(changes)
+        return result
+
+    def test_binding_requires_exact_approved_run_attempt_sha_and_success_status(self):
+        deployer = self.image_deployer()
+        deployment = self.deployment()
+        endpoints = []
+        def api(endpoint):
+            endpoints.append(endpoint)
+            if "/statuses?" in endpoint:
+                return [{"state": "success", "environment_url": self.BASE_URL}]
+            return [deployment]
+        deployer.api_json = api
+        self.assertEqual(deployer.image_pages_binding(SHA_A, self.RUN)["payload"], self.payload())
+        self.assertIn("task=deploy%3Aimages", endpoints[0])
+
+        for field, value in (("sha", SHA_B), ("ref", SHA_B), ("payload", self.payload(runAttempt=3)),
+                             ("payload", self.payload(commit=SHA_B))):
+            rejected = self.deployment()
+            rejected[field] = value
+            deployer.api_json = lambda endpoint, rejected=rejected: (
+                [{"state": "success", "environment_url": self.BASE_URL}] if "/statuses?" in endpoint else [rejected]
+            )
+            self.assertIsNone(deployer.image_pages_binding(SHA_A, self.RUN), field)
+
+        deployer.api_json = lambda endpoint: (
+            [{"state": "failure", "environment_url": self.BASE_URL}] if "/statuses?" in endpoint else [deployment]
+        )
+        self.assertIsNone(deployer.image_pages_binding(SHA_A, self.RUN))
+
+    def test_payload_and_url_reject_injection_and_missing_records(self):
+        deployer = self.image_deployer()
+        for payload in (self.payload(baseUrl="https://1a2b3c4d.arknight-guess-images.pages.dev/evil"),
+                        self.payload(baseUrl="https://1a2b3c4d.arknight-guess-images.pages.dev;evil"),
+                        self.payload(project="image;evil"), self.payload(samplePath="/img/../evil.webp")):
+            with self.subTest(payload=payload):
+                with self.assertRaises(pull_deploy.DeployError):
+                    deployer._validate_image_payload(payload, SHA_A, self.RUN)
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        with self.assertRaisesRegex(pull_deploy.DeployError, "no valid Cloudflare image binding"):
+            deployer._read_image_record(release, SHA_A)
+
+    def test_image_check_passes_expected_digest_without_production_secrets(self):
+        calls = []
+        deployer = self.image_deployer()
+        deployer._runuser = lambda user, command, **kwargs: calls.append((user, command, kwargs))
+        deployer._image_check(self.directory, {"payload": self.payload()})
+        user, command, kwargs = calls[0]
+        self.assertEqual(user, "arkguess")
+        self.assertIn("--expected-digest", command)
+        self.assertEqual(command[command.index("--expected-digest") + 1], "1" * 64)
+        self.assertNotIn("GAME_SECRET", kwargs["env"])
+        self.assertEqual(kwargs["timeout"], 180)
+
+    def test_map_contains_verified_release_and_restores_old_file_after_nginx_failure(self):
+        deployer = self.image_deployer()
+        # The installed deployer runs as root. Unit tests intentionally run as
+        # an unprivileged account, so isolate map transaction behavior from the
+        # separate ownership guard tested below.
+        deployer._assert_image_map_path = lambda: None
+        release = self.directory / "releases" / SHA_A
+        (release / "public").mkdir(parents=True)
+        deployer._write_image_record(release, {"payload": self.payload()})
+        self.assertEqual(deployer._image_map_entries()[0][1], self.BASE_URL)
+        # The deployer runs on Linux; supply a Linux root for the Nginx text
+        # rendering portion while keeping this unit test portable to Windows.
+        deployer._image_map_entries = lambda: [("/opt/arknight-guess/releases/" + SHA_A + "/public", self.BASE_URL)]
+        old = b'# prior generated map\n"/old/public" "https://deadbeef.arknight-guess-images.pages.dev";\n'
+        deployer.image_map.write_bytes(old)
+        nginx_calls = []
+        def nginx(*args):
+            nginx_calls.append(args)
+            if len(nginx_calls) == 1:
+                raise pull_deploy.DeployError("invalid Nginx configuration")
+        deployer._nginx = nginx
+        deployer._systemctl = lambda *args: nginx_calls.append(args)
+        with self.assertRaisesRegex(pull_deploy.DeployError, "previous map was restored"):
+            deployer._write_image_map()
+        self.assertEqual(deployer.image_map.read_bytes(), old)
+        self.assertIn(("-t",), nginx_calls)
+        self.assertIn(("reload", "nginx"), nginx_calls)
+
+    def test_nginx_map_failure_does_not_switch_the_app_and_restores_previous_release(self):
+        deployer = self.image_deployer()
+        old = self.directory / "releases" / SHA_A
+        candidate = self.directory / "releases" / SHA_B
+        old.mkdir()
+        candidate.mkdir()
+        (old / "deployment-version.json").write_text(json.dumps({"commit": SHA_A}))
+        (candidate / "deployment-version.json").write_text(json.dumps({"commit": SHA_B}))
+        active = [old]
+        deployer._app_target = lambda: active[0]
+        deployer._switch = lambda release: active.__setitem__(0, release)
+        deployer._write_image_map = lambda: (_ for _ in ()).throw(pull_deploy.DeployError("Nginx rejected map; restored"))
+        restored = []
+        deployer._restore = lambda release, sha: restored.append((release, sha))
+        with self.assertRaisesRegex(pull_deploy.DeployError, "previous release was restored"):
+            deployer._promote(candidate, SHA_B, {"pinned": False, "known_good": [SHA_A]})
+        self.assertEqual(active[0], old)
+        self.assertEqual(restored, [(old, SHA_A)])
+
+    def test_existing_release_cannot_be_silently_rebound(self):
+        deployer = self.image_deployer()
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        (release / "deployment-version.json").write_text(json.dumps({"commit": SHA_A}))
+        (release / "package.json").write_text("{}")
+        (release / "server-data").mkdir()
+        (release / "server-data" / "data-version.json").write_text('{"status":"ready"}')
+        deployer._write_image_record(release, {"payload": self.payload(assetSetSha256="2" * 64)})
+        with self.assertRaisesRegex(pull_deploy.DeployError, "different Cloudflare image binding"):
+            deployer._create_release(SHA_A, {"payload": self.payload()})
+
+    def test_rollback_to_a_pre_pages_release_keeps_local_images(self):
+        deployer = self.image_deployer(api_json=lambda _endpoint: self.fail("old local release must not need GitHub image lookup"))
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        (release / "deployment-version.json").write_text(json.dumps({"commit": SHA_A}))
+        deployer._assert_layout = lambda: None
+        deployer._state = lambda: {"pinned": False, "known_good": [SHA_A]}
+        deployer._candidate_check = lambda *_args: None
+        promoted = []
+        deployer._promote = lambda *args, **kwargs: promoted.append((args, kwargs))
+        deployer.rollback(SHA_A)
+        self.assertEqual(promoted[0][0][0], release)
+        # Missing root-generated metadata means _verify_image_redirect leaves
+        # the Nginx local /img fallback intact.
+        deployer._verify_image_redirect(SHA_A)
+
+    def test_enabling_pages_for_an_already_deployed_unbound_sha_requires_new_commit(self):
+        deployer = self.image_deployer()
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        deployer._assert_layout = lambda: None
+        deployer._state = lambda: {"pinned": False, "known_good": [SHA_A], "last_successful": SHA_A}
+        deployer._app_target = lambda: release
+        deployer._main_sha = lambda: SHA_A
+        deployer.approved_run_details = lambda _sha: self.RUN
+        deployer.image_pages_binding = lambda _sha, _run: {"payload": self.payload()}
+        with self.assertRaisesRegex(pull_deploy.DeployError, "publish a new commit"):
+            deployer.check()
+
+    def test_same_sha_pages_reenable_checks_remote_assets_before_writing_map(self):
+        deployer = self.image_deployer()
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        deployer._write_image_record(release, {"payload": self.payload()})
+        deployer._assert_layout = lambda: None
+        deployer._state = lambda: {"pinned": False, "known_good": [SHA_A], "last_successful": SHA_A}
+        deployer._app_target = lambda: release
+        deployer._main_sha = lambda: SHA_A
+        deployer.approved_run_details = lambda _sha: self.RUN
+        binding = {"payload": self.payload()}
+        deployer.image_pages_binding = lambda _sha, _run: binding
+        deployer._image_check = lambda *_args: (_ for _ in ()).throw(pull_deploy.DeployError("Pages is gone"))
+        deployer._write_image_map = lambda: self.fail("map must wait for image verification")
+        with self.assertRaisesRegex(pull_deploy.DeployError, "Pages is gone"):
+            deployer.check()
+
+    def test_recorded_rollback_checks_pages_bytes_after_candidate_before_promote(self):
+        deployer = self.image_deployer()
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        (release / "deployment-version.json").write_text(json.dumps({"commit": SHA_A}))
+        deployer._write_image_record(release, {"payload": self.payload()})
+        deployer._assert_layout = lambda: None
+        deployer._state = lambda: {"pinned": False, "known_good": [SHA_A]}
+        deployer.image_record_is_live = lambda sha, record: sha == SHA_A and record == self.payload()
+        order = []
+        deployer._candidate_check = lambda *_args: order.append("candidate")
+        deployer._image_check = lambda _release, binding: (order.append("image"), self.assertEqual(binding["payload"], self.payload()))
+        deployer._promote = lambda *_args, **_kwargs: order.append("promote")
+        deployer.rollback(SHA_A)
+        self.assertEqual(order, ["candidate", "image", "promote"])
+
+    def test_failed_recorded_rollback_image_check_never_promotes(self):
+        deployer = self.image_deployer()
+        release = self.directory / "releases" / SHA_A
+        release.mkdir()
+        (release / "deployment-version.json").write_text(json.dumps({"commit": SHA_A}))
+        deployer._write_image_record(release, {"payload": self.payload()})
+        deployer._assert_layout = lambda: None
+        deployer._state = lambda: {"pinned": False, "known_good": [SHA_A]}
+        deployer.image_record_is_live = lambda *_args: True
+        deployer._candidate_check = lambda *_args: None
+        deployer._image_check = lambda *_args: (_ for _ in ()).throw(pull_deploy.DeployError("remote digest differs"))
+        deployer._promote = lambda *_args, **_kwargs: self.fail("failed image check must not promote")
+        with self.assertRaisesRegex(pull_deploy.DeployError, "remote digest differs"):
+            deployer.rollback(SHA_A)
+
+    def test_disabling_pages_clears_map_before_pin_or_any_github_request(self):
+        deployer = self.deployer(api_json=lambda _endpoint: self.fail("CDN-off must not contact GitHub"))
+        deployer._assert_image_map_path = lambda: None
+        deployer.image_map.write_text('"/opt/old/public" "https://deadbeef.example.pages.dev";\n')
+        deployer._assert_layout = lambda: None
+        deployer._state = lambda: {"pinned": True, "known_good": []}
+        commands = []
+        deployer._nginx = lambda *args: commands.append(args)
+        deployer._systemctl = lambda *args: commands.append(args)
+        self.assertFalse(deployer.check())
+        self.assertEqual(deployer.image_map.read_text(), "# Generated by arknight pull deployer. Do not edit.\n")
+        self.assertEqual(commands, [("-t",), ("reload", "nginx")])
+
+    def test_image_map_permission_guard_rejects_non_root_owned_file(self):
+        deployer = self.image_deployer()
+        deployer.image_map.write_text("# generated\n")
+        bad_stat = SimpleNamespace(st_uid=1000, st_mode=0o100644)
+        with mock.patch.object(pull_deploy.os, "name", "posix"), \
+                mock.patch.object(Path, "stat", return_value=bad_stat):
+            with self.assertRaisesRegex(pull_deploy.DeployError, "root-owned"):
+                deployer._assert_image_map_path()
 
 
 class GitCommandTests(TemporaryDeploy):

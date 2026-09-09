@@ -12,6 +12,7 @@ CONFIG_PATH="/etc/arknight-deploy.json"
 GAME_ENV_PATH="/etc/arknight-guess.env"
 DEPLOY_ENV_PATH="/etc/arknight-deploy.env"
 LOCK_PATH="${ROOT_DIR}/deploy.lock"
+IMAGE_MAP_PATH="${ROOT_DIR}/image-pages.map"
 
 die() {
   printf 'install.sh: %s\n' "$*" >&2
@@ -64,6 +65,18 @@ fi
 install -d -o root -g root -m 0755 "${ROOT_DIR}"
 ROOT_REAL="$(realpath -e "${ROOT_DIR}")"
 [[ "${ROOT_REAL}" == "${ROOT_DIR}" ]] || die "${ROOT_DIR} must not be a symlink"
+
+# The Nginx http-context map includes this file after the operator installs the
+# provided Nginx snippets.  It is data, not a configuration file supplied by
+# GitHub, and the installer deliberately never edits Nginx's site files.
+if [[ -e "${IMAGE_MAP_PATH}" || -L "${IMAGE_MAP_PATH}" ]]; then
+  [[ -f "${IMAGE_MAP_PATH}" && ! -L "${IMAGE_MAP_PATH}" ]] || die "${IMAGE_MAP_PATH} must be a regular file"
+  [[ "$(stat -c '%a:%U:%G' "${IMAGE_MAP_PATH}")" == "644:root:root" ]] || \
+    die "${IMAGE_MAP_PATH} must be owned by root:root with mode 0644"
+else
+  install -o root -g root -m 0644 /dev/null "${IMAGE_MAP_PATH}"
+  note "created empty ${IMAGE_MAP_PATH}; Nginx keeps local images until image_pages is enabled"
+fi
 
 # Prevent a timer activation from racing the migration or a prior manual run.
 if systemctl is-active --quiet arknight-deploy.timer; then

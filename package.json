@@ -16,7 +16,7 @@
     "test:deployment": "node tests/deployment/health.test.js && python -m unittest discover -s tests/deployment -p \"test_*.py\"",
     "build:images:pages": "node scripts/build_image_pages.js",
     "check:images:pages": "node scripts/check_image_pages.js",
-    "test:images:pages": "node tests/deployment/image-pages.test.js && node tests/deployment/image-pages-check.test.js",
+    "test:images:pages": "node tests/deployment/image-pages.test.js && node tests/deployment/image-pages-check.test.js && node tests/deployment/image-pages-record.test.js && node tests/deployment/image-pages-contract.test.js",
     "test:e2e": "playwright test",
     "test:e2e:desktop": "playwright test --project=desktop-chromium",
     "test:e2e:mobile": "playwright test --project=mobile-chromium",

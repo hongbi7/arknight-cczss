@@ -214,6 +214,10 @@ function compareFiles(remote, local) {
 
 async function verifyImagePages(options = {}) {
   const baseUrl = parsePagesBaseUrl(options.baseUrl);
+  const expectedDigest = options.expectedDigest == null ? null : String(options.expectedDigest).toLowerCase();
+  if (expectedDigest !== null && !/^[0-9a-f]{64}$/.test(expectedDigest)) {
+    fail("expectedDigest must be a 64-character hexadecimal SHA-256");
+  }
   const local = scanLocalImages(options.localRoot || path.resolve(__dirname, ".."));
   const fetchImpl = options.fetchImpl || fetch;
   if (typeof fetchImpl !== "function") fail("A fetch implementation is required");
@@ -229,6 +233,9 @@ async function verifyImagePages(options = {}) {
   compareFiles(remote.files, local.files);
   const localDigest = sha256(JSON.stringify(local.files));
   if (remote.digest !== localDigest) fail("Remote and local image asset-set digests differ");
+  if (expectedDigest !== null && (remote.digest !== expectedDigest || localDigest !== expectedDigest)) {
+    fail("Remote and local image asset-set digests do not match expectedDigest");
+  }
 
   const samples = [];
   for (const file of [remote.files[0], ...remote.files.slice().sort((left, right) => right.size - left.size || compareText(left.path, right.path)).slice(0, 1), remote.files[remote.files.length - 1]]) {
@@ -261,10 +268,14 @@ function option(name) {
 
 async function main() {
   if (process.argv.includes("--help") || process.argv.includes("-h")) {
-    console.log("Usage: node scripts/check_image_pages.js --base-url https://<deployment>.<project>.pages.dev [--local-root DIR]");
+    console.log("Usage: node scripts/check_image_pages.js --base-url https://<deployment>.<project>.pages.dev [--local-root DIR] [--expected-digest SHA256]");
     return;
   }
-  const result = await verifyImagePages({ baseUrl: option("base-url"), localRoot: option("local-root") || path.resolve(__dirname, "..") });
+  const result = await verifyImagePages({
+    baseUrl: option("base-url"),
+    localRoot: option("local-root") || path.resolve(__dirname, ".."),
+    expectedDigest: option("expected-digest"),
+  });
   console.log("Cloudflare Pages image check passed.");
   console.log("Files: " + result.files);
   console.log("Asset set SHA-256: " + result.digest);
