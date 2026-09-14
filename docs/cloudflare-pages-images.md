@@ -1,5 +1,20 @@
 # Cloudflare Pages 图片自动发布
 
+> 当前生产策略（2026-09-14）：图片已改为 ECS Nginx 直接提供，生产 CI 不再上传 Pages。下面保留的 Pages 配置是历史方案，不能仅设置 `IMAGE_PAGES_ENABLED=true` 重新启用；恢复时须同时恢复工作流上传步骤，并重新验证目标网络的加载效果。
+
+## 切回 ECS 直接发图
+
+1. 确认 `arknight-deploy.service` 未在运行，备份 `/etc/arknight-deploy.json`，只把其中的 `image_pages` 改为 `null`。
+2. 运行 `sudo systemctl start arknight-deploy.service`。部署器在检查 GitHub、发布锁定状态之前清空图片 map 并检查、重载 Nginx；因此当前 release 也会立即恢复本地图片。
+3. 保留 `/opt/arknight-guess/image-pages.map` 和 Nginx include，不能直接删除。空 map 会让已有 `/img/` location 使用本地文件。
+4. 对主站 `/img/operators/e1/char_002_amiya.webp` 发起请求，确认直接返回 `200`、`Content-Type: image/webp`，且没有 `Location`。同时检查 `/api/health` 和部署服务日志。
+
+Pages 的历史部署保留。浏览器已打开页面中的旧请求可能仍在访问 Pages，刷新页面后验证主站图片路径。后续发布由本地 `image_pages: null` 设置继续使用 ECS 图片，不再依赖 Pages 发布记录。
+
+2026-09-14 已在生产执行上述切换：配置备份为 `/etc/arknight-deploy.json.before-ecs-images-20260914`，Nginx 检查和 reload 成功，map 仅剩生成注释。普通立绘、终局立绘和皮肤图均直接返回 `200 image/webp`、无 `Location`，`/api/health` 正常。自动部署原先已锁定，保持锁定；此操作没有切换应用 release。
+
+## 历史 Pages 方案
+
 本项目把游戏图片发布到一个专用的 Cloudflare Pages Direct Upload 项目。页面、JSON 和 `/api/` 仍由阿里云 ECS 的 Nginx 和 Node.js 提供；浏览器访问 `/img/...` 时，Nginx 根据当前 release 返回到该 release 对应 Pages **唯一部署地址**的 302，图片字节不经过 ECS 的 3 Mbps 出口。
 
 ```text
