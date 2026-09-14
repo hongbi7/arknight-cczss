@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "builderVersion": 6,
+  "builderVersion": 7,
   "definitions": {
     "skill_attack_recovery": {
       "id": "skill_attack_recovery",
@@ -3176,14 +3176,15 @@
       "id": "identity_power_luo-de-dao",
       "family": "identity",
       "title": "所属势力：罗德岛",
-      "description": "使用所属势力为“罗德岛”的干员推进指令",
-      "memberCount": 59,
-      "informationStrength": 0.5724,
+      "description": "使用归属“罗德岛”或其下属编制的干员推进指令",
+      "memberCount": 92,
+      "informationStrength": 0.4443,
       "challengeDifficulty": 0.1767,
       "members": [
         "char_002_amiya",
         "char_003_kalts",
         "char_009_12fce",
+        "char_017_huang",
         "char_1011_lava2",
         "char_1013_chen2",
         "char_1015_aglna2",
@@ -3192,11 +3193,23 @@
         "char_1024_hbisc2",
         "char_1026_gvial2",
         "char_1027_greyy2",
+        "char_1029_yato2",
+        "char_1030_noirc2",
         "char_1036_fang2",
+        "char_1040_blaze2",
+        "char_1048_orchd2",
+        "char_1049_catap2",
         "char_1052_kalts2",
         "char_117_myrrh",
+        "char_120_hibisc",
+        "char_121_lava",
+        "char_122_beagle",
+        "char_123_fang",
+        "char_124_kroos",
         "char_130_doberm",
         "char_131_flameb",
+        "char_144_red",
+        "char_149_scave",
         "char_1502_crosly",
         "char_151_myrtle",
         "char_158_milu",
@@ -3205,9 +3218,19 @@
         "char_187_ccheal",
         "char_193_frostl",
         "char_2013_cerber",
+        "char_208_melan",
+        "char_209_ardign",
+        "char_210_stward",
+        "char_211_adnach",
+        "char_212_ansel",
         "char_219_meteo",
         "char_258_podego",
         "char_260_durnar",
+        "char_278_orchid",
+        "char_281_popka",
+        "char_282_catap",
+        "char_283_midn",
+        "char_284_spot",
         "char_285_medic2",
         "char_286_cast3",
         "char_298_susuro",
@@ -3219,6 +3242,7 @@
         "char_355_ethan",
         "char_367_swllow",
         "char_376_therex",
+        "char_391_rosmon",
         "char_400_weedy",
         "char_4010_etlchi",
         "char_401_elysm",
@@ -3229,17 +3253,26 @@
         "char_4091_ulika",
         "char_4093_frston",
         "char_4131_odda",
+        "char_4132_ascln",
+        "char_4133_logos",
         "char_4134_cetsyr",
         "char_4136_phonor",
         "char_4146_nymph",
         "char_4147_mitm",
         "char_4179_monstr",
+        "char_4195_radian",
+        "char_4204_mantra",
         "char_4215_buddy",
         "char_4227_gallus",
         "char_4228_closur",
+        "char_4230_mcnist",
         "char_491_humus",
         "char_492_quercu",
-        "char_497_ctable"
+        "char_497_ctable",
+        "char_500_noirc",
+        "char_501_durin",
+        "char_502_nblade",
+        "char_503_rang"
       ]
     },
     "identity_power_la-te-lan": {
@@ -3759,6 +3792,7 @@
       "logistics_base_room_fa-dian-zhan",
       "visual_brand_yin-lv-lian-jue",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_wei-duo-li-ya",
       "identity_race_fei-lin"
     ],
@@ -3954,6 +3988,7 @@
       "logistics_base_room_kong-zhi-zhong-shu",
       "logistics_limited",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_dong-guo"
     ],
     "char_102_texas": [
@@ -3978,6 +4013,7 @@
       "logistics_base_room_kong-zhi-zhong-shu",
       "logistics_limited",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_dong-guo"
     ],
     "char_1031_slent2": [
@@ -4102,6 +4138,7 @@
       "logistics_base_room_kong-zhi-zhong-shu",
       "logistics_base_room_fa-dian-zhan",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_yan",
       "identity_race_fei-lin"
     ],
@@ -4208,6 +4245,7 @@
       "logistics_base_room_mao-yi-zhan",
       "logistics_limited",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_ge-lun-bi-ya",
       "identity_race_li-bo-li"
     ],
@@ -4221,7 +4259,8 @@
       "logistics_base_room_mao-yi-zhan",
       "logistics_base_room_xun-lian-shi",
       "logistics_limited",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1050_chen3": [
       "skill_all_manual",
@@ -4352,6 +4391,7 @@
       "logistics_base_room_jia-gong-zhan",
       "visual_brand_0011-zhi-zao",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_wei-duo-li-ya",
       "identity_race_sa-ka-zi"
     ],
@@ -4362,6 +4402,7 @@
       "logistics_base_room_fa-dian-zhan",
       "visual_brand_te-si-te-shou-cang",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_wei-duo-li-ya",
       "identity_race_sa-ka-zi"
     ],
@@ -4370,14 +4411,16 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_su-she",
       "visual_brand_dou-zheng-xue-mai",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_123_fang": [
       "skill_auto_trigger",
       "identity_alter_family",
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_mao-yi-zhan",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_124_kroos": [
       "skill_attack_recovery",
@@ -4386,7 +4429,8 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_su-she",
       "visual_brand_te-si-te-shou-cang",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_126_shotst": [
       "skill_attack_recovery",
@@ -4514,7 +4558,8 @@
       "logistics_base_room_hui-ke-shi",
       "logistics_base_room_kong-zhi-zhong-shu",
       "visual_brand_shan-hu-hai-an",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_145_prove": [
       "skill_passive",
@@ -4548,7 +4593,8 @@
       "skill_manual_auto",
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_kong-zhi-zhong-shu",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_1502_crosly": [
       "skill_passive",
@@ -4976,6 +5022,7 @@
       "logistics_base_room_mao-yi-zhan",
       "visual_brand_shi-dai",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_wei-duo-li-ya",
       "identity_race_fei-lin"
     ],
@@ -4984,7 +5031,8 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_su-she",
       "visual_brand_shi-dai",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_210_stward": [
       "skill_attack_recovery",
@@ -4992,7 +5040,8 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_mao-yi-zhan",
       "visual_brand_te-si-te-shou-cang",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_211_adnach": [
       "skill_all_manual",
@@ -5000,6 +5049,7 @@
       "logistics_base_room_mao-yi-zhan",
       "visual_brand_te-si-te-shou-cang",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_la-te-lan"
     ],
     "char_212_ansel": [
@@ -5009,7 +5059,8 @@
       "logistics_base_room_jia-gong-zhan",
       "visual_brand_shi-dai",
       "visual_brand_shan-hu-hai-an",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_213_mostma": [
       "skill_all_manual",
@@ -5345,6 +5396,7 @@
       "logistics_base_room_mao-yi-zhan",
       "visual_brand_dou-zheng-xue-mai",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_ge-lun-bi-ya",
       "identity_race_li-bo-li"
     ],
@@ -5362,7 +5414,8 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_su-she",
       "visual_brand_te-si-te-shou-cang",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_282_catap": [
       "skill_all_manual",
@@ -5370,7 +5423,8 @@
       "logistics_base_room_jia-gong-zhan",
       "logistics_base_room_mao-yi-zhan",
       "visual_brand_shan-hu-hai-an",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_283_midn": [
       "skill_all_manual",
@@ -5378,6 +5432,7 @@
       "logistics_base_room_mao-yi-zhan",
       "visual_brand_dou-zheng-xue-mai",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_dong-guo",
       "identity_race_sa-ka-zi"
     ],
@@ -5388,7 +5443,8 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_jia-gong-zhan",
       "visual_brand_dou-zheng-xue-mai",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_285_medic2": [
       "skill_none",
@@ -5873,6 +5929,7 @@
       "visual_brand_shi-dai",
       "visual_brand_te-si-te-shou-cang",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_ge-lun-bi-ya",
       "identity_race_fei-lin"
     ],
@@ -6609,6 +6666,7 @@
       "skill_distinct_ranges",
       "logistics_base_room_kong-zhi-zhong-shu",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_ka-zi-dai-er",
       "identity_race_sa-ka-zi"
     ],
@@ -6620,6 +6678,7 @@
       "logistics_base_room_xun-lian-shi",
       "visual_brand_yin-lv-lian-jue",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_ka-zi-dai-er",
       "identity_race_sa-ka-zi"
     ],
@@ -6962,6 +7021,7 @@
       "battle_barrier",
       "logistics_base_room_kong-zhi-zhong-shu",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_race_li-bo-li"
     ],
     "char_4196_reckpr": [
@@ -7013,7 +7073,8 @@
       "skill_distinct_ranges",
       "battle_elemental",
       "logistics_base_room_mao-yi-zhan",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_4207_branch": [
       "skill_all_manual",
@@ -7210,6 +7271,7 @@
       "battle_barrier",
       "logistics_base_room_zhi-zao-zhan",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_ge-lun-bi-ya"
     ],
     "char_4234_pedro": [
@@ -7648,12 +7710,14 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_mao-yi-zhan",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_dong-guo"
     ],
     "char_501_durin": [
       "skill_none",
       "logistics_base_room_su-she",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ],
     "char_502_nblade": [
       "skill_none",
@@ -7661,13 +7725,15 @@
       "logistics_base_room_zhi-zao-zhan",
       "logistics_base_room_mao-yi-zhan",
       "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao",
       "identity_origin_dong-guo"
     ],
     "char_503_rang": [
       "skill_none",
       "logistics_base_room_ren-li-ban-gong-shi",
       "logistics_base_room_jia-gong-zhan",
-      "identity_power_root_luo-de-dao"
+      "identity_power_root_luo-de-dao",
+      "identity_power_luo-de-dao"
     ]
   },
   "manualReview": {

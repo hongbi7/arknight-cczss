@@ -32,7 +32,7 @@ BRAND_THEME_MIN_MEMBERS = 15
 BRAND_THEME_MIN_FAMILIAR = 12
 IDENTITY_THEME_MIN_MEMBERS = 15
 IDENTITY_THEME_MIN_FAMILIAR = 8
-BUILDER_VERSION = 6
+BUILDER_VERSION = 7
 
 
 def find_excel_root():
@@ -280,7 +280,8 @@ IDENTITY_THEME_SPECS = [
     ("powerRoot", "identity_power_root", "所属大系", 4,
      lambda label: f"使用上级势力归属“{label}”的干员推进指令"),
     ("power", "identity_power", "所属势力", 8,
-     lambda label: f"使用所属势力为“{label}”的干员推进指令"),
+     lambda label: (f"使用归属“{label}”或其下属编制的干员推进指令" if label == "罗德岛"
+                    else f"使用所属势力为“{label}”的干员推进指令")),
     ("origin", "identity_origin", "出身地", 6,
      lambda label: f"使用出身地为“{label}”的干员推进指令"),
     ("race", "identity_race", "种族", 5,
@@ -310,11 +311,16 @@ for field, prefix, title_prefix, cap, describe in IDENTITY_THEME_SPECS:
     groups = defaultdict(set)
     group_labels = {}
     for operator_id, record in operator_by_id.items():
-        key, label = identity_group_key(record, field)
-        if not key or key == "none" or not label or label == "无团队":
-            continue
-        groups[key].add(operator_id)
-        group_labels[key] = label
+        keys = [identity_group_key(record, field)]
+        power = record.get("power") or {}
+        if field == "power" and power.get("rootId") == "rhodes":
+            # Rhodes Island includes its elite operators and subordinate teams.
+            keys.append((power["rootId"], power["rootName"]))
+        for key, label in keys:
+            if not key or key == "none" or not label or label == "无团队":
+                continue
+            groups[key].add(operator_id)
+            group_labels[key] = label
     candidates = []
     for key, members in groups.items():
         if len(members) < IDENTITY_THEME_MIN_MEMBERS or familiar_count(members) < IDENTITY_THEME_MIN_FAMILIAR:
