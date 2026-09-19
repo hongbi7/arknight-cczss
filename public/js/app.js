@@ -3983,13 +3983,25 @@ function scheduleModeScreenFocus() {
   const sequence = modeIntroSequence;
   modeScreen.classList.add("is-mode-sequencing", "is-chessmaster-loading");
   void modeScreen.offsetWidth;
-  if (!window.matchMedia("(min-width: 1041px)").matches || isReducedMotion()) {
+  const desktopIntro = window.matchMedia("(min-width: 1041px)").matches;
+  if (isReducedMotion()) {
     modeScreen.classList.remove("is-chessmaster-loading");
     if (window.matchMedia("(min-width: 1041px)").matches) {
       const cardsTop = window.scrollY + modeCards.getBoundingClientRect().top;
       window.scrollTo(0, Math.max(0, cardsTop - window.innerHeight * 0.48));
     }
     revealModeCards(sequence);
+    return;
+  }
+  if (!desktopIntro) {
+    // 等扫描线（含延迟）真正结束，直接衔接卡片入场。
+    const introAnimations = modeStage.querySelector(".chessmaster-scene")
+      .getAnimations({ subtree: true });
+    Promise.all(introAnimations.map((animation) => animation.finished)).then(() => {
+      if (sequence !== modeIntroSequence || modeScreen.classList.contains("hidden")) return;
+      modeScreen.classList.remove("is-chessmaster-loading");
+      revealModeCards(sequence);
+    }).catch(() => {}); // 切换页面取消动画时，不再展开卡片。
     return;
   }
   modeFocusTimer = window.setTimeout(() => {
@@ -4043,7 +4055,7 @@ function revealModeCards(sequence) {
       // 入场期间已经停在卡片上的指针必须先移出再进入，避免动画终态瞬间跳成 hover 放大态。
       if (!card.matches(":hover")) card.classList.add("mode-hover-armed");
     });
-  }, 650);
+  }, isMobileLayout() && !isReducedMotion() ? 1100 : 650);
 }
 
 function setModePreview(mode) {
@@ -4620,6 +4632,8 @@ function startAnomalyTimer() {
 
 /* 同步分数 / 连胜 / 扫描器 / 回合数到侧栏、顶栏与操作按钮 */
 function updateAnomalyChrome() {
+  anomalyScreen.classList.toggle("is-answering", anomaly.phase === "question");
+  anomalyScreen.classList.toggle("is-submitting", anomaly.phase === "submitting");
   anomalySideScore.textContent = String(anomaly.score);
   anomalySideStreak.textContent = "×" + anomaly.streak;
   const mixed = anomaly.config.domain === "mixed";
@@ -5009,6 +5023,23 @@ function applyAnomalyQuestion(question) {
   setAnomalyStatus("第 " + question.round + " 份档案已装载，标记异类后点击「确认异类」提交。");
   updateAnomalyChrome();
   startAnomalyTimer();
+  // 上轮复盘或主题选择可能已滚到页尾，新题从主题范围开始展示。
+  requestAnimationFrame(() => {
+    if (currentMode !== "anomaly" || anomaly.phase !== "question") return;
+    const anchor = anomalyScope.classList.contains("hidden") ? anomalyConsole : anomalyScope;
+    // 先清除旧滚动位置，避免吸顶元素的当前位置被当作新题起点。
+    const workspace = anomalyScreen.querySelector(".anomaly-workspace");
+    workspace.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo({ top: 0, behavior: "instant" });
+    if (isMobileLayout()) {
+      anchor.scrollIntoView({ behavior: "instant", block: "start" });
+    } else {
+      workspace.scrollTo({
+        top: anchor.offsetTop - parseFloat(getComputedStyle(workspace).paddingTop),
+        behavior: "instant",
+      });
+    }
+  });
   announceAnomaly("第 " + question.round + " 份档案，共 " + question.totalRounds + " 份，审查域：" + domain.label + "，审查强度：" + (question.difficulty ? question.difficulty.label : "标准审查") + "。候选干员：" + question.options.map((o) => o.name).join("，") + "。");
   if (!isMobileLayout()) {
     const first = anomalyOptions.querySelector(".anomaly-option");
