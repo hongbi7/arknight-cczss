@@ -8,7 +8,7 @@ import os
 import random
 import re
 from collections import Counter, defaultdict
-from itertools import combinations
+from itertools import chain, combinations
 from pathlib import Path
 
 from atomic_write import atomic_write_json
@@ -36,7 +36,7 @@ DIFFICULTIES = {
     "hazard": {"level": 3, "min": 20, "min_average": 40, "max_below_30": 1},
 }
 SPECIAL_VALUES = {
-    "", "未知", "未公开", "不明", "无团队", "none", "None", "null",
+    "", "未知", "未公开", "未录入", "不明", "无团队", "none", "None", "null",
     "自称", "自称雌性", "断罪", "女士",
 }
 MIN_MEMBERS = 3
@@ -45,12 +45,13 @@ TARGET_PER_RULE_AND_DIFFICULTY = 40
 CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY = 120
 MIN_QUESTIONS_PER_RULE = 1
 MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY = 60
-MAX_GENERATION_ATTEMPTS = 24000
-RACE_GENERATION_ATTEMPTS = 192000
+# 基础形象档案在共性三人组去重后较稀疏；仍保留至少四局的题量。
+MIN_BUCKET_OVERRIDES = {("visual", "trainee"): 40}
+MAX_GENERATION_ATTEMPTS = 192000
 RACE_TARGET_PER_DIFFICULTY = 80
 RACE_CANDIDATE_POOL_PER_DIFFICULTY = 240
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 8
+BUILDER_VERSION = 9
 
 
 def find_excel_root():
@@ -352,7 +353,7 @@ def build_rules(excel_root, operators, themes, identities, overrides):
     }, 2, "operators.origin")
     bank.categorical("identity", "race", "种族", {
         oid: operator_by_id[oid].get("race") for oid in operator_ids
-    }, 2, "operators.race", excluded={"未录入"})
+    }, 2, "operators.race")
     secondary_values = {}
     secondary_groups = defaultdict(set)
     for oid in operator_ids:
@@ -609,6 +610,18 @@ def tuple_odd_indexes(option_ids, audit, include_inverse=True):
     return odd_indexes, supporting
 
 
+def has_competing_odd(option_ids, audit, include_inverse=True):
+    """Fast rejection when the target rule already proves index 3 is odd."""
+    masks = [audit["operatorMasks"][oid] for oid in option_ids]
+    for index in range(3):
+        others = [masks[k] for k in range(4) if k != index]
+        if others[0] & others[1] & others[2] & ~masks[index]:
+            return True
+        if include_inverse and ~others[0] & ~others[1] & ~others[2] & masks[index]:
+            return True
+    return False
+
+
 def protected_facet_collisions(option_ids, operator_by_id):
     """Return salient 3:1 shortcuts that are intentionally not playable rules."""
     collisions = []
@@ -619,7 +632,7 @@ def protected_facet_collisions(option_ids, operator_by_id):
 
 
 def candidate_option_ids(inside, outside, rng, max_attempts=MAX_GENERATION_ATTEMPTS,
-                         spread_majorities=False):
+                         spread_majorities=True):
     """Yield deterministic candidates, enumerating small rule groups without replacement."""
     yielded = 0
     if len(inside) <= EXHAUSTIVE_MAJORITY_LIMIT:
@@ -693,7 +706,15 @@ def distractor_score(option_ids, operator_by_id):
 
 def select_diverse_questions(candidates, limit):
     """Prefer familiar distractors while spreading repeated operators across the bank."""
-    remaining = list(candidates)
+    by_majority = {}
+    for question in candidates:
+        key = tuple(sorted(question["majorityIds"]))
+        previous = by_majority.get(key)
+        if previous is None or (-question["distractorScore"], question["id"]) < (
+            -previous["distractorScore"], previous["id"]
+        ):
+            by_majority[key] = question
+    remaining = list(by_majority.values())
     selected = []
     operator_usage = Counter()
     while remaining and len(selected) < limit:
@@ -761,11 +782,10 @@ def generate_questions(bank, operator_by_id, fingerprint):
     collision_rejections_by_rule = Counter()
 
     for rule in bank.rules:
-        domain_rules = rules_by_domain[rule["domain"]]
         is_race = rule["id"].startswith("identity.race.")
-        attempt_limit = RACE_GENERATION_ATTEMPTS if is_race else MAX_GENERATION_ATTEMPTS
         candidate_limit = RACE_CANDIDATE_POOL_PER_DIFFICULTY if is_race else CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY
         target = RACE_TARGET_PER_DIFFICULTY if is_race else TARGET_PER_RULE_AND_DIFFICULTY
+        majority_odd_ids = {}
         for difficulty, config in DIFFICULTIES.items():
             if rule["difficulty"] > config["level"]:
                 continue
@@ -780,12 +800,16 @@ def generate_questions(bank, operator_by_id, fingerprint):
                 continue
             found = {}
             attempts = 0
-            for option_ids in candidate_option_ids(
-                inside, outside, rng, max_attempts=attempt_limit, spread_majorities=is_race
-            ):
+            # 跨难度复用同一三人组时也固定异类，不用替换第四人制造“新题”。
+            known = [list(majority) + [odd] for majority, odd in majority_odd_ids.items()
+                     if set(majority) <= set(inside) and odd in outside]
+            for option_ids in chain(known, candidate_option_ids(inside, outside, rng)):
                 attempts += 1
                 majority = option_ids[:3]
                 odd = option_ids[3]
+                key = tuple(sorted(majority))
+                if key in majority_odd_ids and majority_odd_ids[key] != odd:
+                    continue
                 if not meets_rule_constraints(rule, option_ids, operator_by_id):
                     continue
                 if not meets_difficulty(option_ids, operator_by_id, difficulty):
@@ -795,19 +819,15 @@ def generate_questions(bank, operator_by_id, fingerprint):
                     collision_rejections_by_rule[rule["id"]] += 1
                     collision_rejections_by_facet.update(protected_collisions)
                     continue
-                odd_indexes, supporting = tuple_odd_indexes(option_ids, audits[rule["domain"]])
-                if odd_indexes != {3}:
+                if has_competing_odd(option_ids, audits[rule["domain"]]):
                     collision_rejections_by_rule[rule["id"]] += 1
                     collision_rejections_by_facet["same_domain_rule"] += 1
                     continue
-                global_odd_indexes, _ = tuple_odd_indexes(
-                    option_ids, global_audit, include_inverse=False
-                )
-                if global_odd_indexes != {3}:
+                if has_competing_odd(option_ids, global_audit, include_inverse=False):
                     collision_rejections_by_rule[rule["id"]] += 1
                     collision_rejections_by_facet["cross_domain_rule"] += 1
                     continue
-                key = (tuple(sorted(majority)), odd)
+                _, supporting = tuple_odd_indexes(option_ids, audits[rule["domain"]])
                 question = make_question(rule, option_ids, difficulty, supporting, operator_by_id, fingerprint)
                 previous = found.get(key)
                 if not previous or question["distractorScore"] > previous["distractorScore"]:
@@ -818,6 +838,8 @@ def generate_questions(bank, operator_by_id, fingerprint):
                 found.values(), target
             )
             questions.extend(selected)
+            for question in selected:
+                majority_odd_ids[tuple(question["majorityIds"])] = question["oddId"]
             rule_question_counts[rule["id"]] += len(selected)
             if not selected:
                 generation_failures.append({
@@ -888,7 +910,8 @@ def main():
     insufficient_buckets = [
         {"domain": domain, "difficulty": difficulty, "count": counts_by_bucket[(domain, difficulty)]}
         for domain in DOMAIN_LABELS for difficulty in DIFFICULTIES
-        if counts_by_bucket[(domain, difficulty)] < MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY
+        if counts_by_bucket[(domain, difficulty)] < MIN_BUCKET_OVERRIDES.get(
+            (domain, difficulty), MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY)
     ]
     if insufficient_buckets:
         raise ValueError(f"Anomaly question bank has insufficient coverage: {insufficient_buckets}")

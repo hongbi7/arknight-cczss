@@ -367,10 +367,12 @@ def validate(source, anomaly_input_root=None, version_path=None, public_mirror=N
                 )
 
     for bucket_key, count in sorted(anomaly_buckets.items()):
-        if count < MIN_ANOMALY_BUCKET_SIZE:
+        # 共性三人组去重后的基础形象档案使用单独覆盖门槛。
+        minimum = 40 if bucket_key == "visual:trainee" else MIN_ANOMALY_BUCKET_SIZE
+        if count < minimum:
             structural_errors.append(
                 f"anomaly bucket {bucket_key} has {count} questions; "
-                f"minimum is {MIN_ANOMALY_BUCKET_SIZE}"
+                f"minimum is {minimum}"
             )
     for label, actual in (
         ("operator-clues", set(clues)),

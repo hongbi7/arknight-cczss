@@ -1,4 +1,4 @@
-"""Regression checks for race-question candidate coverage."""
+"""Regression checks for anomaly candidate coverage and ambiguity."""
 
 import math
 import random
@@ -8,10 +8,37 @@ from pathlib import Path
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-from build_anomaly_data import candidate_option_ids
+from build_anomaly_data import (
+    build_domain_audit, candidate_option_ids, has_competing_odd,
+    select_diverse_questions, tuple_odd_indexes,
+)
 
 
-class RaceCandidateTests(unittest.TestCase):
+class AnomalyCandidateTests(unittest.TestCase):
+    def test_fast_rejection_matches_full_audit_for_all_membership_patterns(self):
+        ids = list("abcd")
+        target = {"id": "target", "_memberSet": set("abc")}
+        for pattern in range(16):
+            other = {"id": "other", "_memberSet": {
+                oid for index, oid in enumerate(ids) if pattern & (1 << index)
+            }}
+            audit = build_domain_audit([target, other], ids)
+            for inverse in [True, False]:
+                self.assertEqual(
+                    has_competing_odd(ids, audit, inverse),
+                    tuple_odd_indexes(ids, audit, inverse)[0] != {3},
+                )
+
+    def test_swapping_only_the_odd_operator_does_not_add_a_question_type(self):
+        candidates = [
+            {"id": "a", "majorityIds": ["a", "b", "c"], "oddId": "x", "distractorScore": 10},
+            {"id": "b", "majorityIds": ["c", "a", "b"], "oddId": "y", "distractorScore": 20},
+            {"id": "c", "majorityIds": ["a", "b", "d"], "oddId": "x", "distractorScore": 5},
+        ]
+        selected = select_diverse_questions(candidates, 40)
+        self.assertEqual(len(selected), 2)
+        self.assertEqual({question["id"] for question in selected}, {"b", "c"})
+
     def test_small_groups_cover_majorities_before_reusing_them(self):
         inside = list("abcdef")
         outside = list("xyz")
