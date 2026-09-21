@@ -51,7 +51,9 @@ MAX_GENERATION_ATTEMPTS = 192000
 RACE_TARGET_PER_DIFFICULTY = 80
 RACE_CANDIDATE_POOL_PER_DIFFICULTY = 240
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 9
+BUILDER_VERSION = 10
+CONTEXT_CANDIDATE_BUDGET = 12000
+CONTEXT_GROUP_BUDGET = 1500
 
 
 def find_excel_root():
@@ -685,7 +687,67 @@ def meets_rule_constraints(rule, option_ids, operator_by_id):
     return len(professions) == 1 and None not in professions
 
 
-def distractor_score(option_ids, operator_by_id):
+def context_facets(rule):
+    """Prefer shared identity facts other than the fact being tested."""
+    rule_id = rule["id"]
+    facets = ["race", "origin", "power"]
+    if rule_id.startswith("identity.race."):
+        facets.remove("race")
+    elif rule_id.startswith("identity.origin."):
+        facets.remove("origin")
+    elif rule_id.startswith(("identity.power.", "identity.power_root.", "identity.secondary_power.")):
+        facets.remove("power")
+    return facets
+
+
+def context_value(record, facet):
+    value = (record.get("power") or {}).get("id") if facet == "power" else record.get(facet)
+    if value is None or value in SPECIAL_VALUES or record.get(f"{facet}Special"):
+        return None
+    return value
+
+
+def shared_context_candidates(rule, inside, outside, operator_by_id, rng):
+    """Search shared-context cohorts first, without relaxing any answer checks."""
+    groups = []
+    for facet in context_facets(rule):
+        members, odds = defaultdict(list), defaultdict(list)
+        for ids, grouped in [(inside, members), (outside, odds)]:
+            for oid in ids:
+                value = context_value(operator_by_id[oid], facet)
+                if value is not None:
+                    grouped[value].append(oid)
+        for value in sorted(members):
+            if len(members[value]) >= 3 and odds[value]:
+                groups.append(iter(candidate_option_ids(
+                    members[value], odds[value], rng, max_attempts=CONTEXT_GROUP_BUDGET,
+                )))
+    # 各背景组轮流提供候选，防止大种族或大势力独占优先池。
+    yielded = 0
+    while groups and yielded < CONTEXT_CANDIDATE_BUDGET:
+        remaining = []
+        for group in groups:
+            candidate = next(group, None)
+            if candidate is None:
+                continue
+            yield candidate
+            yielded += 1
+            if yielded >= CONTEXT_CANDIDATE_BUDGET:
+                return
+            remaining.append(group)
+        groups = remaining
+
+
+def shared_context_score(rule, option_ids, operator_by_id):
+    score = 0
+    for facet in context_facets(rule):
+        values = [context_value(operator_by_id[oid], facet) for oid in option_ids]
+        if values[0] is not None and all(value == values[0] for value in values):
+            score += 160 if facet == "race" else 80
+    return score
+
+
+def distractor_score(option_ids, operator_by_id, rule=None):
     records = [operator_by_id[oid] for oid in option_ids]
     score = min(record.get("familiarityScore", 0) for record in records) * 4
     score -= max(record.get("familiarityScore", 0) for record in records) - min(
@@ -701,7 +763,7 @@ def distractor_score(option_ids, operator_by_id):
             (1, 1, 1, 1): 12,
             (3, 1): -48,
         }.get(tuple(distribution), 0)
-    return score
+    return score + (shared_context_score(rule, option_ids, operator_by_id) if rule else 0)
 
 
 def select_diverse_questions(candidates, limit):
@@ -753,7 +815,7 @@ def make_question(rule, option_ids, difficulty, supporting, operator_by_id, fing
         "evidence": evidence,
         "familiarityMin": min(operator_by_id[oid].get("familiarityScore", 0) for oid in option_ids),
         "familiarityAverage": round(sum(operator_by_id[oid].get("familiarityScore", 0) for oid in option_ids) / 4, 2),
-        "distractorScore": distractor_score(option_ids, operator_by_id),
+        "distractorScore": distractor_score(option_ids, operator_by_id, rule),
     }
     if rule.get("_optionArt"):
         question["optionArt"] = [
@@ -803,7 +865,11 @@ def generate_questions(bank, operator_by_id, fingerprint):
             # 跨难度复用同一三人组时也固定异类，不用替换第四人制造“新题”。
             known = [list(majority) + [odd] for majority, odd in majority_odd_ids.items()
                      if set(majority) <= set(inside) and odd in outside]
-            for option_ids in chain(known, candidate_option_ids(inside, outside, rng)):
+            for option_ids in chain(
+                known,
+                shared_context_candidates(rule, inside, outside, operator_by_id, rng),
+                candidate_option_ids(inside, outside, rng),
+            ):
                 attempts += 1
                 majority = option_ids[:3]
                 odd = option_ids[3]

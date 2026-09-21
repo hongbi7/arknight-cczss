@@ -10,11 +10,45 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
 from build_anomaly_data import (
     build_domain_audit, candidate_option_ids, has_competing_odd,
-    select_diverse_questions, tuple_odd_indexes,
+    select_diverse_questions, tuple_odd_indexes, context_facets,
+    shared_context_candidates, shared_context_score, distractor_score,
 )
 
 
 class AnomalyCandidateTests(unittest.TestCase):
+    def test_faction_question_prefers_same_race_distractor(self):
+        records = {oid: {"race": "菲林", "origin": None, "power": {"id": "a"},
+                         "familiarityScore": 60, "profession": "MEDIC", "position": "RANGED", "rarity": 5}
+                   for oid in "abcxy"}
+        records["x"]["power"] = {"id": "b"}
+        records["y"]["power"] = {"id": "b"}
+        records["y"]["race"] = "佩洛"
+        rule = {"id": "identity.power.a"}
+        self.assertGreater(distractor_score(list("abcx"), records, rule),
+                           distractor_score(list("abcy"), records, rule))
+        candidates = list(shared_context_candidates(rule, list("abc"), list("xy"), records, random.Random(1)))
+        self.assertEqual(candidates, [list("abcx")])
+
+    def test_shared_context_excludes_the_tested_facet_and_missing_values(self):
+        for prefix in ["power", "power_root", "secondary_power"]:
+            self.assertNotIn("power", context_facets({"id": f"identity.{prefix}.a"}))
+        self.assertNotIn("race", context_facets({"id": "identity.race.a"}))
+        self.assertNotIn("origin", context_facets({"id": "identity.origin.a"}))
+        for missing in [None, "未录入", "未公开", "未知"]:
+            records = {oid: {"race": missing, "origin": missing} for oid in "abcx"}
+            rule = {"id": "identity.power.a"}
+            self.assertEqual(shared_context_score(rule, list("abcx"), records), 0)
+            self.assertEqual(list(shared_context_candidates(
+                rule, list("abc"), ["x"], records, random.Random(1))), [])
+
+    def test_race_question_can_share_faction_without_requiring_same_race(self):
+        records = {oid: {"race": "菲林", "power": {"id": "rhodes"}} for oid in "abcx"}
+        records["x"]["race"] = "佩洛"
+        rule = {"id": "identity.race.feline"}
+        self.assertEqual(shared_context_score(rule, list("abcx"), records), 80)
+        self.assertEqual(list(shared_context_candidates(
+            rule, list("abc"), ["x"], records, random.Random(1))), [list("abcx")])
+
     def test_fast_rejection_matches_full_audit_for_all_membership_patterns(self):
         ids = list("abcd")
         target = {"id": "target", "_memberSet": set("abc")}
