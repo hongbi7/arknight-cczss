@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "builderVersion": 7,
-  "sourceFingerprint": "sha256:41da7af439246f5eed52e3d55e3d360deda097d6c5c2b62bf9ac86e915771004",
+  "builderVersion": 8,
+  "sourceFingerprint": "sha256:d4b9822451d905e5420d161a568ec6fa5ecbe2137c4b4e9b2932f29e3e0c379c",
   "domains": {
     "roster": {
       "id": "roster",
@@ -2732,33 +2732,6 @@
       "source": "operators.power:谢拉格",
       "matchLabel": "谢拉格"
     },
-    "identity.power.b6031ff35ef8": {
-      "id": "identity.power.b6031ff35ef8",
-      "domain": "identity",
-      "title": "所属势力：雷姆必拓",
-      "description": "其余三名干员的所属势力均为“雷姆必拓”",
-      "difficulty": 1,
-      "memberCount": 15,
-      "members": [
-        "char_230_savage",
-        "char_294_ayer",
-        "char_365_aprl",
-        "char_373_lionhd",
-        "char_378_asbest",
-        "char_4081_warmy",
-        "char_4117_ray",
-        "char_4178_alanna",
-        "char_4235_thumpy",
-        "char_4236_tmslot",
-        "char_4237_jcinta",
-        "char_449_glider",
-        "char_464_cement",
-        "char_476_blkngt",
-        "char_493_firwhl"
-      ],
-      "source": "operators.power:雷姆必拓",
-      "matchLabel": "雷姆必拓"
-    },
     "identity.power.36a5e8f3d4b5": {
       "id": "identity.power.36a5e8f3d4b5",
       "domain": "identity",
@@ -2834,33 +2807,6 @@
       ],
       "source": "operators.power.root:东",
       "matchLabel": "东"
-    },
-    "identity.power_root.bde9bfb3a748": {
-      "id": "identity.power_root.bde9bfb3a748",
-      "domain": "identity",
-      "title": "上级势力：乌萨斯",
-      "description": "其余三名干员的上级势力均为“乌萨斯”",
-      "difficulty": 1,
-      "memberCount": 15,
-      "members": [
-        "char_1051_headb2",
-        "char_115_headbr",
-        "char_137_brownb",
-        "char_188_helage",
-        "char_194_leto",
-        "char_195_glassb",
-        "char_196_sunbr",
-        "char_197_poca",
-        "char_405_absin",
-        "char_4207_branch",
-        "char_4208_wintim",
-        "char_4223_botany",
-        "char_4224_turdus",
-        "char_4225_tanya",
-        "char_4226_veen"
-      ],
-      "source": "operators.power.root:乌萨斯",
-      "matchLabel": "乌萨斯"
     },
     "identity.power_root.830f950b1de7": {
       "id": "identity.power_root.830f950b1de7",
@@ -3415,33 +3361,6 @@
       "source": "operators.power.root:阿戈尔",
       "matchLabel": "阿戈尔"
     },
-    "identity.power_root.b6031ff35ef8": {
-      "id": "identity.power_root.b6031ff35ef8",
-      "domain": "identity",
-      "title": "上级势力：雷姆必拓",
-      "description": "其余三名干员的上级势力均为“雷姆必拓”",
-      "difficulty": 1,
-      "memberCount": 15,
-      "members": [
-        "char_230_savage",
-        "char_294_ayer",
-        "char_365_aprl",
-        "char_373_lionhd",
-        "char_378_asbest",
-        "char_4081_warmy",
-        "char_4117_ray",
-        "char_4178_alanna",
-        "char_4235_thumpy",
-        "char_4236_tmslot",
-        "char_4237_jcinta",
-        "char_449_glider",
-        "char_464_cement",
-        "char_476_blkngt",
-        "char_493_firwhl"
-      ],
-      "source": "operators.power.root:雷姆必拓",
-      "matchLabel": "雷姆必拓"
-    },
     "identity.origin.6c43d236d745": {
       "id": "identity.origin.6c43d236d745",
       "domain": "identity",
@@ -3882,6 +3801,42 @@
       "source": "operators.origin:莱塔尼亚",
       "matchLabel": "莱塔尼亚"
     },
+    "identity.origin.0d216d3f3f67": {
+      "id": "identity.origin.0d216d3f3f67",
+      "domain": "identity",
+      "title": "出身地：萨尔贡",
+      "description": "其余三名干员的出身地均为“萨尔贡”",
+      "difficulty": 2,
+      "memberCount": 24,
+      "members": [
+        "char_1026_gvial2",
+        "char_215_mantic",
+        "char_284_spot",
+        "char_304_zebra",
+        "char_336_folivo",
+        "char_344_beewax",
+        "char_379_sesa",
+        "char_381_bubble",
+        "char_4023_rfalcn",
+        "char_402_tuye",
+        "char_4056_titi",
+        "char_4058_pepe",
+        "char_4062_totter",
+        "char_411_tomimi",
+        "char_4138_narant",
+        "char_4139_papyrs",
+        "char_4140_lasher",
+        "char_4148_philae",
+        "char_415_flint",
+        "char_416_zumama",
+        "char_4171_wulfen",
+        "char_4204_mantra",
+        "char_4222_taraxa",
+        "char_426_billro"
+      ],
+      "source": "operators.origin:萨尔贡",
+      "matchLabel": "萨尔贡"
+    },
     "identity.origin.4aa276a9ae09": {
       "id": "identity.origin.4aa276a9ae09",
       "domain": "identity",
@@ -4077,21 +4032,6 @@
       ],
       "source": "operators.race:库兰塔",
       "matchLabel": "库兰塔"
-    },
-    "identity.race.ace4f0346aa9": {
-      "id": "identity.race.ace4f0346aa9",
-      "domain": "identity",
-      "title": "种族：未录入",
-      "description": "其余三名干员的种族均为“未录入”",
-      "difficulty": 2,
-      "memberCount": 3,
-      "members": [
-        "char_4217_makoto",
-        "char_4218_aigis",
-        "char_4219_yukari"
-      ],
-      "source": "operators.race:未录入",
-      "matchLabel": "未录入"
     },
     "identity.race.e8342619e95e": {
       "id": "identity.race.e8342619e95e",
@@ -7125,6 +7065,30 @@
       "source": "character.itemObtainApproach",
       "matchLabel": "活动获得"
     },
+    "logistics.obtain.5d7f55cf0836": {
+      "id": "logistics.obtain.5d7f55cf0836",
+      "domain": "logistics",
+      "title": "获取方式：凭证交易所",
+      "description": "其余三名干员均通过“凭证交易所”获得",
+      "difficulty": 2,
+      "memberCount": 12,
+      "members": [
+        "char_275_breeze",
+        "char_355_ethan",
+        "char_394_hadiya",
+        "char_4004_pudd",
+        "char_4051_akkord",
+        "char_4063_quartz",
+        "char_4100_caper",
+        "char_4148_philae",
+        "char_4165_ctrail",
+        "char_449_glider",
+        "char_466_qanik",
+        "char_499_kaitou"
+      ],
+      "source": "character.itemObtainApproach",
+      "matchLabel": "凭证交易所"
+    },
     "logistics.obtain.403d797ede84": {
       "id": "logistics.obtain.403d797ede84",
       "domain": "logistics",
@@ -8160,31 +8124,6 @@
       "source": "skin.displaySkin.drawerList",
       "matchLabel": "Liduke"
     },
-    "visual.illustrator.norizc-d093066e76de": {
-      "id": "visual.illustrator.norizc-d093066e76de",
-      "domain": "visual",
-      "title": "默认画师：NoriZC",
-      "description": "其余三名干员的默认立绘画师均包含“NoriZC”",
-      "difficulty": 1,
-      "memberCount": 13,
-      "members": [
-        "char_108_silent",
-        "char_134_ifrit",
-        "char_202_demkni",
-        "char_214_kafka",
-        "char_248_mgllan",
-        "char_249_mlyss",
-        "char_294_ayer",
-        "char_383_snsant",
-        "char_4000_jnight",
-        "char_420_flamtl",
-        "char_430_fartth",
-        "char_431_ashlok",
-        "char_496_wildmn"
-      ],
-      "source": "skin.displaySkin.drawerList",
-      "matchLabel": "NoriZC"
-    },
     "visual.illustrator.star-27833300e7b2": {
       "id": "visual.illustrator.star-27833300e7b2",
       "domain": "visual",
@@ -8471,6 +8410,27 @@
       ],
       "source": "skin.displaySkin.drawerList",
       "matchLabel": "板板"
+    },
+    "visual.illustrator.7bd59c647a08": {
+      "id": "visual.illustrator.7bd59c647a08",
+      "domain": "visual",
+      "title": "默认画师：温泉瓜",
+      "description": "其余三名干员的默认立绘画师均包含“温泉瓜”",
+      "difficulty": 1,
+      "memberCount": 9,
+      "members": [
+        "char_4016_kazema",
+        "char_4043_erato",
+        "char_4082_qiubai",
+        "char_4139_papyrs",
+        "char_4162_cathy",
+        "char_4183_mortis",
+        "char_4202_haruka",
+        "char_476_blkngt",
+        "char_497_ctable"
+      ],
+      "source": "skin.displaySkin.drawerList",
+      "matchLabel": "温泉瓜"
     },
     "visual.illustrator.243d108c6732": {
       "id": "visual.illustrator.243d108c6732",

@@ -46,8 +46,11 @@ CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY = 120
 MIN_QUESTIONS_PER_RULE = 1
 MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY = 60
 MAX_GENERATION_ATTEMPTS = 24000
+RACE_GENERATION_ATTEMPTS = 192000
+RACE_TARGET_PER_DIFFICULTY = 80
+RACE_CANDIDATE_POOL_PER_DIFFICULTY = 240
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 7
+BUILDER_VERSION = 8
 
 
 def find_excel_root():
@@ -349,7 +352,7 @@ def build_rules(excel_root, operators, themes, identities, overrides):
     }, 2, "operators.origin")
     bank.categorical("identity", "race", "种族", {
         oid: operator_by_id[oid].get("race") for oid in operator_ids
-    }, 2, "operators.race")
+    }, 2, "operators.race", excluded={"未录入"})
     secondary_values = {}
     secondary_groups = defaultdict(set)
     for oid in operator_ids:
@@ -615,23 +618,35 @@ def protected_facet_collisions(option_ids, operator_by_id):
     return collisions
 
 
-def candidate_option_ids(inside, outside, rng):
+def candidate_option_ids(inside, outside, rng, max_attempts=MAX_GENERATION_ATTEMPTS,
+                         spread_majorities=False):
     """Yield deterministic candidates, enumerating small rule groups without replacement."""
     yielded = 0
     if len(inside) <= EXHAUSTIVE_MAJORITY_LIMIT:
         majorities = list(combinations(inside, 3))
         rng.shuffle(majorities)
+        if spread_majorities:
+            # 先遍历不同三人组，再换异类；避免前几组三人耗尽候选池。
+            odd_candidates = outside[:]
+            rng.shuffle(odd_candidates)
+            for offset in range(len(odd_candidates)):
+                for index, majority in enumerate(majorities):
+                    if yielded >= max_attempts:
+                        return
+                    yield [*majority, odd_candidates[(offset + index) % len(odd_candidates)]]
+                    yielded += 1
+            return
         for majority in majorities:
             odd_candidates = outside[:]
             rng.shuffle(odd_candidates)
             for odd in odd_candidates:
                 yield [*majority, odd]
                 yielded += 1
-                if yielded >= MAX_GENERATION_ATTEMPTS:
+                if yielded >= max_attempts:
                     return
         return
 
-    while yielded < MAX_GENERATION_ATTEMPTS:
+    while yielded < max_attempts:
         yield rng.sample(inside, 3) + [rng.choice(outside)]
         yielded += 1
 
@@ -747,6 +762,10 @@ def generate_questions(bank, operator_by_id, fingerprint):
 
     for rule in bank.rules:
         domain_rules = rules_by_domain[rule["domain"]]
+        is_race = rule["id"].startswith("identity.race.")
+        attempt_limit = RACE_GENERATION_ATTEMPTS if is_race else MAX_GENERATION_ATTEMPTS
+        candidate_limit = RACE_CANDIDATE_POOL_PER_DIFFICULTY if is_race else CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY
+        target = RACE_TARGET_PER_DIFFICULTY if is_race else TARGET_PER_RULE_AND_DIFFICULTY
         for difficulty, config in DIFFICULTIES.items():
             if rule["difficulty"] > config["level"]:
                 continue
@@ -761,7 +780,9 @@ def generate_questions(bank, operator_by_id, fingerprint):
                 continue
             found = {}
             attempts = 0
-            for option_ids in candidate_option_ids(inside, outside, rng):
+            for option_ids in candidate_option_ids(
+                inside, outside, rng, max_attempts=attempt_limit, spread_majorities=is_race
+            ):
                 attempts += 1
                 majority = option_ids[:3]
                 odd = option_ids[3]
@@ -791,10 +812,10 @@ def generate_questions(bank, operator_by_id, fingerprint):
                 previous = found.get(key)
                 if not previous or question["distractorScore"] > previous["distractorScore"]:
                     found[key] = question
-                if len(found) >= CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY:
+                if len(found) >= candidate_limit:
                     break
             selected = select_diverse_questions(
-                found.values(), TARGET_PER_RULE_AND_DIFFICULTY
+                found.values(), target
             )
             questions.extend(selected)
             rule_question_counts[rule["id"]] += len(selected)
