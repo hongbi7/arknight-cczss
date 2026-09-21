@@ -16,6 +16,37 @@ from build_anomaly_data import (
 
 
 class AnomalyCandidateTests(unittest.TestCase):
+    def test_each_domain_has_relevant_backgrounds_without_fixing_its_answer(self):
+        cases = [
+            ("roster.profession.medic", "position", "profession"),
+            ("roster.subprofession.physician", "profession", "subProfessionId"),
+            ("roster.position.ranged", "profession", "position"),
+            ("skill.count.3", "profession", "skillCount"),
+            ("skill.damaged_recovery", "skillCount", None),
+            ("battle.stun", "subProfessionId", None),
+            ("logistics.base_room.factory", "obtain", None),
+            ("logistics.obtain.activity", "profession", "obtain"),
+            ("logistics.limited", "profession", "obtain"),
+            ("visual.illustrator.example", "profession", None),
+            ("visual.outfit_brand.example", "race", None),
+        ]
+        for rule_id, shared, excluded in cases:
+            with self.subTest(rule=rule_id):
+                rule = {"id": rule_id}
+                self.assertIn(shared, context_facets(rule))
+                if excluded:
+                    self.assertNotIn(excluded, context_facets(rule))
+                records = {oid: {} for oid in "abcxy"}
+                for oid in "abcx":
+                    if shared in ("skillCount", "obtain"):
+                        records[oid]["_context"] = {shared: 3 if shared == "skillCount" else "活动获得"}
+                    else:
+                        records[oid][shared] = "same"
+                generated = list(shared_context_candidates(rule, list("abc"), list("xy"), records, random.Random(7)))
+                self.assertEqual(generated, [list("abcx")])
+                self.assertGreater(shared_context_score(rule, list("abcx"), records), 0)
+                self.assertEqual(shared_context_score(rule, list("abcy"), records), 0)
+
     def test_faction_question_prefers_same_race_distractor(self):
         records = {oid: {"race": "菲林", "origin": None, "power": {"id": "a"},
                          "familiarityScore": 60, "profession": "MEDIC", "position": "RANGED", "rarity": 5}

@@ -51,9 +51,14 @@ MAX_GENERATION_ATTEMPTS = 192000
 RACE_TARGET_PER_DIFFICULTY = 80
 RACE_CANDIDATE_POOL_PER_DIFFICULTY = 240
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 10
+BUILDER_VERSION = 11
 CONTEXT_CANDIDATE_BUDGET = 12000
 CONTEXT_GROUP_BUDGET = 1500
+CONTEXT_WEIGHTS = {
+    "race": 160, "origin": 80, "power": 80,
+    "profession": 120, "subProfessionId": 160, "position": 40,
+    "skillCount": 80, "obtain": 100,
+}
 
 
 def find_excel_root():
@@ -576,6 +581,12 @@ def build_rules(excel_root, operators, themes, identities, overrides):
                   option_art=option_art, eligible_odd_ids=option_art,
                   eligible_member_ids=option_art)
 
+    # 仅用于服务端生成器的背景匹配，不写入公开干员数据。
+    for oid, record in operator_by_id.items():
+        record["_context"] = {
+            "skillCount": len(parsed_skills[oid]),
+            "obtain": approach_values[oid],
+        }
     return bank, operator_by_id
 
 
@@ -688,9 +699,26 @@ def meets_rule_constraints(rule, option_ids, operator_by_id):
 
 
 def context_facets(rule):
-    """Prefer shared identity facts other than the fact being tested."""
+    """Pick relevant shared backgrounds without fixing the tested dimension."""
     rule_id = rule["id"]
-    facets = ["race", "origin", "power"]
+    domain = rule_id.split(".", 1)[0]
+    facets = {
+        "roster": ["profession", "position", "race", "origin", "power"],
+        "identity": ["race", "origin", "power"],
+        "skill": ["subProfessionId", "profession", "skillCount", "position", "race", "origin", "power"],
+        "battle": ["subProfessionId", "profession", "position", "skillCount", "race", "origin", "power"],
+        "logistics": ["profession", "obtain", "race", "origin", "power"],
+        "visual": ["profession", "race", "origin", "power"],
+    }[domain][:]
+    if rule_id.startswith("roster.profession."):
+        facets.remove("profession")
+    elif rule_id.startswith("roster.position."):
+        facets.remove("position")
+    elif rule_id.startswith("skill.count."):
+        facets.remove("skillCount")
+    elif domain == "logistics" and not rule_id.startswith("logistics.base_room."):
+        # 获取方式、限定、招募和活动信物之间有相关性，避免固定目标本身。
+        facets.remove("obtain")
     if rule_id.startswith("identity.race."):
         facets.remove("race")
     elif rule_id.startswith("identity.origin."):
@@ -701,7 +729,12 @@ def context_facets(rule):
 
 
 def context_value(record, facet):
-    value = (record.get("power") or {}).get("id") if facet == "power" else record.get(facet)
+    if facet == "power":
+        value = (record.get("power") or {}).get("id")
+    elif facet in ("skillCount", "obtain"):
+        value = (record.get("_context") or {}).get(facet)
+    else:
+        value = record.get(facet)
     if value is None or value in SPECIAL_VALUES or record.get(f"{facet}Special"):
         return None
     return value
@@ -743,7 +776,7 @@ def shared_context_score(rule, option_ids, operator_by_id):
     for facet in context_facets(rule):
         values = [context_value(operator_by_id[oid], facet) for oid in option_ids]
         if values[0] is not None and all(value == values[0] for value in values):
-            score += 160 if facet == "race" else 80
+            score += CONTEXT_WEIGHTS[facet]
     return score
 
 
