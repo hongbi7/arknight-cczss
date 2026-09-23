@@ -3,10 +3,10 @@
   "status": "ready",
   "source": {
     "repository": "https://github.com/Kengxxiao/ArknightsGameData.git",
-    "revision": "0ef7f952dfd018392200157a5c79a6511ba69122",
-    "commitTime": "2026-09-11T16:01:58+08:00",
+    "revision": "bb8f9ac8db143a661577ed6ef5184d3c6e93d1d0",
+    "commitTime": "2026-09-20T16:02:31+08:00",
     "assetRepository": "https://github.com/fexli/ArknightsResource.git",
-    "assetRevision": "3596def3267fe2b172ba20895b47e11c0523642f"
+    "assetRevision": "230ae8586b4140645af68fe121e44d2676b56197"
   },
   "counts": {
     "operators": 429,
@@ -16,8 +16,8 @@
     "familiarityRecords": 429,
     "identityGroups": 37,
     "themes": 53,
-    "anomalyRules": 240,
-    "anomalyQuestions": 8488,
+    "anomalyRules": 242,
+    "anomalyQuestions": 8506,
     "anomalyBuckets": 18,
     "operatorArtRecords": 429,
     "requiredAssetGaps": 0,
@@ -101,11 +101,11 @@
     },
     "public/data/names.json": {
       "bytes": 30271,
-      "sha256": "55dc8f2ce933667d9908ac3d80de2e5726decf381c80f93bce77cb5d3e790cd9"
+      "sha256": "01acb65c4122260d6e6f951269ce89d96e6a1971912007a95f72ccef7b58c112"
     },
     "public/data/operator-art.json": {
-      "bytes": 134081,
-      "sha256": "fefa759b0ffc557099e8e376dc33685b1375ada128cd72ad6883f69524153bca"
+      "bytes": 134088,
+      "sha256": "b2fb7d0219276167931e5bf909ec7aefcd43518e212ec238279a46a6ede6a2bc"
     },
     "public/data/operator-search.json": {
       "bytes": 13011,
@@ -113,7 +113,7 @@
     },
     "server-data/operators.json": {
       "bytes": 609363,
-      "sha256": "a6895f52553898a2b77d9a35e45aa810462b500c148941d5b5d00c0712ccf4d9"
+      "sha256": "d696aa68d03d98267e651b2baa0f6c0d51fc4768397c91ada59ee876cd6c9d04"
     },
     "server-data/operator-archives.json": {
       "bytes": 3602517,
@@ -125,7 +125,7 @@
     },
     "server-data/operator-familiarity.json": {
       "bytes": 205810,
-      "sha256": "af50d9b7fd0e964f6a79232f253bdd1c7181079a99945fc47eaddecb1665dfe0"
+      "sha256": "9befd490bb7892ce5e975d9750969a050d30b06af7f4d2fcccbba985da1572d6"
     },
     "server-data/operator-identities.json": {
       "bytes": 17556,
@@ -140,12 +140,12 @@
       "sha256": "c8a6423d3943abf72c0aa810568aaffd4799f1267bcd69409c44958c59dc8ac0"
     },
     "server-data/anomaly-rules.json": {
-      "bytes": 265732,
-      "sha256": "338a6977bcf966ff7e0b56530ad1597a5de97780f7ee80c30c4db86ea30189d0"
+      "bytes": 267751,
+      "sha256": "e8fddc863fb43b524648e36907123fc9da042b169665c9b0545122889c94646c"
     },
     "server-data/anomaly-questions.json": {
-      "bytes": 8535992,
-      "sha256": "a831686557e0af4209fa3eda7541f2c846e6efe413ff3edd2f60d53d97e2e7b3"
+      "bytes": 8562045,
+      "sha256": "3d40d0b2ef66d0818e88bfa7c29e86803a4dbe0b5b8d72562b41ae1c8d9052c8"
     }
   }
 }
