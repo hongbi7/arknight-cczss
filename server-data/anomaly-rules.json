@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "builderVersion": 11,
-  "sourceFingerprint": "sha256:24d515a3c75acca2ab0fde4fbad3cb0af03ab10845c64b13283268449b73805d",
+  "sourceFingerprint": "sha256:42570f914dbb4a1a8eec38556448c956c05b274a723eb4acd9ddf968712aa50b",
   "domains": {
     "roster": {
       "id": "roster",
@@ -9262,41 +9262,6 @@
       ],
       "source": "skin.displaySkin.skinGroupName",
       "matchLabel": "雷神推进者"
-    },
-    "visual.outfit_brand.3ed95e49beee": {
-      "id": "visual.outfit_brand.3ed95e49beee",
-      "domain": "visual",
-      "title": "服装品牌：音律联觉",
-      "description": "其余三名干员均拥有“音律联觉”品牌服装",
-      "difficulty": 1,
-      "memberCount": 23,
-      "members": [
-        "char_017_huang",
-        "char_1033_swire2",
-        "char_1046_sbell2",
-        "char_172_svrash",
-        "char_198_blackd",
-        "char_202_demkni",
-        "char_213_mostma",
-        "char_249_mlyss",
-        "char_261_sddrag",
-        "char_290_vigna",
-        "char_311_mudrok",
-        "char_350_surtr",
-        "char_4009_irene",
-        "char_4027_heyak",
-        "char_4042_lumen",
-        "char_4072_ironmn",
-        "char_4087_ines",
-        "char_4133_logos",
-        "char_4146_nymph",
-        "char_4193_lemuen",
-        "char_450_necras",
-        "char_484_robrta",
-        "char_486_takila"
-      ],
-      "source": "skin.displaySkin.skinGroupName",
-      "matchLabel": "音律联觉"
     }
   }
 }
