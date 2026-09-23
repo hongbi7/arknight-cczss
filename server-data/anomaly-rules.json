@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "builderVersion": 7,
-  "sourceFingerprint": "sha256:31a5e57592a24e064d227cb3415ea4e5966a763b5ea148b241dc2aea00919ee6",
+  "builderVersion": 11,
+  "sourceFingerprint": "sha256:42570f914dbb4a1a8eec38556448c956c05b274a723eb4acd9ddf968712aa50b",
   "domains": {
     "roster": {
       "id": "roster",
@@ -2732,6 +2732,33 @@
       "source": "operators.power:谢拉格",
       "matchLabel": "谢拉格"
     },
+    "identity.power.b6031ff35ef8": {
+      "id": "identity.power.b6031ff35ef8",
+      "domain": "identity",
+      "title": "所属势力：雷姆必拓",
+      "description": "其余三名干员的所属势力均为“雷姆必拓”",
+      "difficulty": 1,
+      "memberCount": 15,
+      "members": [
+        "char_230_savage",
+        "char_294_ayer",
+        "char_365_aprl",
+        "char_373_lionhd",
+        "char_378_asbest",
+        "char_4081_warmy",
+        "char_4117_ray",
+        "char_4178_alanna",
+        "char_4235_thumpy",
+        "char_4236_tmslot",
+        "char_4237_jcinta",
+        "char_449_glider",
+        "char_464_cement",
+        "char_476_blkngt",
+        "char_493_firwhl"
+      ],
+      "source": "operators.power:雷姆必拓",
+      "matchLabel": "雷姆必拓"
+    },
     "identity.power.36a5e8f3d4b5": {
       "id": "identity.power.36a5e8f3d4b5",
       "domain": "identity",
@@ -3447,6 +3474,37 @@
       "source": "operators.origin:东国",
       "matchLabel": "东国"
     },
+    "identity.origin.bde9bfb3a748": {
+      "id": "identity.origin.bde9bfb3a748",
+      "domain": "identity",
+      "title": "出身地：乌萨斯",
+      "description": "其余三名干员的出身地均为“乌萨斯”",
+      "difficulty": 2,
+      "memberCount": 19,
+      "members": [
+        "char_1051_headb2",
+        "char_115_headbr",
+        "char_137_brownb",
+        "char_1502_crosly",
+        "char_188_helage",
+        "char_194_leto",
+        "char_195_glassb",
+        "char_196_sunbr",
+        "char_197_poca",
+        "char_345_folnic",
+        "char_4055_bgsnow",
+        "char_405_absin",
+        "char_4195_radian",
+        "char_4207_branch",
+        "char_4208_wintim",
+        "char_4223_botany",
+        "char_4224_turdus",
+        "char_4225_tanya",
+        "char_4226_veen"
+      ],
+      "source": "operators.origin:乌萨斯",
+      "matchLabel": "乌萨斯"
+    },
     "identity.origin.830f950b1de7": {
       "id": "identity.origin.830f950b1de7",
       "domain": "identity",
@@ -3652,22 +3710,6 @@
       ],
       "source": "operators.origin:拉特兰",
       "matchLabel": "拉特兰"
-    },
-    "identity.origin.ace4f0346aa9": {
-      "id": "identity.origin.ace4f0346aa9",
-      "domain": "identity",
-      "title": "出身地：未录入",
-      "description": "其余三名干员的出身地均为“未录入”",
-      "difficulty": 2,
-      "memberCount": 4,
-      "members": [
-        "char_4217_makoto",
-        "char_4218_aigis",
-        "char_4219_yukari",
-        "char_4220_kormr"
-      ],
-      "source": "operators.origin:未录入",
-      "matchLabel": "未录入"
     },
     "identity.origin.1fddc5a562ee": {
       "id": "identity.origin.1fddc5a562ee",
@@ -3953,6 +3995,64 @@
       "source": "operators.origin:阿戈尔",
       "matchLabel": "阿戈尔"
     },
+    "identity.origin.b6031ff35ef8": {
+      "id": "identity.origin.b6031ff35ef8",
+      "domain": "identity",
+      "title": "出身地：雷姆必拓",
+      "description": "其余三名干员的出身地均为“雷姆必拓”",
+      "difficulty": 2,
+      "memberCount": 22,
+      "members": [
+        "char_002_amiya",
+        "char_1021_kroos2",
+        "char_124_kroos",
+        "char_212_ansel",
+        "char_230_savage",
+        "char_236_rope",
+        "char_281_popka",
+        "char_294_ayer",
+        "char_340_shwaz",
+        "char_365_aprl",
+        "char_373_lionhd",
+        "char_378_asbest",
+        "char_4081_warmy",
+        "char_4117_ray",
+        "char_4178_alanna",
+        "char_4235_thumpy",
+        "char_4236_tmslot",
+        "char_4237_jcinta",
+        "char_449_glider",
+        "char_464_cement",
+        "char_476_blkngt",
+        "char_493_firwhl"
+      ],
+      "source": "operators.origin:雷姆必拓",
+      "matchLabel": "雷姆必拓"
+    },
+    "identity.origin.a21077f48fa2": {
+      "id": "identity.origin.a21077f48fa2",
+      "domain": "identity",
+      "title": "出身地：龙门",
+      "description": "其余三名干员的出身地均为“龙门”",
+      "difficulty": 2,
+      "memberCount": 12,
+      "members": [
+        "char_010_chen",
+        "char_1013_chen2",
+        "char_1033_swire2",
+        "char_1050_chen3",
+        "char_225_haak",
+        "char_226_hmau",
+        "char_272_strong",
+        "char_277_sqrrel",
+        "char_308_swire",
+        "char_325_bison",
+        "char_383_snsant",
+        "char_4080_lin"
+      ],
+      "source": "operators.origin:龙门",
+      "matchLabel": "龙门"
+    },
     "identity.race.e411d43d5dad": {
       "id": "identity.race.e411d43d5dad",
       "domain": "identity",
@@ -3975,6 +4075,32 @@
       ],
       "source": "operators.race:丰蹄",
       "matchLabel": "丰蹄"
+    },
+    "identity.race.bde9bfb3a748": {
+      "id": "identity.race.bde9bfb3a748",
+      "domain": "identity",
+      "title": "种族：乌萨斯",
+      "description": "其余三名干员的种族均为“乌萨斯”",
+      "difficulty": 2,
+      "memberCount": 14,
+      "members": [
+        "char_1051_headb2",
+        "char_115_headbr",
+        "char_137_brownb",
+        "char_194_leto",
+        "char_195_glassb",
+        "char_196_sunbr",
+        "char_197_poca",
+        "char_241_panda",
+        "char_272_strong",
+        "char_405_absin",
+        "char_4207_branch",
+        "char_4211_snhunt",
+        "char_4225_tanya",
+        "char_422_aurora"
+      ],
+      "source": "operators.race:乌萨斯",
+      "matchLabel": "乌萨斯"
     },
     "identity.race.3b470e364b86": {
       "id": "identity.race.3b470e364b86",
@@ -4060,21 +4186,6 @@
       ],
       "source": "operators.race:库兰塔",
       "matchLabel": "库兰塔"
-    },
-    "identity.race.ace4f0346aa9": {
-      "id": "identity.race.ace4f0346aa9",
-      "domain": "identity",
-      "title": "种族：未录入",
-      "description": "其余三名干员的种族均为“未录入”",
-      "difficulty": 2,
-      "memberCount": 3,
-      "members": [
-        "char_4217_makoto",
-        "char_4218_aigis",
-        "char_4219_yukari"
-      ],
-      "source": "operators.race:未录入",
-      "matchLabel": "未录入"
     },
     "identity.race.e8342619e95e": {
       "id": "identity.race.e8342619e95e",
@@ -4675,6 +4786,56 @@
       ],
       "source": "operator-identities",
       "matchLabel": "拥有异格身份"
+    },
+    "identity.alter_form": {
+      "id": "identity.alter_form",
+      "domain": "identity",
+      "title": "异格档案",
+      "description": "其余三名干员当前均为异格形态",
+      "difficulty": 1,
+      "memberCount": 38,
+      "members": [
+        "char_1011_lava2",
+        "char_1012_skadi2",
+        "char_1013_chen2",
+        "char_1014_nearl2",
+        "char_1015_aglna2",
+        "char_1016_agoat2",
+        "char_1019_siege2",
+        "char_1020_reed2",
+        "char_1021_kroos2",
+        "char_1022_flwr2",
+        "char_1023_ghost2",
+        "char_1024_hbisc2",
+        "char_1026_gvial2",
+        "char_1027_greyy2",
+        "char_1028_texas2",
+        "char_1029_yato2",
+        "char_1030_noirc2",
+        "char_1031_slent2",
+        "char_1032_excu2",
+        "char_1033_swire2",
+        "char_1034_jesca2",
+        "char_1035_wisdel",
+        "char_1036_fang2",
+        "char_1038_whitw2",
+        "char_1039_thorn2",
+        "char_1040_blaze2",
+        "char_1041_angel2",
+        "char_1042_phatm2",
+        "char_1043_leizi2",
+        "char_1044_hsgma2",
+        "char_1045_svash2",
+        "char_1046_sbell2",
+        "char_1047_halo2",
+        "char_1048_orchd2",
+        "char_1049_catap2",
+        "char_1050_chen3",
+        "char_1051_headb2",
+        "char_1052_kalts2"
+      ],
+      "source": "operator-identities",
+      "matchLabel": "异格干员"
     },
     "skill.skill_attack_recovery": {
       "id": "skill.skill_attack_recovery",
@@ -7058,6 +7219,30 @@
       "source": "character.itemObtainApproach",
       "matchLabel": "活动获得"
     },
+    "logistics.obtain.5d7f55cf0836": {
+      "id": "logistics.obtain.5d7f55cf0836",
+      "domain": "logistics",
+      "title": "获取方式：凭证交易所",
+      "description": "其余三名干员均通过“凭证交易所”获得",
+      "difficulty": 2,
+      "memberCount": 12,
+      "members": [
+        "char_275_breeze",
+        "char_355_ethan",
+        "char_394_hadiya",
+        "char_4004_pudd",
+        "char_4051_akkord",
+        "char_4063_quartz",
+        "char_4100_caper",
+        "char_4148_philae",
+        "char_4165_ctrail",
+        "char_449_glider",
+        "char_466_qanik",
+        "char_499_kaitou"
+      ],
+      "source": "character.itemObtainApproach",
+      "matchLabel": "凭证交易所"
+    },
     "logistics.obtain.403d797ede84": {
       "id": "logistics.obtain.403d797ede84",
       "domain": "logistics",
@@ -8093,6 +8278,31 @@
       "source": "skin.displaySkin.drawerList",
       "matchLabel": "Liduke"
     },
+    "visual.illustrator.norizc-d093066e76de": {
+      "id": "visual.illustrator.norizc-d093066e76de",
+      "domain": "visual",
+      "title": "默认画师：NoriZC",
+      "description": "其余三名干员的默认立绘画师均包含“NoriZC”",
+      "difficulty": 1,
+      "memberCount": 13,
+      "members": [
+        "char_108_silent",
+        "char_134_ifrit",
+        "char_202_demkni",
+        "char_214_kafka",
+        "char_248_mgllan",
+        "char_249_mlyss",
+        "char_294_ayer",
+        "char_383_snsant",
+        "char_4000_jnight",
+        "char_420_flamtl",
+        "char_430_fartth",
+        "char_431_ashlok",
+        "char_496_wildmn"
+      ],
+      "source": "skin.displaySkin.drawerList",
+      "matchLabel": "NoriZC"
+    },
     "visual.illustrator.star-27833300e7b2": {
       "id": "visual.illustrator.star-27833300e7b2",
       "domain": "visual",
@@ -8335,6 +8545,32 @@
       ],
       "source": "skin.displaySkin.drawerList",
       "matchLabel": "九日九号"
+    },
+    "visual.illustrator.669305250e2a": {
+      "id": "visual.illustrator.669305250e2a",
+      "domain": "visual",
+      "title": "默认画师：幻象黑兔",
+      "description": "其余三名干员的默认立绘画师均包含“幻象黑兔”",
+      "difficulty": 1,
+      "memberCount": 14,
+      "members": [
+        "char_101_sora",
+        "char_1028_texas2",
+        "char_102_texas",
+        "char_1038_whitw2",
+        "char_103_angel",
+        "char_1041_angel2",
+        "char_140_whitew",
+        "char_2014_nian",
+        "char_2015_dusk",
+        "char_201_moeshd",
+        "char_213_mostma",
+        "char_242_otter",
+        "char_293_thorns",
+        "char_300_phenxi"
+      ],
+      "source": "skin.displaySkin.drawerList",
+      "matchLabel": "幻象黑兔"
     },
     "visual.illustrator.bbcd2783e9fd": {
       "id": "visual.illustrator.bbcd2783e9fd",

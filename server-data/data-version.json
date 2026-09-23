@@ -16,8 +16,8 @@
     "familiarityRecords": 429,
     "identityGroups": 37,
     "themes": 53,
-    "anomalyRules": 233,
-    "anomalyQuestions": 10806,
+    "anomalyRules": 240,
+    "anomalyQuestions": 8488,
     "anomalyBuckets": 18,
     "operatorArtRecords": 429,
     "requiredAssetGaps": 0,
@@ -140,12 +140,12 @@
       "sha256": "c8a6423d3943abf72c0aa810568aaffd4799f1267bcd69409c44958c59dc8ac0"
     },
     "server-data/anomaly-rules.json": {
-      "bytes": 258875,
-      "sha256": "7dbb725e9e7249eb0efc62cda4b9e14c5b85ec19e952c331714b4c7778b5f03c"
+      "bytes": 265732,
+      "sha256": "338a6977bcf966ff7e0b56530ad1597a5de97780f7ee80c30c4db86ea30189d0"
     },
     "server-data/anomaly-questions.json": {
-      "bytes": 10722447,
-      "sha256": "4775f89de44d2e7fbf4d2131cf70ee3c621990adab527aaf01aa9e4db1a60b70"
+      "bytes": 8535992,
+      "sha256": "a831686557e0af4209fa3eda7541f2c846e6efe413ff3edd2f60d53d97e2e7b3"
     }
   }
 }

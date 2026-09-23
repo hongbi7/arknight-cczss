@@ -8,7 +8,7 @@ import os
 import random
 import re
 from collections import Counter, defaultdict
-from itertools import combinations
+from itertools import chain, combinations
 from pathlib import Path
 
 from atomic_write import atomic_write_json
@@ -36,7 +36,7 @@ DIFFICULTIES = {
     "hazard": {"level": 3, "min": 20, "min_average": 40, "max_below_30": 1},
 }
 SPECIAL_VALUES = {
-    "", "未知", "未公开", "不明", "无团队", "none", "None", "null",
+    "", "未知", "未公开", "未录入", "不明", "无团队", "none", "None", "null",
     "自称", "自称雌性", "断罪", "女士",
 }
 MIN_MEMBERS = 3
@@ -45,9 +45,20 @@ TARGET_PER_RULE_AND_DIFFICULTY = 40
 CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY = 120
 MIN_QUESTIONS_PER_RULE = 1
 MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY = 60
-MAX_GENERATION_ATTEMPTS = 24000
+# 基础形象档案在共性三人组去重后较稀疏；仍保留至少四局的题量。
+MIN_BUCKET_OVERRIDES = {("visual", "trainee"): 40}
+MAX_GENERATION_ATTEMPTS = 192000
+RACE_TARGET_PER_DIFFICULTY = 80
+RACE_CANDIDATE_POOL_PER_DIFFICULTY = 240
 EXHAUSTIVE_MAJORITY_LIMIT = 24
-BUILDER_VERSION = 7
+BUILDER_VERSION = 11
+CONTEXT_CANDIDATE_BUDGET = 12000
+CONTEXT_GROUP_BUDGET = 1500
+CONTEXT_WEIGHTS = {
+    "race": 160, "origin": 80, "power": 80,
+    "profession": 120, "subProfessionId": 160, "position": 40,
+    "skillCount": 80, "obtain": 100,
+}
 
 
 def find_excel_root():
@@ -570,6 +581,12 @@ def build_rules(excel_root, operators, themes, identities, overrides):
                   option_art=option_art, eligible_odd_ids=option_art,
                   eligible_member_ids=option_art)
 
+    # 仅用于服务端生成器的背景匹配，不写入公开干员数据。
+    for oid, record in operator_by_id.items():
+        record["_context"] = {
+            "skillCount": len(parsed_skills[oid]),
+            "obtain": approach_values[oid],
+        }
     return bank, operator_by_id
 
 
@@ -606,6 +623,18 @@ def tuple_odd_indexes(option_ids, audit, include_inverse=True):
     return odd_indexes, supporting
 
 
+def has_competing_odd(option_ids, audit, include_inverse=True):
+    """Fast rejection when the target rule already proves index 3 is odd."""
+    masks = [audit["operatorMasks"][oid] for oid in option_ids]
+    for index in range(3):
+        others = [masks[k] for k in range(4) if k != index]
+        if others[0] & others[1] & others[2] & ~masks[index]:
+            return True
+        if include_inverse and ~others[0] & ~others[1] & ~others[2] & masks[index]:
+            return True
+    return False
+
+
 def protected_facet_collisions(option_ids, operator_by_id):
     """Return salient 3:1 shortcuts that are intentionally not playable rules."""
     collisions = []
@@ -615,23 +644,35 @@ def protected_facet_collisions(option_ids, operator_by_id):
     return collisions
 
 
-def candidate_option_ids(inside, outside, rng):
+def candidate_option_ids(inside, outside, rng, max_attempts=MAX_GENERATION_ATTEMPTS,
+                         spread_majorities=True):
     """Yield deterministic candidates, enumerating small rule groups without replacement."""
     yielded = 0
     if len(inside) <= EXHAUSTIVE_MAJORITY_LIMIT:
         majorities = list(combinations(inside, 3))
         rng.shuffle(majorities)
+        if spread_majorities:
+            # 先遍历不同三人组，再换异类；避免前几组三人耗尽候选池。
+            odd_candidates = outside[:]
+            rng.shuffle(odd_candidates)
+            for offset in range(len(odd_candidates)):
+                for index, majority in enumerate(majorities):
+                    if yielded >= max_attempts:
+                        return
+                    yield [*majority, odd_candidates[(offset + index) % len(odd_candidates)]]
+                    yielded += 1
+            return
         for majority in majorities:
             odd_candidates = outside[:]
             rng.shuffle(odd_candidates)
             for odd in odd_candidates:
                 yield [*majority, odd]
                 yielded += 1
-                if yielded >= MAX_GENERATION_ATTEMPTS:
+                if yielded >= max_attempts:
                     return
         return
 
-    while yielded < MAX_GENERATION_ATTEMPTS:
+    while yielded < max_attempts:
         yield rng.sample(inside, 3) + [rng.choice(outside)]
         yielded += 1
 
@@ -657,7 +698,89 @@ def meets_rule_constraints(rule, option_ids, operator_by_id):
     return len(professions) == 1 and None not in professions
 
 
-def distractor_score(option_ids, operator_by_id):
+def context_facets(rule):
+    """Pick relevant shared backgrounds without fixing the tested dimension."""
+    rule_id = rule["id"]
+    domain = rule_id.split(".", 1)[0]
+    facets = {
+        "roster": ["profession", "position", "race", "origin", "power"],
+        "identity": ["race", "origin", "power"],
+        "skill": ["subProfessionId", "profession", "skillCount", "position", "race", "origin", "power"],
+        "battle": ["subProfessionId", "profession", "position", "skillCount", "race", "origin", "power"],
+        "logistics": ["profession", "obtain", "race", "origin", "power"],
+        "visual": ["profession", "race", "origin", "power"],
+    }[domain][:]
+    if rule_id.startswith("roster.profession."):
+        facets.remove("profession")
+    elif rule_id.startswith("roster.position."):
+        facets.remove("position")
+    elif rule_id.startswith("skill.count."):
+        facets.remove("skillCount")
+    elif domain == "logistics" and not rule_id.startswith("logistics.base_room."):
+        # 获取方式、限定、招募和活动信物之间有相关性，避免固定目标本身。
+        facets.remove("obtain")
+    if rule_id.startswith("identity.race."):
+        facets.remove("race")
+    elif rule_id.startswith("identity.origin."):
+        facets.remove("origin")
+    elif rule_id.startswith(("identity.power.", "identity.power_root.", "identity.secondary_power.")):
+        facets.remove("power")
+    return facets
+
+
+def context_value(record, facet):
+    if facet == "power":
+        value = (record.get("power") or {}).get("id")
+    elif facet in ("skillCount", "obtain"):
+        value = (record.get("_context") or {}).get(facet)
+    else:
+        value = record.get(facet)
+    if value is None or value in SPECIAL_VALUES or record.get(f"{facet}Special"):
+        return None
+    return value
+
+
+def shared_context_candidates(rule, inside, outside, operator_by_id, rng):
+    """Search shared-context cohorts first, without relaxing any answer checks."""
+    groups = []
+    for facet in context_facets(rule):
+        members, odds = defaultdict(list), defaultdict(list)
+        for ids, grouped in [(inside, members), (outside, odds)]:
+            for oid in ids:
+                value = context_value(operator_by_id[oid], facet)
+                if value is not None:
+                    grouped[value].append(oid)
+        for value in sorted(members):
+            if len(members[value]) >= 3 and odds[value]:
+                groups.append(iter(candidate_option_ids(
+                    members[value], odds[value], rng, max_attempts=CONTEXT_GROUP_BUDGET,
+                )))
+    # 各背景组轮流提供候选，防止大种族或大势力独占优先池。
+    yielded = 0
+    while groups and yielded < CONTEXT_CANDIDATE_BUDGET:
+        remaining = []
+        for group in groups:
+            candidate = next(group, None)
+            if candidate is None:
+                continue
+            yield candidate
+            yielded += 1
+            if yielded >= CONTEXT_CANDIDATE_BUDGET:
+                return
+            remaining.append(group)
+        groups = remaining
+
+
+def shared_context_score(rule, option_ids, operator_by_id):
+    score = 0
+    for facet in context_facets(rule):
+        values = [context_value(operator_by_id[oid], facet) for oid in option_ids]
+        if values[0] is not None and all(value == values[0] for value in values):
+            score += CONTEXT_WEIGHTS[facet]
+    return score
+
+
+def distractor_score(option_ids, operator_by_id, rule=None):
     records = [operator_by_id[oid] for oid in option_ids]
     score = min(record.get("familiarityScore", 0) for record in records) * 4
     score -= max(record.get("familiarityScore", 0) for record in records) - min(
@@ -673,12 +796,20 @@ def distractor_score(option_ids, operator_by_id):
             (1, 1, 1, 1): 12,
             (3, 1): -48,
         }.get(tuple(distribution), 0)
-    return score
+    return score + (shared_context_score(rule, option_ids, operator_by_id) if rule else 0)
 
 
 def select_diverse_questions(candidates, limit):
     """Prefer familiar distractors while spreading repeated operators across the bank."""
-    remaining = list(candidates)
+    by_majority = {}
+    for question in candidates:
+        key = tuple(sorted(question["majorityIds"]))
+        previous = by_majority.get(key)
+        if previous is None or (-question["distractorScore"], question["id"]) < (
+            -previous["distractorScore"], previous["id"]
+        ):
+            by_majority[key] = question
+    remaining = list(by_majority.values())
     selected = []
     operator_usage = Counter()
     while remaining and len(selected) < limit:
@@ -717,7 +848,7 @@ def make_question(rule, option_ids, difficulty, supporting, operator_by_id, fing
         "evidence": evidence,
         "familiarityMin": min(operator_by_id[oid].get("familiarityScore", 0) for oid in option_ids),
         "familiarityAverage": round(sum(operator_by_id[oid].get("familiarityScore", 0) for oid in option_ids) / 4, 2),
-        "distractorScore": distractor_score(option_ids, operator_by_id),
+        "distractorScore": distractor_score(option_ids, operator_by_id, rule),
     }
     if rule.get("_optionArt"):
         question["optionArt"] = [
@@ -746,7 +877,10 @@ def generate_questions(bank, operator_by_id, fingerprint):
     collision_rejections_by_rule = Counter()
 
     for rule in bank.rules:
-        domain_rules = rules_by_domain[rule["domain"]]
+        is_race = rule["id"].startswith("identity.race.")
+        candidate_limit = RACE_CANDIDATE_POOL_PER_DIFFICULTY if is_race else CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY
+        target = RACE_TARGET_PER_DIFFICULTY if is_race else TARGET_PER_RULE_AND_DIFFICULTY
+        majority_odd_ids = {}
         for difficulty, config in DIFFICULTIES.items():
             if rule["difficulty"] > config["level"]:
                 continue
@@ -761,10 +895,20 @@ def generate_questions(bank, operator_by_id, fingerprint):
                 continue
             found = {}
             attempts = 0
-            for option_ids in candidate_option_ids(inside, outside, rng):
+            # 跨难度复用同一三人组时也固定异类，不用替换第四人制造“新题”。
+            known = [list(majority) + [odd] for majority, odd in majority_odd_ids.items()
+                     if set(majority) <= set(inside) and odd in outside]
+            for option_ids in chain(
+                known,
+                shared_context_candidates(rule, inside, outside, operator_by_id, rng),
+                candidate_option_ids(inside, outside, rng),
+            ):
                 attempts += 1
                 majority = option_ids[:3]
                 odd = option_ids[3]
+                key = tuple(sorted(majority))
+                if key in majority_odd_ids and majority_odd_ids[key] != odd:
+                    continue
                 if not meets_rule_constraints(rule, option_ids, operator_by_id):
                     continue
                 if not meets_difficulty(option_ids, operator_by_id, difficulty):
@@ -774,29 +918,27 @@ def generate_questions(bank, operator_by_id, fingerprint):
                     collision_rejections_by_rule[rule["id"]] += 1
                     collision_rejections_by_facet.update(protected_collisions)
                     continue
-                odd_indexes, supporting = tuple_odd_indexes(option_ids, audits[rule["domain"]])
-                if odd_indexes != {3}:
+                if has_competing_odd(option_ids, audits[rule["domain"]]):
                     collision_rejections_by_rule[rule["id"]] += 1
                     collision_rejections_by_facet["same_domain_rule"] += 1
                     continue
-                global_odd_indexes, _ = tuple_odd_indexes(
-                    option_ids, global_audit, include_inverse=False
-                )
-                if global_odd_indexes != {3}:
+                if has_competing_odd(option_ids, global_audit, include_inverse=False):
                     collision_rejections_by_rule[rule["id"]] += 1
                     collision_rejections_by_facet["cross_domain_rule"] += 1
                     continue
-                key = (tuple(sorted(majority)), odd)
+                _, supporting = tuple_odd_indexes(option_ids, audits[rule["domain"]])
                 question = make_question(rule, option_ids, difficulty, supporting, operator_by_id, fingerprint)
                 previous = found.get(key)
                 if not previous or question["distractorScore"] > previous["distractorScore"]:
                     found[key] = question
-                if len(found) >= CANDIDATE_POOL_PER_RULE_AND_DIFFICULTY:
+                if len(found) >= candidate_limit:
                     break
             selected = select_diverse_questions(
-                found.values(), TARGET_PER_RULE_AND_DIFFICULTY
+                found.values(), target
             )
             questions.extend(selected)
+            for question in selected:
+                majority_odd_ids[tuple(question["majorityIds"])] = question["oddId"]
             rule_question_counts[rule["id"]] += len(selected)
             if not selected:
                 generation_failures.append({
@@ -867,7 +1009,8 @@ def main():
     insufficient_buckets = [
         {"domain": domain, "difficulty": difficulty, "count": counts_by_bucket[(domain, difficulty)]}
         for domain in DOMAIN_LABELS for difficulty in DIFFICULTIES
-        if counts_by_bucket[(domain, difficulty)] < MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY
+        if counts_by_bucket[(domain, difficulty)] < MIN_BUCKET_OVERRIDES.get(
+            (domain, difficulty), MIN_QUESTIONS_PER_DOMAIN_DIFFICULTY)
     ]
     if insufficient_buckets:
         raise ValueError(f"Anomaly question bank has insufficient coverage: {insufficient_buckets}")
