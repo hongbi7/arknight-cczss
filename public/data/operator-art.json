@@ -1721,11 +1721,11 @@
   "char_4196_reckpr": {
     "e1": "/img/operators/e1/char_4196_reckpr.webp",
     "final": "/img/operators/final/char_4196_reckpr.webp",
-    "finalKind": "e2",
-    "finalTitle": "精英二阶段",
-    "finalGroup": "精英档案",
+    "finalKind": "skin",
+    "finalTitle": "照寰瀛",
+    "finalGroup": "0011/韵系列/XII",
     "e1Asset": "char_4196_reckpr_1",
-    "finalAsset": "char_4196_reckpr_2"
+    "finalAsset": "char_4196_reckpr_yun#12"
   },
   "char_348_ceylon": {
     "e1": "/img/operators/e1/char_348_ceylon.webp",

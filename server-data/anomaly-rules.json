@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "builderVersion": 11,
-  "sourceFingerprint": "sha256:42570f914dbb4a1a8eec38556448c956c05b274a723eb4acd9ddf968712aa50b",
+  "sourceFingerprint": "sha256:432d697dae78c812d5cd00246ed06904ea8d3f84be43860044b1f1192e5f8b92",
   "domains": {
     "roster": {
       "id": "roster",
@@ -3084,6 +3084,40 @@
       ],
       "source": "operators.power.root:炎",
       "matchLabel": "炎"
+    },
+    "identity.power_root.4296f30f7839": {
+      "id": "identity.power_root.4296f30f7839",
+      "domain": "identity",
+      "title": "上级势力：炎-龙门",
+      "description": "其余三名干员的上级势力均为“炎-龙门”",
+      "difficulty": 1,
+      "memberCount": 22,
+      "members": [
+        "char_010_chen",
+        "char_101_sora",
+        "char_1028_texas2",
+        "char_102_texas",
+        "char_1033_swire2",
+        "char_103_angel",
+        "char_1041_angel2",
+        "char_1044_hsgma2",
+        "char_136_hsguma",
+        "char_201_moeshd",
+        "char_225_haak",
+        "char_226_hmau",
+        "char_236_rope",
+        "char_241_panda",
+        "char_243_waaifu",
+        "char_272_strong",
+        "char_277_sqrrel",
+        "char_308_swire",
+        "char_322_lmlee",
+        "char_325_bison",
+        "char_383_snsant",
+        "char_4080_lin"
+      ],
+      "source": "operators.power.root:炎-龙门",
+      "matchLabel": "炎-龙门"
     },
     "identity.power_root.98c9f24cfe05": {
       "id": "identity.power_root.98c9f24cfe05",
@@ -9262,6 +9296,41 @@
       ],
       "source": "skin.displaySkin.skinGroupName",
       "matchLabel": "雷神推进者"
+    },
+    "visual.outfit_brand.3ed95e49beee": {
+      "id": "visual.outfit_brand.3ed95e49beee",
+      "domain": "visual",
+      "title": "服装品牌：音律联觉",
+      "description": "其余三名干员均拥有“音律联觉”品牌服装",
+      "difficulty": 1,
+      "memberCount": 23,
+      "members": [
+        "char_017_huang",
+        "char_1033_swire2",
+        "char_1046_sbell2",
+        "char_172_svrash",
+        "char_198_blackd",
+        "char_202_demkni",
+        "char_213_mostma",
+        "char_249_mlyss",
+        "char_261_sddrag",
+        "char_290_vigna",
+        "char_311_mudrok",
+        "char_350_surtr",
+        "char_4009_irene",
+        "char_4027_heyak",
+        "char_4042_lumen",
+        "char_4072_ironmn",
+        "char_4087_ines",
+        "char_4133_logos",
+        "char_4146_nymph",
+        "char_4193_lemuen",
+        "char_450_necras",
+        "char_484_robrta",
+        "char_486_takila"
+      ],
+      "source": "skin.displaySkin.skinGroupName",
+      "matchLabel": "音律联觉"
     }
   }
 }

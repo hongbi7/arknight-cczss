@@ -3095,10 +3095,10 @@
   },
   "char_4196_reckpr": {
     "name": "录武官",
-    "score": 20,
+    "score": 21,
     "tier": "C",
     "confidence": 0.78,
-    "structuralScore": 29,
+    "structuralScore": 32,
     "usageScore": 17,
     "communityScore": null,
     "attentionScore": null,
